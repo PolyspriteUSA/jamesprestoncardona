@@ -19,8 +19,9 @@
     }
 
     body {
+      margin: 0;
       background: #050507;
-      color: #f4f4f6;
+      color: #f5f5f7;
       font-family: Arial, Helvetica, sans-serif;
       overflow-x: hidden;
     }
@@ -33,21 +34,21 @@
     #hero {
       position: relative;
       min-height: 100vh;
+      overflow: hidden;
+
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
 
       background:
         radial-gradient(
-          circle at 72% 45%,
-          rgba(125, 0, 165, 0.14),
-          transparent 35%
+          circle at 75% 45%,
+          rgba(160, 0, 220, 0.18),
+          transparent 34%
         ),
         radial-gradient(
-          circle at 28% 65%,
-          rgba(255, 0, 180, 0.05),
-          transparent 30%
+          circle at 30% 65%,
+          rgba(255, 0, 180, 0.08),
+          transparent 28%
         ),
         #050507;
     }
@@ -55,9 +56,9 @@
     #three-container {
       position: absolute;
       inset: 0;
+      z-index: 1;
       width: 100%;
       height: 100%;
-      z-index: 1;
     }
 
     #three-container canvas {
@@ -70,16 +71,14 @@
       position: relative;
       z-index: 2;
 
-      width: min(
-        1200px,
-        calc(100% - 48px)
-      );
+      width: min(1200px, calc(100% - 48px));
+      margin: 0 auto;
 
       pointer-events: none;
     }
 
     .hero-copy {
-      max-width: 760px;
+      max-width: 720px;
     }
 
     .eyebrow {
@@ -89,82 +88,50 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.55
-        );
+      color: rgba(255,255,255,0.55);
     }
 
     h1 {
-      max-width: 900px;
+      max-width: 850px;
 
-      font-size:
-        clamp(
-          3.2rem,
-          8vw,
-          7.5rem
-        );
-
+      font-size: clamp(3.4rem, 8vw, 7.4rem);
       line-height: 0.9;
       letter-spacing: -0.055em;
       font-weight: 700;
     }
 
     .gradient-text {
-      background:
-        linear-gradient(
-          90deg,
-          #ffffff 0%,
-          #d9c6ff 45%,
-          #ff36d1 100%
-        );
+      background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #dac8ff 45%,
+        #ff3bd5 100%
+      );
 
       -webkit-background-clip: text;
       background-clip: text;
-
-      -webkit-text-fill-color:
-        transparent;
+      -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
-      max-width: 720px;
+      max-width: 680px;
       margin-top: 28px;
 
-      font-size:
-        clamp(
-          1rem,
-          2vw,
-          1.35rem
-        );
+      font-size: clamp(1rem, 2vw, 1.28rem);
+      line-height: 1.55;
 
-      line-height: 1.5;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.72
-        );
+      color: rgba(255,255,255,0.72);
     }
 
     .meta {
       margin-top: 18px;
 
-      font-size: 0.78rem;
+      font-size: 0.77rem;
+      line-height: 1.6;
       letter-spacing: 0.14em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.42
-        );
+      color: rgba(255,255,255,0.42);
     }
 
     .hero-actions {
@@ -180,38 +147,17 @@
     .button {
       min-height: 48px;
 
-      padding:
-        0
-        22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-      display:
-        inline-flex;
+      padding: 0 22px;
 
-      align-items:
-        center;
+      border: 1px solid rgba(255,255,255,0.18);
 
-      justify-content:
-        center;
+      background: rgba(255,255,255,0.04);
 
-      border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.18
-        );
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.04
-        );
-
-      backdrop-filter:
-        blur(10px);
+      backdrop-filter: blur(10px);
 
       transition:
         transform 180ms ease,
@@ -220,74 +166,51 @@
     }
 
     .button.primary {
-      border-color:
-        rgba(
-          255,
-          0,
-          200,
-          0.55
-        );
-
-      background:
-        rgba(
-          170,
-          0,
-          150,
-          0.14
-        );
+      border-color: rgba(255,0,200,0.55);
+      background: rgba(170,0,150,0.14);
     }
 
     .loading {
       position: absolute;
-      right: 32px;
-      bottom: 28px;
-      z-index: 3;
+      right: 28px;
+      bottom: 26px;
+      z-index: 4;
 
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.42
-        );
+      color: rgba(255,255,255,0.45);
     }
 
-    .scroll-label {
+    .debug {
       position: absolute;
-      left: 50%;
-      bottom: 24px;
+      top: 14px;
+      right: 14px;
+      z-index: 5;
+
+      max-width: 360px;
+
+      padding: 10px 12px;
+
+      font-size: 12px;
+      line-height: 1.4;
+
+      color: rgba(255,255,255,0.7);
+
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.1);
+
+      display: none;
+    }
+
+    .content {
+      position: relative;
       z-index: 3;
 
-      transform:
-        translateX(-50%);
+      padding: 110px 24px;
 
-      font-size: 0.68rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.35
-        );
-    }
-
-    section.content {
-      position: relative;
-      z-index: 4;
-
-      padding:
-        110px
-        24px;
-
-      background:
-        #08080c;
+      background: #08080c;
     }
 
     .section-inner {
@@ -302,73 +225,33 @@
       letter-spacing: 0.24em;
       text-transform: uppercase;
 
-      color:
-        #c738ff;
+      color: #c738ff;
     }
 
     .section-title {
       margin-bottom: 28px;
 
-      font-size:
-        clamp(
-          2rem,
-          5vw,
-          4.5rem
-        );
-
-      letter-spacing:
-        -0.04em;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      letter-spacing: -0.04em;
     }
 
     .project-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(
-            0,
-            1fr
-          )
-        );
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
     .project-card {
       min-height: 320px;
-
       padding: 24px;
 
-      border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
+      border: 1px solid rgba(255,255,255,0.08);
 
-      background:
-        linear-gradient(
-          145deg,
-          rgba(
-            120,
-            0,
-            170,
-            0.10
-          ),
-          rgba(
-            255,
-            0,
-            180,
-            0.02
-          )
-        );
-
-      transition:
-        transform 180ms ease,
-        border-color 180ms ease;
+      background: linear-gradient(
+        145deg,
+        rgba(120,0,170,0.10),
+        rgba(255,0,180,0.02)
+      );
     }
 
     .project-card h3 {
@@ -379,96 +262,42 @@
     }
 
     .project-card p {
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.58
-        );
-
-      line-height: 1.5;
       font-size: 0.92rem;
+      line-height: 1.5;
+
+      color: rgba(255,255,255,0.58);
     }
 
-    @media (hover: hover) {
-
+    @media (hover:hover) {
       .button:hover {
-        transform:
-          translateY(-2px);
-
-        border-color:
-          rgba(
-            255,
-            255,
-            255,
-            0.45
-          );
-
-        background:
-          rgba(
-            255,
-            255,
-            255,
-            0.08
-          );
+        transform: translateY(-2px);
+        border-color: rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.08);
       }
 
       .button.primary:hover {
-        border-color:
-          #ff35d2;
-
-        background:
-          rgba(
-            255,
-            0,
-            190,
-            0.16
-          );
-      }
-
-      .project-card:hover {
-        transform:
-          translateY(-4px);
-
-        border-color:
-          rgba(
-            255,
-            50,
-            220,
-            0.4
-          );
+        border-color: #ff35d2;
+        background: rgba(255,0,190,0.16);
       }
     }
 
-    @media (
-      max-width: 850px
-    ) {
+    @media (max-width: 900px) {
+      #hero {
+        min-height: 900px;
+      }
 
       .hero-content {
-        width:
-          min(
-            100% - 32px,
-            1200px
-          );
+        width: min(100% - 32px, 1200px);
+        padding-top: 60px;
       }
 
       .project-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-      #hero {
-        min-height: 820px;
+        grid-template-columns: 1fr;
       }
 
       .loading {
         right: 16px;
         bottom: 16px;
-      }
-
-      .scroll-label {
-        display: none;
       }
     }
   </style>
@@ -498,20 +327,13 @@
     </h1>
 
     <p class="subtitle">
-      Senior Real-Time 3D Designer
-      specializing in Unreal Engine,
-      architectural visualization,
-      immersive experiences,
-      virtual production,
-      and interactive environments.
+      Senior Real-Time 3D Designer specializing in Unreal Engine,
+      architectural visualization, immersive experiences,
+      virtual production, and interactive environments.
     </p>
 
     <div class="meta">
-      Unreal Engine //
-      Real-Time 3D //
-      ArchViz //
-      XR //
-      Virtual Production
+      Unreal Engine // Real-Time 3D // ArchViz // XR // Virtual Production
     </div>
 
     <div class="hero-actions">
@@ -546,15 +368,16 @@
 </div>
 
 <div
-  class="loading"
   id="loading"
+  class="loading"
 >
   Loading 3D
 </div>
 
-<div class="scroll-label">
-  Scroll to explore
-</div>
+<div
+  id="debug"
+  class="debug"
+></div>
 ```
 
   </section>
@@ -584,15 +407,12 @@
       </h3>
 
       <p>
-        Real-time Unreal Engine
-        environments, lighting,
-        materials, cinematics,
-        and interactive client
-        experiences.
+        Real-time Unreal Engine environments,
+        lighting, materials, cinematics,
+        and interactive client experiences.
       </p>
 
     </article>
-
 
     <article class="project-card">
 
@@ -601,16 +421,12 @@
       </h3>
 
       <p>
-        Character design,
-        motion capture,
-        clothing,
-        animation,
-        and real-time digital
-        human pipelines.
+        Character design, motion capture,
+        clothing, animation,
+        and real-time digital human pipelines.
       </p>
 
     </article>
-
 
     <article class="project-card">
 
@@ -620,10 +436,8 @@
 
       <p>
         Real-time environments,
-        cinematography,
-        lighting,
-        Sequencer,
-        VFX,
+        cinematography, lighting,
+        Sequencer, VFX,
         and production workflows.
       </p>
 
@@ -638,71 +452,69 @@
 
   <script type="module">
 
-    import * as THREE
-      from
+    import * as THREE from
       "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
 
-    import {
-      GLTFLoader
-    }
-      from
+    import { GLTFLoader } from
       "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/loaders/GLTFLoader.js";
 
 
-    // ==========================================================
-    // HTML ELEMENTS
-    // ==========================================================
+    // =========================================================
+    // HTML
+    // =========================================================
 
     const container =
-      document.getElementById(
-        "three-container"
-      );
+      document.getElementById("three-container");
 
     const loadingLabel =
-      document.getElementById(
-        "loading"
-      );
+      document.getElementById("loading");
+
+    const debugLabel =
+      document.getElementById("debug");
 
 
-    // ==========================================================
+    // =========================================================
     // SCENE
-    // ==========================================================
+    // =========================================================
 
     const scene =
       new THREE.Scene();
 
 
-    // ==========================================================
+    // =========================================================
     // CAMERA
-    // ==========================================================
+    // =========================================================
 
     const camera =
       new THREE.PerspectiveCamera(
         40,
-        window.innerWidth /
-          window.innerHeight,
-        0.1,
-        100
+        window.innerWidth / window.innerHeight,
+        0.01,
+        1000
       );
-
 
     camera.position.set(
       0,
-      0.3,
+      0,
       6
     );
 
+    camera.lookAt(
+      0,
+      0,
+      0
+    );
 
-    // ==========================================================
+
+    // =========================================================
     // RENDERER
-    // ==========================================================
+    // =========================================================
 
     const renderer =
       new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
       });
-
 
     renderer.setPixelRatio(
       Math.min(
@@ -711,59 +523,75 @@
       )
     );
 
-
     renderer.setSize(
       window.innerWidth,
       window.innerHeight
     );
 
-
     renderer.outputColorSpace =
       THREE.SRGBColorSpace;
-
 
     renderer.toneMapping =
       THREE.ACESFilmicToneMapping;
 
-
     renderer.toneMappingExposure =
-      1.15;
+      1.25;
 
+    renderer.setClearColor(
+      0x000000,
+      0
+    );
 
     container.appendChild(
       renderer.domElement
     );
 
 
-    // ==========================================================
-    // LIGHTING
-    // ==========================================================
+    // =========================================================
+    // VERY BRIGHT TEST LIGHTING
+    // =========================================================
 
-    const ambientLight =
-      new THREE.AmbientLight(
-        0x38234d,
-        1.5
+    const hemisphereLight =
+      new THREE.HemisphereLight(
+        0xffffff,
+        0x302040,
+        4
       );
 
+    scene.add(
+      hemisphereLight
+    );
+
+
+    const frontLight =
+      new THREE.DirectionalLight(
+        0xffffff,
+        5
+      );
+
+    frontLight.position.set(
+      2,
+      4,
+      6
+    );
 
     scene.add(
-      ambientLight
+      frontLight
     );
 
 
     const magentaLight =
-      new THREE.DirectionalLight(
-        0xff20d0,
-        4
+      new THREE.PointLight(
+        0xff22d3,
+        18,
+        20
       );
-
 
     magentaLight.position.set(
       4,
-      5,
-      5
+      3,
+      4
     );
-
 
     scene.add(
       magentaLight
@@ -772,76 +600,62 @@
 
     const purpleLight =
       new THREE.PointLight(
-        0x6938ff,
-        12,
-        14
+        0x6633ff,
+        14,
+        20
       );
 
-
     purpleLight.position.set(
-      -3,
+      -4,
       2,
-      -2
+      2
     );
-
 
     scene.add(
       purpleLight
     );
 
 
-    const blueLight =
-      new THREE.PointLight(
-        0x304cff,
-        6,
-        12
+    // =========================================================
+    // DEBUG AXES
+    // =========================================================
+    //
+    // If you see the red / green / blue lines,
+    // Three.js itself is rendering correctly.
+    //
+
+    const axes =
+      new THREE.AxesHelper(
+        1.5
       );
 
-
-    blueLight.position.set(
-      3,
-      -2,
-      3
-    );
-
+    axes.visible =
+      true;
 
     scene.add(
-      blueLight
+      axes
     );
 
 
-    // ==========================================================
-    // LOGO CONTAINER
-    // ==========================================================
+    // =========================================================
+    // MODEL ROOT
+    // =========================================================
 
     const logoRoot =
       new THREE.Group();
-
 
     scene.add(
       logoRoot
     );
 
 
-    /*
-      Move the entire logo toward
-      the right side of the screen.
-
-      Change these values later
-      if you want to reposition it.
-    */
-
-    logoRoot.position.x =
-      1.7;
-
-
     let logo =
       null;
 
 
-    // ==========================================================
-    // GLTF LOADER
-    // ==========================================================
+    // =========================================================
+    // LOAD LOGO
+    // =========================================================
 
     const loader =
       new GLTFLoader();
@@ -852,13 +666,17 @@
       "./logo.glb",
 
 
-      // --------------------------------------------------------
-      // MODEL LOADED
-      // --------------------------------------------------------
+      // -------------------------------------------------------
+      // SUCCESS
+      // -------------------------------------------------------
 
-      function (
-        gltf
-      ) {
+      function(gltf) {
+
+        console.log(
+          "GLB loaded successfully:",
+          gltf
+        );
+
 
         logo =
           gltf.scene;
@@ -869,73 +687,171 @@
         );
 
 
-        // ------------------------------------------------------
-        // FIND MODEL SIZE
-        // ------------------------------------------------------
+        // -----------------------------------------------------
+        // CALCULATE BOUNDS BEFORE SCALING
+        // -----------------------------------------------------
 
-        const box =
+        let box =
           new THREE.Box3()
             .setFromObject(
               logo
             );
 
 
-        const center =
-          box.getCenter(
-            new THREE.Vector3()
-          );
-
-
-        const size =
+        const initialSize =
           box.getSize(
             new THREE.Vector3()
           );
 
 
-        // ------------------------------------------------------
-        // CENTER MODEL
-        // ------------------------------------------------------
-
-        logo.position.sub(
-          center
-        );
-
-
-        // ------------------------------------------------------
-        // AUTO SCALE MODEL
-        // ------------------------------------------------------
-
-        const maxDimension =
-          Math.max(
-            size.x,
-            size.y,
-            size.z
+        const initialCenter =
+          box.getCenter(
+            new THREE.Vector3()
           );
 
 
-        const targetSize =
-          3.3;
-
-
-        const modelScale =
-          targetSize /
-          maxDimension;
-
-
-        logo.scale.setScalar(
-          modelScale
+        console.log(
+          "Original model size:",
+          initialSize
         );
 
 
-        // ------------------------------------------------------
-        // STARTING ROTATION
-        // ------------------------------------------------------
+        console.log(
+          "Original model center:",
+          initialCenter
+        );
+
+
+        // -----------------------------------------------------
+        // CENTER MODEL
+        // -----------------------------------------------------
+
+        logo.position.x -=
+          initialCenter.x;
+
+        logo.position.y -=
+          initialCenter.y;
+
+        logo.position.z -=
+          initialCenter.z;
+
+
+        // -----------------------------------------------------
+        // CALCULATE AUTOMATIC SCALE
+        // -----------------------------------------------------
+
+        const largestDimension =
+          Math.max(
+            initialSize.x,
+            initialSize.y,
+            initialSize.z
+          );
+
+
+        if (
+          largestDimension <= 0 ||
+          !Number.isFinite(
+            largestDimension
+          )
+        ) {
+
+          console.error(
+            "Invalid GLB dimensions."
+          );
+
+          loadingLabel.textContent =
+            "Invalid model dimensions";
+
+          return;
+        }
+
+
+        const targetSize =
+          3.4;
+
+
+        const automaticScale =
+          targetSize /
+          largestDimension;
+
+
+        logo.scale.setScalar(
+          automaticScale
+        );
+
+
+        // -----------------------------------------------------
+        // UPDATE WORLD MATRIX
+        // -----------------------------------------------------
+
+        logo.updateMatrixWorld(
+          true
+        );
+
+
+        // -----------------------------------------------------
+        // RECALCULATE SCALED BOUNDS
+        // -----------------------------------------------------
+
+        box =
+          new THREE.Box3()
+            .setFromObject(
+              logo
+            );
+
+
+        const scaledSize =
+          box.getSize(
+            new THREE.Vector3()
+          );
+
+
+        const scaledCenter =
+          box.getCenter(
+            new THREE.Vector3()
+          );
+
+
+        console.log(
+          "Scaled size:",
+          scaledSize
+        );
+
+
+        console.log(
+          "Scaled center:",
+          scaledCenter
+        );
+
+
+        console.log(
+          "Automatic scale:",
+          automaticScale
+        );
+
+
+        // -----------------------------------------------------
+        // FORCE MODEL TO ORIGIN
+        // -----------------------------------------------------
+
+        logo.position.x -=
+          scaledCenter.x;
+
+        logo.position.y -=
+          scaledCenter.y;
+
+        logo.position.z -=
+          scaledCenter.z;
+
+
+        // -----------------------------------------------------
+        // STARTING ANGLE
+        // -----------------------------------------------------
 
         logoRoot.rotation.x =
           THREE.MathUtils.degToRad(
             -8
           );
-
 
         logoRoot.rotation.y =
           THREE.MathUtils.degToRad(
@@ -943,116 +859,170 @@
           );
 
 
-        // ------------------------------------------------------
-        // MODIFY MATERIALS
-        // ------------------------------------------------------
+        // -----------------------------------------------------
+        // MOVE LOGO TO RIGHT ON DESKTOP
+        // -----------------------------------------------------
+
+        updateResponsiveLayout();
+
+
+        // -----------------------------------------------------
+        // FORCE ALL MESHES VISIBLE
+        // -----------------------------------------------------
+
+        let meshCount =
+          0;
+
 
         logo.traverse(
-          function (
-            object
-          ) {
+          function(object) {
 
             if (
               !object.isMesh
             ) {
 
               return;
-
             }
 
 
-            object.castShadow =
+            meshCount++;
+
+
+            object.visible =
+              true;
+
+
+            object.frustumCulled =
               false;
 
 
-            object.receiveShadow =
-              false;
-
-
-            /*
-              Keep the materials
-              from your GLB.
-
-              We only slightly
-              enhance them here.
-            */
-
-            if (
+            console.log(
+              "Mesh:",
+              object.name,
               object.material
-            ) {
-
-              object.material
-                .needsUpdate =
-                true;
+            );
 
 
-              /*
-                If the GLB uses
-                MeshStandardMaterial
-                or MeshPhysicalMaterial,
-                increase its response
-                to lighting slightly.
-              */
+            // -----------------------------------------------
+            // HANDLE MATERIALS
+            // -----------------------------------------------
 
-              if (
-                "roughness"
-                in
+            const materials =
+              Array.isArray(
                 object.material
-              ) {
-
-                object.material
-                  .roughness =
-                  Math.min(
+              )
+                ? object.material
+                : [
                     object.material
-                      .roughness,
-                    0.38
-                  );
+                  ];
+
+
+            materials.forEach(
+              function(material) {
+
+                if (
+                  !material
+                ) {
+
+                  return;
+                }
+
+
+                material.side =
+                  THREE.DoubleSide;
+
+
+                material.transparent =
+                  material.transparent ??
+                  false;
+
+
+                material.needsUpdate =
+                  true;
+
+
+                /*
+                  If the logo is very dark,
+                  this slightly reduces
+                  roughness so the lighting
+                  becomes easier to see.
+                */
+
+                if (
+                  "roughness"
+                  in
+                  material
+                ) {
+
+                  material.roughness =
+                    Math.min(
+                      material.roughness,
+                      0.45
+                    );
+
+                }
+
+
+                /*
+                  Preserve your original
+                  GLB colors.
+
+                  We do NOT replace the
+                  material here.
+                */
+
               }
-
-
-              if (
-                "metalness"
-                in
-                object.material
-              ) {
-
-                object.material
-                  .metalness =
-                  Math.max(
-                    object.material
-                      .metalness,
-                    0.08
-                  );
-              }
-
-            }
+            );
 
           }
         );
 
 
-        // ------------------------------------------------------
-        // REMOVE LOADING LABEL
-        // ------------------------------------------------------
+        console.log(
+          "Mesh count:",
+          meshCount
+        );
+
+
+        // -----------------------------------------------------
+        // DISPLAY DEBUG INFO
+        // -----------------------------------------------------
+
+        debugLabel.innerHTML =
+          "GLB loaded successfully<br>" +
+          "Meshes: " +
+          meshCount +
+          "<br>" +
+          "Original size: " +
+          initialSize.x.toFixed(2) +
+          ", " +
+          initialSize.y.toFixed(2) +
+          ", " +
+          initialSize.z.toFixed(2) +
+          "<br>" +
+          "Scale: " +
+          automaticScale.toFixed(4);
+
+
+        // Change this to "block"
+        // if you want to see debug info
+        // on the webpage.
+
+        debugLabel.style.display =
+          "none";
+
 
         loadingLabel.style.display =
           "none";
 
-
-        console.log(
-          "logo.glb loaded successfully"
-        );
-
       },
 
 
-      // --------------------------------------------------------
-      // LOADING PROGRESS
-      // --------------------------------------------------------
+      // -------------------------------------------------------
+      // PROGRESS
+      // -------------------------------------------------------
 
-      function (
-        progress
-      ) {
+      function(progress) {
 
         if (
           progress.total
@@ -1060,13 +1030,9 @@
 
           const percent =
             Math.round(
-
               progress.loaded /
-
               progress.total *
-
               100
-
             );
 
 
@@ -1080,35 +1046,38 @@
       },
 
 
-      // --------------------------------------------------------
+      // -------------------------------------------------------
       // ERROR
-      // --------------------------------------------------------
+      // -------------------------------------------------------
 
-      function (
-        error
-      ) {
+      function(error) {
 
         console.error(
-          "Could not load logo.glb",
+          "ERROR LOADING logo.glb:",
           error
         );
 
 
         loadingLabel.textContent =
-          "3D unavailable";
+          "GLB load error";
+
+
+        debugLabel.style.display =
+          "block";
+
+
+        debugLabel.innerHTML =
+          "The GLB failed to load.<br>" +
+          "Open F12 → Console and send me the red error.";
 
       }
 
     );
 
 
-    // ==========================================================
-    // MOUSE / POINTER
-    // ==========================================================
-
-    const pointer =
-      new THREE.Vector2();
-
+    // =========================================================
+    // POINTER MOVEMENT
+    // =========================================================
 
     const pointerTarget =
       new THREE.Vector2();
@@ -1116,49 +1085,41 @@
 
     window.addEventListener(
       "pointermove",
-      function (
-        event
-      ) {
+      function(event) {
 
-        pointer.x =
-          (
-            event.clientX /
-            window.innerWidth
-          ) *
+        const normalizedX =
+          event.clientX /
+          window.innerWidth *
           2 -
           1;
 
 
-        pointer.y =
-          -(
-            (
-              event.clientY /
-              window.innerHeight
-            ) *
-            2 -
-            1
-          );
+        const normalizedY =
+          event.clientY /
+          window.innerHeight *
+          2 -
+          1;
 
 
         pointerTarget.x =
-          pointer.y *
-          0.12;
+          normalizedY *
+          0.10;
 
 
         pointerTarget.y =
-          pointer.x *
-          0.22;
+          normalizedX *
+          0.18;
 
       }
     );
 
 
-    // ==========================================================
-    // PARTICLE FIELD
-    // ==========================================================
+    // =========================================================
+    // PARTICLES
+    // =========================================================
 
     const particleCount =
-      800;
+      650;
 
 
     const particlePositions =
@@ -1215,18 +1176,16 @@
       new THREE.BufferGeometry();
 
 
-    particleGeometry
-      .setAttribute(
+    particleGeometry.setAttribute(
 
-        "position",
+      "position",
 
-        new THREE
-          .BufferAttribute(
-            particlePositions,
-            3
-          )
+      new THREE.BufferAttribute(
+        particlePositions,
+        3
+      )
 
-      );
+    );
 
 
     const particleMaterial =
@@ -1242,7 +1201,7 @@
           true,
 
         opacity:
-          0.32,
+          0.3,
 
         depthWrite:
           false
@@ -1252,11 +1211,8 @@
 
     const particles =
       new THREE.Points(
-
         particleGeometry,
-
         particleMaterial
-
       );
 
 
@@ -1265,17 +1221,71 @@
     );
 
 
-    // ==========================================================
-    // CLOCK
-    // ==========================================================
+    // =========================================================
+    // RESPONSIVE MODEL POSITION
+    // =========================================================
+
+    function updateResponsiveLayout() {
+
+      if (
+        window.innerWidth <
+        900
+      ) {
+
+        /*
+          On mobile, place the logo
+          nearer the center and higher.
+        */
+
+        logoRoot.position.x =
+          0;
+
+        logoRoot.position.y =
+          -1.7;
+
+        camera.position.z =
+          7;
+
+      }
+
+      else {
+
+        /*
+          Desktop:
+          logo on the right.
+        */
+
+        logoRoot.position.x =
+          2.0;
+
+        logoRoot.position.y =
+          0;
+
+        camera.position.z =
+          6;
+
+      }
+
+
+      camera.lookAt(
+        0,
+        0,
+        0
+      );
+
+    }
+
+
+    updateResponsiveLayout();
+
+
+    // =========================================================
+    // ANIMATION
+    // =========================================================
 
     const clock =
       new THREE.Clock();
 
-
-    // ==========================================================
-    // ANIMATION LOOP
-    // ==========================================================
 
     function animate() {
 
@@ -1288,117 +1298,90 @@
         clock.getElapsedTime();
 
 
-      // --------------------------------------------------------
-      // LOGO ANIMATION
-      // --------------------------------------------------------
-
       if (
         logo
       ) {
 
-        /*
-          Slow natural rotation.
-        */
-
-        logoRoot.rotation.y +=
-          0.0007;
+        const baseX =
+          THREE.MathUtils.degToRad(
+            -8
+          );
 
 
-        /*
-          Cursor interaction.
+        const baseY =
+          THREE.MathUtils.degToRad(
+            -28
+          );
 
-          Lerp makes it smooth
-          instead of snapping.
-        */
 
         const desiredX =
-          THREE.MathUtils
-            .degToRad(
-              -8
-            ) +
+          baseX +
           pointerTarget.x;
 
 
         const desiredY =
-          THREE.MathUtils
-            .degToRad(
-              -28
-            ) +
-          pointerTarget.y;
+          baseY +
+          pointerTarget.y +
+          Math.sin(
+            elapsed *
+            0.2
+          ) *
+          0.04;
 
 
         logoRoot.rotation.x =
           THREE.MathUtils.lerp(
-
             logoRoot.rotation.x,
-
             desiredX,
-
-            0.035
-
+            0.03
           );
 
 
         logoRoot.rotation.y =
           THREE.MathUtils.lerp(
-
             logoRoot.rotation.y,
-
             desiredY,
-
             0.025
-
           );
 
 
         /*
-          Very subtle
-          floating motion.
+          Gentle float.
         */
 
-        logoRoot.position.y =
-          Math.sin(
-            elapsed *
-            0.6
-          ) *
-          0.08;
+        if (
+          window.innerWidth >=
+          900
+        ) {
 
+          logoRoot.position.y =
+            Math.sin(
+              elapsed *
+              0.55
+            ) *
+            0.08;
 
-        /*
-          Tiny forward/back
-          motion gives more depth.
-        */
+        }
 
-        logoRoot.position.z =
-          Math.sin(
-            elapsed *
-            0.35
-          ) *
-          0.08;
+        else {
+
+          logoRoot.position.y =
+            -1.7 +
+            Math.sin(
+              elapsed *
+              0.55
+            ) *
+            0.06;
+
+        }
 
       }
 
-
-      // --------------------------------------------------------
-      // PARTICLE ANIMATION
-      // --------------------------------------------------------
 
       particles.rotation.y =
         elapsed *
         0.008;
 
-
-      particles.rotation.x =
-        Math.sin(
-          elapsed *
-          0.08
-        ) *
-        0.03;
-
-
-      // --------------------------------------------------------
-      // RENDER
-      // --------------------------------------------------------
 
       renderer.render(
         scene,
@@ -1411,21 +1394,20 @@
     animate();
 
 
-    // ==========================================================
-    // WINDOW RESIZE
-    // ==========================================================
+    // =========================================================
+    // RESIZE
+    // =========================================================
 
     window.addEventListener(
       "resize",
-      function () {
+      function() {
 
         camera.aspect =
           window.innerWidth /
           window.innerHeight;
 
 
-        camera
-          .updateProjectionMatrix();
+        camera.updateProjectionMatrix();
 
 
         renderer.setSize(
@@ -1441,55 +1423,10 @@
           )
         );
 
-      }
-    );
 
-
-    // ==========================================================
-    // OPTIONAL MOBILE ADJUSTMENT
-    // ==========================================================
-
-    function updateLayoutForScreen() {
-
-      if (
-        window.innerWidth <
-        850
-      ) {
-
-        /*
-          Center logo more
-          on mobile.
-        */
-
-        logoRoot.position.x =
-          0;
-
-
-        camera.position.z =
-          7;
+        updateResponsiveLayout();
 
       }
-
-      else {
-
-        logoRoot.position.x =
-          1.7;
-
-
-        camera.position.z =
-          6;
-
-      }
-
-    }
-
-
-    updateLayoutForScreen();
-
-
-    window.addEventListener(
-      "resize",
-      updateLayoutForScreen
     );
 
   </script>
