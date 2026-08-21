@@ -1,1 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>James Preston Cardona | Real-Time 3D Designer</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #050507;
+      color: #f4f4f6;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 45%, rgba(125, 0, 165, 0.12), transparent 35%),
+        radial-gradient(circle at 30% 60%, rgba(255, 0, 180, 0.06), transparent 30%),
+        #050507;
+    }
+
+    #three-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: min(1200px, calc(100% - 48px));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      max-width: 850px;
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      font-weight: 700;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #d9c6ff 45%,
+        #ff36d1 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      margin-top: 28px;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .meta {
+      margin-top: 18px;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+      pointer-events: auto;
+    }
+
+    .button {
+      min-height: 48px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+    }
+
+    .button.primary {
+      border-color: rgba(255, 0, 200, 0.55);
+      background: rgba(170, 0, 150, 0.14);
+    }
+
+    @media (hover:hover) {
+      .button:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.08);
+      }
+
+      .button.primary:hover {
+        border-color: #ff35d2;
+        background: rgba(255, 0, 190, 0.16);
+      }
+    }
+
+    .loading {
+      position: absolute;
+      right: 32px;
+      bottom: 28px;
+      z-index: 3;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+
+    .scroll-label {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    section.content {
+      position: relative;
+      z-index: 4;
+      padding: 110px 24px;
+      background: #08080c;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #c738ff;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project-card {
+      min-height: 320px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 24px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(120,0,170,0.10),
+          rgba(255,0,180,0.02)
+        );
+    }
+
+    .project-card h3 {
+      margin-top: 180px;
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    .project-card p {
+      color: rgba(255,255,255,0.58);
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 850px) {
+      .hero-content {
+        width: min(100% - 32px, 1200px);
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #hero {
+        min-height: 820px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section id="hero">
+
+    <div id="three-container"></div>
+
+    <div class="hero-content">
+      <div class="eyebrow">
+        James Preston Cardona
+      </div>
+
+      <h1>
+        Designing the space between
+        <span class="gradient-text">real and digital.</span>
+      </h1>
+
+      <p class="subtitle">
+        Senior Real-Time 3D Designer specializing in Unreal Engine,
+        architectural visualization, immersive experiences,
+        virtual production, and interactive environments.
+      </p>
+
+      <div class="meta">
+        Unreal Engine // Real-Time 3D // ArchViz // XR // Virtual Production
+      </div>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#work">View Work</a>
+        <a class="button" href="/resume.pdf">Resume</a>
+        <a class="button" href="mailto:JamesPrestonCardona@gmail.com">Contact</a>
+      </div>
+    </div>
+
+    <div class="loading" id="loading">
+      Loading 3D
+    </div>
+
+    <div class="scroll-label">
+      Scroll to explore
+    </div>
+
+  </section>
+
+
+  <section id="work" class="content">
+    <div class="section-inner">
+
+      <div class="section-kicker">
+        Selected Work
+      </div>
+
+      <h2 class="section-title">
+        Real-time experiences.
+      </h2>
+
+      <div class="project-grid">
+
+        <article class="project-card">
+          <h3>Architectural Visualization</h3>
+          <p>
+            Real-time Unreal Engine environments, lighting,
+            materials, cinematics, and interactive client experiences.
+          </p>
+        </article>
+
+        <article class="project-card">
+          <h3>Digital Humans</h3>
+          <p>
+            Character design, motion capture, clothing,
+            animation, and real-time digital human pipelines.
+          </p>
+        </article>
+
+        <article class="project-card">
+          <h3>Virtual Production</h3>
+          <p>
+            Real-time environments, cinematography,
+            lighting, Sequencer, VFX, and production workflows.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <script type="module">
+
+    import * as THREE from
+      "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
+
+    import { GLTFLoader } from
+      "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/loaders/GLTFLoader.js";
+
+
+    // ----------------------------------------------------------
+    // BASIC SCENE
+    // ----------------------------------------------------------
+
+    const container = document.getElementById("three-container");
+    const loadingLabel = document.getElementById("loading");
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+      40,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+
+    camera.position.set(0, 0.4, 6);
+
+
+    // ----------------------------------------------------------
+    // RENDERER
+    // ----------------------------------------------------------
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
+    });
+
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, 2)
+    );
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
+
+    renderer.outputColorSpace =
+      THREE.SRGBColorSpace;
+
+    renderer.toneMapping =
+      THREE.ACESFilmicToneMapping;
+
+    renderer.toneMappingExposure = 1.15;
+
+    container.appendChild(renderer.domElement);
+
+
+    // ----------------------------------------------------------
+    // LIGHTING
+    // ----------------------------------------------------------
+
+    const ambient =
+      new THREE.AmbientLight(
+        0x38234d,
+        1.6
+      );
+
+    scene.add(ambient);
+
+
+    const keyLight =
+      new THREE.DirectionalLight(
+        0xff2bd6,
+        5
+      );
+
+    keyLight.position.set(
+      3,
+      4,
+      4
+    );
+
+    scene.add(keyLight);
+
+
+    const rimLight =
+      new THREE.PointLight(
+        0x6338ff,
+        12,
+        12
+      );
+
+    rimLight.position.set(
+      -3,
+      1,
+      -2
+    );
+
+    scene.add(rimLight);
+
+
+    const fillLight =
+      new THREE.PointLight(
+        0x314cff,
+        5,
+        10
+      );
+
+    fillLight.position.set(
+      2,
+      -2,
+      3
+    );
+
+    scene.add(fillLight);
+
+
+    // ----------------------------------------------------------
+    // LOGO GROUP
+    // ----------------------------------------------------------
+
+    const logoRoot =
+      new THREE.Group();
+
+    scene.add(logoRoot);
+
+    let logo = null;
+
+
+    // ----------------------------------------------------------
+    // LOAD GLB
+    // ----------------------------------------------------------
+
+    const loader =
+      new GLTFLoader();
+
+
+    loader.load(
+
+      "./logo.glb",
+
+      function(gltf) {
+
+        logo = gltf.scene;
+
+        logoRoot.add(logo);
+
+
+        // Center model automatically
+
+        const box =
+          new THREE.Box3()
+            .setFromObject(logo);
+
+        const center =
+          box.getCenter(
+            new THREE.Vector3()
+          );
+
+        logo.position.sub(center);
+
+
+        // Auto scale
+
+        const size =
+          box.getSize(
+            new THREE.Vector3()
+          );
+
+        const maxDimension =
+          Math.max(
+            size.x,
+            size.y,
+            size.z
+          );
+
+        const targetSize = 3.2;
+
+        const scale =
+          targetSize / maxDimension;
+
+        logo.scale.setScalar(scale);
+
+
+        // Slight starting angle
+
+        logoRoot.rotation.x =
+          THREE.MathUtils.degToRad(-8);
+
+        logoRoot.rotation.y =
+          THREE.MathUtils.degToRad(-28);
+
+
+        loadingLabel.style.display =
+          "none";
+
+      },
+
+      function(progress) {
+
+        if(progress.total) {
+
+          const percent =
+            Math.round(
+              progress.loaded /
+              progress.total *
+              100
+            );
+
+          loadingLabel.textContent =
+            "Loading 3D " +
+            percent +
+            "%";
+        }
+
+      },
+
+      function(error) {
+
+        console.error(
+          "GLB failed to load:",
+          error
+        );
+
+        loadingLabel.textContent =
+          "3D unavailable";
+
+      }
+
+    );
+
+
+    // ----------------------------------------------------------
+    // MOUSE PARALLAX
+    // ----------------------------------------------------------
+
+    const pointer =
+      new THREE.Vector2();
+
+    const targetRotation =
+      new THREE.Vector2();
+
+
+    window.addEventListener(
+      "pointermove",
+      function(event) {
+
+        pointer.x =
+          event.clientX /
+          window.innerWidth *
+          2 - 1;
+
+        pointer.y =
+          -(
+            event.clientY /
+            window.innerHeight *
+            2 - 1
+          );
+
+
+        targetRotation.x =
+          pointer.y * 0.10;
+
+        targetRotation.y =
+          pointer.x * 0.18;
+
+      }
+    );
+
+
+    // ----------------------------------------------------------
+    // SUBTLE PARTICLES
+    // ----------------------------------------------------------
+
+    const particleCount =
+      650;
+
+    const positions =
+      new Float32Array(
+        particleCount * 3
+      );
+
+
+    for(
+      let i = 0;
+      i < particleCount;
+      i++
+    ) {
+
+      const i3 = i * 3;
+
+      positions[i3] =
+        (
+          Math.random() -
+          0.5
+        ) * 14;
+
+      positions[i3 + 1] =
+        (
+          Math.random() -
+          0.5
+        ) * 9;
+
+      positions[i3 + 2] =
+        (
+          Math.random() -
+          0.5
+        ) * 10;
+
+    }
+
+
+    const particleGeometry =
+      new THREE.BufferGeometry();
+
+    particleGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        positions,
+        3
+      )
+    );
+
+
+    const particleMaterial =
+      new THREE.PointsMaterial({
+        size: 0.012,
+        color: 0xc170ff,
+        transparent: true,
+        opacity: 0.35,
+        depthWrite: false
+      });
+
+
+    const particles =
+      new THREE.Points(
+        particleGeometry,
+        particleMaterial
+      );
+
+    scene.add(particles);
+
+
+    // ----------------------------------------------------------
+    // CLOCK
+    // ----------------------------------------------------------
+
+    const clock =
+      new THREE.Clock();
+
+
+    // ----------------------------------------------------------
+    // ANIMATION LOOP
+    // ----------------------------------------------------------
+
+    function animate() {
+
+      requestAnimationFrame(
+        animate
+      );
+
+
+      const elapsed =
+        clock.getElapsedTime();
+
+
+      if(logo) {
+
+        // constant slow rotation
+
+        logoRoot.rotation.y +=
+          0.0015;
+
+
+        // smooth cursor influence
+
+        logoRoot.rotation.x +=
+          (
+            targetRotation.x -
+            logoRoot.rotation.x
+          ) * 0.025;
+
+
+        logoRoot.rotation.y +=
+          (
+            (
+              targetRotation.y -
+              0.35
+            ) -
+            logoRoot.rotation.y
+          ) * 0.012;
+
+
+        // floating movement
+
+        logoRoot.position.y =
+          Math.sin(
+            elapsed * 0.55
+          ) * 0.08;
+
+      }
+
+
+      // very slow particle motion
+
+      particles.rotation.y =
+        elapsed * 0.006;
+
+
+      renderer.render(
+        scene,
+        camera
+      );
+
+    }
+
+    animate();
+
+
+    // ----------------------------------------------------------
+    // RESIZE
+    // ----------------------------------------------------------
+
+    window.addEventListener(
+      "resize",
+      function() {
+
+        camera.aspect =
+          window.innerWidth /
+          window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+          window.innerWidth,
+          window.innerHeight
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
