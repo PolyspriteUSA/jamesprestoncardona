@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>James Preston Cardona | Senior Real-Time 3D Designer</title>
+<head>
+
+  <meta charset="UTF-8">
 
 <meta
- name="description"
- content="James Preston Cardona — Senior Real-Time 3D Designer specializing in Unreal Engine, architectural visualization, immersive experiences, virtual production, and interactive environments."
-/>
+name="viewport"
+content="width=device-width, initial-scale=1, viewport-fit=cover"
+
+>
+
+  <title>
+    James Preston Cardona | Senior Real-Time 3D Designer
+  </title>
+
+<meta
+name="description"
+content="James Preston Cardona — Senior Real-Time 3D Designer specializing in Unreal Engine, architectural visualization, immersive experiences, virtual production, and interactive environments."
+
+>
 
   <style>
+
     :root {
       --bg: #050507;
-      --bg-soft: #09090d;
-      --panel: rgba(255, 255, 255, 0.035);
-      --panel-border: rgba(255, 255, 255, 0.10);
+      --bg2: #08080c;
       --text: #f5f5f7;
-      --muted: rgba(255, 255, 255, 0.62);
-      --muted-2: rgba(255, 255, 255, 0.38);
+      --muted: rgba(255,255,255,0.64);
+      --border: rgba(255,255,255,0.09);
+      --violet: #9a62ff;
       --magenta: #ff38d1;
-      --purple: #7a42ff;
-      --violet: #a767ff;
       --max-width: 1240px;
     }
 
@@ -36,13 +44,13 @@
     html {
       scroll-behavior: smooth;
       background: var(--bg);
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
       margin: 0;
       min-width: 320px;
       overflow-x: hidden;
-
       background: var(--bg);
       color: var(--text);
 
@@ -52,30 +60,24 @@
         sans-serif;
 
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
 
-    body::selection {
-      background: rgba(255, 56, 209, 0.25);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
 
     a {
       color: inherit;
       text-decoration: none;
-    }
-
-    button,
-    a {
       -webkit-tap-highlight-color: transparent;
     }
 
-    img,
     canvas {
       display: block;
     }
 
+
     /* =========================================================
-       TOP NAV
+       NAVIGATION
        ========================================================= */
 
     .site-header {
@@ -84,19 +86,16 @@
       left: 0;
       right: 0;
 
-      z-index: 20;
+      z-index: 30;
 
       padding:
-        22px
-        28px;
+        calc(18px + env(safe-area-inset-top))
+        24px
+        18px;
     }
 
     .nav {
-      width: min(
-        var(--max-width),
-        100%
-      );
-
+      width: min(var(--max-width), 100%);
       margin: 0 auto;
 
       display: flex;
@@ -107,36 +106,26 @@
     }
 
     .brand {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255,255,255,0.9);
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 22px;
+      gap: 20px;
 
-      font-size: 0.74rem;
-      letter-spacing: 0.13em;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
 
-      color: rgba(255, 255, 255, 0.52);
+      color: rgba(255,255,255,0.5);
     }
 
-    .nav-links a {
-      transition:
-        color 180ms ease;
-    }
-
-    @media (hover:hover) {
-      .nav-links a:hover {
-        color: #ffffff;
-      }
-    }
 
     /* =========================================================
        HERO
@@ -145,28 +134,20 @@
     #hero {
       position: relative;
 
-      min-height: 100vh;
-
-      display: flex;
-      align-items: center;
+      min-height: 100svh;
 
       overflow: hidden;
 
       background:
         radial-gradient(
-          circle at 77% 45%,
-          rgba(151, 0, 198, 0.19),
-          transparent 30%
+          circle at 75% 31%,
+          rgba(141,0,203,0.20),
+          transparent 31%
         ),
         radial-gradient(
-          circle at 65% 48%,
-          rgba(255, 0, 188, 0.08),
-          transparent 24%
-        ),
-        radial-gradient(
-          circle at 20% 75%,
-          rgba(71, 45, 175, 0.08),
-          transparent 28%
+          circle at 65% 38%,
+          rgba(255,0,186,0.09),
+          transparent 25%
         ),
         #050507;
     }
@@ -180,32 +161,12 @@
       width: 100%;
       height: 100%;
 
-      pointer-events: auto;
+      pointer-events: none;
     }
 
     #three-container canvas {
       width: 100%;
       height: 100%;
-
-      outline: none;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-
-      z-index: 2;
-
-      pointer-events: none;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(5, 5, 7, 0.95) 0%,
-          rgba(5, 5, 7, 0.83) 30%,
-          rgba(5, 5, 7, 0.22) 60%,
-          rgba(5, 5, 7, 0.03) 100%
-        );
     }
 
     .hero-grid {
@@ -216,7 +177,7 @@
 
       pointer-events: none;
 
-      opacity: 0.14;
+      opacity: 0.12;
 
       background-image:
         linear-gradient(
@@ -229,56 +190,67 @@
           transparent 1px
         );
 
-      background-size:
-        72px
-        72px;
+      background-size: 64px 64px;
+    }
 
-      mask-image:
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+
+      z-index: 3;
+
+      pointer-events: none;
+
+      background:
         linear-gradient(
-          to bottom,
-          transparent 0%,
-          black 20%,
-          black 80%,
-          transparent 100%
+          90deg,
+          rgba(5,5,7,0.96) 0%,
+          rgba(5,5,7,0.83) 32%,
+          rgba(5,5,7,0.25) 61%,
+          rgba(5,5,7,0.04) 100%
         );
     }
 
     .hero-content {
       position: relative;
 
-      z-index: 4;
+      z-index: 5;
 
-      width: min(
-        var(--max-width),
-        calc(100% - 56px)
-      );
+      width:
+        min(
+          var(--max-width),
+          calc(100% - 56px)
+        );
+
+      min-height: 100svh;
 
       margin: 0 auto;
 
+      display: flex;
+      align-items: center;
+
       padding:
-        140px
+        120px
         0
-        90px;
+        70px;
 
       pointer-events: none;
     }
 
     .hero-copy {
-      width: min(
-        720px,
-        60%
-      );
+      width: 57%;
+      max-width: 720px;
     }
 
     .eyebrow {
       margin-bottom: 18px;
 
-      font-size: 0.72rem;
+      font-size: 0.70rem;
       font-weight: 700;
-      letter-spacing: 0.27em;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
 
-      color: rgba(255, 255, 255, 0.48);
+      color: rgba(255,255,255,0.48);
     }
 
     h1 {
@@ -287,7 +259,7 @@
       font-size:
         clamp(
           3.4rem,
-          7.4vw,
+          7.3vw,
           7rem
         );
 
@@ -303,335 +275,173 @@
         linear-gradient(
           90deg,
           #ffffff 0%,
-          #dccaff 44%,
+          #ddccff 43%,
           #ff3bd5 100%
         );
 
-      -webkit-background-clip:
-        text;
-
-      background-clip:
-        text;
-
-      -webkit-text-fill-color:
-        transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
-      max-width: 660px;
+      max-width: 650px;
 
-      margin-top: 28px;
+      margin-top: 26px;
 
       font-size:
         clamp(
           1rem,
           1.7vw,
-          1.22rem
+          1.2rem
         );
 
       line-height: 1.6;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.69
-        );
+      color: var(--muted);
     }
 
     .meta {
-      margin-top: 20px;
+      margin-top: 18px;
 
-      max-width: 700px;
-
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       line-height: 1.8;
-      letter-spacing: 0.13em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.35
-        );
+      color: rgba(255,255,255,0.33);
     }
 
     .hero-actions {
-      margin-top: 34px;
+      margin-top: 30px;
 
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 11px;
 
       pointer-events: auto;
     }
 
     .button {
-      min-height: 48px;
+      min-height: 49px;
 
       display: inline-flex;
       align-items: center;
       justify-content: center;
 
-      padding:
-        0
-        22px;
+      padding: 0 21px;
 
       border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.16
-        );
+        1px solid rgba(255,255,255,0.16);
 
       background:
-        rgba(
-          255,
-          255,
-          255,
-          0.035
-        );
+        rgba(255,255,255,0.035);
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.9
-        );
+      color: rgba(255,255,255,0.92);
 
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
 
-      backdrop-filter:
-        blur(10px);
-
-      transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        background 180ms ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .button.primary {
       border-color:
-        rgba(
-          255,
-          56,
-          209,
-          0.56
-        );
+        rgba(255,56,209,0.58);
 
       background:
         linear-gradient(
           135deg,
-          rgba(
-            167,
-            0,
-            169,
-            0.20
-          ),
-          rgba(
-            89,
-            45,
-            170,
-            0.16
-          )
+          rgba(165,0,170,0.22),
+          rgba(92,43,175,0.18)
         );
-    }
-
-    @media (hover:hover) {
-
-      .button:hover {
-        transform:
-          translateY(-2px);
-
-        border-color:
-          rgba(
-            255,
-            255,
-            255,
-            0.40
-          );
-
-        background:
-          rgba(
-            255,
-            255,
-            255,
-            0.07
-          );
-      }
-
-      .button.primary:hover {
-        border-color:
-          rgba(
-            255,
-            56,
-            209,
-            0.92
-          );
-
-        background:
-          linear-gradient(
-            135deg,
-            rgba(
-              205,
-              0,
-              190,
-              0.28
-            ),
-            rgba(
-              100,
-              52,
-              210,
-              0.20
-            )
-          );
-      }
     }
 
     .loading {
       position: absolute;
 
-      right: 26px;
-      bottom: 24px;
+      right: 22px;
+      bottom: 22px;
 
-      z-index: 10;
+      z-index: 12;
 
-      padding:
-        8px
-        10px;
+      padding: 7px 9px;
 
-      font-size: 0.68rem;
-      letter-spacing: 0.17em;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.46
-        );
+      color: rgba(255,255,255,0.44);
 
       background:
-        rgba(
-          0,
-          0,
-          0,
-          0.20
-        );
+        rgba(0,0,0,0.22);
 
       pointer-events: none;
     }
 
-    .scroll-indicator {
-      position: absolute;
-
-      left: 50%;
-      bottom: 24px;
-
-      z-index: 6;
-
-      transform:
-        translateX(-50%);
-
-      font-size: 0.63rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.29
-        );
-
-      pointer-events: none;
-    }
 
     /* =========================================================
-       SECTIONS
+       CONTENT
        ========================================================= */
 
     .section {
       position: relative;
-
       z-index: 5;
 
-      padding:
-        110px
-        28px;
+      padding: 108px 28px;
 
-      background:
-        var(--bg-soft);
+      background: var(--bg2);
     }
 
     .section.alt {
-      background:
-        #07070a;
+      background: #07070a;
     }
 
     .section-inner {
-      width:
-        min(
-          var(--max-width),
-          100%
-        );
-
+      width: min(var(--max-width), 100%);
       margin: 0 auto;
     }
 
     .section-kicker {
-      margin-bottom: 14px;
+      margin-bottom: 13px;
 
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       font-weight: 700;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
 
-      color:
-        var(--violet);
+      color: var(--violet);
     }
 
     .section-title {
-      max-width: 900px;
+      max-width: 880px;
 
-      margin-bottom: 24px;
+      margin-bottom: 22px;
 
       font-size:
         clamp(
-          2.2rem,
+          2.1rem,
           5vw,
-          4.8rem
+          4.6rem
         );
 
       line-height: 0.98;
-      letter-spacing: -0.047em;
-      font-weight: 700;
+      letter-spacing: -0.046em;
     }
 
     .section-intro {
-      max-width: 760px;
+      max-width: 740px;
 
-      margin-bottom: 48px;
-
-      font-size:
-        1rem;
+      margin-bottom: 42px;
 
       line-height: 1.7;
 
-      color:
-        var(--muted);
+      color: var(--muted);
     }
+
 
     /* =========================================================
        PROJECTS
@@ -643,10 +453,7 @@
       grid-template-columns:
         repeat(
           3,
-          minmax(
-            0,
-            1fr
-          )
+          minmax(0,1fr)
         );
 
       gap: 18px;
@@ -655,134 +462,51 @@
     .project-card {
       position: relative;
 
-      min-height: 360px;
+      min-height: 340px;
 
       padding: 24px;
 
-      overflow: hidden;
-
       border:
-        1px solid
-        var(--panel-border);
+        1px solid var(--border);
+
+      overflow: hidden;
 
       background:
         linear-gradient(
           145deg,
-          rgba(
-            137,
-            0,
-            180,
-            0.10
-          ),
-          rgba(
-            255,
-            0,
-            180,
-            0.018
-          )
+          rgba(130,0,180,0.11),
+          rgba(255,0,180,0.02)
         );
-
-      transition:
-        transform 200ms ease,
-        border-color 200ms ease,
-        background 200ms ease;
     }
 
-    .project-card::before {
-      content: "";
+    .project-number {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
 
-      position: absolute;
-      inset: 0;
-
-      opacity: 0.40;
-
-      background:
-        radial-gradient(
-          circle at 70% 25%,
-          rgba(
-            255,
-            55,
-            218,
-            0.12
-          ),
-          transparent 38%
-        );
-
-      pointer-events: none;
+      color: rgba(255,255,255,0.34);
     }
 
-    .project-card-number {
-      position: relative;
-      z-index: 1;
-
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
-
-      color:
-        var(--muted-2);
-    }
-
-    .project-card-content {
+    .project-content {
       position: absolute;
 
       left: 24px;
       right: 24px;
       bottom: 24px;
-
-      z-index: 1;
     }
 
-    .project-card h3 {
-      margin-bottom: 10px;
+    .project-content h3 {
+      margin-bottom: 9px;
 
-      font-size: 1.25rem;
-      line-height: 1.2;
+      font-size: 1.2rem;
     }
 
-    .project-card p {
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.55
-        );
-
-      font-size: 0.92rem;
+    .project-content p {
+      font-size: 0.91rem;
       line-height: 1.55;
+
+      color: rgba(255,255,255,0.56);
     }
 
-    @media (hover:hover) {
-      .project-card:hover {
-        transform:
-          translateY(-5px);
-
-        border-color:
-          rgba(
-            255,
-            56,
-            209,
-            0.36
-          );
-
-        background:
-          linear-gradient(
-            145deg,
-            rgba(
-              137,
-              0,
-              180,
-              0.15
-            ),
-            rgba(
-              255,
-              0,
-              180,
-              0.035
-            )
-          );
-      }
-    }
 
     /* =========================================================
        ABOUT
@@ -796,118 +520,82 @@
         0.9fr;
 
       gap: 54px;
-
-      align-items: start;
     }
 
     .about-copy {
-      font-size: 1rem;
-      line-height: 1.8;
-
-      color:
-        var(--muted);
+      line-height: 1.78;
+      color: var(--muted);
     }
 
     .about-copy p + p {
-      margin-top: 18px;
+      margin-top: 17px;
     }
 
     .skills-panel {
-      padding: 26px;
+      padding: 25px;
 
       border:
-        1px solid
-        var(--panel-border);
+        1px solid var(--border);
 
       background:
-        var(--panel);
+        rgba(255,255,255,0.025);
     }
 
     .skills-panel h3 {
-      margin-bottom: 18px;
+      margin-bottom: 17px;
 
-      font-size: 0.76rem;
-      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.68
-        );
     }
 
     .skill-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
+      gap: 8px;
     }
 
     .skill {
-      padding:
-        8px
-        10px;
+      padding: 8px 9px;
 
       border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
+        1px solid rgba(255,255,255,0.08);
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.58
-        );
+      color: rgba(255,255,255,0.58);
 
-      font-size: 0.72rem;
+      font-size: 0.70rem;
     }
+
 
     /* =========================================================
        CONTACT
        ========================================================= */
 
     .contact-box {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-
-      gap: 32px;
-
-      padding:
-        42px
-        0
-        20px;
+      padding-top: 38px;
 
       border-top:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
+        1px solid var(--border);
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 30px;
     }
 
     .contact-copy {
-      max-width: 760px;
+      max-width: 750px;
     }
 
     .contact-copy h2 {
-      margin-bottom: 16px;
+      margin-bottom: 15px;
 
       font-size:
         clamp(
-          2rem,
+          2.1rem,
           5vw,
-          4.5rem
+          4.4rem
         );
 
       line-height: 0.98;
@@ -915,52 +603,32 @@
     }
 
     .contact-copy p {
-      color:
-        var(--muted);
-
       line-height: 1.65;
+      color: var(--muted);
     }
+
 
     /* =========================================================
-       RESPONSIVE
+       IPHONE / MOBILE
        ========================================================= */
 
-    @media (max-width: 980px) {
-
-      .hero-copy {
-        width: 66%;
-      }
-
-      .project-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-      .project-card {
-        min-height: 270px;
-      }
-
-      .about-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-      .contact-box {
-        align-items: start;
-        flex-direction: column;
-      }
-    }
-
-    @media (max-width: 760px) {
+    @media (max-width: 767px) {
 
       .site-header {
         padding:
-          18px
-          18px;
+          calc(15px + env(safe-area-inset-top))
+          16px
+          15px;
+      }
+
+      .brand {
+        font-size: 0.64rem;
+        letter-spacing: 0.12em;
       }
 
       .nav-links {
-        gap: 14px;
+        gap: 13px;
+        font-size: 0.61rem;
       }
 
       .nav-links a:nth-child(2) {
@@ -968,112 +636,202 @@
       }
 
       #hero {
-        min-height: 880px;
+        min-height: 100svh;
       }
 
       .hero-overlay {
         background:
           linear-gradient(
             to bottom,
-            rgba(
-              5,
-              5,
-              7,
-              0.42
-            )
-            0%,
-            rgba(
-              5,
-              5,
-              7,
-              0.60
-            )
-            48%,
-            rgba(
-              5,
-              5,
-              7,
-              0.92
-            )
-            100%
+            rgba(5,5,7,0.02) 0%,
+            rgba(5,5,7,0.04) 30%,
+            rgba(5,5,7,0.60) 60%,
+            rgba(5,5,7,0.98) 100%
           );
+      }
+
+      .hero-grid {
+        background-size: 48px 48px;
       }
 
       .hero-content {
         width:
           calc(
-            100% -
-            36px
+            100% - 32px
           );
 
-        display: flex;
+        min-height: 100svh;
+
         align-items: flex-end;
 
         padding:
-          120px
+          130px
           0
-          72px;
+          calc(
+            28px +
+            env(safe-area-inset-bottom)
+          );
       }
 
       .hero-copy {
         width: 100%;
+        max-width: none;
+      }
+
+      .eyebrow {
+        margin-bottom: 12px;
+
+        font-size: 0.63rem;
+        letter-spacing: 0.18em;
       }
 
       h1 {
         font-size:
           clamp(
-            3rem,
-            15vw,
-            5.4rem
+            2.75rem,
+            13vw,
+            4.5rem
           );
+
+        line-height: 0.94;
       }
 
       .subtitle {
-        max-width: 560px;
+        margin-top: 19px;
+
+        font-size: 0.94rem;
+        line-height: 1.55;
       }
 
-      .scroll-indicator {
-        display: none;
+      .meta {
+        margin-top: 14px;
+        font-size: 0.60rem;
+      }
+
+      .hero-actions {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 9px;
+
+        margin-top: 23px;
+      }
+
+      .button {
+        width: 100%;
+        min-height: 50px;
+
+        padding: 0 12px;
+      }
+
+      .hero-actions .button:last-child {
+        grid-column: 1 / -1;
       }
 
       .loading {
-        top: 78px;
-        right: 18px;
+        top:
+          calc(
+            63px +
+            env(safe-area-inset-top)
+          );
+
+        right: 15px;
         bottom: auto;
       }
 
       .section {
         padding:
-          88px
-          18px;
+          80px
+          16px;
       }
+
+      .section-title {
+        font-size:
+          clamp(
+            2rem,
+            10vw,
+            3.5rem
+          );
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+      }
+
+      .project-card {
+        min-height: 230px;
+        padding: 20px;
+      }
+
+      .project-content {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 31px;
+      }
+
+      .contact-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
     }
 
-    @media (max-width: 500px) {
 
-      .brand {
-        font-size: 0.67rem;
-        letter-spacing: 0.12em;
+    /* =========================================================
+       VERY SMALL IPHONES
+       ========================================================= */
+
+    @media (max-width: 390px) {
+
+      .hero-content {
+        width:
+          calc(
+            100% - 26px
+          );
       }
 
-      .nav-links {
-        font-size: 0.65rem;
+      h1 {
+        font-size:
+          clamp(
+            2.55rem,
+            12.8vw,
+            3.8rem
+          );
       }
 
       .meta {
         display: none;
       }
 
-      .button {
-        width: 100%;
+      .hero-actions {
+        grid-template-columns: 1fr;
       }
+
+      .hero-actions .button:last-child {
+        grid-column: auto;
+      }
+
     }
 
+
     @media (prefers-reduced-motion: reduce) {
+
       html {
         scroll-behavior: auto;
       }
+
     }
+
   </style>
 
 </head>
@@ -1129,9 +887,9 @@
   aria-hidden="true"
 ></div>
 
-<div class="hero-overlay"></div>
-
 <div class="hero-grid"></div>
+
+<div class="hero-overlay"></div>
 
 <div class="hero-content">
 
@@ -1149,10 +907,10 @@
     </h1>
 
     <p class="subtitle">
-      Senior Real-Time 3D Designer specializing in Unreal Engine,
-      architectural visualization, immersive experiences,
-      virtual production, digital humans,
-      and interactive environments.
+      Senior Real-Time 3D Designer specializing in
+      Unreal Engine, architectural visualization,
+      immersive experiences, virtual production,
+      digital humans, and interactive environments.
     </p>
 
     <div class="meta">
@@ -1200,10 +958,6 @@
 >
   Loading 3D
 </div>
-
-<div class="scroll-indicator">
-  Scroll to explore
-</div>
 ```
 
   </section>
@@ -1233,20 +987,19 @@
   <p class="section-intro">
     A multidisciplinary body of work spanning Unreal Engine,
     architectural visualization, immersive design,
-    digital humans, motion capture,
-    virtual production, cinematics,
-    and interactive technology.
+    digital humans, motion capture, virtual production,
+    cinematics, and interactive technology.
   </p>
 
   <div class="project-grid">
 
     <article class="project-card">
 
-      <div class="project-card-number">
+      <div class="project-number">
         01 // REAL-TIME
       </div>
 
-      <div class="project-card-content">
+      <div class="project-content">
 
         <h3>
           Architectural Visualization
@@ -1263,14 +1016,13 @@
 
     </article>
 
-
     <article class="project-card">
 
-      <div class="project-card-number">
+      <div class="project-number">
         02 // DIGITAL HUMAN
       </div>
 
-      <div class="project-card-content">
+      <div class="project-content">
 
         <h3>
           Characters & Motion Capture
@@ -1278,23 +1030,21 @@
 
         <p>
           Character design, digital-human workflows,
-          clothing, motion capture,
-          animation, and real-time
-          character integration.
+          clothing, motion capture, animation,
+          and real-time character integration.
         </p>
 
       </div>
 
     </article>
 
-
     <article class="project-card">
 
-      <div class="project-card-number">
+      <div class="project-number">
         03 // PRODUCTION
       </div>
 
-      <div class="project-card-content">
+      <div class="project-content">
 
         <h3>
           Virtual Production
@@ -1304,8 +1054,7 @@
           Unreal Engine environments,
           lighting, cinematography,
           Sequencer, compositing,
-          VFX, and real-time
-          production pipelines.
+          VFX, and real-time production pipelines.
         </p>
 
       </div>
@@ -1346,31 +1095,20 @@
 
       <p>
         I am a multidisciplinary real-time 3D designer
-        with professional experience spanning
-        architectural visualization,
-        interactive development,
-        VR and AR,
-        virtual production,
-        character workflows,
-        UX/UI,
-        motion graphics,
-        cinematography,
-        and digital media.
+        with professional experience spanning architectural
+        visualization, interactive development, VR and AR,
+        virtual production, character workflows, UX/UI,
+        motion graphics, cinematography, and digital media.
       </p>
 
       <p>
-        My work combines design,
-        technology,
-        storytelling,
-        and production to transform ideas
-        into interactive environments,
-        cinematic experiences,
-        digital products,
-        and real-time visual systems.
+        My work combines design, technology,
+        storytelling, and production to transform ideas
+        into interactive environments, cinematic experiences,
+        digital products, and real-time visual systems.
       </p>
 
     </div>
-
 
     <div class="skills-panel">
 
@@ -1380,61 +1118,20 @@
 
       <div class="skill-list">
 
-        <div class="skill">
-          Unreal Engine
-        </div>
-
-        <div class="skill">
-          Blender
-        </div>
-
-        <div class="skill">
-          Revit
-        </div>
-
-        <div class="skill">
-          Twinmotion
-        </div>
-
-        <div class="skill">
-          Substance
-        </div>
-
-        <div class="skill">
-          Marvelous Designer
-        </div>
-
-        <div class="skill">
-          Maya
-        </div>
-
-        <div class="skill">
-          3ds Max
-        </div>
-
-        <div class="skill">
-          ZBrush
-        </div>
-
-        <div class="skill">
-          Nuke
-        </div>
-
-        <div class="skill">
-          After Effects
-        </div>
-
-        <div class="skill">
-          Three.js
-        </div>
-
-        <div class="skill">
-          Python
-        </div>
-
-        <div class="skill">
-          C++
-        </div>
+        <div class="skill">Unreal Engine</div>
+        <div class="skill">Blender</div>
+        <div class="skill">Revit</div>
+        <div class="skill">Twinmotion</div>
+        <div class="skill">Substance</div>
+        <div class="skill">Marvelous Designer</div>
+        <div class="skill">Maya</div>
+        <div class="skill">3ds Max</div>
+        <div class="skill">ZBrush</div>
+        <div class="skill">Nuke</div>
+        <div class="skill">After Effects</div>
+        <div class="skill">Three.js</div>
+        <div class="skill">Python</div>
+        <div class="skill">C++</div>
 
       </div>
 
@@ -1474,11 +1171,9 @@
 
       <p>
         Available for senior-level opportunities
-        in Unreal Engine,
-        real-time 3D,
+        in Unreal Engine, real-time 3D,
         architectural visualization,
-        immersive design,
-        and virtual production.
+        immersive design, and virtual production.
       </p>
 
     </div>
@@ -1499,18 +1194,16 @@
 
   <!-- ========================================================
        THREE.JS IMPORT MAP
-
-       IMPORTANT:
-       This fixes the "Failed to resolve module specifier 'three'"
-       issue that can happen when GLTFLoader is loaded directly
-       from a CDN.
        ======================================================== -->
 
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+      "three":
+      "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+
+      "three/addons/":
+      "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
     }
   }
   </script>
@@ -1531,62 +1224,51 @@
 
 
     // =========================================================
-    // CONFIGURATION
+    // CONFIG
     // =========================================================
-
-    /*
-      These are the main values
-      we will tune once we see
-      your actual logo.glb.
-
-      You should NOT have to hunt
-      through the code.
-
-      If we change these later,
-      I will still give you the
-      complete index.html.
-    */
 
     const CONFIG = {
 
       modelPath:
         "./logo.glb",
 
-      desktopLogoX:
-        2.0,
+      targetSize:
+        3.5,
 
-      desktopLogoY:
-        0.05,
+      cameraZ:
+        6,
 
-      mobileLogoX:
+      /*
+        DESKTOP POSITION
+
+        Increased Y from 0 to 0.65
+        to move the logo higher.
+      */
+
+      desktopX:
+        1.9,
+
+      desktopY:
+        0.65,
+
+      /*
+        IPHONE / MOBILE POSITION
+
+        Increased Y from 1.15 to 1.85
+        to move the logo noticeably higher.
+      */
+
+      mobileX:
         0,
 
-      mobileLogoY:
-        -1.9,
-
-      desktopCameraZ:
-        6.2,
-
-      mobileCameraZ:
-        7.2,
-
-      targetLogoSize:
-        3.7,
+      mobileY:
+        1.85,
 
       baseRotationX:
         -8,
 
       baseRotationY:
-        -25,
-
-      pointerRotationX:
-        0.10,
-
-      pointerRotationY:
-        0.18,
-
-      floatingAmount:
-        0.075
+        -25
 
     };
 
@@ -1600,44 +1282,10 @@
         "three-container"
       );
 
-    const loadingLabel =
+    const loading =
       document.getElementById(
         "loading"
       );
-
-
-    // =========================================================
-    // WEBGL SUPPORT CHECK
-    // =========================================================
-
-    let renderer;
-
-    try {
-
-      renderer =
-        new THREE.WebGLRenderer({
-          antialias: true,
-          alpha: true,
-          powerPreference:
-            "high-performance"
-        });
-
-    }
-    catch (
-      error
-    ) {
-
-      console.error(
-        "WebGL renderer failed:",
-        error
-      );
-
-      loadingLabel.textContent =
-        "3D unavailable";
-
-      throw error;
-
-    }
 
 
     // =========================================================
@@ -1654,9 +1302,9 @@
 
     const camera =
       new THREE.PerspectiveCamera(
-        38,
+        40,
         window.innerWidth /
-          window.innerHeight,
+        window.innerHeight,
         0.01,
         1000
       );
@@ -1665,7 +1313,7 @@
     camera.position.set(
       0,
       0,
-      CONFIG.desktopCameraZ
+      CONFIG.cameraZ
     );
 
 
@@ -1680,11 +1328,39 @@
     // RENDERER
     // =========================================================
 
-    renderer.setPixelRatio(
-      Math.min(
+    const renderer =
+      new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference:
+          "high-performance"
+      });
+
+
+    function pixelRatio() {
+
+      if (
+        window.innerWidth <
+        768
+      ) {
+
+        return Math.min(
+          window.devicePixelRatio,
+          1.5
+        );
+
+      }
+
+      return Math.min(
         window.devicePixelRatio,
         2
-      )
+      );
+
+    }
+
+
+    renderer.setPixelRatio(
+      pixelRatio()
     );
 
 
@@ -1718,42 +1394,43 @@
 
 
     // =========================================================
-    // LIGHTING
+    // LIGHTS
     // =========================================================
 
-    /*
-      Bright neutral light ensures
-      we can see the model even if
-      its original GLB materials
-      are fairly dark.
-    */
-
-    const hemisphereLight =
-      new THREE.HemisphereLight(
+    const ambient =
+      new THREE.AmbientLight(
         0xffffff,
-        0x21152d,
-        3.5
+        2.4
       );
 
 
     scene.add(
-      hemisphereLight
+      ambient
     );
 
 
-    /*
-      Main white key light.
-    */
+    const hemisphere =
+      new THREE.HemisphereLight(
+        0xffffff,
+        0x24132e,
+        2.8
+      );
+
+
+    scene.add(
+      hemisphere
+    );
+
 
     const keyLight =
       new THREE.DirectionalLight(
         0xffffff,
-        4.5
+        5
       );
 
 
     keyLight.position.set(
-      3.5,
+      4,
       5,
       6
     );
@@ -1764,13 +1441,9 @@
     );
 
 
-    /*
-      Magenta brand light.
-    */
-
     const magentaLight =
       new THREE.PointLight(
-        0xff26cd,
+        0xff25d0,
         18,
         20
       );
@@ -1778,7 +1451,7 @@
 
     magentaLight.position.set(
       4,
-      3,
+      2,
       4
     );
 
@@ -1788,22 +1461,18 @@
     );
 
 
-    /*
-      Purple rim light.
-    */
-
     const purpleLight =
       new THREE.PointLight(
-        0x6335ff,
+        0x6437ff,
         15,
-        22
+        20
       );
 
 
     purpleLight.position.set(
-      -3,
-      1,
-      2
+      -4,
+      2,
+      3
     );
 
 
@@ -1812,32 +1481,8 @@
     );
 
 
-    /*
-      Cool blue/violet lower fill.
-    */
-
-    const blueFill =
-      new THREE.PointLight(
-        0x4052ff,
-        8,
-        16
-      );
-
-
-    blueFill.position.set(
-      1,
-      -4,
-      2
-    );
-
-
-    scene.add(
-      blueFill
-    );
-
-
     // =========================================================
-    // LOGO ROOT
+    // LOGO GROUP
     // =========================================================
 
     const logoRoot =
@@ -1854,239 +1499,16 @@
 
 
     // =========================================================
-    // POINTER
-    // =========================================================
-
-    const pointer =
-      new THREE.Vector2();
-
-
-    const targetPointer =
-      new THREE.Vector2();
-
-
-    window.addEventListener(
-      "pointermove",
-      function (
-        event
-      ) {
-
-        pointer.x =
-          (
-            event.clientX /
-            window.innerWidth
-          ) *
-          2 -
-          1;
-
-
-        pointer.y =
-          (
-            event.clientY /
-            window.innerHeight
-          ) *
-          2 -
-          1;
-
-
-        targetPointer.x =
-          pointer.x;
-
-
-        targetPointer.y =
-          pointer.y;
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    // =========================================================
-    // PARTICLES
-    // =========================================================
-
-    const particleCount =
-      window.innerWidth <
-      760
-        ? 350
-        : 750;
-
-
-    const particlePositions =
-      new Float32Array(
-        particleCount *
-        3
-      );
-
-
-    for (
-      let i = 0;
-      i < particleCount;
-      i++
-    ) {
-
-      const index =
-        i *
-        3;
-
-
-      particlePositions[
-        index
-      ] =
-        (
-          Math.random() -
-          0.5
-        ) *
-        18;
-
-
-      particlePositions[
-        index + 1
-      ] =
-        (
-          Math.random() -
-          0.5
-        ) *
-        11;
-
-
-      particlePositions[
-        index + 2
-      ] =
-        (
-          Math.random() -
-          0.5
-        ) *
-        14;
-
-    }
-
-
-    const particleGeometry =
-      new THREE.BufferGeometry();
-
-
-    particleGeometry.setAttribute(
-
-      "position",
-
-      new THREE.BufferAttribute(
-        particlePositions,
-        3
-      )
-
-    );
-
-
-    const particleMaterial =
-      new THREE.PointsMaterial({
-
-        size:
-          0.012,
-
-        color:
-          0xc775ff,
-
-        transparent:
-          true,
-
-        opacity:
-          0.28,
-
-        depthWrite:
-          false
-
-      });
-
-
-    const particles =
-      new THREE.Points(
-        particleGeometry,
-        particleMaterial
-      );
-
-
-    scene.add(
-      particles
-    );
-
-
-    // =========================================================
-    // RESPONSIVE LAYOUT
-    // =========================================================
-
-    function updateResponsiveLayout() {
-
-      if (
-        window.innerWidth <
-        760
-      ) {
-
-        logoRoot.position.x =
-          CONFIG.mobileLogoX;
-
-
-        /*
-          The animation loop
-          adds floating motion
-          on top of this value.
-        */
-
-        camera.position.z =
-          CONFIG.mobileCameraZ;
-
-      }
-
-      else {
-
-        logoRoot.position.x =
-          CONFIG.desktopLogoX;
-
-
-        camera.position.z =
-          CONFIG.desktopCameraZ;
-
-      }
-
-
-      camera.lookAt(
-        0,
-        0,
-        0
-      );
-
-    }
-
-
-    updateResponsiveLayout();
-
-
-    // =========================================================
-    // GLTF LOADER
+    // LOAD GLB
     // =========================================================
 
     const loader =
       new GLTFLoader();
 
 
-    /*
-      We have already confirmed
-      that this URL can be served:
-
-      jamesprestoncardona.com/logo.glb
-
-      Therefore this relative path
-      should work when index.html
-      and logo.glb are in the
-      same site root.
-    */
-
     loader.load(
 
       CONFIG.modelPath,
-
 
       // =======================================================
       // SUCCESS
@@ -2111,78 +1533,69 @@
         );
 
 
-        // -----------------------------------------------------
-        // MAKE SURE WORLD MATRICES
-        // ARE CURRENT
-        // -----------------------------------------------------
-
         logo.updateMatrixWorld(
           true
         );
 
 
         // -----------------------------------------------------
-        // ORIGINAL BOUNDS
+        // GET MODEL BOUNDS
         // -----------------------------------------------------
 
-        let boundingBox =
+        const box =
           new THREE.Box3()
             .setFromObject(
               logo
             );
 
 
-        const originalCenter =
-          boundingBox.getCenter(
+        const center =
+          box.getCenter(
             new THREE.Vector3()
           );
 
 
-        const originalSize =
-          boundingBox.getSize(
+        const size =
+          box.getSize(
             new THREE.Vector3()
           );
 
 
         console.log(
-          "Original logo center:",
-          originalCenter
+          "Logo center:",
+          center
         );
 
 
         console.log(
-          "Original logo size:",
-          originalSize
+          "Logo size:",
+          size
         );
 
-
-        // -----------------------------------------------------
-        // VALIDATE MODEL SIZE
-        // -----------------------------------------------------
 
         const largestDimension =
           Math.max(
-            originalSize.x,
-            originalSize.y,
-            originalSize.z
+            size.x,
+            size.y,
+            size.z
           );
 
 
         if (
           !Number.isFinite(
             largestDimension
-          ) ||
-          largestDimension <=
-          0
+          )
+          ||
+          largestDimension <= 0
         ) {
 
           console.error(
-            "logo.glb has invalid dimensions."
+            "Invalid GLB size"
           );
 
 
-          loadingLabel.textContent =
-            "Invalid GLB";
+          loading.textContent =
+            "Invalid 3D model";
 
 
           return;
@@ -2194,24 +1607,19 @@
         // CENTER MODEL
         // -----------------------------------------------------
 
-        logo.position.x =
-          -originalCenter.x;
-
-
-        logo.position.y =
-          -originalCenter.y;
-
-
-        logo.position.z =
-          -originalCenter.z;
+        logo.position.set(
+          -center.x,
+          -center.y,
+          -center.z
+        );
 
 
         // -----------------------------------------------------
-        // AUTO SCALE
+        // SCALE MODEL
         // -----------------------------------------------------
 
         const scale =
-          CONFIG.targetLogoSize /
+          CONFIG.targetSize /
           largestDimension;
 
 
@@ -2221,51 +1629,13 @@
 
 
         console.log(
-          "Applied logo scale:",
+          "Logo scale:",
           scale
         );
 
 
         // -----------------------------------------------------
-        // UPDATE AFTER SCALING
-        // -----------------------------------------------------
-
-        logo.updateMatrixWorld(
-          true
-        );
-
-
-        boundingBox =
-          new THREE.Box3()
-            .setFromObject(
-              logo
-            );
-
-
-        const scaledCenter =
-          boundingBox.getCenter(
-            new THREE.Vector3()
-          );
-
-
-        // -----------------------------------------------------
-        // FINAL RECENTER
-        // -----------------------------------------------------
-
-        logo.position.x -=
-          scaledCenter.x;
-
-
-        logo.position.y -=
-          scaledCenter.y;
-
-
-        logo.position.z -=
-          scaledCenter.z;
-
-
-        // -----------------------------------------------------
-        // MATERIAL / MESH CHECK
+        // FORCE MESH VISIBILITY
         // -----------------------------------------------------
 
         let meshCount =
@@ -2273,6 +1643,7 @@
 
 
         logo.traverse(
+
           function (
             object
           ) {
@@ -2293,30 +1664,29 @@
               true;
 
 
-            /*
-              Disable frustum culling
-              temporarily.
-
-              This prevents unusual
-              GLB bounds from making
-              the model disappear.
-            */
-
             object.frustumCulled =
               false;
 
 
             const materials =
+
               Array.isArray(
                 object.material
               )
-                ? object.material
-                : [
-                    object.material
-                  ];
+
+                ?
+
+                object.material
+
+                :
+
+                [
+                  object.material
+                ];
 
 
             materials.forEach(
+
               function (
                 material
               ) {
@@ -2330,35 +1700,18 @@
                 }
 
 
-                /*
-                  Make both sides render.
-
-                  This is particularly
-                  useful if the logo has
-                  thin planes or reversed
-                  normals.
-                */
-
                 material.side =
                   THREE.DoubleSide;
 
 
-                /*
-                  Do not replace the
-                  original logo colors.
-                */
-
                 if (
-                  "roughness"
-                  in
-                  material
+                  material.transparent
+                  &&
+                  material.opacity <= 0
                 ) {
 
-                  material.roughness =
-                    Math.min(
-                      material.roughness,
-                      0.48
-                    );
+                  material.opacity =
+                    1;
 
                 }
 
@@ -2367,9 +1720,11 @@
                   true;
 
               }
+
             );
 
           }
+
         );
 
 
@@ -2395,41 +1750,21 @@
           );
 
 
-        // -----------------------------------------------------
-        // FINISH LOADING
-        // -----------------------------------------------------
-
-        updateResponsiveLayout();
+        positionLogo();
 
 
-        loadingLabel.textContent =
+        loading.textContent =
           "3D Loaded";
 
 
         setTimeout(
           function () {
 
-            loadingLabel.style.opacity =
-              "0";
-
-
-            setTimeout(
-              function () {
-
-                loadingLabel.style.display =
-                  "none";
-
-              },
-              350
-            );
+            loading.style.display =
+              "none";
 
           },
-          500
-        );
-
-
-        console.log(
-          "Logo setup complete."
+          700
         );
 
       },
@@ -2444,31 +1779,21 @@
       ) {
 
         if (
-          event.total >
-          0
+          event.total > 0
         ) {
 
-          const percent =
+          const progress =
             Math.round(
-              (
-                event.loaded /
-                event.total
-              ) *
+              event.loaded /
+              event.total *
               100
             );
 
 
-          loadingLabel.textContent =
+          loading.textContent =
             "Loading 3D " +
-            percent +
+            progress +
             "%";
-
-        }
-
-        else {
-
-          loadingLabel.textContent =
-            "Loading 3D";
 
         }
 
@@ -2484,12 +1809,12 @@
       ) {
 
         console.error(
-          "ERROR LOADING logo.glb:",
+          "ERROR loading logo.glb:",
           error
         );
 
 
-        loadingLabel.textContent =
+        loading.textContent =
           "3D load error";
 
       }
@@ -2498,26 +1823,235 @@
 
 
     // =========================================================
-    // CLOCK
+    // RESPONSIVE POSITION
+    // =========================================================
+
+    function positionLogo() {
+
+      /*
+        IMPORTANT:
+        only the position changes here.
+
+        Model scale and camera distance
+        remain unchanged.
+      */
+
+      if (
+        window.innerWidth <
+        768
+      ) {
+
+        logoRoot.position.x =
+          CONFIG.mobileX;
+
+
+        logoRoot.position.y =
+          CONFIG.mobileY;
+
+      }
+
+      else {
+
+        logoRoot.position.x =
+          CONFIG.desktopX;
+
+
+        logoRoot.position.y =
+          CONFIG.desktopY;
+
+      }
+
+
+      logoRoot.position.z =
+        0;
+
+
+      camera.position.z =
+        CONFIG.cameraZ;
+
+
+      camera.lookAt(
+        0,
+        0,
+        0
+      );
+
+    }
+
+
+    positionLogo();
+
+
+    // =========================================================
+    // POINTER MOVEMENT
+    // =========================================================
+
+    const pointer =
+      new THREE.Vector2();
+
+
+    window.addEventListener(
+
+      "pointermove",
+
+      function (
+        event
+      ) {
+
+        if (
+          window.innerWidth <
+          768
+        ) {
+
+          return;
+
+        }
+
+
+        pointer.x =
+          (
+            event.clientX /
+            window.innerWidth
+          )
+          * 2
+          - 1;
+
+
+        pointer.y =
+          (
+            event.clientY /
+            window.innerHeight
+          )
+          * 2
+          - 1;
+
+      },
+
+      {
+        passive: true
+      }
+
+    );
+
+
+    // =========================================================
+    // PARTICLES
+    // =========================================================
+
+    const particleCount =
+
+      window.innerWidth <
+      768
+
+        ?
+
+        180
+
+        :
+
+        650;
+
+
+    const positions =
+      new Float32Array(
+        particleCount *
+        3
+      );
+
+
+    for (
+      let i = 0;
+      i < particleCount;
+      i++
+    ) {
+
+      const p =
+        i * 3;
+
+
+      positions[p] =
+        (
+          Math.random() -
+          0.5
+        )
+        * 18;
+
+
+      positions[p + 1] =
+        (
+          Math.random() -
+          0.5
+        )
+        * 11;
+
+
+      positions[p + 2] =
+        (
+          Math.random() -
+          0.5
+        )
+        * 14;
+
+    }
+
+
+    const particleGeometry =
+      new THREE.BufferGeometry();
+
+
+    particleGeometry.setAttribute(
+
+      "position",
+
+      new THREE.BufferAttribute(
+        positions,
+        3
+      )
+
+    );
+
+
+    const particleMaterial =
+      new THREE.PointsMaterial({
+
+        size: 0.012,
+
+        color: 0xb870ff,
+
+        transparent: true,
+
+        opacity: 0.25,
+
+        depthWrite: false
+
+      });
+
+
+    const particles =
+      new THREE.Points(
+        particleGeometry,
+        particleMaterial
+      );
+
+
+    scene.add(
+      particles
+    );
+
+
+    // =========================================================
+    // ANIMATION
     // =========================================================
 
     const clock =
       new THREE.Clock();
 
 
-    // =========================================================
-    // REDUCED MOTION
-    // =========================================================
-
-    const prefersReducedMotion =
+    const reducedMotion =
       window.matchMedia(
         "(prefers-reduced-motion: reduce)"
-      ).matches;
+      );
 
-
-    // =========================================================
-    // ANIMATION LOOP
-    // =========================================================
 
     function animate() {
 
@@ -2530,150 +2064,113 @@
         clock.getElapsedTime();
 
 
-      // -------------------------------------------------------
-      // SMOOTH POINTER
-      // -------------------------------------------------------
-
-      pointer.x =
-        THREE.MathUtils.lerp(
-          pointer.x,
-          targetPointer.x,
-          0.06
-        );
-
-
-      pointer.y =
-        THREE.MathUtils.lerp(
-          pointer.y,
-          targetPointer.y,
-          0.06
-        );
-
-
-      // -------------------------------------------------------
-      // LOGO
-      // -------------------------------------------------------
-
       if (
         logo
       ) {
 
-        const baseRotationX =
+        const baseX =
           THREE.MathUtils.degToRad(
             CONFIG.baseRotationX
           );
 
 
-        const baseRotationY =
+        const baseY =
           THREE.MathUtils.degToRad(
             CONFIG.baseRotationY
           );
 
 
-        const desiredRotationX =
-          baseRotationX -
-          pointer.y *
-          CONFIG.pointerRotationX;
-
-
-        const desiredRotationY =
-          baseRotationY +
-          pointer.x *
-          CONFIG.pointerRotationY;
-
-
         if (
-          !prefersReducedMotion
+          !reducedMotion.matches
         ) {
 
-          logoRoot.rotation.x =
-            THREE.MathUtils.lerp(
-              logoRoot.rotation.x,
-              desiredRotationX,
-              0.035
-            );
+          if (
+            window.innerWidth <
+            768
+          ) {
+
+            /*
+              iPhone:
+              gentle autonomous motion.
+            */
+
+            logoRoot.rotation.x =
+              baseX +
+              Math.sin(
+                elapsed *
+                0.45
+              )
+              * 0.025;
 
 
-          logoRoot.rotation.y =
-            THREE.MathUtils.lerp(
-              logoRoot.rotation.y,
-              desiredRotationY,
-              0.035
-            );
-
-        }
-
-
-        // -----------------------------------------------------
-        // FLOATING
-        // -----------------------------------------------------
-
-        if (
-          window.innerWidth <
-          760
-        ) {
-
-          logoRoot.position.y =
-            CONFIG.mobileLogoY +
-            (
-              prefersReducedMotion
-                ? 0
-                :
-                  Math.sin(
-                    elapsed *
-                    0.55
-                  ) *
-                  0.05
-            );
-
-        }
-
-        else {
-
-          logoRoot.position.y =
-            CONFIG.desktopLogoY +
-            (
-              prefersReducedMotion
-                ? 0
-                :
-                  Math.sin(
-                    elapsed *
-                    0.55
-                  ) *
-                  CONFIG.floatingAmount
-            );
-
-        }
-
-      }
+            logoRoot.rotation.y =
+              baseY +
+              Math.sin(
+                elapsed *
+                0.30
+              )
+              * 0.06;
 
 
-      // -------------------------------------------------------
-      // PARTICLES
-      // -------------------------------------------------------
+            logoRoot.position.y =
+              CONFIG.mobileY +
+              Math.sin(
+                elapsed *
+                0.55
+              )
+              * 0.045;
 
-      if (
-        !prefersReducedMotion
-      ) {
+          }
 
-        particles.rotation.y =
-          elapsed *
-          0.007;
+          else {
+
+            const targetX =
+              baseX -
+              pointer.y *
+              0.09;
 
 
-        particles.rotation.x =
-          Math.sin(
+            const targetY =
+              baseY +
+              pointer.x *
+              0.16;
+
+
+            logoRoot.rotation.x =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.x,
+                targetX,
+                0.035
+              );
+
+
+            logoRoot.rotation.y =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.y,
+                targetY,
+                0.035
+              );
+
+
+            logoRoot.position.y =
+              CONFIG.desktopY +
+              Math.sin(
+                elapsed *
+                0.55
+              )
+              * 0.065;
+
+          }
+
+
+          particles.rotation.y =
             elapsed *
-            0.09
-          ) *
-          0.02;
+            0.006;
+
+        }
 
       }
 
-
-      // -------------------------------------------------------
-      // RENDER
-      // -------------------------------------------------------
 
       renderer.render(
         scene,
@@ -2690,41 +2187,62 @@
     // RESIZE
     // =========================================================
 
+    let resizeTimer;
+
+
     window.addEventListener(
+
       "resize",
+
       function () {
 
-        camera.aspect =
-          window.innerWidth /
-          window.innerHeight;
-
-
-        camera.updateProjectionMatrix();
-
-
-        renderer.setSize(
-          window.innerWidth,
-          window.innerHeight
+        clearTimeout(
+          resizeTimer
         );
 
 
-        renderer.setPixelRatio(
-          Math.min(
-            window.devicePixelRatio,
-            2
-          )
-        );
+        resizeTimer =
+          setTimeout(
+
+            function () {
+
+              camera.aspect =
+                window.innerWidth /
+                window.innerHeight;
 
 
-        updateResponsiveLayout();
+              camera.updateProjectionMatrix();
+
+
+              renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+              );
+
+
+              renderer.setPixelRatio(
+                pixelRatio()
+              );
+
+
+              positionLogo();
+
+            },
+
+            70
+
+          );
 
       },
+
       {
         passive: true
       }
+
     );
 
   </script>
 
 </body>
+
 </html>
