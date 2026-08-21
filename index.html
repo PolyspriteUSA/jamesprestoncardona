@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <title>James Preston Cardona | Senior Real-Time 3D Designer</title>
 
@@ -16,11 +16,11 @@
     :root {
       --bg: #050507;
       --bg-soft: #09090d;
-      --panel: rgba(255, 255, 255, 0.035);
-      --panel-border: rgba(255, 255, 255, 0.10);
+      --panel: rgba(255,255,255,0.035);
+      --panel-border: rgba(255,255,255,0.10);
       --text: #f5f5f7;
-      --muted: rgba(255, 255, 255, 0.62);
-      --muted-2: rgba(255, 255, 255, 0.38);
+      --muted: rgba(255,255,255,0.64);
+      --muted-2: rgba(255,255,255,0.38);
       --magenta: #ff38d1;
       --purple: #7a42ff;
       --violet: #a767ff;
@@ -36,13 +36,12 @@
     html {
       scroll-behavior: smooth;
       background: var(--bg);
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
-      margin: 0;
       min-width: 320px;
       overflow-x: hidden;
-
       background: var(--bg);
       color: var(--text);
 
@@ -53,10 +52,9 @@
 
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
-    }
 
-    body::selection {
-      background: rgba(255, 56, 209, 0.25);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
 
     a {
@@ -69,13 +67,12 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    img,
     canvas {
       display: block;
     }
 
     /* =========================================================
-       TOP NAV
+       HEADER
        ========================================================= */
 
     .site-header {
@@ -83,59 +80,41 @@
       top: 0;
       left: 0;
       right: 0;
-
       z-index: 20;
 
       padding:
-        22px
-        28px;
+        calc(16px + env(safe-area-inset-top))
+        18px
+        16px;
     }
 
     .nav {
-      width: min(
-        var(--max-width),
-        100%
-      );
-
+      width: min(var(--max-width), 100%);
       margin: 0 auto;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      gap: 20px;
+      gap: 16px;
     }
 
     .brand {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-
-      color: rgba(255, 255, 255, 0.88);
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
-      align-items: center;
-      gap: 22px;
+      gap: 16px;
 
-      font-size: 0.74rem;
-      letter-spacing: 0.13em;
+      font-size: 0.68rem;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
 
-      color: rgba(255, 255, 255, 0.52);
-    }
-
-    .nav-links a {
-      transition:
-        color 180ms ease;
-    }
-
-    @media (hover:hover) {
-      .nav-links a:hover {
-        color: #ffffff;
-      }
+      color: rgba(255,255,255,0.54);
     }
 
     /* =========================================================
@@ -144,29 +123,20 @@
 
     #hero {
       position: relative;
-
-      min-height: 100vh;
-
-      display: flex;
-      align-items: center;
+      min-height: 100svh;
 
       overflow: hidden;
 
       background:
         radial-gradient(
-          circle at 77% 45%,
-          rgba(151, 0, 198, 0.19),
-          transparent 30%
+          circle at 65% 28%,
+          rgba(151,0,198,0.18),
+          transparent 31%
         ),
         radial-gradient(
-          circle at 65% 48%,
-          rgba(255, 0, 188, 0.08),
+          circle at 54% 36%,
+          rgba(255,0,188,0.08),
           transparent 24%
-        ),
-        radial-gradient(
-          circle at 20% 75%,
-          rgba(71, 45, 175, 0.08),
-          transparent 28%
         ),
         #050507;
     }
@@ -174,125 +144,100 @@
     #three-container {
       position: absolute;
       inset: 0;
-
       z-index: 1;
 
       width: 100%;
       height: 100%;
-
-      pointer-events: auto;
     }
 
     #three-container canvas {
       width: 100%;
       height: 100%;
-
-      outline: none;
+      touch-action: pan-y;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
-
       z-index: 2;
-
       pointer-events: none;
 
       background:
         linear-gradient(
-          90deg,
-          rgba(5, 5, 7, 0.95) 0%,
-          rgba(5, 5, 7, 0.83) 30%,
-          rgba(5, 5, 7, 0.22) 60%,
-          rgba(5, 5, 7, 0.03) 100%
+          to bottom,
+          rgba(5,5,7,0.10) 0%,
+          rgba(5,5,7,0.10) 32%,
+          rgba(5,5,7,0.52) 58%,
+          rgba(5,5,7,0.96) 100%
         );
     }
 
     .hero-grid {
       position: absolute;
       inset: 0;
-
       z-index: 2;
 
+      opacity: 0.12;
       pointer-events: none;
-
-      opacity: 0.14;
 
       background-image:
         linear-gradient(
-          rgba(255,255,255,0.035) 1px,
+          rgba(255,255,255,0.032) 1px,
           transparent 1px
         ),
         linear-gradient(
           90deg,
-          rgba(255,255,255,0.035) 1px,
+          rgba(255,255,255,0.032) 1px,
           transparent 1px
         );
 
-      background-size:
-        72px
-        72px;
-
-      mask-image:
-        linear-gradient(
-          to bottom,
-          transparent 0%,
-          black 20%,
-          black 80%,
-          transparent 100%
-        );
+      background-size: 54px 54px;
     }
 
     .hero-content {
       position: relative;
-
       z-index: 4;
+
+      min-height: 100svh;
 
       width: min(
         var(--max-width),
-        calc(100% - 56px)
+        calc(100% - 36px)
       );
 
       margin: 0 auto;
 
-      padding:
-        140px
-        0
-        90px;
+      display: flex;
+      align-items: flex-end;
 
-      pointer-events: none;
+      padding:
+        150px
+        0
+        calc(36px + env(safe-area-inset-bottom));
     }
 
     .hero-copy {
-      width: min(
-        720px,
-        60%
-      );
+      width: 100%;
+      max-width: 690px;
     }
 
     .eyebrow {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
 
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.27em;
+      letter-spacing: 0.20em;
       text-transform: uppercase;
 
-      color: rgba(255, 255, 255, 0.48);
+      color: rgba(255,255,255,0.50);
     }
 
     h1 {
-      max-width: 820px;
+      max-width: 760px;
 
-      font-size:
-        clamp(
-          3.4rem,
-          7.4vw,
-          7rem
-        );
-
-      line-height: 0.91;
-      letter-spacing: -0.057em;
+      font-size: clamp(2.9rem, 13vw, 6.6rem);
+      line-height: 0.93;
+      letter-spacing: -0.052em;
       font-weight: 700;
     }
 
@@ -303,334 +248,162 @@
         linear-gradient(
           90deg,
           #ffffff 0%,
-          #dccaff 44%,
+          #ddceff 46%,
           #ff3bd5 100%
         );
 
-      -webkit-background-clip:
-        text;
-
-      background-clip:
-        text;
-
-      -webkit-text-fill-color:
-        transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
-      max-width: 660px;
+      margin-top: 22px;
+      max-width: 620px;
 
-      margin-top: 28px;
+      font-size: 1rem;
+      line-height: 1.58;
 
-      font-size:
-        clamp(
-          1rem,
-          1.7vw,
-          1.22rem
-        );
-
-      line-height: 1.6;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.69
-        );
+      color: rgba(255,255,255,0.70);
     }
 
     .meta {
-      margin-top: 20px;
+      margin-top: 16px;
 
-      max-width: 700px;
-
-      font-size: 0.72rem;
-      line-height: 1.8;
-      letter-spacing: 0.13em;
+      font-size: 0.66rem;
+      line-height: 1.7;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.35
-        );
+      color: rgba(255,255,255,0.34);
     }
 
     .hero-actions {
-      margin-top: 34px;
+      margin-top: 26px;
 
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
 
-      pointer-events: auto;
+      width: 100%;
+      max-width: 470px;
     }
 
     .button {
-      min-height: 48px;
+      min-height: 50px;
 
       display: inline-flex;
       align-items: center;
       justify-content: center;
 
-      padding:
-        0
-        22px;
+      padding: 0 18px;
 
-      border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.16
-        );
+      border: 1px solid rgba(255,255,255,0.16);
 
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.035
-        );
+      background: rgba(255,255,255,0.04);
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.9
-        );
+      color: rgba(255,255,255,0.92);
 
-      font-size: 0.76rem;
+      font-size: 0.73rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
 
-      backdrop-filter:
-        blur(10px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
 
-      transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        background 180ms ease;
+      border-radius: 2px;
     }
 
     .button.primary {
-      border-color:
-        rgba(
-          255,
-          56,
-          209,
-          0.56
-        );
+      border-color: rgba(255,56,209,0.58);
 
       background:
         linear-gradient(
           135deg,
-          rgba(
-            167,
-            0,
-            169,
-            0.20
-          ),
-          rgba(
-            89,
-            45,
-            170,
-            0.16
-          )
+          rgba(167,0,169,0.22),
+          rgba(89,45,170,0.18)
         );
     }
 
-    @media (hover:hover) {
-
-      .button:hover {
-        transform:
-          translateY(-2px);
-
-        border-color:
-          rgba(
-            255,
-            255,
-            255,
-            0.40
-          );
-
-        background:
-          rgba(
-            255,
-            255,
-            255,
-            0.07
-          );
-      }
-
-      .button.primary:hover {
-        border-color:
-          rgba(
-            255,
-            56,
-            209,
-            0.92
-          );
-
-        background:
-          linear-gradient(
-            135deg,
-            rgba(
-              205,
-              0,
-              190,
-              0.28
-            ),
-            rgba(
-              100,
-              52,
-              210,
-              0.20
-            )
-          );
-      }
+    .button.contact {
+      grid-column: 1 / -1;
     }
 
     .loading {
       position: absolute;
 
-      right: 26px;
-      bottom: 24px;
+      top:
+        calc(
+          70px +
+          env(safe-area-inset-top)
+        );
 
+      right: 16px;
       z-index: 10;
 
-      padding:
-        8px
-        10px;
+      padding: 7px 9px;
 
-      font-size: 0.68rem;
-      letter-spacing: 0.17em;
+      font-size: 0.61rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.46
-        );
+      color: rgba(255,255,255,0.42);
 
-      background:
-        rgba(
-          0,
-          0,
-          0,
-          0.20
-        );
-
-      pointer-events: none;
-    }
-
-    .scroll-indicator {
-      position: absolute;
-
-      left: 50%;
-      bottom: 24px;
-
-      z-index: 6;
-
-      transform:
-        translateX(-50%);
-
-      font-size: 0.63rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.29
-        );
-
-      pointer-events: none;
+      background: rgba(0,0,0,0.22);
     }
 
     /* =========================================================
-       SECTIONS
+       CONTENT SECTIONS
        ========================================================= */
 
     .section {
       position: relative;
-
       z-index: 5;
 
-      padding:
-        110px
-        28px;
+      padding: 82px 18px;
 
-      background:
-        var(--bg-soft);
+      background: var(--bg-soft);
     }
 
     .section.alt {
-      background:
-        #07070a;
+      background: #07070a;
     }
 
     .section-inner {
-      width:
-        min(
-          var(--max-width),
-          100%
-        );
-
+      width: min(var(--max-width), 100%);
       margin: 0 auto;
     }
 
     .section-kicker {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
 
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       font-weight: 700;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
 
-      color:
-        var(--violet);
+      color: var(--violet);
     }
 
     .section-title {
-      max-width: 900px;
+      max-width: 860px;
 
-      margin-bottom: 24px;
+      margin-bottom: 20px;
 
-      font-size:
-        clamp(
-          2.2rem,
-          5vw,
-          4.8rem
-        );
-
-      line-height: 0.98;
-      letter-spacing: -0.047em;
-      font-weight: 700;
+      font-size: clamp(2rem, 9vw, 4.2rem);
+      line-height: 0.99;
+      letter-spacing: -0.045em;
     }
 
     .section-intro {
-      max-width: 760px;
+      max-width: 720px;
+      margin-bottom: 34px;
 
-      margin-bottom: 48px;
+      font-size: 0.98rem;
+      line-height: 1.65;
 
-      font-size:
-        1rem;
-
-      line-height: 1.7;
-
-      color:
-        var(--muted);
+      color: var(--muted);
     }
 
     /* =========================================================
@@ -639,149 +412,58 @@
 
     .project-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(
-            0,
-            1fr
-          )
-        );
-
-      gap: 18px;
+      grid-template-columns: 1fr;
+      gap: 14px;
     }
 
     .project-card {
       position: relative;
 
-      min-height: 360px;
-
-      padding: 24px;
+      min-height: 230px;
+      padding: 20px;
 
       overflow: hidden;
 
-      border:
-        1px solid
-        var(--panel-border);
+      border: 1px solid var(--panel-border);
 
       background:
         linear-gradient(
           145deg,
-          rgba(
-            137,
-            0,
-            180,
-            0.10
-          ),
-          rgba(
-            255,
-            0,
-            180,
-            0.018
-          )
+          rgba(137,0,180,0.11),
+          rgba(255,0,180,0.02)
         );
-
-      transition:
-        transform 200ms ease,
-        border-color 200ms ease,
-        background 200ms ease;
-    }
-
-    .project-card::before {
-      content: "";
-
-      position: absolute;
-      inset: 0;
-
-      opacity: 0.40;
-
-      background:
-        radial-gradient(
-          circle at 70% 25%,
-          rgba(
-            255,
-            55,
-            218,
-            0.12
-          ),
-          transparent 38%
-        );
-
-      pointer-events: none;
     }
 
     .project-card-number {
       position: relative;
       z-index: 1;
 
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
+      font-size: 0.61rem;
+      letter-spacing: 0.14em;
 
-      color:
-        var(--muted-2);
+      color: var(--muted-2);
     }
 
     .project-card-content {
       position: absolute;
 
-      left: 24px;
-      right: 24px;
-      bottom: 24px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
 
       z-index: 1;
     }
 
     .project-card h3 {
-      margin-bottom: 10px;
-
-      font-size: 1.25rem;
-      line-height: 1.2;
+      margin-bottom: 8px;
+      font-size: 1.12rem;
     }
 
     .project-card p {
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.55
-        );
+      font-size: 0.9rem;
+      line-height: 1.5;
 
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-
-    @media (hover:hover) {
-      .project-card:hover {
-        transform:
-          translateY(-5px);
-
-        border-color:
-          rgba(
-            255,
-            56,
-            209,
-            0.36
-          );
-
-        background:
-          linear-gradient(
-            145deg,
-            rgba(
-              137,
-              0,
-              180,
-              0.15
-            ),
-            rgba(
-              255,
-              0,
-              180,
-              0.035
-            )
-          );
-      }
+      color: rgba(255,255,255,0.58);
     }
 
     /* =========================================================
@@ -790,84 +472,50 @@
 
     .about-grid {
       display: grid;
-
-      grid-template-columns:
-        1.1fr
-        0.9fr;
-
-      gap: 54px;
-
-      align-items: start;
+      grid-template-columns: 1fr;
+      gap: 32px;
     }
 
     .about-copy {
-      font-size: 1rem;
-      line-height: 1.8;
+      font-size: 0.97rem;
+      line-height: 1.72;
 
-      color:
-        var(--muted);
+      color: var(--muted);
     }
 
     .about-copy p + p {
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
     .skills-panel {
-      padding: 26px;
+      padding: 22px;
 
-      border:
-        1px solid
-        var(--panel-border);
-
-      background:
-        var(--panel);
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
     }
 
     .skills-panel h3 {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
 
-      font-size: 0.76rem;
-      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.68
-        );
     }
 
     .skill-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
+      gap: 8px;
     }
 
     .skill {
-      padding:
-        8px
-        10px;
+      padding: 8px 9px;
 
-      border:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
+      border: 1px solid rgba(255,255,255,0.08);
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.58
-        );
+      font-size: 0.7rem;
 
-      font-size: 0.72rem;
+      color: rgba(255,255,255,0.60);
     }
 
     /* =========================================================
@@ -876,196 +524,189 @@
 
     .contact-box {
       display: flex;
-      align-items: end;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 26px;
 
-      gap: 32px;
+      padding-top: 34px;
 
-      padding:
-        42px
-        0
-        20px;
-
-      border-top:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
-    }
-
-    .contact-copy {
-      max-width: 760px;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     .contact-copy h2 {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
 
-      font-size:
-        clamp(
-          2rem,
-          5vw,
-          4.5rem
-        );
-
+      font-size: clamp(2rem, 10vw, 4rem);
       line-height: 0.98;
-      letter-spacing: -0.045em;
+      letter-spacing: -0.044em;
     }
 
     .contact-copy p {
-      color:
-        var(--muted);
-
-      line-height: 1.65;
+      line-height: 1.6;
+      color: var(--muted);
     }
 
     /* =========================================================
-       RESPONSIVE
+       TABLET / DESKTOP
        ========================================================= */
 
-    @media (max-width: 980px) {
+    @media (min-width: 768px) {
+
+      .site-header {
+        padding:
+          calc(20px + env(safe-area-inset-top))
+          28px
+          20px;
+      }
+
+      .brand {
+        font-size: 0.77rem;
+      }
+
+      .nav-links {
+        gap: 22px;
+        font-size: 0.72rem;
+      }
+
+      #hero {
+        min-height: 100vh;
+      }
+
+      .hero-overlay {
+        background:
+          linear-gradient(
+            90deg,
+            rgba(5,5,7,0.95) 0%,
+            rgba(5,5,7,0.80) 32%,
+            rgba(5,5,7,0.20) 60%,
+            rgba(5,5,7,0.02) 100%
+          );
+      }
+
+      .hero-content {
+        min-height: 100vh;
+
+        align-items: center;
+
+        width: min(
+          var(--max-width),
+          calc(100% - 56px)
+        );
+
+        padding: 130px 0 80px;
+      }
 
       .hero-copy {
-        width: 66%;
+        width: 58%;
+      }
+
+      .hero-actions {
+        display: flex;
+        width: auto;
+        max-width: none;
+      }
+
+      .button {
+        min-width: 120px;
+      }
+
+      .button.contact {
+        grid-column: auto;
+      }
+
+      .loading {
+        top: auto;
+        right: 26px;
+        bottom: 24px;
+      }
+
+      .section {
+        padding: 108px 28px;
       }
 
       .project-grid {
         grid-template-columns:
-          1fr;
+          repeat(3, minmax(0, 1fr));
+
+        gap: 18px;
       }
 
       .project-card {
-        min-height: 270px;
+        min-height: 340px;
+        padding: 24px;
+      }
+
+      .project-card-content {
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
       }
 
       .about-grid {
         grid-template-columns:
-          1fr;
+          1.1fr
+          0.9fr;
+
+        gap: 54px;
       }
 
       .contact-box {
-        align-items: start;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: end;
+        justify-content: space-between;
       }
     }
 
-    @media (max-width: 760px) {
+    /* =========================================================
+       VERY SMALL IPHONES
+       ========================================================= */
+
+    @media (max-width: 390px) {
 
       .site-header {
-        padding:
-          18px
-          18px;
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .brand {
+        font-size: 0.63rem;
       }
 
       .nav-links {
-        gap: 14px;
+        gap: 12px;
+        font-size: 0.61rem;
       }
 
       .nav-links a:nth-child(2) {
         display: none;
       }
 
-      #hero {
-        min-height: 880px;
-      }
-
-      .hero-overlay {
-        background:
-          linear-gradient(
-            to bottom,
-            rgba(
-              5,
-              5,
-              7,
-              0.42
-            )
-            0%,
-            rgba(
-              5,
-              5,
-              7,
-              0.60
-            )
-            48%,
-            rgba(
-              5,
-              5,
-              7,
-              0.92
-            )
-            100%
-          );
-      }
-
       .hero-content {
-        width:
-          calc(
-            100% -
-            36px
-          );
-
-        display: flex;
-        align-items: flex-end;
-
-        padding:
-          120px
-          0
-          72px;
-      }
-
-      .hero-copy {
-        width: 100%;
+        width: calc(100% - 28px);
       }
 
       h1 {
-        font-size:
-          clamp(
-            3rem,
-            15vw,
-            5.4rem
-          );
+        font-size: clamp(2.65rem, 13vw, 4rem);
       }
 
       .subtitle {
-        max-width: 560px;
-      }
-
-      .scroll-indicator {
-        display: none;
-      }
-
-      .loading {
-        top: 78px;
-        right: 18px;
-        bottom: auto;
-      }
-
-      .section {
-        padding:
-          88px
-          18px;
-      }
-    }
-
-    @media (max-width: 500px) {
-
-      .brand {
-        font-size: 0.67rem;
-        letter-spacing: 0.12em;
-      }
-
-      .nav-links {
-        font-size: 0.65rem;
+        font-size: 0.95rem;
       }
 
       .meta {
         display: none;
       }
 
-      .button {
-        width: 100%;
+      .hero-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .button.contact {
+        grid-column: auto;
+      }
+
+      .section {
+        padding-left: 14px;
+        padding-right: 14px;
       }
     }
 
@@ -1130,7 +771,6 @@
 ></div>
 
 <div class="hero-overlay"></div>
-
 <div class="hero-grid"></div>
 
 <div class="hero-content">
@@ -1182,7 +822,7 @@
       </a>
 
       <a
-        class="button"
+        class="button contact"
         href="mailto:JamesPrestonCardona@gmail.com"
       >
         Contact
@@ -1199,10 +839,6 @@
   class="loading"
 >
   Loading 3D
-</div>
-
-<div class="scroll-indicator">
-  Scroll to explore
 </div>
 ```
 
@@ -1380,61 +1016,20 @@
 
       <div class="skill-list">
 
-        <div class="skill">
-          Unreal Engine
-        </div>
-
-        <div class="skill">
-          Blender
-        </div>
-
-        <div class="skill">
-          Revit
-        </div>
-
-        <div class="skill">
-          Twinmotion
-        </div>
-
-        <div class="skill">
-          Substance
-        </div>
-
-        <div class="skill">
-          Marvelous Designer
-        </div>
-
-        <div class="skill">
-          Maya
-        </div>
-
-        <div class="skill">
-          3ds Max
-        </div>
-
-        <div class="skill">
-          ZBrush
-        </div>
-
-        <div class="skill">
-          Nuke
-        </div>
-
-        <div class="skill">
-          After Effects
-        </div>
-
-        <div class="skill">
-          Three.js
-        </div>
-
-        <div class="skill">
-          Python
-        </div>
-
-        <div class="skill">
-          C++
-        </div>
+        <div class="skill">Unreal Engine</div>
+        <div class="skill">Blender</div>
+        <div class="skill">Revit</div>
+        <div class="skill">Twinmotion</div>
+        <div class="skill">Substance</div>
+        <div class="skill">Marvelous Designer</div>
+        <div class="skill">Maya</div>
+        <div class="skill">3ds Max</div>
+        <div class="skill">ZBrush</div>
+        <div class="skill">Nuke</div>
+        <div class="skill">After Effects</div>
+        <div class="skill">Three.js</div>
+        <div class="skill">Python</div>
+        <div class="skill">C++</div>
 
       </div>
 
@@ -1499,11 +1094,6 @@
 
   <!-- ========================================================
        THREE.JS IMPORT MAP
-
-       IMPORTANT:
-       This fixes the "Failed to resolve module specifier 'three'"
-       issue that can happen when GLTFLoader is loaded directly
-       from a CDN.
        ======================================================== -->
 
   <script type="importmap">
@@ -1531,21 +1121,8 @@
 
 
     // =========================================================
-    // CONFIGURATION
+    // CONFIG
     // =========================================================
-
-    /*
-      These are the main values
-      we will tune once we see
-      your actual logo.glb.
-
-      You should NOT have to hunt
-      through the code.
-
-      If we change these later,
-      I will still give you the
-      complete index.html.
-    */
 
     const CONFIG = {
 
@@ -1553,40 +1130,40 @@
         "./logo.glb",
 
       desktopLogoX:
-        2.0,
+        2.05,
 
       desktopLogoY:
         0.05,
+
+      desktopLogoZ:
+        0,
 
       mobileLogoX:
         0,
 
       mobileLogoY:
-        -1.9,
+        1.25,
+
+      mobileLogoZ:
+        0,
 
       desktopCameraZ:
         6.2,
 
       mobileCameraZ:
-        7.2,
+        7.3,
 
-      targetLogoSize:
+      desktopTargetSize:
         3.7,
+
+      mobileTargetSize:
+        2.8,
 
       baseRotationX:
         -8,
 
       baseRotationY:
-        -25,
-
-      pointerRotationX:
-        0.10,
-
-      pointerRotationY:
-        0.18,
-
-      floatingAmount:
-        0.075
+        -25
 
     };
 
@@ -1607,37 +1184,19 @@
 
 
     // =========================================================
-    // WEBGL SUPPORT CHECK
+    // DEVICE CHECKS
     // =========================================================
 
-    let renderer;
-
-    try {
-
-      renderer =
-        new THREE.WebGLRenderer({
-          antialias: true,
-          alpha: true,
-          powerPreference:
-            "high-performance"
-        });
-
-    }
-    catch (
-      error
-    ) {
-
-      console.error(
-        "WebGL renderer failed:",
-        error
+    const isSmallScreen =
+      window.matchMedia(
+        "(max-width: 767px)"
       );
 
-      loadingLabel.textContent =
-        "3D unavailable";
 
-      throw error;
-
-    }
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
 
 
     // =========================================================
@@ -1656,35 +1215,61 @@
       new THREE.PerspectiveCamera(
         38,
         window.innerWidth /
-          window.innerHeight,
+        window.innerHeight,
         0.01,
         1000
       );
-
-
-    camera.position.set(
-      0,
-      0,
-      CONFIG.desktopCameraZ
-    );
-
-
-    camera.lookAt(
-      0,
-      0,
-      0
-    );
 
 
     // =========================================================
     // RENDERER
     // =========================================================
 
-    renderer.setPixelRatio(
-      Math.min(
+    const renderer =
+      new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference:
+          "high-performance"
+      });
+
+
+    /*
+      iPhones can become unnecessarily
+      expensive at full Retina resolution.
+
+      Desktop:
+      up to 2x pixel ratio.
+
+      Mobile:
+      capped lower for performance.
+    */
+
+    function getPixelRatio() {
+
+      if (
+        window.innerWidth <
+        768
+      ) {
+
+        return Math.min(
+          window.devicePixelRatio,
+          1.35
+        );
+
+      }
+
+
+      return Math.min(
         window.devicePixelRatio,
         2
-      )
+      );
+
+    }
+
+
+    renderer.setPixelRatio(
+      getPixelRatio()
     );
 
 
@@ -1703,7 +1288,7 @@
 
 
     renderer.toneMappingExposure =
-      1.3;
+      1.28;
 
 
     renderer.setClearColor(
@@ -1721,13 +1306,6 @@
     // LIGHTING
     // =========================================================
 
-    /*
-      Bright neutral light ensures
-      we can see the model even if
-      its original GLB materials
-      are fairly dark.
-    */
-
     const hemisphereLight =
       new THREE.HemisphereLight(
         0xffffff,
@@ -1741,14 +1319,10 @@
     );
 
 
-    /*
-      Main white key light.
-    */
-
     const keyLight =
       new THREE.DirectionalLight(
         0xffffff,
-        4.5
+        4.4
       );
 
 
@@ -1764,14 +1338,10 @@
     );
 
 
-    /*
-      Magenta brand light.
-    */
-
     const magentaLight =
       new THREE.PointLight(
         0xff26cd,
-        18,
+        16,
         20
       );
 
@@ -1788,14 +1358,10 @@
     );
 
 
-    /*
-      Purple rim light.
-    */
-
     const purpleLight =
       new THREE.PointLight(
         0x6335ff,
-        15,
+        13,
         22
       );
 
@@ -1809,30 +1375,6 @@
 
     scene.add(
       purpleLight
-    );
-
-
-    /*
-      Cool blue/violet lower fill.
-    */
-
-    const blueFill =
-      new THREE.PointLight(
-        0x4052ff,
-        8,
-        16
-      );
-
-
-    blueFill.position.set(
-      1,
-      -4,
-      2
-    );
-
-
-    scene.add(
-      blueFill
     );
 
 
@@ -1853,54 +1395,8 @@
       null;
 
 
-    // =========================================================
-    // POINTER
-    // =========================================================
-
-    const pointer =
-      new THREE.Vector2();
-
-
-    const targetPointer =
-      new THREE.Vector2();
-
-
-    window.addEventListener(
-      "pointermove",
-      function (
-        event
-      ) {
-
-        pointer.x =
-          (
-            event.clientX /
-            window.innerWidth
-          ) *
-          2 -
-          1;
-
-
-        pointer.y =
-          (
-            event.clientY /
-            window.innerHeight
-          ) *
-          2 -
-          1;
-
-
-        targetPointer.x =
-          pointer.x;
-
-
-        targetPointer.y =
-          pointer.y;
-
-      },
-      {
-        passive: true
-      }
-    );
+    let sourceLargestDimension =
+      1;
 
 
     // =========================================================
@@ -1909,9 +1405,9 @@
 
     const particleCount =
       window.innerWidth <
-      760
-        ? 350
-        : 750;
+      768
+        ? 170
+        : 700;
 
 
     const particlePositions =
@@ -1969,14 +1465,12 @@
 
 
     particleGeometry.setAttribute(
-
       "position",
 
       new THREE.BufferAttribute(
         particlePositions,
         3
       )
-
     );
 
 
@@ -1984,7 +1478,10 @@
       new THREE.PointsMaterial({
 
         size:
-          0.012,
+          window.innerWidth <
+          768
+            ? 0.010
+            : 0.012,
 
         color:
           0xc775ff,
@@ -1993,7 +1490,7 @@
           true,
 
         opacity:
-          0.28,
+          0.24,
 
         depthWrite:
           false
@@ -2014,39 +1511,109 @@
 
 
     // =========================================================
-    // RESPONSIVE LAYOUT
+    // POINTER
     // =========================================================
 
-    function updateResponsiveLayout() {
+    const targetPointer =
+      new THREE.Vector2();
 
-      if (
-        window.innerWidth <
-        760
+
+    const smoothPointer =
+      new THREE.Vector2();
+
+
+    window.addEventListener(
+      "pointermove",
+      function (
+        event
       ) {
 
-        logoRoot.position.x =
-          CONFIG.mobileLogoX;
-
-
         /*
-          The animation loop
-          adds floating motion
-          on top of this value.
+          Ignore pointer-driven rotation
+          on small screens.
+
+          This prevents odd movement from
+          touch interactions on iPhone.
         */
 
-        camera.position.z =
-          CONFIG.mobileCameraZ;
+        if (
+          window.innerWidth <
+          768
+        ) {
+
+          return;
+
+        }
+
+
+        targetPointer.x =
+          (
+            event.clientX /
+            window.innerWidth
+          ) *
+          2 -
+          1;
+
+
+        targetPointer.y =
+          (
+            event.clientY /
+            window.innerHeight
+          ) *
+          2 -
+          1;
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    // =========================================================
+    // RESPONSIVE MODEL LAYOUT
+    // =========================================================
+
+    function applyResponsiveModelLayout() {
+
+      const mobile =
+        window.innerWidth <
+        768;
+
+
+      if (
+        mobile
+      ) {
+
+        camera.position.set(
+          0,
+          0,
+          CONFIG.mobileCameraZ
+        );
+
+
+        logoRoot.position.set(
+          CONFIG.mobileLogoX,
+          CONFIG.mobileLogoY,
+          CONFIG.mobileLogoZ
+        );
 
       }
 
       else {
 
-        logoRoot.position.x =
-          CONFIG.desktopLogoX;
+        camera.position.set(
+          0,
+          0,
+          CONFIG.desktopCameraZ
+        );
 
 
-        camera.position.z =
-          CONFIG.desktopCameraZ;
+        logoRoot.position.set(
+          CONFIG.desktopLogoX,
+          CONFIG.desktopLogoY,
+          CONFIG.desktopLogoZ
+        );
 
       }
 
@@ -2057,31 +1624,48 @@
         0
       );
 
+
+      /*
+        Rescale model when moving between
+        phone and desktop sizes.
+      */
+
+      if (
+        logo &&
+        sourceLargestDimension >
+        0
+      ) {
+
+        const targetSize =
+          mobile
+            ? CONFIG.mobileTargetSize
+            : CONFIG.desktopTargetSize;
+
+
+        const scale =
+          targetSize /
+          sourceLargestDimension;
+
+
+        logo.scale.setScalar(
+          scale
+        );
+
+      }
+
     }
 
 
-    updateResponsiveLayout();
+    applyResponsiveModelLayout();
 
 
     // =========================================================
-    // GLTF LOADER
+    // GLTF LOAD
     // =========================================================
 
     const loader =
       new GLTFLoader();
 
-
-    /*
-      We have already confirmed
-      that this URL can be served:
-
-      jamesprestoncardona.com/logo.glb
-
-      Therefore this relative path
-      should work when index.html
-      and logo.glb are in the
-      same site root.
-    */
 
     loader.load(
 
@@ -2111,161 +1695,89 @@
         );
 
 
-        // -----------------------------------------------------
-        // MAKE SURE WORLD MATRICES
-        // ARE CURRENT
-        // -----------------------------------------------------
-
         logo.updateMatrixWorld(
           true
         );
 
 
-        // -----------------------------------------------------
-        // ORIGINAL BOUNDS
-        // -----------------------------------------------------
-
-        let boundingBox =
+        const boundingBox =
           new THREE.Box3()
             .setFromObject(
               logo
             );
 
 
-        const originalCenter =
+        const center =
           boundingBox.getCenter(
             new THREE.Vector3()
           );
 
 
-        const originalSize =
+        const size =
           boundingBox.getSize(
             new THREE.Vector3()
           );
 
 
-        console.log(
-          "Original logo center:",
-          originalCenter
-        );
-
-
-        console.log(
-          "Original logo size:",
-          originalSize
-        );
-
-
-        // -----------------------------------------------------
-        // VALIDATE MODEL SIZE
-        // -----------------------------------------------------
-
-        const largestDimension =
+        sourceLargestDimension =
           Math.max(
-            originalSize.x,
-            originalSize.y,
-            originalSize.z
+            size.x,
+            size.y,
+            size.z
           );
+
+
+        console.log(
+          "Logo size:",
+          size
+        );
+
+
+        console.log(
+          "Logo center:",
+          center
+        );
+
+
+        console.log(
+          "Largest dimension:",
+          sourceLargestDimension
+        );
 
 
         if (
           !Number.isFinite(
-            largestDimension
+            sourceLargestDimension
           ) ||
-          largestDimension <=
+          sourceLargestDimension <=
           0
         ) {
-
-          console.error(
-            "logo.glb has invalid dimensions."
-          );
-
 
           loadingLabel.textContent =
             "Invalid GLB";
 
+          console.error(
+            "Invalid model dimensions"
+          );
 
           return;
 
         }
 
 
-        // -----------------------------------------------------
-        // CENTER MODEL
-        // -----------------------------------------------------
+        /*
+          Center the model at its origin.
+        */
 
-        logo.position.x =
-          -originalCenter.x;
-
-
-        logo.position.y =
-          -originalCenter.y;
-
-
-        logo.position.z =
-          -originalCenter.z;
-
-
-        // -----------------------------------------------------
-        // AUTO SCALE
-        // -----------------------------------------------------
-
-        const scale =
-          CONFIG.targetLogoSize /
-          largestDimension;
-
-
-        logo.scale.setScalar(
-          scale
-        );
-
-
-        console.log(
-          "Applied logo scale:",
-          scale
+        logo.position.set(
+          -center.x,
+          -center.y,
+          -center.z
         );
 
 
         // -----------------------------------------------------
-        // UPDATE AFTER SCALING
-        // -----------------------------------------------------
-
-        logo.updateMatrixWorld(
-          true
-        );
-
-
-        boundingBox =
-          new THREE.Box3()
-            .setFromObject(
-              logo
-            );
-
-
-        const scaledCenter =
-          boundingBox.getCenter(
-            new THREE.Vector3()
-          );
-
-
-        // -----------------------------------------------------
-        // FINAL RECENTER
-        // -----------------------------------------------------
-
-        logo.position.x -=
-          scaledCenter.x;
-
-
-        logo.position.y -=
-          scaledCenter.y;
-
-
-        logo.position.z -=
-          scaledCenter.z;
-
-
-        // -----------------------------------------------------
-        // MATERIAL / MESH CHECK
+        // MATERIAL VISIBILITY
         // -----------------------------------------------------
 
         let meshCount =
@@ -2292,15 +1804,6 @@
             object.visible =
               true;
 
-
-            /*
-              Disable frustum culling
-              temporarily.
-
-              This prevents unusual
-              GLB bounds from making
-              the model disappear.
-            */
 
             object.frustumCulled =
               false;
@@ -2330,23 +1833,9 @@
                 }
 
 
-                /*
-                  Make both sides render.
-
-                  This is particularly
-                  useful if the logo has
-                  thin planes or reversed
-                  normals.
-                */
-
                 material.side =
                   THREE.DoubleSide;
 
-
-                /*
-                  Do not replace the
-                  original logo colors.
-                */
 
                 if (
                   "roughness"
@@ -2395,11 +1884,7 @@
           );
 
 
-        // -----------------------------------------------------
-        // FINISH LOADING
-        // -----------------------------------------------------
-
-        updateResponsiveLayout();
+        applyResponsiveModelLayout();
 
 
         loadingLabel.textContent =
@@ -2409,27 +1894,11 @@
         setTimeout(
           function () {
 
-            loadingLabel.style.opacity =
-              "0";
-
-
-            setTimeout(
-              function () {
-
-                loadingLabel.style.display =
-                  "none";
-
-              },
-              350
-            );
+            loadingLabel.style.display =
+              "none";
 
           },
-          500
-        );
-
-
-        console.log(
-          "Logo setup complete."
+          700
         );
 
       },
@@ -2465,13 +1934,6 @@
 
         }
 
-        else {
-
-          loadingLabel.textContent =
-            "Loading 3D";
-
-        }
-
       },
 
 
@@ -2498,26 +1960,12 @@
 
 
     // =========================================================
-    // CLOCK
+    // ANIMATION
     // =========================================================
 
     const clock =
       new THREE.Clock();
 
-
-    // =========================================================
-    // REDUCED MOTION
-    // =========================================================
-
-    const prefersReducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-
-
-    // =========================================================
-    // ANIMATION LOOP
-    // =========================================================
 
     function animate() {
 
@@ -2530,150 +1978,151 @@
         clock.getElapsedTime();
 
 
-      // -------------------------------------------------------
-      // SMOOTH POINTER
-      // -------------------------------------------------------
-
-      pointer.x =
+      smoothPointer.x =
         THREE.MathUtils.lerp(
-          pointer.x,
+          smoothPointer.x,
           targetPointer.x,
-          0.06
+          0.055
         );
 
 
-      pointer.y =
+      smoothPointer.y =
         THREE.MathUtils.lerp(
-          pointer.y,
+          smoothPointer.y,
           targetPointer.y,
-          0.06
+          0.055
         );
 
-
-      // -------------------------------------------------------
-      // LOGO
-      // -------------------------------------------------------
 
       if (
         logo
       ) {
 
-        const baseRotationX =
+        const mobile =
+          window.innerWidth <
+          768;
+
+
+        const baseX =
           THREE.MathUtils.degToRad(
             CONFIG.baseRotationX
           );
 
 
-        const baseRotationY =
+        const baseY =
           THREE.MathUtils.degToRad(
             CONFIG.baseRotationY
           );
 
 
-        const desiredRotationX =
-          baseRotationX -
-          pointer.y *
-          CONFIG.pointerRotationX;
-
-
-        const desiredRotationY =
-          baseRotationY +
-          pointer.x *
-          CONFIG.pointerRotationY;
-
-
         if (
-          !prefersReducedMotion
+          !reducedMotion.matches
         ) {
 
-          logoRoot.rotation.x =
-            THREE.MathUtils.lerp(
-              logoRoot.rotation.x,
-              desiredRotationX,
-              0.035
-            );
+          if (
+            mobile
+          ) {
+
+            /*
+              iPhone:
+              gentle autonomous motion only.
+            */
+
+            logoRoot.rotation.x =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.x,
+                baseX +
+                Math.sin(
+                  elapsed *
+                  0.35
+                ) *
+                0.035,
+                0.02
+              );
 
 
-          logoRoot.rotation.y =
-            THREE.MathUtils.lerp(
-              logoRoot.rotation.y,
-              desiredRotationY,
-              0.035
-            );
+            logoRoot.rotation.y =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.y,
+                baseY +
+                Math.sin(
+                  elapsed *
+                  0.25
+                ) *
+                0.08,
+                0.02
+              );
 
-        }
+
+            logoRoot.position.y =
+              CONFIG.mobileLogoY +
+              Math.sin(
+                elapsed *
+                0.50
+              ) *
+              0.045;
+
+          }
+
+          else {
+
+            /*
+              Desktop pointer motion.
+            */
+
+            const desiredX =
+              baseX -
+              smoothPointer.y *
+              0.10;
 
 
-        // -----------------------------------------------------
-        // FLOATING
-        // -----------------------------------------------------
+            const desiredY =
+              baseY +
+              smoothPointer.x *
+              0.18;
 
-        if (
-          window.innerWidth <
-          760
-        ) {
 
-          logoRoot.position.y =
-            CONFIG.mobileLogoY +
-            (
-              prefersReducedMotion
-                ? 0
-                :
-                  Math.sin(
-                    elapsed *
-                    0.55
-                  ) *
-                  0.05
-            );
+            logoRoot.rotation.x =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.x,
+                desiredX,
+                0.035
+              );
 
-        }
 
-        else {
+            logoRoot.rotation.y =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.y,
+                desiredY,
+                0.035
+              );
 
-          logoRoot.position.y =
-            CONFIG.desktopLogoY +
-            (
-              prefersReducedMotion
-                ? 0
-                :
-                  Math.sin(
-                    elapsed *
-                    0.55
-                  ) *
-                  CONFIG.floatingAmount
-            );
+
+            logoRoot.position.y =
+              CONFIG.desktopLogoY +
+              Math.sin(
+                elapsed *
+                0.55
+              ) *
+              0.07;
+
+          }
 
         }
 
       }
 
 
-      // -------------------------------------------------------
-      // PARTICLES
-      // -------------------------------------------------------
-
       if (
-        !prefersReducedMotion
+        !reducedMotion.matches
       ) {
 
         particles.rotation.y =
           elapsed *
-          0.007;
-
-
-        particles.rotation.x =
-          Math.sin(
-            elapsed *
-            0.09
-          ) *
-          0.02;
+          0.006;
 
       }
 
-
-      // -------------------------------------------------------
-      // RENDER
-      // -------------------------------------------------------
 
       renderer.render(
         scene,
@@ -2690,33 +2139,46 @@
     // RESIZE
     // =========================================================
 
+    let resizeTimer;
+
+
     window.addEventListener(
       "resize",
       function () {
 
-        camera.aspect =
-          window.innerWidth /
-          window.innerHeight;
-
-
-        camera.updateProjectionMatrix();
-
-
-        renderer.setSize(
-          window.innerWidth,
-          window.innerHeight
+        clearTimeout(
+          resizeTimer
         );
 
 
-        renderer.setPixelRatio(
-          Math.min(
-            window.devicePixelRatio,
-            2
-          )
-        );
+        resizeTimer =
+          setTimeout(
+            function () {
+
+              camera.aspect =
+                window.innerWidth /
+                window.innerHeight;
 
 
-        updateResponsiveLayout();
+              camera.updateProjectionMatrix();
+
+
+              renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+              );
+
+
+              renderer.setPixelRatio(
+                getPixelRatio()
+              );
+
+
+              applyResponsiveModelLayout();
+
+            },
+            80
+          );
 
       },
       {
