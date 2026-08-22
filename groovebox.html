@@ -3151,6 +3151,49 @@ body{
   background-color:rgba(113,73,255,.012);
 }
 
+
+/* Piano keyboard visibility safeguard */
+#synthKeyboard{
+  position:relative;
+  z-index:8;
+  min-height:72px;
+  opacity:1!important;
+  visibility:visible!important;
+}
+#synthKeyboard .synth-key{
+  display:flex!important;
+  min-height:68px;
+  position:relative;
+  z-index:1;
+}
+@media(max-width:680px){
+  #synthKeyboard{
+    grid-template-columns:repeat(13,minmax(46px,1fr));
+    overflow-x:auto;
+  }
+  #synthKeyboard .synth-key:nth-child(n){
+    display:flex!important;
+  }
+}
+
+
+/* Reliable live synth oscilloscope */
+#oscVisualizer{
+  display:block!important;
+  width:100%!important;
+  height:220px!important;
+  min-height:220px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  border-radius:12px;
+  background:#050508;
+}
+.osc-visualizer-panel{
+  position:relative;
+  z-index:8;
+  min-height:280px;
+}
+
 </style>
 </head>
 <body>
@@ -3432,7 +3475,7 @@ body{
 </label>
 <input id="keyScale" max="6" min="2" step="1" type="range" value="4"/>
 </div>
-<div class="synth-keyboard" id="synthKeyboard"></div>
+<div class="synth-keyboard" id="synthKeyboard"><button class="synth-key" data-midi="60" type="button">C4</button><button class="synth-key" data-midi="62" type="button">D4</button><button class="synth-key" data-midi="64" type="button">E4</button><button class="synth-key" data-midi="65" type="button">F4</button><button class="synth-key" data-midi="67" type="button">G4</button><button class="synth-key" data-midi="69" type="button">A4</button><button class="synth-key" data-midi="71" type="button">B4</button><button class="synth-key" data-midi="72" type="button">C5</button><button class="synth-key" data-midi="74" type="button">D5</button><button class="synth-key" data-midi="76" type="button">E5</button><button class="synth-key" data-midi="77" type="button">F5</button><button class="synth-key" data-midi="79" type="button">G5</button><button class="synth-key" data-midi="81" type="button">A5</button></div>
 </div>
 </div>
 </div>
@@ -3854,6 +3897,7 @@ const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,reverbNode=null,reverbWet=null,reverbDry=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
 let synthVisualizerAnalyser=null;
+let synthVisualizerSink=null;
 let audioInputStream=null,audioInputSource=null,audioInputGain=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
@@ -4128,6 +4172,11 @@ function ensureAudio(){
   synthVisualizerAnalyser=audio.createAnalyser();
   synthVisualizerAnalyser.fftSize=1024;
   synthVisualizerAnalyser.smoothingTimeConstant=.72;
+
+  synthVisualizerSink=audio.createGain();
+  synthVisualizerSink.gain.value=0;
+  synthVisualizerAnalyser.connect(synthVisualizerSink);
+  synthVisualizerSink.connect(master);
 
   filter.connect(reverbDry);
   reverbDry.connect(master);
@@ -6837,6 +6886,7 @@ async function restartAudioEngine(){
   synthDelayWet=null;
   recordDestination=null;
   synthVisualizerAnalyser=null;
+  synthVisualizerSink=null;
   noise=null;
 
   ensureAudio();
@@ -7415,6 +7465,8 @@ function resizeOscVisualizer(){
   }
 }
 
+let oscVizPhase=0;
+
 function drawOscVisualizer(){
   if(!oscVizCanvas||!oscVizCtx)return;
 
@@ -7422,6 +7474,7 @@ function drawOscVisualizer(){
 
   const width=oscVizCanvas.width;
   const height=oscVizCanvas.height;
+  const now=performance.now()*.001;
 
   oscVizCtx.clearRect(
     0,
@@ -7430,9 +7483,25 @@ function drawOscVisualizer(){
     height
   );
 
-  oscVizCtx.fillStyle=
-    "rgba(5,5,8,.74)";
+  const bg=
+    oscVizCtx.createLinearGradient(
+      0,
+      0,
+      0,
+      height
+    );
 
+  bg.addColorStop(
+    0,
+    "rgba(9,8,16,.96)"
+  );
+
+  bg.addColorStop(
+    1,
+    "rgba(4,4,8,.96)"
+  );
+
+  oscVizCtx.fillStyle=bg;
   oscVizCtx.fillRect(
     0,
     0,
@@ -7445,73 +7514,59 @@ function drawOscVisualizer(){
 
   oscVizCtx.lineWidth=1;
 
-  const gridStep=
-    Math.max(
-      26,
-      width/10
-    );
+  for(let i=1;i<8;i++){
+    const x=
+      width*(i/8);
 
-  for(
-    let x=0;
-    x<=width;
-    x+=gridStep
-  ){
     oscVizCtx.beginPath();
     oscVizCtx.moveTo(x,0);
     oscVizCtx.lineTo(x,height);
     oscVizCtx.stroke();
   }
 
-  for(
-    let y=0;
-    y<=height;
-    y+=gridStep
-  ){
+  for(let i=1;i<5;i++){
+    const y=
+      height*(i/5);
+
     oscVizCtx.beginPath();
     oscVizCtx.moveTo(0,y);
     oscVizCtx.lineTo(width,y);
     oscVizCtx.stroke();
   }
 
-  if(!synthVisualizerAnalyser){
-    oscVizCtx.strokeStyle=
-      "rgba(166,108,255,.46)";
+  let hasLiveSignal=false;
 
-    oscVizCtx.lineWidth=2;
-    oscVizCtx.beginPath();
-
-    for(let i=0;i<width;i++){
-      const y=
-        height*.5+
-        Math.sin(i*.035)*
-        height*.05;
-
-      if(i===0){
-        oscVizCtx.moveTo(i,y);
-      }else{
-        oscVizCtx.lineTo(i,y);
-      }
+  if(synthVisualizerAnalyser){
+    if(
+      !oscVizData ||
+      oscVizData.length!==
+        synthVisualizerAnalyser.fftSize
+    ){
+      oscVizData=
+        new Uint8Array(
+          synthVisualizerAnalyser.fftSize
+        );
     }
 
-    oscVizCtx.stroke();
-    return;
-  }
-
-  if(
-    !oscVizData ||
-    oscVizData.length!==
-      synthVisualizerAnalyser.fftSize
-  ){
-    oscVizData=
-      new Uint8Array(
-        synthVisualizerAnalyser.fftSize
+    synthVisualizerAnalyser
+      .getByteTimeDomainData(
+        oscVizData
       );
-  }
 
-  synthVisualizerAnalyser
-    .getByteTimeDomainData(
-      oscVizData
-    );
+    let peak=0;
+
+    for(let i=0;i<oscVizData.length;i++){
+      peak=
+        Math.max(
+          peak,
+          Math.abs(
+            oscVizData[i]-128
+          )
+        );
+    }
+
+    hasLiveSignal=peak>2;
+  }
 
   const gradient=
     oscVizCtx.createLinearGradient(
@@ -7523,63 +7578,136 @@ function drawOscVisualizer(){
 
   gradient.addColorStop(
     0,
-    "rgba(113,73,255,.95)"
+    "rgba(113,73,255,.98)"
   );
 
   gradient.addColorStop(
-    .55,
-    "rgba(166,108,255,.98)"
+    .5,
+    "rgba(166,108,255,1)"
   );
 
   gradient.addColorStop(
     1,
-    "rgba(255,66,208,.95)"
+    "rgba(255,66,208,.98)"
   );
 
   oscVizCtx.strokeStyle=gradient;
   oscVizCtx.lineWidth=
     Math.max(
       2,
-      width/320
+      width/300
     );
 
-  oscVizCtx.shadowBlur=14;
+  oscVizCtx.shadowBlur=16;
   oscVizCtx.shadowColor=
-    "rgba(166,108,255,.48)";
+    "rgba(166,108,255,.55)";
 
   oscVizCtx.beginPath();
 
-  const slice=
-    width/
-    Math.max(
-      1,
-      oscVizData.length-1
-    );
+  if(hasLiveSignal){
+    const slice=
+      width/
+      Math.max(
+        1,
+        oscVizData.length-1
+      );
 
-  for(
-    let i=0;
-    i<oscVizData.length;
-    i++
-  ){
-    const value=
-      oscVizData[i]/128;
+    for(
+      let i=0;
+      i<oscVizData.length;
+      i++
+    ){
+      const normalized=
+        (oscVizData[i]-128)/128;
 
-    const y=
-      value*height*.5;
+      const x=i*slice;
 
-    const x=
-      i*slice;
+      const y=
+        height*.5+
+        normalized*
+        height*.42;
 
-    if(i===0){
-      oscVizCtx.moveTo(x,y);
-    }else{
-      oscVizCtx.lineTo(x,y);
+      if(i===0){
+        oscVizCtx.moveTo(x,y);
+      }else{
+        oscVizCtx.lineTo(x,y);
+      }
+    }
+  }else{
+    oscVizPhase+=.035;
+
+    const points=180;
+
+    for(let i=0;i<points;i++){
+      const t=i/(points-1);
+      const x=t*width;
+
+      const idle=
+        Math.sin(
+          t*Math.PI*5+
+          now*1.7+
+          oscVizPhase
+        )*
+        Math.sin(
+          t*Math.PI
+        );
+
+      const secondary=
+        Math.sin(
+          t*Math.PI*11-
+          now*.8
+        )*.28;
+
+      const y=
+        height*.5+
+        (
+          idle+
+          secondary
+        )*
+        height*.055;
+
+      if(i===0){
+        oscVizCtx.moveTo(x,y);
+      }else{
+        oscVizCtx.lineTo(x,y);
+      }
     }
   }
 
   oscVizCtx.stroke();
   oscVizCtx.shadowBlur=0;
+
+  oscVizCtx.fillStyle=
+    hasLiveSignal
+      ?"rgba(255,255,255,.68)"
+      :"rgba(166,108,255,.42)";
+
+  oscVizCtx.font=
+    Math.max(
+      10,
+      Math.floor(width/35)
+    )+
+    "px Arial";
+
+  oscVizCtx.fillText(
+    hasLiveSignal
+      ?"LIVE"
+      :"READY",
+    12,
+    20
+  );
 }
+
+function runOscVisualizer(){
+  try{
+    drawOscVisualizer();
+  }catch(error){}
+  requestAnimationFrame(
+    runOscVisualizer
+  );
+}
+
+runOscVisualizer();
 
 window.addEventListener(
   "resize",
@@ -8027,9 +8155,14 @@ function drawSynthField(){
 }
 
 function animate(){
-  drawOscVisualizer();
-  updatePageReactiveBackground();
-  drawSynthField();
+  try{
+    updatePageReactiveBackground();
+  }catch(error){}
+
+  try{
+    drawSynthField();
+  }catch(error){}
+
   requestAnimationFrame(animate);
 }
 
@@ -8549,6 +8682,102 @@ animate();
   setTimeout(
     restoreRecorderTimeline,
     800
+  );
+})();
+</script>
+
+
+<script>
+(function(){
+  function bindFallbackPiano(){
+    const host=
+      document.getElementById(
+        "synthKeyboard"
+      );
+
+    if(!host)return;
+
+    host
+      .querySelectorAll(
+        ".synth-key[data-midi]"
+      )
+      .forEach(function(key){
+        if(
+          key.dataset.fallbackPianoBound==="1"
+        ){
+          return;
+        }
+
+        key.dataset.fallbackPianoBound="1";
+
+        key.addEventListener(
+          "pointerdown",
+          async function(){
+            const note=
+              parseInt(
+                key.dataset.midi,
+                10
+              );
+
+            try{
+              if(
+                typeof window.ensureAudio==="function"
+              ){
+                window.ensureAudio();
+              }
+
+              if(
+                window.audio &&
+                window.audio.state==="suspended"
+              ){
+                await window.audio.resume();
+              }
+
+              if(
+                typeof window.leadSynth==="function" &&
+                window.audio
+              ){
+                const level=
+                  document.getElementById(
+                    "synthLevel"
+                  );
+
+                window.leadSynth(
+                  window.audio.currentTime,
+                  note,
+                  level
+                    ?parseFloat(level.value)
+                    :.38
+                );
+              }
+            }catch(error){}
+
+            key.classList.add("on");
+
+            setTimeout(
+              function(){
+                key.classList.remove("on");
+              },
+              140
+            );
+          }
+        );
+      });
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      bindFallbackPiano,
+      {once:true}
+    );
+  }else{
+    bindFallbackPiano();
+  }
+
+  setTimeout(
+    bindFallbackPiano,
+    900
   );
 })();
 </script>
