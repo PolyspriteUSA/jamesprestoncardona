@@ -1698,6 +1698,58 @@ body{
   }
 }
 
+
+/* Tighten FM Filter + Envelope so controls do not stretch across huge cards */
+.synth-fm-filter-panel,
+.envelope-panel{
+  padding:12px;
+}
+.synth-fm-controls,
+.envelope-controls{
+  justify-content:start;
+  align-items:start;
+}
+.synth-fm-controls{
+  grid-template-columns:repeat(5,minmax(92px,132px)) !important;
+}
+.envelope-controls{
+  grid-template-columns:repeat(8,minmax(92px,132px)) !important;
+}
+.synth-fm-controls .knob-card,
+.envelope-controls .knob-card{
+  width:100%;
+  min-width:0;
+  min-height:0;
+  padding:9px 7px;
+}
+.synth-fm-controls .knob-card label,
+.envelope-controls .knob-card label{
+  min-height:30px;
+  margin-bottom:4px;
+}
+.synth-fm-controls .synth-vertical-fader,
+.envelope-controls .synth-vertical-fader{
+  height:92px !important;
+  margin:4px auto 0 !important;
+}
+.synth-fm-controls select{
+  min-height:34px;
+}
+@media(max-width:980px){
+  .synth-fm-controls{
+    grid-template-columns:repeat(3,minmax(92px,132px)) !important;
+  }
+  .envelope-controls{
+    grid-template-columns:repeat(4,minmax(92px,132px)) !important;
+  }
+}
+@media(max-width:620px){
+  .synth-fm-controls,
+  .envelope-controls{
+    grid-template-columns:repeat(2,minmax(92px,1fr)) !important;
+  }
+}
+
 </style>
 </head>
 <body>
