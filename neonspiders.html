@@ -567,202 +567,245 @@ scene.add(
 function buildPlayer(){
   const g=new THREE.Group();
 
-  const trackLeft=new THREE.Group();
-  trackLeft.position.set(-.72,.02,0);
+  const makeTrack=(side)=>{
+    const track=new THREE.Group();
+    track.position.set(side*.78,.02,0);
 
-  const trackBodyLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.56,.34,1.56),
+    const tread=new THREE.Mesh(
+      new THREE.BoxGeometry(.68,.34,1.78),
+      matDark
+    );
+    tread.position.y=.02;
+    track.add(tread);
+
+    const armor=new THREE.Mesh(
+      new THREE.BoxGeometry(.76,.16,1.92),
+      matGraphite
+    );
+    armor.position.y=.18;
+    track.add(armor);
+
+    for(let i=0;i<5;i++){
+      const wheel=new THREE.Mesh(
+        new THREE.CylinderGeometry(.115,.115,.20,12),
+        matWhite
+      );
+      wheel.rotation.z=Math.PI/2;
+      wheel.position.set(0,-.10,-.58+i*.29);
+      track.add(wheel);
+    }
+
+    const frontGuard=new THREE.Mesh(
+      new THREE.BoxGeometry(.74,.20,.28),
+      matGraphite
+    );
+    frontGuard.position.set(0,.22,.88);
+    frontGuard.rotation.x=-.18;
+    track.add(frontGuard);
+
+    return track;
+  };
+
+  g.add(makeTrack(-1));
+  g.add(makeTrack(1));
+
+  const lowerFrame=new THREE.Mesh(
+    new THREE.BoxGeometry(1.12,.38,.82),
+    matGraphite
+  );
+  lowerFrame.position.set(0,.38,0);
+  g.add(lowerFrame);
+
+  const waist=new THREE.Mesh(
+    new THREE.BoxGeometry(.72,.48,.58),
     matDark
   );
-  trackBodyLeft.position.y=.02;
-  trackLeft.add(trackBodyLeft);
+  waist.position.set(0,.88,0);
+  g.add(waist);
 
-  for(let i=0;i<4;i++){
-    const wheel=new THREE.Mesh(
-      new THREE.CylinderGeometry(.11,.11,.18,12),
-      matWhite
-    );
-    wheel.rotation.z=Math.PI/2;
-    wheel.position.set(0,-.10,-.48+i*.32);
-    trackLeft.add(wheel);
-  }
-
-  const treadLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.68,.14,1.72),
+  const torsoCore=new THREE.Mesh(
+    new THREE.BoxGeometry(1.38,1.08,1.08),
     matGraphite
   );
-  treadLeft.position.y=.16;
-  trackLeft.add(treadLeft);
+  torsoCore.position.set(0,1.72,0);
+  g.add(torsoCore);
 
-  g.add(trackLeft);
-
-  const trackRight=trackLeft.clone();
-  trackRight.position.x=.72;
-  g.add(trackRight);
-
-  const centerFrame=new THREE.Mesh(
-    new THREE.BoxGeometry(.64,.32,.74),
-    matGraphite
-  );
-  centerFrame.position.set(0,.24,0);
-  g.add(centerFrame);
-
-  const lowerColumn=new THREE.Mesh(
-    new THREE.BoxGeometry(.48,1.05,.46),
-    matGraphite
-  );
-  lowerColumn.position.y=.95;
-  g.add(lowerColumn);
-
-  const hipBlock=new THREE.Mesh(
-    new THREE.BoxGeometry(.94,.38,.82),
+  const chestArmor=new THREE.Mesh(
+    new THREE.BoxGeometry(1.12,.84,.16),
     matWhite
   );
-  hipBlock.position.set(0,.76,0);
-  g.add(hipBlock);
+  chestArmor.position.set(0,1.76,.60);
+  g.add(chestArmor);
 
-  const torso=new THREE.Mesh(
-    new THREE.BoxGeometry(1.24,1.10,1.08),
-    matWhite
-  );
-  torso.position.set(0,1.70,0);
-  g.add(torso);
-
-  const chestPanel=new THREE.Mesh(
-    new THREE.BoxGeometry(.78,.72,.10),
+  const chestSlashLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.42,.12,.08),
     matViolet
   );
-  chestPanel.position.set(0,1.70,.59);
-  g.add(chestPanel);
+  chestSlashLeft.position.set(-.28,1.88,.70);
+  chestSlashLeft.rotation.z=.28;
+  g.add(chestSlashLeft);
+
+  const chestSlashRight=chestSlashLeft.clone();
+  chestSlashRight.position.x=.28;
+  chestSlashRight.rotation.z=-.28;
+  g.add(chestSlashRight);
 
   const reactor=new THREE.Mesh(
-    new THREE.BoxGeometry(.26,.26,.14),
+    new THREE.BoxGeometry(.24,.24,.14),
     matMagenta
   );
-  reactor.position.set(0,1.70,.68);
+  reactor.position.set(0,1.58,.72);
   g.add(reactor);
 
-  const neckMount=new THREE.Mesh(
-    new THREE.BoxGeometry(.42,.18,.42),
-    matGraphite
-  );
-  neckMount.position.set(0,2.36,0);
-  g.add(neckMount);
-
-  const head=new THREE.Mesh(
-    new THREE.BoxGeometry(.98,.72,.94),
-    matGraphite
-  );
-  head.position.set(.10,2.88,.06);
-  g.add(head);
-
-  const headCage=new THREE.Mesh(
-    new THREE.BoxGeometry(1.08,.82,1.04),
-    matViolet
-  );
-  headCage.position.set(.20,2.92,.14);
-  headCage.scale.set(1,1,1);
-  g.add(headCage);
-
-  const headFront=new THREE.Mesh(
-    new THREE.BoxGeometry(.72,.46,.08),
-    matMagenta
-  );
-  headFront.position.set(.36,2.92,.64);
-  g.add(headFront);
-
   const shoulderLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.42,.42,.46),
+    new THREE.BoxGeometry(.56,.48,.62),
     matGraphite
   );
-  shoulderLeft.position.set(-.95,1.86,.08);
+  shoulderLeft.position.set(-1.02,1.88,.04);
   g.add(shoulderLeft);
 
-  const shoulderRight=new THREE.Mesh(
-    new THREE.BoxGeometry(.42,.42,.46),
-    matGraphite
-  );
-  shoulderRight.position.set(.95,1.86,.08);
+  const shoulderRight=shoulderLeft.clone();
+  shoulderRight.position.x=1.02;
   g.add(shoulderRight);
 
-  const gunBar=new THREE.Mesh(
-    new THREE.BoxGeometry(2.2,.18,.18),
-    matGraphite
-  );
-  gunBar.position.set(0,1.74,.22);
-  g.add(gunBar);
-
-  const gunLeftPivot=new THREE.Group();
-  gunLeftPivot.position.set(-1.18,1.68,.16);
-
-  const gunLeftBody=new THREE.Mesh(
-    new THREE.BoxGeometry(.44,.38,1.40),
+  const shoulderPlateLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.72,.16,.72),
     matWhite
   );
-  gunLeftBody.position.z=.48;
-  gunLeftPivot.add(gunLeftBody);
+  shoulderPlateLeft.position.set(-1.04,2.13,.05);
+  shoulderPlateLeft.rotation.z=-.14;
+  g.add(shoulderPlateLeft);
 
-  const gunLeftCap=new THREE.Mesh(
-    new THREE.BoxGeometry(.48,.12,.32),
-    matGraphite
-  );
-  gunLeftCap.position.set(0,.23,.40);
-  gunLeftPivot.add(gunLeftCap);
+  const shoulderPlateRight=shoulderPlateLeft.clone();
+  shoulderPlateRight.position.x=1.04;
+  shoulderPlateRight.rotation.z=.14;
+  g.add(shoulderPlateRight);
 
-  const gunLeftBarrel=new THREE.Mesh(
-    new THREE.CylinderGeometry(.08,.08,.98,14),
+  const neck=new THREE.Mesh(
+    new THREE.BoxGeometry(.46,.20,.42),
     matDark
   );
-  gunLeftBarrel.rotation.x=Math.PI/2;
-  gunLeftBarrel.position.set(0,0,1.24);
-  gunLeftPivot.add(gunLeftBarrel);
+  neck.position.set(0,2.38,0);
+  g.add(neck);
 
-  const muzzleLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.18,.18,.18),
-    matMagenta
+  const head=new THREE.Mesh(
+    new THREE.BoxGeometry(.88,.64,.78),
+    matGraphite
   );
-  muzzleLeft.position.set(0,0,1.76);
-  gunLeftPivot.add(muzzleLeft);
+  head.position.set(0,2.80,.02);
+  g.add(head);
 
-  g.add(gunLeftPivot);
-
-  const gunRightPivot=new THREE.Group();
-  gunRightPivot.position.set(1.18,1.68,.16);
-
-  const gunRightBody=new THREE.Mesh(
-    new THREE.BoxGeometry(.44,.38,1.40),
+  const browLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.34,.10,.10),
     matWhite
   );
-  gunRightBody.position.z=.48;
-  gunRightPivot.add(gunRightBody);
+  browLeft.position.set(-.20,2.92,.43);
+  browLeft.rotation.z=-.18;
+  g.add(browLeft);
 
-  const gunRightCap=new THREE.Mesh(
-    new THREE.BoxGeometry(.48,.12,.32),
-    matGraphite
-  );
-  gunRightCap.position.set(0,.23,.40);
-  gunRightPivot.add(gunRightCap);
+  const browRight=browLeft.clone();
+  browRight.position.x=.20;
+  browRight.rotation.z=.18;
+  g.add(browRight);
 
-  const gunRightBarrel=new THREE.Mesh(
-    new THREE.CylinderGeometry(.08,.08,.98,14),
-    matDark
-  );
-  gunRightBarrel.rotation.x=Math.PI/2;
-  gunRightBarrel.position.set(0,0,1.24);
-  gunRightPivot.add(gunRightBarrel);
-
-  const muzzleRight=new THREE.Mesh(
-    new THREE.BoxGeometry(.18,.18,.18),
+  const eyeLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.14,.08,.06),
     matMagenta
   );
-  muzzleRight.position.set(0,0,1.76);
-  gunRightPivot.add(muzzleRight);
+  eyeLeft.position.set(-.18,2.82,.44);
+  g.add(eyeLeft);
 
-  g.add(gunRightPivot);
+  const eyeRight=eyeLeft.clone();
+  eyeRight.position.x=.18;
+  g.add(eyeRight);
+
+  const jaw=new THREE.Mesh(
+    new THREE.BoxGeometry(.52,.18,.22),
+    matDark
+  );
+  jaw.position.set(0,2.58,.34);
+  g.add(jaw);
+
+  const gunMount=new THREE.Mesh(
+    new THREE.BoxGeometry(2.42,.20,.22),
+    matDark
+  );
+  gunMount.position.set(0,1.76,.24);
+  g.add(gunMount);
+
+  const makeGun=(side)=>{
+    const pivot=new THREE.Group();
+    pivot.position.set(side*1.30,1.70,.18);
+
+    const body=new THREE.Mesh(
+      new THREE.BoxGeometry(.48,.44,1.42),
+      matGraphite
+    );
+    body.position.z=.48;
+    pivot.add(body);
+
+    const topArmor=new THREE.Mesh(
+      new THREE.BoxGeometry(.56,.16,.64),
+      matWhite
+    );
+    topArmor.position.set(0,.27,.42);
+    pivot.add(topArmor);
+
+    const sideArmor=new THREE.Mesh(
+      new THREE.BoxGeometry(.14,.32,.86),
+      matViolet
+    );
+    sideArmor.position.set(side*.29,.02,.52);
+    pivot.add(sideArmor);
+
+    const barrelOuter=new THREE.Mesh(
+      new THREE.CylinderGeometry(.11,.11,1.10,14),
+      matDark
+    );
+    barrelOuter.rotation.x=Math.PI/2;
+    barrelOuter.position.set(0,0,1.32);
+    pivot.add(barrelOuter);
+
+    const barrelInner=new THREE.Mesh(
+      new THREE.CylinderGeometry(.055,.055,1.18,12),
+      matWhite
+    );
+    barrelInner.rotation.x=Math.PI/2;
+    barrelInner.position.set(0,0,1.36);
+    pivot.add(barrelInner);
+
+    const muzzle=new THREE.Mesh(
+      new THREE.BoxGeometry(.24,.24,.20),
+      matMagenta
+    );
+    muzzle.position.set(0,0,1.92);
+    pivot.add(muzzle);
+
+    return {pivot,muzzle};
+  };
+
+  const leftGun=makeGun(-1);
+  const rightGun=makeGun(1);
+
+  g.add(leftGun.pivot);
+  g.add(rightGun.pivot);
+
+  const bladeLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.12,.64,.18),
+    matWhite
+  );
+  bladeLeft.position.set(-.94,1.34,-.34);
+  bladeLeft.rotation.z=.26;
+  g.add(bladeLeft);
+
+  const bladeRight=bladeLeft.clone();
+  bladeRight.position.x=.94;
+  bladeRight.rotation.z=-.26;
+  g.add(bladeRight);
 
   g.userData.muzzles=[
-    muzzleLeft,
-    muzzleRight
+    leftGun.muzzle,
+    rightGun.muzzle
   ];
 
   scene.add(g);
@@ -790,7 +833,7 @@ function buildSpider(type="jumper"){
       thoraxColor:0x171820,
       abdomenColor:0x24263a,
       glowColor:0x8c6cff,
-      legColor:0x3a3d50,
+      legColor:0x343744,
       eyeColor:0xff42d0,
       thoraxScale:[1.10,.92,1.00],
       abdomenScale:[1.28,1.08,1.18],
@@ -833,7 +876,7 @@ function buildSpider(type="jumper"){
       thoraxColor:0x191720,
       abdomenColor:0x2a2238,
       glowColor:0xd45bff,
-      legColor:0x343142,
+      legColor:0x343744,
       eyeColor:0xff42d0,
       thoraxScale:[1.16,.95,1.12],
       abdomenScale:[1.55,1.22,1.85],
@@ -876,7 +919,7 @@ function buildSpider(type="jumper"){
       thoraxColor:0x121116,
       abdomenColor:0x201725,
       glowColor:0xff5dc7,
-      legColor:0x292631,
+      legColor:0x343744,
       eyeColor:0xff42d0,
       thoraxScale:[.92,.84,.95],
       abdomenScale:[1.34,1.12,1.46],
@@ -952,10 +995,7 @@ function buildSpider(type="jumper"){
   const legMaterial=
     new THREE.MeshStandardMaterial({
       color:preset.legColor,
-      emissive:
-        preset.type==="widow"
-          ?0x18060a
-          :0x101018,
+      emissive:0x141620,
       emissiveIntensity:.40,
       metalness:.56,
       roughness:.24
@@ -1555,8 +1595,8 @@ function fireBullet(){
 
     const spread=
       index===0
-        ?-.05
-        :.05;
+        ?-.028
+        :.028;
 
     const velocity=
       baseDirection.clone();
