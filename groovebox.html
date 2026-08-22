@@ -3266,6 +3266,45 @@ body{
   transform:scale(1.015);
 }
 
+
+/* Visible rotary motion: rotate the indicator, not the symmetric knob body */
+.synth-rotary-knob,
+.rotary-knob{
+  --knob-angle:0deg;
+  transform:none!important;
+}
+.synth-rotary-knob::after{
+  transform:
+    translateX(-50%)
+    rotate(var(--knob-angle))!important;
+  transform-origin:
+    50%
+    calc(100% + 7px)!important;
+}
+.rotary-knob::after{
+  transform:
+    translateX(-50%)
+    rotate(var(--knob-angle))!important;
+  transform-origin:
+    50%
+    calc(100% + 4px)!important;
+}
+.synth-rotary-knob::after,
+.rotary-knob::after{
+  transition:transform .045s linear;
+}
+
+
+#oscVisualizer{
+  display:block!important;
+  width:100%!important;
+  height:220px!important;
+  min-height:220px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  background:#050508!important;
+}
+
 </style>
 </head>
 <body>
@@ -7581,8 +7620,10 @@ function updateSynthRotaryKnob(input){
     -135+
     Math.max(0,Math.min(1,normalized))*270;
 
-  knob.style.transform=
-    "rotate("+degrees+"deg)";
+  knob.style.setProperty(
+    "--knob-angle",
+    degrees+"deg"
+  );
 }
 
 document
@@ -7630,8 +7671,10 @@ function updateRotaryKnob(input){
     -135+
     Math.max(0,Math.min(1,t))*270;
 
-  knob.style.transform=
-    "rotate("+degrees+"deg)";
+  knob.style.setProperty(
+    "--knob-angle",
+    degrees+"deg"
+  );
 }
 
 document
@@ -8551,8 +8594,10 @@ animate();
         Math.min(1,normalized)
       )*270;
 
-    knob.style.transform=
-      "rotate("+degrees+"deg)";
+    knob.style.setProperty(
+    "--knob-angle",
+    degrees+"deg"
+  );
   }
 
   function initSynthKnobs(){
@@ -9031,6 +9076,710 @@ animate();
     bindFallbackPiano,
     900
   );
+})();
+</script>
+
+
+<script>
+(function(){
+  let fallbackAudio=null;
+  let fallbackMaster=null;
+  let fallbackAnalyser=null;
+  let visualData=null;
+  let visualPhase=0;
+
+  function byId(id){
+    return document.getElementById(id);
+  }
+
+  function ensureFallbackAudio(){
+    if(fallbackAudio)return fallbackAudio;
+
+    const AudioContextClass=
+      window.AudioContext||
+      window.webkitAudioContext;
+
+    if(!AudioContextClass)return null;
+
+    fallbackAudio=
+      new AudioContextClass();
+
+    fallbackMaster=
+      fallbackAudio.createGain();
+
+    fallbackMaster.gain.value=.72;
+
+    fallbackAnalyser=
+      fallbackAudio.createAnalyser();
+
+    fallbackAnalyser.fftSize=1024;
+    fallbackAnalyser.smoothingTimeConstant=.62;
+
+    fallbackMaster.connect(
+      fallbackAnalyser
+    );
+
+    fallbackAnalyser.connect(
+      fallbackAudio.destination
+    );
+
+    window.grooveboxFallbackAnalyser=
+      fallbackAnalyser;
+
+    return fallbackAudio;
+  }
+
+  function midiToFrequency(note){
+    return 440*
+      Math.pow(
+        2,
+        (note-69)/12
+      );
+  }
+
+  function numberValue(id,fallback){
+    const el=byId(id);
+
+    if(!el)return fallback;
+
+    const value=
+      parseFloat(el.value);
+
+    return Number.isFinite(value)
+      ?value
+      :fallback;
+  }
+
+  function textValue(id,fallback){
+    const el=byId(id);
+
+    return el
+      ?el.value
+      :fallback;
+  }
+
+  async function playFallbackSynth(note){
+    const audio=
+      ensureFallbackAudio();
+
+    if(!audio)return;
+
+    if(audio.state==="suspended"){
+      await audio.resume();
+    }
+
+    const now=
+      audio.currentTime;
+
+    const attack=
+      Math.max(
+        .005,
+        numberValue(
+          "synthAttack",
+          .03
+        )
+      );
+
+    const decay=
+      Math.max(
+        .01,
+        numberValue(
+          "synthDecay",
+          .12
+        )
+      );
+
+    const sustain=
+      Math.max(
+        .02,
+        Math.min(
+          1,
+          numberValue(
+            "synthSustain",
+            .68
+          )
+        )
+      );
+
+    const release=
+      Math.max(
+        .05,
+        numberValue(
+          "synthRelease",
+          .42
+        )
+      );
+
+    const level=
+      Math.max(
+        .02,
+        Math.min(
+          .8,
+          numberValue(
+            "synthLevel",
+            .38
+          )
+        )
+      );
+
+    const env=
+      audio.createGain();
+
+    env.gain.setValueAtTime(
+      .0001,
+      now
+    );
+
+    env.gain.exponentialRampToValueAtTime(
+      level,
+      now+attack
+    );
+
+    env.gain.exponentialRampToValueAtTime(
+      Math.max(
+        .001,
+        level*sustain
+      ),
+      now+attack+decay
+    );
+
+    env.gain.setValueAtTime(
+      Math.max(
+        .001,
+        level*sustain
+      ),
+      now+
+      attack+
+      decay+
+      .18
+    );
+
+    env.gain.exponentialRampToValueAtTime(
+      .001,
+      now+
+      attack+
+      decay+
+      .18+
+      release
+    );
+
+    const postFilter=
+      audio.createBiquadFilter();
+
+    postFilter.type=
+      textValue(
+        "synthFilterType",
+        "lowpass"
+      );
+
+    postFilter.frequency.value=
+      numberValue(
+        "synthFilterCutoff",
+        4200
+      );
+
+    postFilter.Q.value=
+      numberValue(
+        "synthFilterRes",
+        4
+      );
+
+    env.connect(postFilter);
+    postFilter.connect(fallbackMaster);
+
+    const oscillatorSpecs=[
+      {
+        wave:textValue(
+          "osc1Wave",
+          "sawtooth"
+        ),
+        octave:numberValue(
+          "osc1Octave",
+          0
+        ),
+        pitch:numberValue(
+          "osc1Pitch",
+          0
+        ),
+        detune:numberValue(
+          "osc1Detune",
+          -4
+        ),
+        gain:numberValue(
+          "osc1Level",
+          .7
+        ),
+        cutoff:numberValue(
+          "osc1Cutoff",
+          3200
+        ),
+        resonance:numberValue(
+          "osc1Res",
+          5
+        )
+      },
+      {
+        wave:textValue(
+          "osc2Wave",
+          "square"
+        ),
+        octave:numberValue(
+          "osc2Octave",
+          0
+        ),
+        pitch:numberValue(
+          "osc2Pitch",
+          0
+        ),
+        detune:numberValue(
+          "osc2Detune",
+          7
+        ),
+        gain:numberValue(
+          "osc2Level",
+          .48
+        ),
+        cutoff:numberValue(
+          "osc2Cutoff",
+          1800
+        ),
+        resonance:numberValue(
+          "osc2Res",
+          7
+        )
+      }
+    ];
+
+    oscillatorSpecs.forEach(spec=>{
+      const osc=
+        audio.createOscillator();
+
+      const gain=
+        audio.createGain();
+
+      const filter=
+        audio.createBiquadFilter();
+
+      osc.type=spec.wave;
+
+      const semitones=
+        spec.octave*12+
+        spec.pitch;
+
+      osc.frequency.value=
+        midiToFrequency(
+          note+semitones
+        );
+
+      osc.detune.value=
+        spec.detune;
+
+      gain.gain.value=
+        Math.max(
+          0,
+          Math.min(
+            1,
+            spec.gain
+          )
+        );
+
+      filter.type="lowpass";
+      filter.frequency.value=
+        spec.cutoff;
+
+      filter.Q.value=
+        spec.resonance;
+
+      osc.connect(gain);
+      gain.connect(filter);
+      filter.connect(env);
+
+      osc.start(now);
+
+      osc.stop(
+        now+
+        attack+
+        decay+
+        .18+
+        release+
+        .08
+      );
+    });
+
+    const status=
+      byId("status");
+
+    if(status){
+      status.textContent=
+        "synth live";
+    }
+
+    setTimeout(
+      function(){
+        if(
+          status &&
+          status.textContent===
+          "synth live"
+        ){
+          status.textContent="ready";
+        }
+      },
+      700
+    );
+  }
+
+  function bindKeyboard(){
+    const host=
+      byId("synthKeyboard");
+
+    if(!host)return;
+
+    if(
+      host.dataset.fallbackSynthBound===
+      "1"
+    ){
+      return;
+    }
+
+    host.dataset.fallbackSynthBound="1";
+
+    host.addEventListener(
+      "pointerdown",
+      function(event){
+        const key=
+          event.target.closest(
+            ".synth-key"
+          );
+
+        if(
+          !key ||
+          !host.contains(key)
+        ){
+          return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const note=
+          parseInt(
+            key.dataset.midi,
+            10
+          );
+
+        if(!Number.isFinite(note)){
+          return;
+        }
+
+        playFallbackSynth(note);
+
+        key.classList.add("on");
+
+        setTimeout(
+          function(){
+            key.classList.remove("on");
+          },
+          160
+        );
+      },
+      true
+    );
+  }
+
+  function drawVisualizer(){
+    const canvas=
+      byId("oscVisualizer");
+
+    if(!canvas){
+      requestAnimationFrame(
+        drawVisualizer
+      );
+      return;
+    }
+
+    const ctx=
+      canvas.getContext("2d");
+
+    if(!ctx){
+      requestAnimationFrame(
+        drawVisualizer
+      );
+      return;
+    }
+
+    const rect=
+      canvas.getBoundingClientRect();
+
+    const ratio=
+      Math.min(
+        window.devicePixelRatio||1,
+        2
+      );
+
+    const w=
+      Math.max(
+        320,
+        Math.floor(
+          rect.width*ratio
+        )
+      );
+
+    const h=
+      Math.max(
+        180,
+        Math.floor(
+          rect.height*ratio
+        )
+      );
+
+    if(
+      canvas.width!==w ||
+      canvas.height!==h
+    ){
+      canvas.width=w;
+      canvas.height=h;
+    }
+
+    ctx.clearRect(0,0,w,h);
+
+    const bg=
+      ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        h
+      );
+
+    bg.addColorStop(
+      0,
+      "rgba(10,8,18,.98)"
+    );
+
+    bg.addColorStop(
+      1,
+      "rgba(4,4,8,.98)"
+    );
+
+    ctx.fillStyle=bg;
+    ctx.fillRect(0,0,w,h);
+
+    ctx.strokeStyle=
+      "rgba(255,255,255,.055)";
+
+    ctx.lineWidth=1;
+
+    for(let i=1;i<8;i++){
+      const x=w*i/8;
+      ctx.beginPath();
+      ctx.moveTo(x,0);
+      ctx.lineTo(x,h);
+      ctx.stroke();
+    }
+
+    for(let i=1;i<5;i++){
+      const y=h*i/5;
+      ctx.beginPath();
+      ctx.moveTo(0,y);
+      ctx.lineTo(w,y);
+      ctx.stroke();
+    }
+
+    let analyser=
+      window.grooveboxFallbackAnalyser||
+      window.grooveboxSynthAnalyser||
+      null;
+
+    let live=false;
+
+    if(analyser){
+      if(
+        !visualData ||
+        visualData.length!==
+        analyser.fftSize
+      ){
+        visualData=
+          new Uint8Array(
+            analyser.fftSize
+          );
+      }
+
+      analyser.getByteTimeDomainData(
+        visualData
+      );
+
+      let peak=0;
+
+      for(
+        let i=0;
+        i<visualData.length;
+        i++
+      ){
+        peak=
+          Math.max(
+            peak,
+            Math.abs(
+              visualData[i]-128
+            )
+          );
+      }
+
+      live=peak>1;
+    }
+
+    const gradient=
+      ctx.createLinearGradient(
+        0,
+        0,
+        w,
+        0
+      );
+
+    gradient.addColorStop(
+      0,
+      "rgba(113,73,255,1)"
+    );
+
+    gradient.addColorStop(
+      .5,
+      "rgba(166,108,255,1)"
+    );
+
+    gradient.addColorStop(
+      1,
+      "rgba(255,66,208,1)"
+    );
+
+    ctx.strokeStyle=gradient;
+    ctx.lineWidth=
+      Math.max(
+        2,
+        w/300
+      );
+
+    ctx.shadowBlur=14;
+    ctx.shadowColor=
+      "rgba(166,108,255,.55)";
+
+    ctx.beginPath();
+
+    if(live){
+      const slice=
+        w/
+        Math.max(
+          1,
+          visualData.length-1
+        );
+
+      visualData.forEach(
+        function(value,index){
+          const x=
+            index*slice;
+
+          const sample=
+            (value-128)/128;
+
+          const y=
+            h*.5+
+            sample*h*.40;
+
+          if(index===0){
+            ctx.moveTo(x,y);
+          }else{
+            ctx.lineTo(x,y);
+          }
+        }
+      );
+    }else{
+      visualPhase+=.035;
+
+      for(let i=0;i<220;i++){
+        const t=i/219;
+        const x=t*w;
+
+        const wave=
+          Math.sin(
+            t*Math.PI*8+
+            visualPhase
+          )*
+          .7+
+          Math.sin(
+            t*Math.PI*17-
+            visualPhase*.5
+          )*
+          .18;
+
+        const y=
+          h*.5+
+          wave*
+          Math.sin(
+            Math.PI*t
+          )*
+          h*.05;
+
+        if(i===0){
+          ctx.moveTo(x,y);
+        }else{
+          ctx.lineTo(x,y);
+        }
+      }
+    }
+
+    ctx.stroke();
+    ctx.shadowBlur=0;
+
+    ctx.fillStyle=
+      live
+        ?"rgba(255,255,255,.8)"
+        :"rgba(166,108,255,.52)";
+
+    ctx.font=
+      Math.max(
+        10,
+        Math.floor(w/38)
+      )+
+      "px Arial";
+
+    ctx.fillText(
+      live
+        ?"LIVE SYNTH"
+        :"SYNTH READY",
+      12,
+      20
+    );
+
+    requestAnimationFrame(
+      drawVisualizer
+    );
+  }
+
+  bindKeyboard();
+
+  const keyScale=
+    byId("keyScale");
+
+  if(keyScale){
+    keyScale.addEventListener(
+      "input",
+      function(){
+        setTimeout(
+          bindKeyboard,
+          0
+        );
+      }
+    );
+  }
+
+  new MutationObserver(
+    bindKeyboard
+  ).observe(
+    document.body,
+    {
+      childList:true,
+      subtree:true
+    }
+  );
+
+  drawVisualizer();
 })();
 </script>
 
