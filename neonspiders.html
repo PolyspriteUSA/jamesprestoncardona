@@ -240,14 +240,102 @@ canvas{display:block}
   pointer-events:none;
 }
 
+
+.site-header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:35;
+  padding:18px 24px;
+  background:linear-gradient(
+    180deg,
+    rgba(5,5,7,.96),
+    rgba(5,5,7,.72),
+    rgba(5,5,7,0)
+  );
+  pointer-events:none;
+}
+.site-nav{
+  width:min(1240px,100%);
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  pointer-events:auto;
+}
+.site-nav-brand{
+  color:rgba(255,255,255,.92);
+  text-decoration:none;
+  font-size:.74rem;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.site-nav-links{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+.site-nav-links a{
+  color:rgba(255,255,255,.52);
+  text-decoration:none;
+  font-size:.68rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:color 180ms ease;
+}
+.site-nav-links a:hover{
+  color:#fff;
+}
+.topbar{
+  top:54px;
+}
+@media(max-width:700px){
+  .site-header{
+    padding:14px 16px;
+  }
+  .site-nav{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:9px;
+  }
+  .site-nav-links{
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .site-nav-brand{
+    font-size:.66rem;
+  }
+  .site-nav-links a{
+    font-size:.60rem;
+  }
+  .topbar{
+    top:92px;
+  }
+}
+
 </style>
 </head>
 <body>
 <div id="game"></div>
 
+<header class="site-header">
+  <nav class="site-nav" aria-label="Main website navigation">
+    <a class="site-nav-brand" href="./index.html">James Preston Cardona</a>
+    <div class="site-nav-links">
+      <a href="./index.html#work">Work</a>
+      <a href="./index.html#about">About</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./index.html#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
 <div class="topbar">
   <div class="brand">
-    <a href="./index.html">James Preston Cardona</a>
     <div>03 // Arcade · Neon Spiders</div>
   </div>
   <div class="hud">
@@ -704,7 +792,7 @@ function buildSpider(){
   );
 
   body.scale.set(1.02,.52,1.08);
-  body.position.y=1.02;
+  body.position.y=.98;
   g.add(body);
 
   const core=new THREE.Mesh(
@@ -712,7 +800,7 @@ function buildSpider(){
     Math.random()>.5?matViolet:matMagenta
   );
 
-  core.position.set(0,1.06,.50);
+  core.position.set(0,1.02,.50);
   g.add(core);
 
   const legPivots=[];
@@ -721,8 +809,8 @@ function buildSpider(){
     for(let i=0;i<4;i++){
       const pivot=new THREE.Group();
       pivot.position.set(
-        side*.46,
-        .86,
+        side*.44,
+        .78,
         (i-1.5)*.36
       );
 
@@ -731,7 +819,8 @@ function buildSpider(){
         matGraphite
       );
 
-      upper.position.x=side*.66;
+      upper.position.x=side*.60;
+      upper.rotation.z=-side*.35;
       pivot.add(upper);
 
       const lower=new THREE.Mesh(
@@ -740,12 +829,12 @@ function buildSpider(){
       );
 
       lower.position.set(
-        side*1.88,
-        -.54,
+        side*1.55,
+        -.55,
         0
       );
 
-      lower.rotation.z=side*.90;
+      lower.rotation.z=-side*.95;
       pivot.add(lower);
 
       legPivots.push(pivot);
@@ -1446,7 +1535,7 @@ function updateSpiders(dt,time){
       );
 
     spider.position.y=
-      .22+
+      .36+
       Math.sin(
         time*8+
         spider.userData.phase
