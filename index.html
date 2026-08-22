@@ -1,23 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1, viewport-fit=cover"
-
->
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>James Preston Cardona | Senior Real-Time 3D Designer</title>
-
-<meta
-name="description"
-content="James Preston Cardona — Senior Real-Time 3D Designer specializing in Unreal Engine, architectural visualization, immersive experiences, virtual production, and interactive environments."
-
->
+  <meta name="description" content="James Preston Cardona — Senior Real-Time 3D Designer specializing in Unreal Engine, architectural visualization, immersive experiences, virtual production, and interactive environments.">
 
   <style>
     :root {
@@ -82,10 +69,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       left: 0;
       right: 0;
       z-index: 30;
-      padding:
-        calc(18px + env(safe-area-inset-top))
-        24px
-        18px;
+      padding: calc(18px + env(safe-area-inset-top)) 24px 18px;
     }
 
     .nav {
@@ -130,18 +114,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       position: relative;
       min-height: 100svh;
       overflow: hidden;
-
       background:
-        radial-gradient(
-          circle at 76% 16%,
-          rgba(141,0,203,0.18),
-          transparent 31%
-        ),
-        radial-gradient(
-          circle at 68% 23%,
-          rgba(255,0,186,0.07),
-          transparent 25%
-        ),
+        radial-gradient(circle at 79% 16%, rgba(120,54,255,0.22), transparent 29%),
+        radial-gradient(circle at 73% 27%, rgba(255,56,209,0.10), transparent 23%),
+        radial-gradient(circle at 82% 34%, rgba(70,32,170,0.08), transparent 30%),
         #050507;
     }
 
@@ -164,13 +140,13 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       inset: 0;
       z-index: 3;
       pointer-events: none;
-
       background:
         linear-gradient(
           90deg,
-          rgba(5,5,7,0.96) 0%,
-          rgba(5,5,7,0.82) 32%,
-          rgba(5,5,7,0.20) 60%,
+          rgba(5,5,7,0.97) 0%,
+          rgba(5,5,7,0.84) 30%,
+          rgba(5,5,7,0.35) 50%,
+          rgba(5,5,7,0.08) 72%,
           rgba(5,5,7,0.01) 100%
         );
     }
@@ -178,24 +154,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .hero-content {
       position: relative;
       z-index: 5;
-
-      width:
-        min(
-          var(--max-width),
-          calc(100% - 56px)
-        );
-
+      width: min(var(--max-width), calc(100% - 56px));
       min-height: 100svh;
       margin: 0 auto;
-
       display: flex;
       align-items: center;
-
-      padding:
-        120px
-        0
-        80px;
-
+      padding: 120px 0 80px;
       pointer-events: none;
     }
 
@@ -207,14 +171,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     h1 {
       max-width: 820px;
-
-      font-size:
-        clamp(
-          3.2rem,
-          7vw,
-          6.7rem
-        );
-
+      font-size: clamp(3.2rem, 7vw, 6.7rem);
       line-height: 0.97;
       letter-spacing: -0.055em;
       font-weight: 700;
@@ -224,15 +181,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .gradient-text {
       display: inline;
-
-      background:
-        linear-gradient(
-          90deg,
-          #ffffff 0%,
-          #ddccff 43%,
-          #ff3bd5 100%
-        );
-
+      background: linear-gradient(90deg, #ffffff 0%, #ddccff 43%, #ff3bd5 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -241,14 +190,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .subtitle {
       max-width: 650px;
       margin-top: 26px;
-
-      font-size:
-        clamp(
-          1rem,
-          1.7vw,
-          1.2rem
-        );
-
+      font-size: clamp(1rem, 1.7vw, 1.2rem);
       line-height: 1.6;
       color: var(--muted);
     }
@@ -272,36 +214,21 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .button {
       min-height: 49px;
-
       display: inline-flex;
       align-items: center;
       justify-content: center;
-
       padding: 0 21px;
-
-      border:
-        1px solid rgba(255,255,255,0.16);
-
-      background:
-        rgba(255,255,255,0.035);
-
-      color:
-        rgba(255,255,255,0.92);
-
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.035);
+      color: rgba(255,255,255,0.92);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-
       cursor: pointer;
-
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-
-      transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        background 180ms ease;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
     }
 
     button.button {
@@ -310,15 +237,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     }
 
     .button.primary {
-      border-color:
-        rgba(255,56,209,0.58);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(165,0,170,0.22),
-          rgba(92,43,175,0.18)
-        );
+      border-color: rgba(255,56,209,0.58);
+      background: linear-gradient(135deg, rgba(165,0,170,0.22), rgba(92,43,175,0.18));
     }
 
     @media (hover:hover) {
@@ -338,16 +258,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       right: 22px;
       bottom: 22px;
       z-index: 12;
-
       padding: 7px 9px;
-
       font-size: 0.62rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-
       color: rgba(255,255,255,0.44);
       background: rgba(0,0,0,0.22);
-
       pointer-events: none;
     }
 
@@ -379,14 +295,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .section-title {
       max-width: 880px;
       margin-bottom: 22px;
-
-      font-size:
-        clamp(
-          2.1rem,
-          5vw,
-          4.6rem
-        );
-
+      font-size: clamp(2.1rem, 5vw, 4.6rem);
       line-height: 0.98;
       letter-spacing: -0.046em;
     }
@@ -400,13 +309,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .project-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
-
+      grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 18px;
     }
 
@@ -415,16 +318,22 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       min-height: 340px;
       padding: 24px;
       overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(130,0,180,0.11), rgba(255,0,180,0.02));
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
 
-      border:
-        1px solid var(--border);
+    .project-card:focus-visible {
+      outline: 2px solid var(--magenta);
+      outline-offset: 4px;
+    }
 
-      background:
-        linear-gradient(
-          145deg,
-          rgba(130,0,180,0.11),
-          rgba(255,0,180,0.02)
-        );
+    @media (hover:hover) {
+      .project-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.20);
+        background: linear-gradient(145deg, rgba(130,0,180,0.17), rgba(255,0,180,0.045));
+      }
     }
 
     .project-number {
@@ -451,13 +360,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       color: rgba(255,255,255,0.56);
     }
 
+    .project-link-label {
+      margin-top: 18px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d9c8ff;
+    }
+
     .about-grid {
       display: grid;
-
-      grid-template-columns:
-        1.1fr
-        0.9fr;
-
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 54px;
     }
 
@@ -472,12 +386,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .skills-panel {
       padding: 25px;
-
-      border:
-        1px solid var(--border);
-
-      background:
-        rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
     }
 
     .skills-panel h3 {
@@ -495,22 +405,14 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .skill {
       padding: 8px 9px;
-
-      border:
-        1px solid rgba(255,255,255,0.08);
-
-      color:
-        rgba(255,255,255,0.58);
-
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.58);
       font-size: 0.70rem;
     }
 
     .contact-box {
       padding-top: 38px;
-
-      border-top:
-        1px solid var(--border);
-
+      border-top: 1px solid var(--border);
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
@@ -523,14 +425,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .contact-copy h2 {
       margin-bottom: 15px;
-
-      font-size:
-        clamp(
-          2.1rem,
-          5vw,
-          4.4rem
-        );
-
+      font-size: clamp(2.1rem, 5vw, 4.4rem);
       line-height: 0.98;
       letter-spacing: -0.045em;
     }
@@ -544,24 +439,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       position: fixed;
       inset: 0;
       z-index: 1000;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       padding:
         calc(24px + env(safe-area-inset-top))
         calc(18px + env(safe-area-inset-right))
         calc(24px + env(safe-area-inset-bottom))
         calc(18px + env(safe-area-inset-left));
-
       visibility: hidden;
       opacity: 0;
       pointer-events: none;
-
-      transition:
-        opacity 200ms ease,
-        visibility 200ms ease;
+      transition: opacity 200ms ease, visibility 200ms ease;
     }
 
     .contact-modal.open {
@@ -573,10 +462,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .contact-backdrop {
       position: absolute;
       inset: 0;
-
-      background:
-        rgba(2,2,5,0.82);
-
+      background: rgba(2,2,5,0.82);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
@@ -584,29 +470,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .contact-panel {
       position: relative;
       z-index: 2;
-
-      width:
-        min(
-          620px,
-          100%
-        );
-
+      width: min(620px,100%);
       padding: 38px;
-
-      border:
-        1px solid rgba(255,255,255,0.13);
-
+      border: 1px solid rgba(255,255,255,0.13);
       background:
-        radial-gradient(
-          circle at 90% 0%,
-          rgba(255,45,212,0.13),
-          transparent 32%
-        ),
-        radial-gradient(
-          circle at 8% 100%,
-          rgba(112,62,255,0.15),
-          transparent 34%
-        ),
+        radial-gradient(circle at 90% 0%, rgba(255,45,212,0.13), transparent 32%),
+        radial-gradient(circle at 8% 100%, rgba(112,62,255,0.15), transparent 34%),
         rgba(8,8,13,0.97);
     }
 
@@ -614,23 +483,14 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       position: absolute;
       top: 18px;
       right: 18px;
-
       width: 44px;
       height: 44px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
-      border:
-        1px solid rgba(255,255,255,0.10);
-
-      background:
-        rgba(255,255,255,0.025);
-
-      color:
-        rgba(255,255,255,0.65);
-
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.025);
+      color: rgba(255,255,255,0.65);
       font-size: 1.35rem;
       cursor: pointer;
     }
@@ -647,14 +507,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .contact-panel h2 {
       max-width: 480px;
       padding-right: 45px;
-
-      font-size:
-        clamp(
-          2.3rem,
-          7vw,
-          4.1rem
-        );
-
+      font-size: clamp(2.3rem, 7vw, 4.1rem);
       line-height: 0.95;
       letter-spacing: -0.048em;
     }
@@ -675,42 +528,23 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     .contact-option {
       min-height: 72px;
-
-      padding:
-        14px
-        16px;
-
+      padding: 14px 16px;
       display: grid;
-
-      grid-template-columns:
-        46px
-        minmax(0,1fr)
-        auto;
-
+      grid-template-columns: 46px minmax(0,1fr) auto;
       align-items: center;
       gap: 14px;
-
-      border:
-        1px solid rgba(255,255,255,0.09);
-
-      background:
-        rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.025);
     }
 
     .contact-option-icon {
       width: 42px;
       height: 42px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
-      border:
-        1px solid rgba(255,255,255,0.09);
-
-      background:
-        rgba(128,72,255,0.08);
-
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(128,72,255,0.08);
       color: #d7c6ff;
       font-size: 1rem;
     }
@@ -741,29 +575,19 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     .contact-panel-footer {
       margin-top: 22px;
       padding-top: 18px;
-
-      border-top:
-        1px solid rgba(255,255,255,0.07);
-
+      border-top: 1px solid rgba(255,255,255,0.07);
       display: flex;
       justify-content: space-between;
       gap: 16px;
-
-      color:
-        rgba(255,255,255,0.32);
-
+      color: rgba(255,255,255,0.32);
       font-size: 0.61rem;
       letter-spacing: 0.10em;
       text-transform: uppercase;
     }
 
     @media (max-width: 767px) {
-
       .site-header {
-        padding:
-          calc(15px + env(safe-area-inset-top))
-          15px
-          15px;
+        padding: calc(15px + env(safe-area-inset-top)) 15px 15px;
       }
 
       .brand {
@@ -796,22 +620,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       }
 
       .hero-content {
-        width:
-          calc(
-            100% - 30px
-          );
-
+        width: calc(100% - 30px);
         min-height: 100svh;
-
         align-items: flex-end;
-
-        padding:
-          115px
-          0
-          calc(
-            34px +
-            env(safe-area-inset-bottom)
-          );
+        padding: 115px 0 calc(34px + env(safe-area-inset-bottom));
       }
 
       .hero-copy {
@@ -822,14 +634,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       h1 {
         width: 100%;
         max-width: 100%;
-
-        font-size:
-          clamp(
-            2.45rem,
-            11.4vw,
-            4.15rem
-          );
-
+        font-size: clamp(2.45rem, 11.4vw, 4.15rem);
         line-height: 1.01;
         letter-spacing: -0.045em;
         padding-bottom: 0.10em;
@@ -849,13 +654,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       .hero-actions {
         width: 100%;
-
         display: grid;
-
-        grid-template-columns:
-          1fr
-          1fr;
-
+        grid-template-columns: 1fr 1fr;
         gap: 9px;
         margin-top: 21px;
       }
@@ -871,29 +671,17 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       }
 
       .loading {
-        top:
-          calc(
-            62px +
-            env(safe-area-inset-top)
-          );
-
+        top: calc(62px + env(safe-area-inset-top));
         right: 15px;
         bottom: auto;
       }
 
       .section {
-        padding:
-          80px
-          16px;
+        padding: 80px 16px;
       }
 
       .section-title {
-        font-size:
-          clamp(
-            2rem,
-            10vw,
-            3.5rem
-          );
+        font-size: clamp(2rem, 10vw, 3.5rem);
       }
 
       .project-grid {
@@ -916,32 +704,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       }
 
       .contact-panel {
-        padding:
-          30px
-          18px
-          22px;
+        padding: 30px 18px 22px;
       }
     }
 
     @media (max-width: 390px) {
-
       .hero-content {
-        width:
-          calc(
-            100% - 24px
-          );
-
+        width: calc(100% - 24px);
         padding-top: 105px;
       }
 
       h1 {
-        font-size:
-          clamp(
-            2.25rem,
-            11vw,
-            3.5rem
-          );
-
+        font-size: clamp(2.25rem, 11vw, 3.5rem);
         line-height: 1.02;
       }
 
@@ -967,363 +741,197 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       outline: 2px solid var(--magenta);
       outline-offset: 3px;
     }
-
   </style>
-
 </head>
 
 <body>
 
   <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="#hero">James Preston Cardona</a>
 
-```
-<nav class="nav">
-
-  <a
-    class="brand"
-    href="#hero"
-  >
-    James Preston Cardona
-  </a>
-
-  <div class="nav-links">
-
-    <a href="#work">
-      Work
-    </a>
-
-    <a href="#about">
-      About
-    </a>
-
-    <a href="#contact">
-      Contact
-    </a>
-
-  </div>
-
-</nav>
-```
-
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
   </header>
 
   <section id="hero">
+    <div id="three-container" aria-hidden="true"></div>
+    <div class="hero-overlay"></div>
 
-```
-<div
-  id="three-container"
-  aria-hidden="true"
-></div>
+    <div class="hero-content">
+      <div class="hero-copy">
+        <h1>
+          Designing the space between
+          <span class="gradient-text">real and digital.</span>
+        </h1>
 
-<div class="hero-overlay"></div>
-
-<div class="hero-content">
-
-  <div class="hero-copy">
-
-    <h1>
-
-      Designing the space between
-
-      <span class="gradient-text">
-        real and digital.
-      </span>
-
-    </h1>
-
-    <p class="subtitle">
-
-      Senior Real-Time 3D Designer specializing in
-      Unreal Engine, architectural visualization,
-      immersive experiences, virtual production,
-      digital humans, and interactive environments.
-
-    </p>
-
-    <div class="meta">
-
-      Unreal Engine //
-      Real-Time 3D //
-      ArchViz //
-      XR //
-      Virtual Production
-
-    </div>
-
-    <div class="hero-actions">
-
-      <a
-        class="button primary"
-        href="#work"
-      >
-        View Work
-      </a>
-
-      <a
-        class="button"
-        href="./resume.html"
-      >
-        Resume
-      </a>
-
-      <button
-        class="button contact-trigger"
-        type="button"
-      >
-        Contact
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-<div
-  id="loading"
-  class="loading"
->
-  Loading 3D
-</div>
-```
-
-  </section>
-
-  <section
-    id="work"
-    class="section"
-  >
-
-```
-<div class="section-inner">
-
-  <div class="section-kicker">
-    Selected Work
-  </div>
-
-  <h2 class="section-title">
-
-    Real-time experiences,
-    environments,
-    and digital production.
-
-  </h2>
-
-  <p class="section-intro">
-
-    A multidisciplinary body of work spanning Unreal Engine,
-    architectural visualization, immersive design,
-    digital humans, motion capture, virtual production,
-    cinematics, and interactive technology.
-
-  </p>
-
-  <div class="project-grid">
-
-    <article class="project-card">
-
-      <div class="project-number">
-        01 // REAL-TIME
-      </div>
-
-      <div class="project-content">
-
-        <h3>
-          Architectural Visualization
-        </h3>
-
-        <p>
-
-          Interactive Unreal Engine environments,
-          real-time lighting, materials,
-          cinematics, and client-facing
-          architectural experiences.
-
+        <p class="subtitle">
+          Senior Real-Time 3D Designer specializing in
+          Unreal Engine, architectural visualization,
+          immersive experiences, virtual production,
+          digital humans, and interactive environments.
         </p>
 
-      </div>
-
-    </article>
-
-
-    <article class="project-card">
-
-      <div class="project-number">
-        02 // DIGITAL HUMAN
-      </div>
-
-      <div class="project-content">
-
-        <h3>
-          Characters & Motion Capture
-        </h3>
-
-        <p>
-
-          Character design, digital-human workflows,
-          clothing, motion capture, animation,
-          and real-time character integration.
-
-        </p>
-
-      </div>
-
-    </article>
-
-
-    <article class="project-card">
-
-      <div class="project-number">
-        03 // PRODUCTION
-      </div>
-
-      <div class="project-content">
-
-        <h3>
+        <div class="meta">
+          Unreal Engine //
+          Real-Time 3D //
+          ArchViz //
+          XR //
           Virtual Production
-        </h3>
+        </div>
 
-        <p>
-
-          Unreal Engine environments,
-          lighting, cinematography,
-          Sequencer, compositing,
-          VFX, and real-time production pipelines.
-
-        </p>
-
+        <div class="hero-actions">
+          <a class="button primary" href="#work">View Work</a>
+          <a class="button" href="./resume.html">Resume</a>
+          <button class="button contact-trigger" type="button">Contact</button>
+        </div>
       </div>
-
-    </article>
-
-  </div>
-
-</div>
-```
-
-  </section>
-
-  <section
-    id="about"
-    class="section alt"
-  >
-
-```
-<div class="section-inner">
-
-  <div class="section-kicker">
-    About
-  </div>
-
-  <h2 class="section-title">
-
-    Creative design meets
-    technical production.
-
-  </h2>
-
-  <div class="about-grid">
-
-    <div class="about-copy">
-
-      <p>
-
-        I am a multidisciplinary real-time 3D designer
-        with professional experience spanning architectural
-        visualization, interactive development, VR and AR,
-        virtual production, character workflows, UX/UI,
-        motion graphics, cinematography, and digital media.
-
-      </p>
-
-      <p>
-
-        My work combines design, technology,
-        storytelling, and production to transform ideas
-        into interactive environments, cinematic experiences,
-        digital products, and real-time visual systems.
-
-      </p>
-
     </div>
 
-    <div class="skills-panel">
-
-      <h3>
-        Core Tools
-      </h3>
-
-      <div class="skill-list">
-
-        <div class="skill">Unreal Engine</div>
-        <div class="skill">Blender</div>
-        <div class="skill">Revit</div>
-        <div class="skill">Twinmotion</div>
-        <div class="skill">Substance</div>
-        <div class="skill">Marvelous Designer</div>
-        <div class="skill">Maya</div>
-        <div class="skill">3ds Max</div>
-        <div class="skill">ZBrush</div>
-        <div class="skill">Nuke</div>
-        <div class="skill">After Effects</div>
-        <div class="skill">Three.js</div>
-        <div class="skill">Python</div>
-        <div class="skill">C++</div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-```
-
+    <div id="loading" class="loading">Loading 3D</div>
   </section>
 
-  <section
-    id="contact"
-    class="section"
-  >
+  <section id="work" class="section">
+    <div class="section-inner">
+      <div class="section-kicker">Selected Work</div>
 
-```
-<div class="section-inner">
-
-  <div class="contact-box">
-
-    <div class="contact-copy">
-
-      <div class="section-kicker">
-        Contact
-      </div>
-
-      <h2>
-        Build something real-time.
+      <h2 class="section-title">
+        Real-time experiences,
+        environments,
+        and digital production.
       </h2>
 
-      <p>
-
-        Available for senior-level opportunities
-        in Unreal Engine, real-time 3D,
-        architectural visualization,
-        immersive design, and virtual production.
-
+      <p class="section-intro">
+        A multidisciplinary body of work spanning Unreal Engine,
+        architectural visualization, immersive design,
+        digital humans, motion capture, virtual production,
+        cinematics, and interactive technology.
       </p>
 
+      <div class="project-grid">
+        <a class="project-card" href="./archviz.html" aria-label="View Architectural Visualization project section">
+          <div class="project-number">01 // REAL-TIME</div>
+
+          <div class="project-content">
+            <h3>Architectural Visualization</h3>
+            <p>
+              Interactive Unreal Engine environments,
+              real-time lighting, materials,
+              cinematics, and client-facing
+              architectural experiences.
+            </p>
+            <div class="project-link-label">View ArchViz →</div>
+          </div>
+        </a>
+
+        <a class="project-card" href="./DigitalHuman.html" aria-label="View Digital Human project section">
+          <div class="project-number">02 // DIGITAL HUMAN</div>
+
+          <div class="project-content">
+            <h3>Characters & Motion Capture</h3>
+            <p>
+              Character design, digital-human workflows,
+              clothing, motion capture, animation,
+              and real-time character integration.
+            </p>
+            <div class="project-link-label">View Digital Human →</div>
+          </div>
+        </a>
+
+        <a class="project-card" href="./Production.html" aria-label="View Virtual Production project section">
+          <div class="project-number">03 // PRODUCTION</div>
+
+          <div class="project-content">
+            <h3>Virtual Production</h3>
+            <p>
+              Unreal Engine environments,
+              lighting, cinematography,
+              Sequencer, compositing,
+              VFX, and real-time production pipelines.
+            </p>
+            <div class="project-link-label">View Production →</div>
+          </div>
+        </a>
+      </div>
     </div>
+  </section>
 
-    <button
-      class="button primary contact-trigger"
-      type="button"
-    >
-      Get In Touch
-    </button>
+  <section id="about" class="section alt">
+    <div class="section-inner">
+      <div class="section-kicker">About</div>
 
-  </div>
+      <h2 class="section-title">
+        Creative design meets
+        technical production.
+      </h2>
 
-</div>
-```
+      <div class="about-grid">
+        <div class="about-copy">
+          <p>
+            I am a multidisciplinary real-time 3D designer
+            with professional experience spanning architectural
+            visualization, interactive development, VR and AR,
+            virtual production, character workflows, UX/UI,
+            motion graphics, cinematography, and digital media.
+          </p>
 
+          <p>
+            My work combines design, technology,
+            storytelling, and production to transform ideas
+            into interactive environments, cinematic experiences,
+            digital products, and real-time visual systems.
+          </p>
+        </div>
+
+        <div class="skills-panel">
+          <h3>Core Tools</h3>
+
+          <div class="skill-list">
+            <div class="skill">Unreal Engine</div>
+            <div class="skill">Blender</div>
+            <div class="skill">Revit</div>
+            <div class="skill">Twinmotion</div>
+            <div class="skill">Substance</div>
+            <div class="skill">Marvelous Designer</div>
+            <div class="skill">Maya</div>
+            <div class="skill">3ds Max</div>
+            <div class="skill">ZBrush</div>
+            <div class="skill">Nuke</div>
+            <div class="skill">After Effects</div>
+            <div class="skill">Three.js</div>
+            <div class="skill">Python</div>
+            <div class="skill">C++</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="section-inner">
+      <div class="contact-box">
+        <div class="contact-copy">
+          <div class="section-kicker">Contact</div>
+
+          <h2>Build something real-time.</h2>
+
+          <p>
+            Available for senior-level opportunities
+            in Unreal Engine, real-time 3D,
+            architectural visualization,
+            immersive design, and virtual production.
+          </p>
+        </div>
+
+        <button class="button primary contact-trigger" type="button">
+          Get In Touch
+        </button>
+      </div>
+    </div>
   </section>
 
   <div
@@ -1334,152 +942,69 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     aria-labelledby="contact-modal-title"
     aria-hidden="true"
   >
+    <div class="contact-backdrop" data-contact-close></div>
 
-```
-<div
-  class="contact-backdrop"
-  data-contact-close
-></div>
+    <div class="contact-panel">
+      <button id="contact-close" class="contact-close" type="button" aria-label="Close contact panel">×</button>
 
-<div class="contact-panel">
+      <div class="contact-panel-kicker">Let's Connect</div>
 
-  <button
-    id="contact-close"
-    class="contact-close"
-    type="button"
-    aria-label="Close contact panel"
-  >
-    ×
-  </button>
+      <h2 id="contact-modal-title">
+        Start a
+        <span class="gradient-text">conversation.</span>
+      </h2>
 
-  <div class="contact-panel-kicker">
-    Let's Connect
-  </div>
+      <p class="contact-panel-intro">
+        For opportunities, collaborations,
+        real-time 3D projects, or professional inquiries,
+        choose the contact method that works best for you.
+      </p>
 
-  <h2
-    id="contact-modal-title"
-  >
+      <div class="contact-options">
+        <a class="contact-option" href="mailto:JamesPrestonCardona@gmail.com">
+          <div class="contact-option-icon">@</div>
 
-    Start a
+          <div class="contact-option-content">
+            <div class="contact-option-label">Email</div>
+            <div class="contact-option-value">JamesPrestonCardona@gmail.com</div>
+          </div>
 
-    <span class="gradient-text">
-      conversation.
-    </span>
+          <div class="contact-option-arrow">→</div>
+        </a>
 
-  </h2>
+        <a
+          class="contact-option"
+          href="https://www.linkedin.com/in/jamesprestoncardona/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="contact-option-icon">in</div>
 
-  <p class="contact-panel-intro">
+          <div class="contact-option-content">
+            <div class="contact-option-label">LinkedIn</div>
+            <div class="contact-option-value">linkedin.com/in/jamesprestoncardona</div>
+          </div>
 
-    For opportunities, collaborations,
-    real-time 3D projects, or professional inquiries,
-    choose the contact method that works best for you.
+          <div class="contact-option-arrow">→</div>
+        </a>
 
-  </p>
+        <a class="contact-option" href="tel:+12148839567">
+          <div class="contact-option-icon">☎</div>
 
-  <div class="contact-options">
+          <div class="contact-option-content">
+            <div class="contact-option-label">Telephone</div>
+            <div class="contact-option-value">(214) 883-9567</div>
+          </div>
 
-    <a
-      class="contact-option"
-      href="mailto:JamesPrestonCardona@gmail.com"
-    >
-
-      <div class="contact-option-icon">
-        @
+          <div class="contact-option-arrow">→</div>
+        </a>
       </div>
 
-      <div class="contact-option-content">
-
-        <div class="contact-option-label">
-          Email
-        </div>
-
-        <div class="contact-option-value">
-          JamesPrestonCardona@gmail.com
-        </div>
-
+      <div class="contact-panel-footer">
+        <span>Dallas, Texas</span>
+        <span>JamesPrestonCardona.com</span>
       </div>
-
-      <div class="contact-option-arrow">
-        →
-      </div>
-
-    </a>
-
-
-    <a
-      class="contact-option"
-      href="https://www.linkedin.com/in/jamesprestoncardona/"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-
-      <div class="contact-option-icon">
-        in
-      </div>
-
-      <div class="contact-option-content">
-
-        <div class="contact-option-label">
-          LinkedIn
-        </div>
-
-        <div class="contact-option-value">
-          linkedin.com/in/jamesprestoncardona
-        </div>
-
-      </div>
-
-      <div class="contact-option-arrow">
-        →
-      </div>
-
-    </a>
-
-
-    <a
-      class="contact-option"
-      href="tel:+12148839567"
-    >
-
-      <div class="contact-option-icon">
-        ☎
-      </div>
-
-      <div class="contact-option-content">
-
-        <div class="contact-option-label">
-          Telephone
-        </div>
-
-        <div class="contact-option-value">
-          (214) 883-9567
-        </div>
-
-      </div>
-
-      <div class="contact-option-arrow">
-        →
-      </div>
-
-    </a>
-
-  </div>
-
-  <div class="contact-panel-footer">
-
-    <span>
-      Dallas, Texas
-    </span>
-
-    <span>
-      JamesPrestonCardona.com
-    </span>
-
-  </div>
-
-</div>
-```
-
+    </div>
   </div>
 
   <script type="importmap">
@@ -1492,1123 +1017,701 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
   </script>
 
   <script>
+    const contactModal = document.getElementById("contact-modal");
+    const contactClose = document.getElementById("contact-close");
+    const contactTriggers = document.querySelectorAll(".contact-trigger");
 
-    const contactModal =
-      document.getElementById(
-        "contact-modal"
-      );
-
-    const contactClose =
-      document.getElementById(
-        "contact-close"
-      );
-
-    const contactTriggers =
-      document.querySelectorAll(
-        ".contact-trigger"
-      );
-
-    let previousFocus =
-      null;
-
+    let previousFocus = null;
 
     function openContactPanel() {
+      previousFocus = document.activeElement;
+      contactModal.classList.add("open");
+      contactModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("contact-open");
 
-      previousFocus =
-        document.activeElement;
-
-      contactModal.classList.add(
-        "open"
-      );
-
-      contactModal.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-      document.body.classList.add(
-        "contact-open"
-      );
-
-      setTimeout(
-        function () {
-          contactClose.focus();
-        },
-        50
-      );
-
+      setTimeout(function () {
+        contactClose.focus();
+      }, 50);
     }
 
-
     function closeContactPanel() {
-
-      contactModal.classList.remove(
-        "open"
-      );
-
-      contactModal.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-      document.body.classList.remove(
-        "contact-open"
-      );
+      contactModal.classList.remove("open");
+      contactModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("contact-open");
 
       if (
         previousFocus &&
-        typeof previousFocus.focus ===
-        "function"
+        typeof previousFocus.focus === "function"
       ) {
         previousFocus.focus();
       }
-
     }
 
+    contactTriggers.forEach(function (trigger) {
+      trigger.addEventListener("click", openContactPanel);
+    });
 
-    contactTriggers.forEach(
+    contactClose.addEventListener("click", closeContactPanel);
 
-      function (
-        trigger
+    document.querySelectorAll("[data-contact-close]").forEach(function (element) {
+      element.addEventListener("click", closeContactPanel);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (
+        event.key === "Escape" &&
+        contactModal.classList.contains("open")
       ) {
-
-        trigger.addEventListener(
-          "click",
-          openContactPanel
-        );
-
+        closeContactPanel();
       }
-
-    );
-
-
-    contactClose.addEventListener(
-      "click",
-      closeContactPanel
-    );
-
-
-    document
-      .querySelectorAll(
-        "[data-contact-close]"
-      )
-      .forEach(
-
-        function (
-          element
-        ) {
-
-          element.addEventListener(
-            "click",
-            closeContactPanel
-          );
-
-        }
-
-      );
-
-
-    document.addEventListener(
-
-      "keydown",
-
-      function (
-        event
-      ) {
-
-        if (
-          event.key === "Escape" &&
-          contactModal.classList.contains(
-            "open"
-          )
-        ) {
-          closeContactPanel();
-        }
-
-      }
-
-    );
-
+    });
   </script>
 
   <script type="module">
-
-    import * as THREE
-      from "three";
-
-    import {
-      GLTFLoader
-    }
-      from "three/addons/loaders/GLTFLoader.js";
-
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
     const CONFIG = {
-
-      modelPath:
-        "./logo.glb",
-
-      targetSize:
-        2.8,
-
-      cameraZ:
-        6,
-
-      desktopX:
-        1.9,
-
-      desktopY:
-        2.75,
-
-      mobileX:
-        0,
-
-      mobileY:
-        1.85,
-
-      baseRotationX:
-        -8,
-
-      baseRotationY:
-        -25
-
+      modelPath: "./logo.glb",
+      targetSize: 3.0,
+      cameraZ: 6,
+      desktopX: 0,
+      desktopY: 0.20,
+      mobileX: 0,
+      mobileY: 1.30,
+      baseRotationX: -8,
+      baseRotationY: -25
     };
 
+    const container = document.getElementById("three-container");
+    const loading = document.getElementById("loading");
 
-    const container =
-      document.getElementById(
-        "three-container"
-      );
+    const scene = new THREE.Scene();
 
-
-    const loading =
-      document.getElementById(
-        "loading"
-      );
-
-
-    const scene =
-      new THREE.Scene();
-
-
-    const camera =
-      new THREE.PerspectiveCamera(
-
-        40,
-
-        window.innerWidth /
-        window.innerHeight,
-
-        0.01,
-
-        1000
-
-      );
-
-
-    camera.position.set(
-      0,
-      0,
-      CONFIG.cameraZ
+    const camera = new THREE.PerspectiveCamera(
+      40,
+      window.innerWidth / window.innerHeight,
+      0.01,
+      1000
     );
 
+    camera.position.set(0, 0, CONFIG.cameraZ);
+    camera.lookAt(0, 0, 0);
 
-    camera.lookAt(
-      0,
-      0,
-      0
-    );
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance"
+    });
 
+    function pixelRatio() {
+      if (window.innerWidth < 768) {
+        return Math.min(window.devicePixelRatio, 1.5);
+      }
 
-    const renderer =
-      new THREE.WebGLRenderer({
+      return Math.min(window.devicePixelRatio, 2);
+    }
 
-        antialias:
-          true,
+    renderer.setPixelRatio(pixelRatio());
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    renderer.setClearColor(0x000000, 0);
 
-        alpha:
-          true,
+    container.appendChild(renderer.domElement);
 
-        powerPreference:
-          "high-performance"
+    const ambient = new THREE.AmbientLight(0xffffff, 1.9);
+    scene.add(ambient);
 
+    const hemisphere = new THREE.HemisphereLight(0xffffff, 0x251436, 1.8);
+    scene.add(hemisphere);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+    keyLight.position.set(4, 5, 6);
+    scene.add(keyLight);
+
+    const magentaLight = new THREE.PointLight(0xff25d0, 7, 20);
+    magentaLight.position.set(4, 2, 4);
+    scene.add(magentaLight);
+
+    const purpleLight = new THREE.PointLight(0x6437ff, 7, 20);
+    purpleLight.position.set(-4, 2, 3);
+    scene.add(purpleLight);
+
+    const logoRoot = new THREE.Group();
+    scene.add(logoRoot);
+
+    const logoPivot = new THREE.Group();
+    logoRoot.add(logoPivot);
+
+    let logo = null;
+
+    const loader = new GLTFLoader();
+
+    const logoCandidates = [
+      "./logo.glb",
+      "/logo.glb",
+      "https://jamesprestoncardona.com/logo.glb"
+    ];
+
+    function finishLogoSetup(gltf) {
+      logo = gltf.scene;
+      logoPivot.add(logo);
+      logo.updateMatrixWorld(true);
+
+      const box = new THREE.Box3().setFromObject(logo);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      const largestDimension = Math.max(
+        size.x,
+        size.y,
+        size.z
+      );
+
+      if (
+        !Number.isFinite(largestDimension) ||
+        largestDimension <= 0
+      ) {
+        loading.textContent = "Invalid 3D model";
+        return;
+      }
+
+      logo.position.sub(center);
+
+      const scale =
+        CONFIG.targetSize /
+        largestDimension;
+
+      logoPivot.scale.setScalar(scale);
+
+      logo.traverse(function (object) {
+        if (!object.isMesh) {
+          return;
+        }
+
+        object.visible = true;
+        object.frustumCulled = false;
+
+        const materials =
+          Array.isArray(object.material)
+            ? object.material
+            : [object.material];
+
+        materials.forEach(function (material) {
+          if (!material) {
+            return;
+          }
+
+          material.transparent = false;
+          material.opacity = 1;
+          material.alphaTest = 0;
+          material.depthWrite = true;
+          material.depthTest = true;
+          material.side = THREE.DoubleSide;
+          material.needsUpdate = true;
+        });
       });
 
 
-    function pixelRatio() {
-
-      if (
-        window.innerWidth <
-        768
-      ) {
-
-        return Math.min(
-          window.devicePixelRatio,
-          1.5
+      logoRoot.rotation.x =
+        THREE.MathUtils.degToRad(
+          CONFIG.baseRotationX
         );
 
-      }
+      logoRoot.rotation.y =
+        THREE.MathUtils.degToRad(
+          CONFIG.baseRotationY
+        );
 
+      positionLogo();
 
-      return Math.min(
-        window.devicePixelRatio,
-        2
-      );
+      loading.textContent = "3D Loaded";
 
+      setTimeout(function () {
+        loading.style.display = "none";
+      }, 700);
     }
 
-
-    renderer.setPixelRatio(
-      pixelRatio()
-    );
-
-
-    renderer.setSize(
-      window.innerWidth,
-      window.innerHeight
-    );
-
-
-    renderer.outputColorSpace =
-      THREE.SRGBColorSpace;
-
-
-    renderer.toneMapping =
-      THREE.ACESFilmicToneMapping;
-
-
-    renderer.toneMappingExposure =
-      1.15;
-
-
-    renderer.setClearColor(
-      0x000000,
-      0
-    );
-
-
-    container.appendChild(
-      renderer.domElement
-    );
-
-
-    const ambient =
-      new THREE.AmbientLight(
-        0xffffff,
-        2.1
-      );
-
-
-    scene.add(
-      ambient
-    );
-
-
-    const hemisphere =
-      new THREE.HemisphereLight(
-        0xffffff,
-        0x251436,
-        2.0
-      );
-
-
-    scene.add(
-      hemisphere
-    );
-
-
-    const keyLight =
-      new THREE.DirectionalLight(
-        0xffffff,
-        4.0
-      );
-
-
-    keyLight.position.set(
-      4,
-      5,
-      6
-    );
-
-
-    scene.add(
-      keyLight
-    );
-
-
-    const magentaLight =
-      new THREE.PointLight(
-        0xff25d0,
-        8,
-        20
-      );
-
-
-    magentaLight.position.set(
-      4,
-      2,
-      4
-    );
-
-
-    scene.add(
-      magentaLight
-    );
-
-
-    const purpleLight =
-      new THREE.PointLight(
-        0x6437ff,
-        8,
-        20
-      );
-
-
-    purpleLight.position.set(
-      -4,
-      2,
-      3
-    );
-
-
-    scene.add(
-      purpleLight
-    );
-
-
-    const logoRoot =
-      new THREE.Group();
-
-
-    scene.add(
-      logoRoot
-    );
-
-
-    const logoPivot =
-      new THREE.Group();
-
-
-    logoRoot.add(
-      logoPivot
-    );
-
-
-    let logo =
-      null;
-
-
-    const loader =
-      new GLTFLoader();
-
-
-    loader.load(
-
-      CONFIG.modelPath,
-
-
-      function (
-        gltf
+    function loadLogoCandidate(index) {
+      if (
+        index >=
+        logoCandidates.length
       ) {
-
-
-        logo =
-          gltf.scene;
-
-
-        logoPivot.add(
-          logo
-        );
-
-
-        logo.updateMatrixWorld(
-          true
-        );
-
-
-        const box =
-          new THREE.Box3()
-            .setFromObject(
-              logo
-            );
-
-
-        const center =
-          box.getCenter(
-            new THREE.Vector3()
-          );
-
-
-        const size =
-          box.getSize(
-            new THREE.Vector3()
-          );
-
-
-        const largestDimension =
-          Math.max(
-            size.x,
-            size.y,
-            size.z
-          );
-
-
-        if (
-
-          !Number.isFinite(
-            largestDimension
-          )
-
-          ||
-
-          largestDimension <= 0
-
-        ) {
-
-          loading.textContent =
-            "Invalid 3D model";
-
-          return;
-
-        }
-
-
-        logo.position.sub(
-          center
-        );
-
-
-        const scale =
-          CONFIG.targetSize /
-          largestDimension;
-
-
-        logoPivot.scale.setScalar(
-          scale
-        );
-
-
-        logo.traverse(
-
-          function (
-            object
-          ) {
-
-
-            if (
-              !object.isMesh
-            ) {
-
-              return;
-
-            }
-
-
-            object.visible =
-              true;
-
-
-            object.frustumCulled =
-              false;
-
-
-            const materials =
-
-              Array.isArray(
-                object.material
-              )
-
-                ?
-
-                object.material
-
-                :
-
-                [
-                  object.material
-                ];
-
-
-            materials.forEach(
-
-              function (
-                material
-              ) {
-
-
-                if (
-                  !material
-                ) {
-
-                  return;
-
-                }
-
-
-                material.transparent =
-                  false;
-
-
-                material.opacity =
-                  1;
-
-
-                material.alphaTest =
-                  0;
-
-
-                material.depthWrite =
-                  true;
-
-
-                material.depthTest =
-                  true;
-
-
-                material.side =
-                  THREE.DoubleSide;
-
-
-                material.needsUpdate =
-                  true;
-
-
-              }
-
-            );
-
-
-          }
-
-        );
-
-
-        logoRoot.rotation.x =
-          THREE.MathUtils.degToRad(
-            CONFIG.baseRotationX
-          );
-
-
-        logoRoot.rotation.y =
-          THREE.MathUtils.degToRad(
-            CONFIG.baseRotationY
-          );
-
-
-        positionLogo();
-
-
-        loading.textContent =
-          "3D Loaded";
-
-
-        setTimeout(
-
-          function () {
-
-            loading.style.display =
-              "none";
-
-          },
-
-          700
-
-        );
-
-
-      },
-
-
-      function (
-        event
-      ) {
-
-
-        if (
-          event.total >
-          0
-        ) {
-
-
-          const progress =
-            Math.round(
-
-              event.loaded /
-              event.total *
-              100
-
-            );
-
-
-          loading.textContent =
-            "Loading 3D " +
-            progress +
-            "%";
-
-
-        }
-
-
-      },
-
-
-      function (
-        error
-      ) {
-
-
         console.error(
-          "ERROR loading logo.glb:",
-          error
+          "All logo.glb paths failed:",
+          logoCandidates
         );
-
 
         loading.textContent =
           "3D load error";
 
-
+        return;
       }
 
-    );
+      const candidate =
+        logoCandidates[index];
 
+      console.log(
+        "Trying logo:",
+        candidate
+      );
 
-    function positionLogo() {
+      loader.load(
+        candidate,
 
+        function (gltf) {
+          console.log(
+            "Loaded logo from:",
+            candidate
+          );
 
-      if (
-        window.innerWidth <
-        768
-      ) {
+          finishLogoSetup(gltf);
+        },
 
+        function (event) {
+          if (event.total > 0) {
+            const progress =
+              Math.round(
+                event.loaded /
+                event.total *
+                100
+              );
 
-        logoRoot.position.set(
+            loading.textContent =
+              "Loading 3D " +
+              progress +
+              "%";
+          }
+        },
 
-          CONFIG.mobileX,
+        function (error) {
+          console.warn(
+            "Logo path failed:",
+            candidate,
+            error
+          );
 
-          CONFIG.mobileY,
-
-          0
-
-        );
-
-
-      }
-
-
-      else {
-
-
-        logoRoot.position.set(
-
-          CONFIG.desktopX,
-
-          CONFIG.desktopY,
-
-          0
-
-        );
-
-
-      }
-
-
+          loadLogoCandidate(
+            index + 1
+          );
+        }
+      );
     }
 
+    loadLogoCandidate(0);
+
+    function positionLogo() {
+      if (window.innerWidth < 768) {
+        logoRoot.position.set(
+          CONFIG.mobileX,
+          CONFIG.mobileY,
+          0
+        );
+      } else {
+        logoRoot.position.set(
+          CONFIG.desktopX,
+          CONFIG.desktopY,
+          0
+        );
+      }
+    }
 
     positionLogo();
 
-
-    const pointer =
-      new THREE.Vector2();
-
+    const pointer = new THREE.Vector2();
 
     window.addEventListener(
-
       "pointermove",
 
-      function (
-        event
-      ) {
-
-
-        if (
-          window.innerWidth <
-          768
-        ) {
-
+      function (event) {
+        if (window.innerWidth < 768) {
           return;
-
         }
 
-
         pointer.x =
-
           (
             event.clientX /
             window.innerWidth
           )
-
           *
           2
-
           -
           1;
 
-
         pointer.y =
-
           (
             event.clientY /
             window.innerHeight
           )
-
           *
           2
-
           -
           1;
-
-
       },
 
       {
-        passive:
-          true
+        passive: true
+      }
+    );
+
+    function createParticleField(options) {
+      const count = options.count;
+      const positions = new Float32Array(count * 3);
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+        const p = i * 3;
+
+        positions[p] =
+          (
+            Math.random() -
+            0.5
+          )
+          *
+          options.spreadX;
+
+        positions[p + 1] =
+          (
+            Math.random() -
+            0.5
+          )
+          *
+          options.spreadY;
+
+        positions[p + 2] =
+          (
+            Math.random() -
+            0.5
+          )
+          *
+          options.spreadZ;
       }
 
-    );
+      const geometry =
+        new THREE.BufferGeometry();
 
-
-    const particleCount =
-
-      window.innerWidth <
-      768
-
-        ?
-
-        180
-
-        :
-
-        650;
-
-
-    const positions =
-      new Float32Array(
-        particleCount *
-        3
+      geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(
+          positions,
+          3
+        )
       );
 
+      const material =
+        new THREE.PointsMaterial({
+          size: options.size,
+          color: options.color,
+          transparent: true,
+          opacity: options.opacity,
+          depthWrite: false,
+          blending: options.additive
+            ? THREE.AdditiveBlending
+            : THREE.NormalBlending,
+          sizeAttenuation: true
+        });
 
-    for (
-      let i = 0;
-      i < particleCount;
-      i++
-    ) {
+      const field =
+        new THREE.Points(
+          geometry,
+          material
+        );
 
+      scene.add(field);
 
-      const p =
-        i *
-        3;
-
-
-      positions[p] =
-        (
-          Math.random() -
-          0.5
-        )
-        *
-        18;
-
-
-      positions[p + 1] =
-        (
-          Math.random() -
-          0.5
-        )
-        *
-        11;
-
-
-      positions[p + 2] =
-        (
-          Math.random() -
-          0.5
-        )
-        *
-        14;
-
-
+      return field;
     }
 
-
-    const particleGeometry =
-      new THREE.BufferGeometry();
-
-
-    particleGeometry.setAttribute(
-
-      "position",
-
-      new THREE.BufferAttribute(
-        positions,
-        3
-      )
-
-    );
-
-
-    const particleMaterial =
-      new THREE.PointsMaterial({
-
+    const particles =
+      createParticleField({
+        count:
+          window.innerWidth < 768
+            ? 260
+            : 1050,
+        spreadX: 18,
+        spreadY: 11,
+        spreadZ: 14,
         size:
-          0.012,
+          window.innerWidth < 768
+            ? 0.014
+            : 0.013,
+        color: 0xa66cff,
+        opacity: 0.24,
+        additive: false
+      });
 
-        color:
-          0xa66cff,
+    const glowParticles =
+      createParticleField({
+        count:
+          window.innerWidth < 768
+            ? 55
+            : 170,
+        spreadX: 15,
+        spreadY: 9,
+        spreadZ: 11,
+        size:
+          window.innerWidth < 768
+            ? 0.032
+            : 0.038,
+        color: 0xff4fd8,
+        opacity: 0.18,
+        additive: true
+      });
 
-        transparent:
-          true,
-
-        opacity:
-          0.18,
-
-        depthWrite:
-          false
-
+    const deepParticles =
+      createParticleField({
+        count:
+          window.innerWidth < 768
+            ? 90
+            : 280,
+        spreadX: 21,
+        spreadY: 13,
+        spreadZ: 18,
+        size:
+          window.innerWidth < 768
+            ? 0.010
+            : 0.009,
+        color: 0x6a47ff,
+        opacity: 0.16,
+        additive: true
       });
 
 
-    const particles =
-      new THREE.Points(
-        particleGeometry,
-        particleMaterial
-      );
 
-
-    scene.add(
-      particles
-    );
-
-
-    const clock =
-      new THREE.Clock();
-
+    const clock = new THREE.Clock();
 
     const reducedMotion =
       window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       );
 
-
     function animate() {
-
-
       requestAnimationFrame(
         animate
       );
 
-
       const elapsed =
         clock.getElapsedTime();
 
-
       if (
-        logo
+        !reducedMotion.matches
       ) {
+        particles.rotation.y =
+          elapsed *
+          0.010;
 
+        particles.rotation.x =
+          Math.sin(
+            elapsed *
+            0.12
+          )
+          *
+          0.022;
 
+        glowParticles.rotation.y =
+          -elapsed *
+          0.014;
+
+        glowParticles.rotation.z =
+          Math.sin(
+            elapsed *
+            0.18
+          )
+          *
+          0.028;
+
+        glowParticles.position.x =
+          pointer.x *
+          0.10;
+
+        glowParticles.position.y =
+          -pointer.y *
+          0.07;
+
+        deepParticles.rotation.y =
+          elapsed *
+          0.004;
+
+        deepParticles.rotation.x =
+          -elapsed *
+          0.0025;
+
+      }
+
+      if (logo) {
         const baseX =
           THREE.MathUtils.degToRad(
             CONFIG.baseRotationX
           );
-
 
         const baseY =
           THREE.MathUtils.degToRad(
             CONFIG.baseRotationY
           );
 
-
         if (
           !reducedMotion.matches
         ) {
-
-
           if (
             window.innerWidth <
             768
           ) {
-
-
             logoRoot.rotation.x =
               baseX
               +
               Math.sin(
                 elapsed *
-                0.45
+                0.55
               )
               *
-              0.025;
-
+              0.04;
 
             logoRoot.rotation.y =
               baseY
               +
               Math.sin(
                 elapsed *
-                0.30
+                0.38
               )
               *
-              0.06;
+              0.10;
 
+            logoRoot.rotation.z =
+              Math.sin(
+                elapsed *
+                0.31
+              )
+              *
+              0.018;
 
             logoRoot.position.y =
               CONFIG.mobileY
               +
               Math.sin(
                 elapsed *
-                0.55
+                0.62
               )
               *
-              0.045;
-
-
-          }
-
-
-          else {
-
-
+              0.055;
+          } else {
             const targetX =
               baseX
               -
               pointer.y *
-              0.09;
-
+              0.19;
 
             const targetY =
               baseY
               +
               pointer.x *
-              0.16;
+              0.34;
 
+            const targetZ =
+              pointer.x *
+              0.055;
 
             logoRoot.rotation.x =
               THREE.MathUtils.lerp(
                 logoRoot.rotation.x,
                 targetX,
-                0.035
+                0.085
               );
-
 
             logoRoot.rotation.y =
               THREE.MathUtils.lerp(
                 logoRoot.rotation.y,
                 targetY,
-                0.035
+                0.085
               );
 
+            logoRoot.rotation.z =
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.z,
+                targetZ,
+                0.07
+              );
+
+            logoRoot.position.x =
+              THREE.MathUtils.lerp(
+                logoRoot.position.x,
+                CONFIG.desktopX +
+                pointer.x *
+                0.10,
+                0.055
+              );
 
             logoRoot.position.y =
-              CONFIG.desktopY
-              +
-              Math.sin(
-                elapsed *
-                0.55
-              )
-              *
-              0.055;
-
-
+              THREE.MathUtils.lerp(
+                logoRoot.position.y,
+                CONFIG.desktopY
+                +
+                pointer.y *
+                0.06
+                +
+                Math.sin(
+                  elapsed *
+                  0.65
+                )
+                *
+                0.06,
+                0.07
+              );
           }
-
-
-          particles.rotation.y =
-            elapsed *
-            0.006;
-
-
         }
-
-
       }
-
 
       renderer.render(
         scene,
         camera
       );
-
-
     }
-
 
     animate();
 
-
     let resizeTimer;
 
-
     window.addEventListener(
-
       "resize",
 
       function () {
-
-
         clearTimeout(
           resizeTimer
         );
 
-
         resizeTimer =
-
           setTimeout(
-
             function () {
-
-
               camera.aspect =
                 window.innerWidth /
                 window.innerHeight;
 
-
               camera.updateProjectionMatrix();
-
 
               renderer.setSize(
                 window.innerWidth,
                 window.innerHeight
               );
 
-
               renderer.setPixelRatio(
                 pixelRatio()
               );
 
-
               positionLogo();
-
-
             },
-
             70
-
           );
-
-
       },
 
       {
-        passive:
-          true
+        passive: true
       }
-
     );
-
-
   </script>
 
 </body>
-
 </html>
