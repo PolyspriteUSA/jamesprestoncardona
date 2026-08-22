@@ -225,6 +225,21 @@ canvas{display:block}
   .healthbar{width:88px}
   #dashMeter{width:140px}
 }
+
+.pickup-label{
+  position:absolute;
+  z-index:10;
+  padding:3px 6px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:7px;
+  background:rgba(5,5,8,.74);
+  color:#fff;
+  font-size:8px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+
 </style>
 </head>
 <body>
@@ -257,6 +272,7 @@ canvas{display:block}
 <div id="dashMeter">
   <small>Dash</small>
   <div class="dash-track"><div id="dashFill"></div></div>
+  <small id="pickupStatus" style="margin-top:8px">No active pickup</small>
 </div>
 
 <div class="overlay" id="startScreen">
@@ -676,7 +692,7 @@ function buildSpider(){
   );
 
   body.scale.set(1.02,.52,1.08);
-  body.position.y=.68;
+  body.position.y=1.02;
   g.add(body);
 
   const core=new THREE.Mesh(
@@ -684,7 +700,7 @@ function buildSpider(){
     Math.random()>.5?matViolet:matMagenta
   );
 
-  core.position.set(0,.70,.50);
+  core.position.set(0,1.06,.50);
   g.add(core);
 
   const legPivots=[];
@@ -693,31 +709,31 @@ function buildSpider(){
     for(let i=0;i<4;i++){
       const pivot=new THREE.Group();
       pivot.position.set(
-        side*.42,
-        .60,
-        (i-1.5)*.34
+        side*.46,
+        .86,
+        (i-1.5)*.36
       );
 
       const upper=new THREE.Mesh(
-        new THREE.BoxGeometry(1.12,.075,.075),
+        new THREE.BoxGeometry(1.28,.075,.075),
         matGraphite
       );
 
-      upper.position.x=side*.58;
+      upper.position.x=side*.66;
       pivot.add(upper);
 
       const lower=new THREE.Mesh(
-        new THREE.BoxGeometry(1.10,.07,.07),
+        new THREE.BoxGeometry(1.28,.07,.07),
         matGraphite
       );
 
       lower.position.set(
-        side*1.62,
-        -.38,
+        side*1.88,
+        -.54,
         0
       );
 
-      lower.rotation.z=side*.84;
+      lower.rotation.z=side*.90;
       pivot.add(lower);
 
       legPivots.push(pivot);
@@ -737,6 +753,7 @@ function buildSpider(){
 const spiders=[];
 const bullets=[];
 const particles=[];
+const pickups=[];
 const keys={};
 
 let running=false;
@@ -749,6 +766,9 @@ let spawnCooldown=0;
 let dashCooldown=0;
 let dashTime=0;
 let hitCooldown=0;
+let powerShotTime=0;
+let nextHealthPickupKill=0;
+let nextPowerPickupKill=0;
 const MAX_HEALTH=100;
 const DAMAGE_PER_HIT=20;
 let aimPoint=new THREE.Vector3(0,0,-5);
@@ -835,6 +855,193 @@ function spawnBurst(position){
   }
 }
 
+function randomInt(min,max){
+  return (
+    Math.floor(
+      Math.random()*
+      (max-min+1)
+    )+
+    min
+  );
+}
+
+function spawnHealthPickup(position){
+  const group=new THREE.Group();
+
+  const material=
+    new THREE.MeshStandardMaterial({
+      color:0x173f2f,
+      emissive:0x45ff9a,
+      emissiveIntensity:3.0,
+      metalness:.42,
+      roughness:.22
+    });
+
+  const core=new THREE.Mesh(
+    new THREE.OctahedronGeometry(.34,0),
+    material
+  );
+
+  group.add(core);
+
+  const ring=new THREE.Mesh(
+    new THREE.TorusGeometry(.50,.06,8,28),
+    material
+  );
+
+  ring.rotation.x=Math.PI/2;
+  group.add(ring);
+
+  group.position.copy(position);
+  group.position.y=.72;
+
+  group.userData.type="health";
+  group.userData.life=12;
+  group.userData.phase=Math.random()*Math.PI*2;
+
+  scene.add(group);
+  pickups.push(group);
+}
+
+function spawnPowerPickup(position){
+  const group=new THREE.Group();
+
+  const outer=new THREE.Mesh(
+    new THREE.OctahedronGeometry(.56,0),
+    matMagenta
+  );
+
+  group.add(outer);
+
+  const inner=new THREE.Mesh(
+    new THREE.BoxGeometry(.34,.34,.34),
+    matViolet
+  );
+
+  inner.rotation.set(.35,.45,.2);
+  group.add(inner);
+
+  const ringA=new THREE.Mesh(
+    new THREE.TorusGeometry(.72,.07,8,32),
+    matMagenta
+  );
+
+  ringA.rotation.x=Math.PI/2;
+  group.add(ringA);
+
+  const ringB=new THREE.Mesh(
+    new THREE.TorusGeometry(.58,.05,8,32),
+    matViolet
+  );
+
+  ringB.rotation.y=Math.PI/2;
+  group.add(ringB);
+
+  group.scale.setScalar(1.18);
+  group.position.copy(position);
+  group.position.y=.90;
+
+  group.userData.type="power";
+  group.userData.life=14;
+  group.userData.phase=Math.random()*Math.PI*2;
+
+  scene.add(group);
+  pickups.push(group);
+}
+
+function maybeSpawnKillPickup(position){
+  if(
+    score>=nextHealthPickupKill
+  ){
+    spawnHealthPickup(position);
+
+    nextHealthPickupKill=
+      score+
+      randomInt(4,9);
+  }
+
+  if(
+    score>=nextPowerPickupKill
+  ){
+    spawnPowerPickup(position);
+
+    nextPowerPickupKill=
+      score+
+      randomInt(7,13);
+  }
+}
+
+function collectPickup(pickup){
+  const type=pickup.userData.type;
+
+  if(type==="health"){
+    health=
+      Math.min(
+        MAX_HEALTH,
+        health+35
+      );
+
+    $("pickupStatus").textContent=
+      "Repair +35";
+  }
+
+  if(type==="power"){
+    powerShotTime=10;
+
+    $("pickupStatus").textContent=
+      "Heavy Firepower 10s";
+  }
+
+  updateHud();
+}
+
+function updatePickups(dt,time){
+  for(
+    let i=pickups.length-1;
+    i>=0;
+    i--
+  ){
+    const pickup=pickups[i];
+
+    pickup.userData.life-=dt;
+
+    pickup.rotation.y+=dt*2.2;
+    pickup.rotation.x=
+      Math.sin(
+        time*2+
+        pickup.userData.phase
+      )*.16;
+
+    pickup.position.y=
+      (
+        pickup.userData.type==="power"
+          ?.90
+          :.72
+      )+
+      Math.sin(
+        time*3+
+        pickup.userData.phase
+      )*.10;
+
+    if(
+      pickup.position.distanceTo(
+        player.position
+      )<1.35
+    ){
+      collectPickup(pickup);
+      scene.remove(pickup);
+      pickups.splice(i,1);
+      continue;
+    }
+
+    if(pickup.userData.life<=0){
+      scene.remove(pickup);
+      pickups.splice(i,1);
+    }
+  }
+}
+
+
 function fireBullet(){
   const muzzles=
     player.userData.muzzles||[];
@@ -864,7 +1071,13 @@ function fireBullet(){
     );
 
     const bullet=new THREE.Mesh(
-      new THREE.SphereGeometry(.07,8,6),
+      new THREE.SphereGeometry(
+        powerShotTime>0
+          ?.14
+          :.07,
+        10,
+        8
+      ),
       index%2
         ?matViolet
         :matMagenta
@@ -886,7 +1099,13 @@ function fireBullet(){
     velocity.z+=
       baseDirection.x*spread;
 
-    velocity.normalize().multiplyScalar(18);
+    velocity
+      .normalize()
+      .multiplyScalar(
+        powerShotTime>0
+          ?24
+          :18
+      );
 
     scene.add(bullet);
 
@@ -954,6 +1173,10 @@ function resetGame(){
     particle=>scene.remove(particle.mesh)
   );
 
+  pickups.splice(0).forEach(
+    pickup=>scene.remove(pickup)
+  );
+
   player.position.set(0,.02,1);
 
   score=0;
@@ -964,6 +1187,13 @@ function resetGame(){
   dashCooldown=0;
   dashTime=0;
   hitCooldown=0;
+  powerShotTime=0;
+  nextHealthPickupKill=
+    randomInt(4,8);
+  nextPowerPickupKill=
+    randomInt(7,12);
+  $("pickupStatus").textContent=
+    "No active pickup";
 
   updateHud();
 
@@ -1128,8 +1358,6 @@ function updatePlayer(dt){
       );
 
     player.rotation.y=angle;
-
-    player.userData.gunPivot.rotation.y=0;
   }
 
   dashTime=
@@ -1149,6 +1377,22 @@ function updatePlayer(dt){
       0,
       hitCooldown-dt
     );
+
+  powerShotTime=
+    Math.max(
+      0,
+      powerShotTime-dt
+    );
+
+  if(powerShotTime<=0){
+    $("pickupStatus").textContent=
+      "No active pickup";
+  }else{
+    $("pickupStatus").textContent=
+      "Heavy Firepower "+
+      powerShotTime.toFixed(1)+
+      "s";
+  }
 }
 
 function updateSpiders(dt,time){
@@ -1184,7 +1428,7 @@ function updateSpiders(dt,time){
       );
 
     spider.position.y=
-      .02+
+      .22+
       Math.sin(
         time*8+
         spider.userData.phase
@@ -1201,7 +1445,7 @@ function updateSpiders(dt,time){
       }
     );
 
-    if(distance<.95){
+    if(distance<1.10){
       const wasVulnerable=
         hitCooldown<=0;
 
@@ -1249,14 +1493,30 @@ function updateBullets(dt){
       const target=
         spider.position.clone();
 
-      target.y=.5;
+      target.y=1.15;
+
+      const bulletHeightDifference=
+        Math.abs(
+          bullet.mesh.position.y-
+          target.y
+        );
+
+      const planarDistance=
+        Math.hypot(
+          bullet.mesh.position.x-
+          target.x,
+          bullet.mesh.position.z-
+          target.z
+        );
 
       if(
-        bullet.mesh.position.distanceTo(
-          target
-        )<.72
+        planarDistance<.95 &&
+        bulletHeightDifference<1.05
       ){
-        spider.userData.hp--;
+        spider.userData.hp-=
+          powerShotTime>0
+            ?2
+            :1;
 
         scene.remove(
           bullet.mesh
@@ -1267,6 +1527,9 @@ function updateBullets(dt){
 
         if(spider.userData.hp<=0){
           spawnBurst(target);
+          maybeSpawnKillPickup(
+            spider.position.clone()
+          );
 
           scene.remove(spider);
           spiders.splice(j,1);
@@ -1367,7 +1630,14 @@ function animate(now){
   const time=now/1000;
 
   if(running){
-    updatePlayer(dt);
+    try{
+      updatePlayer(dt);
+    }catch(error){
+      console.warn(
+        "Player update error:",
+        error
+      );
+    }
 
     fireCooldown=
       Math.max(
@@ -1403,6 +1673,7 @@ function animate(now){
     updateSpiders(dt,time);
     updateBullets(dt);
     updateParticles(dt);
+    updatePickups(dt,time);
     updateCamera(dt);
     updateHud();
   }else{
