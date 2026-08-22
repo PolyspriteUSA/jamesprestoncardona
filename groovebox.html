@@ -156,6 +156,121 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 }
 .key.black{background:#181620;color:#d8d2ed;min-height:60px}
 .key.on{background:linear-gradient(180deg,#fff,var(--soft));box-shadow:0 0 24px rgba(166,108,255,.35)}
+
+.note-editor{
+  padding:16px;
+  border-top:1px solid var(--line);
+}
+.note-editor-title{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.note-editor-title strong{
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.note-editor-title span{
+  color:var(--muted);
+  font-size:11px;
+}
+.note-grid{
+  display:grid;
+  grid-template-columns:repeat(16,minmax(48px,1fr));
+  gap:6px;
+  min-width:910px;
+}
+.note-cell{
+  display:grid;
+  gap:5px;
+}
+.note-cell label{
+  text-align:center;
+  color:var(--muted);
+  font-size:9px;
+}
+.note-cell select{
+  width:100%;
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#101018;
+  color:var(--text);
+  outline:none;
+}
+.synth-box{
+  margin-top:12px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.022);
+}
+.synth-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:12px;
+}
+.synth-head strong{
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.synth-head span{
+  color:var(--muted);
+  font-size:11px;
+}
+.synth-controls{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+.synth-controls select{
+  width:100%;
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#101018;
+  color:var(--text);
+  padding:0 8px;
+}
+.synth-keyboard{
+  display:grid;
+  grid-template-columns:repeat(13,1fr);
+  gap:5px;
+  margin-top:10px;
+}
+.synth-key{
+  min-height:58px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#eae7f2;
+  color:#17141d;
+  cursor:pointer;
+  font-size:10px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding:7px 2px;
+}
+.synth-key.black{
+  background:#181620;
+  color:#ddd7ef;
+}
+.synth-key.on{
+  background:linear-gradient(180deg,#fff,#a66cff);
+  box-shadow:0 0 22px rgba(166,108,255,.35);
+}
+@media(max-width:680px){
+  .synth-controls{grid-template-columns:repeat(2,1fr)}
+  .synth-keyboard{grid-template-columns:repeat(7,1fr)}
+  .synth-key:nth-child(n+8){display:none}
+}
+
 .sequencer-card{grid-column:1/-1}
 .seq-wrap{padding:16px;overflow:auto}
 .track{
@@ -278,6 +393,42 @@ input[type=range]{width:100%;accent-color:var(--violet)}
           <div class="knob-card"><label>Release <output id="releaseOut">0.22 s</output></label><input id="release" type="range" min=".04" max="1.4" step=".01" value=".22"></div>
         </div>
         <div class="keys" id="keys"></div>
+
+        <div class="synth-box">
+          <div class="synth-head">
+            <strong>Lead Synthesizer</strong>
+            <span>playable instrument</span>
+          </div>
+
+          <div class="synth-controls">
+            <div class="knob-card">
+              <label>Waveform</label>
+              <select id="synthWave">
+                <option value="sawtooth">Saw</option>
+                <option value="square">Square</option>
+                <option value="triangle">Triangle</option>
+                <option value="sine">Sine</option>
+              </select>
+            </div>
+
+            <div class="knob-card">
+              <label>Octave <output id="synthOctaveOut">0</output></label>
+              <input id="synthOctave" type="range" min="-2" max="2" value="0" step="1">
+            </div>
+
+            <div class="knob-card">
+              <label>Detune <output id="synthDetuneOut">0 ct</output></label>
+              <input id="synthDetune" type="range" min="-30" max="30" value="0" step="1">
+            </div>
+
+            <div class="knob-card">
+              <label>Level <output id="synthLevelOut">38%</output></label>
+              <input id="synthLevel" type="range" min="0" max=".8" value=".38" step=".01">
+            </div>
+          </div>
+
+          <div class="synth-keyboard" id="synthKeyboard"></div>
+        </div>
       </div>
     </section>
 
@@ -305,6 +456,15 @@ input[type=range]{width:100%;accent-color:var(--violet)}
         <span>click pads to program</span>
       </div>
       <div class="seq-wrap" id="sequencer"></div>
+      <div class="note-editor">
+        <div class="note-editor-title">
+          <strong>Bass Notes</strong>
+          <span>choose the note played on each of the 16 steps</span>
+        </div>
+        <div style="overflow:auto">
+          <div class="note-grid" id="bassNoteGrid"></div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -330,7 +490,9 @@ const tracks=[
   {name:"Perc",type:"perc",level:.30,pattern:[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1]},
   {name:"Bass",type:"bass",level:.46,pattern:[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0]}
 ];
-const bassNotes=[36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39];
+let bassNotes=[36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39];
+const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,delay=null,feedback=null,delayWet=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
@@ -425,6 +587,29 @@ function bass(t,n=36,v=.45){
   g.gain.exponentialRampToValueAtTime(.001,t+a+r);
   o.connect(g);out(g);o.start(t);o.stop(t+a+r+.03);
 }
+function leadSynth(t,n=60,v=.38){
+  ensureAudio();
+  const o1=audio.createOscillator(),o2=audio.createOscillator(),g=audio.createGain();
+  const wave=$("synthWave").value;
+  const oct=parseInt($("synthOctave").value,10)||0;
+  const det=parseFloat($("synthDetune").value)||0;
+  const level=parseFloat($("synthLevel").value)||v;
+  const note=n+oct*12;
+  o1.type=wave;
+  o2.type=wave;
+  o1.frequency.value=midiToHz(note);
+  o2.frequency.value=midiToHz(note);
+  o1.detune.value=det-5;
+  o2.detune.value=det+5;
+  const a=Math.max(.008,parseFloat($("attack").value));
+  const r=Math.max(.08,parseFloat($("release").value));
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(Math.max(.001,level*.55),t+a);
+  g.gain.exponentialRampToValueAtTime(.001,t+a+r+.08);
+  o1.connect(g);o2.connect(g);out(g);
+  o1.start(t);o2.start(t);
+  o1.stop(t+a+r+.12);o2.stop(t+a+r+.12);
+}
 function playTrack(track,t,step){
   if(muted.has(track.type))return;
   if(track.type==="kick")kick(t,track.level);
@@ -500,6 +685,43 @@ tracks.forEach((track,ti)=>{
   });
   sequencer.appendChild(row);
 });
+const bassNoteGrid=$("bassNoteGrid");
+const bassNoteChoices=[];
+for(let midi=24;midi<=60;midi++)bassNoteChoices.push(midi);
+
+function buildBassNoteEditor(){
+  bassNoteGrid.innerHTML="";
+  for(let step=0;step<16;step++){
+    const cell=document.createElement("div");
+    cell.className="note-cell";
+
+    const label=document.createElement("label");
+    label.textContent=String(step+1).padStart(2,"0");
+
+    const select=document.createElement("select");
+    select.setAttribute("aria-label","Bass note step "+(step+1));
+
+    bassNoteChoices.forEach(midi=>{
+      const option=document.createElement("option");
+      option.value=midi;
+      option.textContent=noteName(midi);
+      if(midi===bassNotes[step])option.selected=true;
+      select.appendChild(option);
+    });
+
+    select.addEventListener("change",()=>{
+      bassNotes[step]=parseInt(select.value,10);
+      if(audio&&audio.state!=="suspended"){
+        bass(audio.currentTime,bassNotes[step],.34);
+      }
+    });
+
+    cell.append(label,select);
+    bassNoteGrid.appendChild(cell);
+  }
+}
+buildBassNoteEditor();
+
 $("randomBtn").addEventListener("click",()=>{
   tracks.forEach((t,ti)=>{
     t.pattern=t.pattern.map((_,i)=>{
@@ -511,6 +733,12 @@ $("randomBtn").addEventListener("click",()=>{
     const t=tracks[+p.dataset.track];
     p.classList.toggle("on",!!t.pattern[+p.dataset.step]);
   });
+
+  bassNotes=bassNotes.map(()=>{
+    const scale=[36,38,39,41,43,46,48];
+    return scale[Math.floor(Math.random()*scale.length)];
+  });
+  buildBassNoteEditor();
 });
 $("clearBtn").addEventListener("click",()=>{
   tracks.forEach(t=>t.pattern.fill(0));
@@ -525,6 +753,25 @@ tracks.forEach(track=>{
   const outv=document.createElement("output");outv.textContent=Math.round(track.level*100)+"%";
   range.addEventListener("input",()=>{track.level=parseFloat(range.value);outv.textContent=Math.round(track.level*100)+"%"});
   row.append(label,range,outv);mixer.appendChild(row);
+});
+
+const synthNotes=[60,62,64,65,67,69,71,72,74,76,77,79,81];
+synthNotes.forEach((note,i)=>{
+  const b=document.createElement("button");
+  b.className="synth-key"+([1,3,6,8,10].includes(i)?" black":"");
+  b.textContent=noteName(note);
+
+  const trigger=async()=>{
+    ensureAudio();
+    if(audio.state==="suspended")await audio.resume();
+    leadSynth(audio.currentTime,note,parseFloat($("synthLevel").value));
+    b.classList.add("on");
+    setTimeout(()=>b.classList.remove("on"),140);
+    pulseVisual();
+  };
+
+  b.addEventListener("pointerdown",trigger);
+  $("synthKeyboard").appendChild(b);
 });
 
 const keyNotes=[36,38,40,41,43,45,47,48,50,52,53,55,57];
@@ -546,6 +793,9 @@ function bind(id,outId,format,fn){
   const update=()=>{outEl.textContent=format(el.value);if(fn)fn(parseFloat(el.value))};
   el.addEventListener("input",update);update();
 }
+bind("synthOctave","synthOctaveOut",v=>String(+v));
+bind("synthDetune","synthDetuneOut",v=>Math.round(v)+" ct");
+bind("synthLevel","synthLevelOut",v=>Math.round(v*100)+"%");
 bind("cutoff","cutoffOut",v=>Math.round(v)+" Hz",v=>{if(filter)filter.frequency.setTargetAtTime(v,audio.currentTime,.02)});
 bind("res","resOut",v=>(+v).toFixed(1),v=>{if(filter)filter.Q.setTargetAtTime(v,audio.currentTime,.02)});
 bind("attack","attackOut",v=>(+v).toFixed(2)+" s");
