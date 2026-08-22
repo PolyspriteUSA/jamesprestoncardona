@@ -401,7 +401,7 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 .console-instruments .mixer{
   width:100%;
   padding:0;
-  grid-template-columns:repeat(7,minmax(54px,1fr));
+  grid-template-columns:repeat(8,minmax(54px,1fr));
 }
 .console-audio .audio-channel-mixer{
   width:100%;
@@ -2714,6 +2714,89 @@ body{
     width:100%;
   }
 }
+
+
+/* Collapse control only in the top-right */
+.collapse-head-actions{
+  margin-left:auto !important;
+  width:auto !important;
+  flex:0 0 auto !important;
+  align-self:flex-start;
+}
+.collapse-toggle{
+  width:auto !important;
+  min-width:108px;
+}
+.recorder-head .collapse-head-actions{
+  margin-left:auto !important;
+}
+.collapse-hint{
+  display:none !important;
+}
+@media(max-width:760px){
+  .collapse-head-actions{
+    width:auto !important;
+    margin-left:auto !important;
+  }
+  .collapse-toggle{
+    width:auto !important;
+  }
+}
+
+/* Sequencer sample track source */
+.sample-track-source{
+  display:grid;
+  gap:6px;
+  margin:9px 0 10px;
+  padding:9px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.018);
+}
+.sample-track-source label{
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.sample-track-source select{
+  width:100%;
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#101018;
+  color:var(--text);
+  padding:0 8px;
+}
+
+
+.pattern-edit-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:8px;
+}
+.pattern-edit-actions .btn{
+  min-width:112px;
+}
+.pattern-edit-actions .btn:disabled{
+  opacity:.38;
+  cursor:not-allowed;
+}
+.pattern-edit-actions .btn.copied{
+  border-color:rgba(166,108,255,.55);
+  background:rgba(113,73,255,.14);
+}
+@media(max-width:640px){
+  .pattern-edit-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .pattern-edit-actions .btn{
+    min-width:0;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2997,10 +3080,9 @@ body{
 </div>
 <div class="synth-keyboard" id="synthKeyboard"></div>
 </div>
-</div><div class="collapse-hint" data-collapse-hint="synth" hidden=""><span>Synth Workspace is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="synth" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
+</div>
 </div>
 </section></main></div>
-
 <section class="card sequencer-card collapsible-section" data-collapse-section="sequencer">
 <div class="card-head">
 <h2>4 × 16-Step Sequencer</h2>
@@ -3016,12 +3098,14 @@ body{
 <button class="btn sequence-btn" data-seq="2" type="button">Seq 3</button>
 <button class="btn sequence-btn" data-seq="3" type="button">Seq 4</button>
 </div>
+<div class="pattern-edit-actions">
+<button class="btn" id="copyPatternBtn" type="button">Copy Pattern</button>
+<button class="btn" id="pastePatternBtn" type="button" disabled>Paste Pattern</button>
+</div>
 <div class="sequence-status" id="sequenceStatus">
           Editing Sequence 1 · steps 1–16
         </div>
-</div><div class="seq-wrap" id="sequencer"></div></div><div class="collapse-hint" data-collapse-hint="sequencer" hidden=""><span>Sequencer is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="sequencer" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
-
-
+</div><div class="seq-wrap" id="sequencer"></div></div>
 <div class="audio-recorder collapsible-section" data-collapse-section="audio-recorder">
 <div class="recorder-head">
 <div>
@@ -3039,9 +3123,7 @@ body{
 <div class="audio-timeline" id="audioTimeline"></div>
 </div><div class="recording-status" id="recordingStatus">
           Select an audio channel and press Record
-        </div></div><div class="collapse-hint" data-collapse-hint="audio-recorder" hidden=""><span>Audio Recorder is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
-
-
+        </div></div>
 </div>
 <div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console">
 <div class="mixing-console-head">
@@ -3329,17 +3411,22 @@ body{
                   Stop Samples
                 </button>
 </div>
+
+<div class="sample-track-source">
+  <label for="sampleTrackSource">Sequencer Sample</label>
+  <select id="sampleTrackSource">
+    <option value="-1">No sample loaded</option>
+  </select>
+</div>
+
 <div class="sample-slots" id="sampleSlots"></div>
 </div>
 </div>
 </div>
-</div></div><div class="collapse-hint" data-collapse-hint="mixing-console" hidden=""><span>Mixing Console is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
-
+</div></div>
 </div>
 </section>
-
 <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
-
 <script type="importmap">
 {
   "imports":{
@@ -3362,7 +3449,8 @@ const tracks=[
   {name:"Open Hat",type:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Perc",type:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Bass",type:"bass",level:.46,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
-  {name:"Synth",type:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]}
+  {name:"Synth",type:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Sample",type:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]}
 ];
 
 let bassSequences=[
@@ -3380,6 +3468,7 @@ let synthSequences=[
 ];
 
 let activeSequence=0;
+let copiedPattern=null;
 
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
@@ -4129,6 +4218,7 @@ function playTrack(track,t,step){
   if(track.type==="perc")perc(t,track.level);
   if(track.type==="bass")bass(t,getStepNotes("bass")[step],track.level);
   if(track.type==="synth")leadSynth(t,getStepNotes("synth")[step],track.level);
+  if(track.type==="sample")triggerSequencerSample(t,track.level);
 }
 function secondsPerStep(){
   return 60/Math.max(60,Math.min(180,parseFloat($("bpm").value)||124))/4;
@@ -4237,6 +4327,64 @@ function refreshSequenceView(){
   );
 
   refreshSequenceStatus();
+}
+
+
+function copyCurrentPattern(){
+  copiedPattern={
+    sourceSequence:activeSequence,
+    trackPatterns:tracks.map(track=>getTrackPattern(track).slice()),
+    bassNotes:getStepNotes("bass").slice(),
+    synthNotes:getStepNotes("synth").slice()
+  };
+
+  $("pastePatternBtn").disabled=false;
+
+  const copyButton=$("copyPatternBtn");
+  copyButton.classList.add("copied");
+  copyButton.textContent="Copied Seq "+(activeSequence+1);
+
+  setTimeout(()=>{
+    copyButton.classList.remove("copied");
+    copyButton.textContent="Copy Pattern";
+  },900);
+
+  const status=$("sequenceStatus");
+  if(status){
+    status.textContent=
+      "Copied Sequence "+
+      (activeSequence+1)+
+      " · choose another sequence and Paste";
+  }
+}
+
+function pastePatternToCurrent(){
+  if(!copiedPattern)return;
+
+  tracks.forEach((track,index)=>{
+    const source=copiedPattern.trackPatterns[index];
+    const destination=getTrackPattern(track);
+
+    if(!source||!destination)return;
+
+    for(let step=0;step<STEPS_PER_SEQUENCE;step++){
+      destination[step]=source[step]?1:0;
+    }
+  });
+
+  bassSequences[activeSequence]=copiedPattern.bassNotes.slice();
+  synthSequences[activeSequence]=copiedPattern.synthNotes.slice();
+
+  refreshSequenceView();
+
+  const status=$("sequenceStatus");
+  if(status){
+    status.textContent=
+      "Pasted Sequence "+
+      (copiedPattern.sourceSequence+1)+
+      " into Sequence "+
+      (activeSequence+1);
+  }
 }
 
 function switchSequence(sequenceIndex){
@@ -4457,10 +4605,93 @@ document.querySelectorAll(".sequence-btn").forEach(button=>{
   });
 });
 
+$("copyPatternBtn").addEventListener("click",copyCurrentPattern);
+$("pastePatternBtn").addEventListener("click",pastePatternToCurrent);
+
 refreshSequenceStatus();
 
 const sampleLibrary=[];
 const activeSamplePlayers=new Set();
+const activeSequencerSampleSources=new Set();
+let selectedSampleIndex=-1;
+
+
+function refreshSampleTrackSource(){
+  const select=$("sampleTrackSource");
+  if(!select)return;
+
+  const previous=
+    selectedSampleIndex;
+
+  select.innerHTML="";
+
+  if(sampleLibrary.length===0){
+    const option=document.createElement("option");
+    option.value="-1";
+    option.textContent="No sample loaded";
+    select.appendChild(option);
+    selectedSampleIndex=-1;
+    return;
+  }
+
+  sampleLibrary.forEach((sample,index)=>{
+    const option=document.createElement("option");
+    option.value=String(index);
+    option.textContent=
+      (index+1)+". "+sample.name;
+    select.appendChild(option);
+  });
+
+  selectedSampleIndex=
+    previous>=0&&previous<sampleLibrary.length
+      ?previous
+      :0;
+
+  select.value=
+    String(selectedSampleIndex);
+}
+
+function triggerSequencerSample(t,level=.7){
+  if(!audio)return;
+
+  const sample=
+    sampleLibrary[selectedSampleIndex];
+
+  if(!sample||!sample.buffer)return;
+
+  const source=
+    audio.createBufferSource();
+
+  const gain=
+    audio.createGain();
+
+  source.buffer=sample.buffer;
+
+  gain.gain.value=
+    Math.max(
+      0,
+      Math.min(
+        1,
+        level*
+        (Number.isFinite(sample.volume)
+          ?sample.volume
+          :1)
+      )
+    );
+
+  source.connect(gain);
+  out(gain);
+
+  activeSequencerSampleSources.add(source);
+
+  source.addEventListener(
+    "ended",
+    ()=>activeSequencerSampleSources.delete(source),
+    {once:true}
+  );
+
+  source.start(t);
+}
 
 function formatSampleDuration(seconds){
   if(!Number.isFinite(seconds))return "--";
@@ -4472,6 +4703,7 @@ function formatSampleDuration(seconds){
 function renderSampleSlots(){
   const host=$("sampleSlots");
   host.innerHTML="";
+  refreshSampleTrackSource();
 
   if(sampleLibrary.length===0){
     const empty=document.createElement("div");
@@ -4553,6 +4785,15 @@ function renderSampleSlots(){
     remove.addEventListener("click",()=>{
       URL.revokeObjectURL(sample.url);
       sampleLibrary.splice(index,1);
+
+      if(sampleLibrary.length===0){
+        selectedSampleIndex=-1;
+      }else if(selectedSampleIndex>=sampleLibrary.length){
+        selectedSampleIndex=sampleLibrary.length-1;
+      }else if(index<selectedSampleIndex){
+        selectedSampleIndex--;
+      }
+
       renderSampleSlots();
     });
 
@@ -4563,7 +4804,13 @@ function renderSampleSlots(){
 }
 
 async function addSampleFiles(files){
-  const list=[...files].filter(file=>file.type.startsWith("audio/"));
+  const list=[...files].filter(
+    file=>file.type.startsWith("audio/")
+  );
+
+  if(list.length===0)return;
+
+  ensureAudio();
 
   for(const file of list){
     const url=URL.createObjectURL(file);
@@ -4573,15 +4820,36 @@ async function addSampleFiles(files){
       name:file.name,
       url,
       duration:NaN,
-      volume:.85
+      volume:.85,
+      buffer:null
     };
 
     sampleLibrary.push(sample);
 
-    probe.addEventListener("loadedmetadata",()=>{
-      sample.duration=probe.duration;
-      renderSampleSlots();
-    },{once:true});
+    probe.addEventListener(
+      "loadedmetadata",
+      ()=>{
+        sample.duration=probe.duration;
+        renderSampleSlots();
+      },
+      {once:true}
+    );
+
+    try{
+      const bytes=
+        await file.arrayBuffer();
+
+      sample.buffer=
+        await audio.decodeAudioData(
+          bytes.slice(0)
+        );
+    }catch(error){
+      sample.buffer=null;
+    }
+  }
+
+  if(selectedSampleIndex<0&&sampleLibrary.length){
+    selectedSampleIndex=0;
   }
 
   renderSampleSlots();
@@ -4594,7 +4862,15 @@ function stopAllSamples(){
       player.currentTime=0;
     }catch(error){}
   });
+
+  activeSequencerSampleSources.forEach(source=>{
+    try{
+      source.stop();
+    }catch(error){}
+  });
+
   activeSamplePlayers.clear();
+  activeSequencerSampleSources.clear();
   renderSampleSlots();
 }
 
@@ -4602,6 +4878,21 @@ $("sampleFiles").addEventListener("change",event=>{
   addSampleFiles(event.target.files);
   event.target.value="";
 });
+
+$("sampleTrackSource").addEventListener(
+  "change",
+  event=>{
+    selectedSampleIndex=
+      parseInt(
+        event.target.value,
+        10
+      );
+
+    if(!Number.isFinite(selectedSampleIndex)){
+      selectedSampleIndex=-1;
+    }
+  }
+);
 
 $("sampleStopAll").addEventListener(
   "click",
