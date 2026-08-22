@@ -3117,6 +3117,40 @@ body{
   height:100%;
 }
 
+
+/* Restore clearly visible four-track Audio Recorder waveform/timeline area */
+.audio-timeline-wrap{
+  min-height:264px;
+}
+.audio-timeline{
+  min-height:232px;
+}
+.audio-track-row{
+  min-height:58px;
+}
+.audio-track-row::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:50%;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(166,108,255,.16),
+    rgba(255,66,208,.16),
+    transparent
+  );
+  pointer-events:none;
+}
+.audio-track-row:nth-child(odd){
+  background-color:rgba(255,255,255,.008);
+}
+.audio-track-row:nth-child(even){
+  background-color:rgba(113,73,255,.012);
+}
+
 </style>
 </head>
 <body>
@@ -3464,8 +3498,8 @@ body{
 <div class="sample-slots" id="sampleSlots"></div>
 </div>
 <div class="audio-timeline-wrap" id="audioTimelineDropzone">
-<div class="timeline-ruler" id="timelineRuler"></div>
-<div class="audio-timeline" id="audioTimeline"></div>
+<div class="timeline-ruler" id="timelineRuler"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div>
+<div class="audio-timeline" id="audioTimeline"><div class="audio-track-row" data-audio-channel="0"><div class="audio-track-label">Audio 1 • armed</div></div><div class="audio-track-row" data-audio-channel="1"><div class="audio-track-label">Audio 2</div></div><div class="audio-track-row" data-audio-channel="2"><div class="audio-track-label">Audio 3</div></div><div class="audio-track-row" data-audio-channel="3"><div class="audio-track-label">Audio 4</div></div></div>
 </div><div class="recording-status" id="recordingStatus">
           Select an audio channel and press Record
         </div></div>
@@ -8440,6 +8474,81 @@ animate();
         );
       }
     }
+  );
+})();
+</script>
+
+
+<script>
+(function(){
+  function restoreRecorderTimeline(){
+    const ruler=
+      document.getElementById(
+        "timelineRuler"
+      );
+
+    const timeline=
+      document.getElementById(
+        "audioTimeline"
+      );
+
+    if(!ruler||!timeline)return;
+
+    if(ruler.children.length!==16){
+      ruler.innerHTML="";
+
+      for(let i=1;i<=16;i++){
+        const mark=
+          document.createElement("span");
+
+        mark.textContent=String(i);
+        ruler.appendChild(mark);
+      }
+    }
+
+    if(timeline.children.length===0){
+      for(let i=0;i<4;i++){
+        const row=
+          document.createElement("div");
+
+        row.className=
+          "audio-track-row";
+
+        row.dataset.audioChannel=
+          String(i);
+
+        const label=
+          document.createElement("div");
+
+        label.className=
+          "audio-track-label";
+
+        label.textContent=
+          "Audio "+
+          (i+1)+
+          (i===0
+            ?" • armed"
+            :"");
+
+        row.appendChild(label);
+        timeline.appendChild(row);
+      }
+    }
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      restoreRecorderTimeline,
+      {once:true}
+    );
+  }else{
+    restoreRecorderTimeline();
+  }
+
+  setTimeout(
+    restoreRecorderTimeline,
+    800
   );
 })();
 </script>
