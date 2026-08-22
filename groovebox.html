@@ -209,6 +209,39 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   gap:14px;
   align-items:stretch;
 }
+
+.mixer-midi{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.mixer-midi-head{
+  padding-top:0;
+}
+.mixer-midi .midi-panel{
+  padding:0;
+  border-top:0;
+}
+.mixer-midi .midi-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.mixer-midi .midi-status{
+  grid-column:1/-1;
+}
+@media(max-width:900px){
+  .mixer-midi .midi-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media(max-width:560px){
+  .mixer-midi .midi-grid{
+    grid-template-columns:1fr;
+  }
+  .mixer-midi .midi-status{
+    grid-column:auto;
+  }
+}
+
 .mixer-section,
 .master-fx-section{
   min-width:0;
@@ -836,10 +869,28 @@ input[type=range]{width:100%;accent-color:var(--violet)}
       </div>
     </section>
 
-    <div class="side-stack">
-      <section class="card">
-        <div class="card-head"><h2>MIDI Controller</h2><span>input</span></div>
-<div class="midi-panel">
+    <section class="card sequencer-card">
+      <div class="card-head">
+        <h2>16-Step Sequencer</h2>
+        <span>click pads to program</span>
+      </div>
+      <div class="seq-wrap" id="sequencer"></div>
+
+      <div class="embedded-mixer">
+        <div class="embedded-mixer-row">
+          <div class="mixer-section">
+            <div class="embedded-mixer-head">
+              <strong>Mixer</strong>
+              <span>channel levels • mute • solo</span>
+            </div>
+            <div class="mixer" id="mixer"></div>
+
+            <div class="mixer-midi">
+              <div class="embedded-mixer-head mixer-midi-head">
+                <strong>MIDI Controller</strong>
+                <span>input • target • channel</span>
+              </div>
+              <div class="midi-panel">
           <div class="midi-grid">
             <button class="btn" id="midiConnect" type="button">Connect MIDI</button>
 
@@ -877,24 +928,7 @@ input[type=range]{width:100%;accent-color:var(--violet)}
             </div>
           </div>
         </div>
-      </section>
-    </div>
-
-    <section class="card sequencer-card">
-      <div class="card-head">
-        <h2>16-Step Sequencer</h2>
-        <span>click pads to program</span>
-      </div>
-      <div class="seq-wrap" id="sequencer"></div>
-
-      <div class="embedded-mixer">
-        <div class="embedded-mixer-row">
-          <div class="mixer-section">
-            <div class="embedded-mixer-head">
-              <strong>Mixer</strong>
-              <span>channel levels • mute • solo</span>
             </div>
-            <div class="mixer" id="mixer"></div>
           </div>
 
           <div class="master-fx-section">
