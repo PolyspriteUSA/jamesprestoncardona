@@ -7726,5 +7726,251 @@ animate();
     initSynthKnobs();
   }
 })();
+</script><script>
+(function(){
+  function ensureInstrumentMixer(){
+    const host=document.getElementById("mixer");
+    if(!host)return;
+
+    if(host.children.length>0)return;
+
+    const fallbackTracks=[
+      ["Kick","kick",.86],
+      ["Snare","snare",.56],
+      ["Closed Hat","hat",.34],
+      ["Open Hat","openhat",.22],
+      ["Perc","perc",.30],
+      ["Bass","bass",.46],
+      ["Synth","synth",.38],
+      ["Sample","sample",.70]
+    ];
+
+    fallbackTracks.forEach(function(item){
+      const strip=document.createElement("div");
+      strip.className="channel";
+
+      const label=document.createElement("label");
+      label.textContent=item[0];
+
+      const buttons=document.createElement("div");
+      buttons.className="channel-buttons";
+
+      const mute=document.createElement("button");
+      mute.className="channel-mute";
+      mute.type="button";
+      mute.dataset.type=item[1];
+      mute.textContent="M";
+
+      const solo=document.createElement("button");
+      solo.className="channel-solo";
+      solo.type="button";
+      solo.dataset.type=item[1];
+      solo.textContent="S";
+
+      mute.addEventListener("click",function(){
+        mute.classList.toggle("on");
+      });
+
+      solo.addEventListener("click",function(){
+        solo.classList.toggle("on");
+      });
+
+      const range=document.createElement("input");
+      range.className="vertical-fader";
+      range.type="range";
+      range.min="0";
+      range.max="1";
+      range.step=".01";
+      range.value=String(item[2]);
+
+      const out=document.createElement("output");
+      out.textContent=
+        Math.round(item[2]*100)+"%";
+
+      range.addEventListener("input",function(){
+        out.textContent=
+          Math.round(
+            parseFloat(range.value)*100
+          )+"%";
+
+        if(window.tracks){
+          const track=
+            window.tracks.find(
+              function(t){
+                return t.type===item[1];
+              }
+            );
+
+          if(track){
+            track.level=
+              parseFloat(range.value);
+          }
+        }
+      });
+
+      buttons.append(mute,solo);
+      strip.append(label,buttons,range,out);
+      host.appendChild(strip);
+    });
+  }
+
+  function ensureAudioMixer(){
+    const host=
+      document.getElementById(
+        "audioChannelMixer"
+      );
+
+    if(!host)return;
+    if(host.children.length>0)return;
+
+    for(let i=0;i<4;i++){
+      const strip=
+        document.createElement("div");
+
+      strip.className=
+        "audio-channel-strip";
+
+      const label=
+        document.createElement("label");
+
+      label.textContent=
+        "Audio "+(i+1);
+
+      const buttons=
+        document.createElement("div");
+
+      buttons.className=
+        "channel-buttons";
+
+      const mute=
+        document.createElement("button");
+
+      mute.className=
+        "channel-mute";
+
+      mute.type="button";
+      mute.textContent="M";
+
+      const solo=
+        document.createElement("button");
+
+      solo.className=
+        "channel-solo";
+
+      solo.type="button";
+      solo.textContent="S";
+
+      const arm=
+        document.createElement("button");
+
+      arm.className=
+        "channel-arm";
+
+      arm.type="button";
+      arm.textContent="R";
+
+      mute.addEventListener(
+        "click",
+        function(){
+          mute.classList.toggle("on");
+        }
+      );
+
+      solo.addEventListener(
+        "click",
+        function(){
+          solo.classList.toggle("on");
+        }
+      );
+
+      arm.addEventListener(
+        "click",
+        function(){
+          document
+            .querySelectorAll(
+              "#audioChannelMixer .channel-arm"
+            )
+            .forEach(
+              function(button){
+                button.classList.remove(
+                  "on"
+                );
+              }
+            );
+
+          arm.classList.add("on");
+        }
+      );
+
+      const range=
+        document.createElement("input");
+
+      range.className=
+        "vertical-fader";
+
+      range.type="range";
+      range.min="0";
+      range.max="1";
+      range.step=".01";
+      range.value="1";
+
+      const out=
+        document.createElement("output");
+
+      out.textContent="100%";
+
+      range.addEventListener(
+        "input",
+        function(){
+          out.textContent=
+            Math.round(
+              parseFloat(
+                range.value
+              )*100
+            )+"%";
+        }
+      );
+
+      if(i===0){
+        arm.classList.add("on");
+      }
+
+      buttons.append(
+        arm,
+        mute,
+        solo
+      );
+
+      strip.append(
+        label,
+        buttons,
+        range,
+        out
+      );
+
+      host.appendChild(strip);
+    }
+  }
+
+  function restoreMixers(){
+    ensureInstrumentMixer();
+    ensureAudioMixer();
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      restoreMixers,
+      {once:true}
+    );
+  }else{
+    restoreMixers();
+  }
+
+  setTimeout(
+    restoreMixers,
+    700
+  );
+})();
 </script></body>
 </html>
