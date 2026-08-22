@@ -1969,6 +1969,216 @@ body{
   }
 }
 
+
+/* Final synth layout cleanup */
+.synth-workspace-content .synth-panel{
+  padding:12px;
+}
+.synth-box{
+  width:min(1320px,100%);
+  margin:10px auto 0;
+  padding:12px;
+}
+.synth-head{
+  margin-bottom:10px;
+}
+.osc-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px;
+}
+.osc-panel,
+.synth-fm-filter-panel,
+.envelope-panel{
+  padding:10px;
+}
+.osc-title{
+  margin-bottom:8px;
+}
+
+/* Oscillators: all seven controls stay in one clean row */
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(7,minmax(72px,1fr)) !important;
+  gap:7px !important;
+  justify-content:center !important;
+}
+
+/* Smaller, denser control cards */
+.synth-controls .knob-card{
+  padding:7px 5px !important;
+  border-radius:12px;
+}
+.synth-controls .knob-card label{
+  min-height:28px !important;
+  margin-bottom:3px !important;
+  font-size:8.5px !important;
+}
+.synth-controls .knob-card output{
+  font-size:8.5px !important;
+}
+.synth-controls select{
+  min-height:30px !important;
+  padding:0 5px !important;
+  font-size:9px;
+}
+
+/* Smaller rotary controls */
+.synth-rotary-wrap{
+  width:58px !important;
+  height:58px !important;
+  margin:5px auto 1px !important;
+}
+.synth-rotary-input{
+  width:58px !important;
+  height:58px !important;
+}
+.synth-rotary-knob::after{
+  height:18px !important;
+  top:6px !important;
+}
+
+/* Filter + dual LFO row */
+.synth-fm-filter-panel{
+  margin-top:10px;
+}
+.fm-lfo-layout{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+.fm-module{
+  padding:8px !important;
+  border-radius:12px;
+}
+.fm-module-title{
+  margin-bottom:6px !important;
+}
+.fm-filter-controls,
+.lfo-controls{
+  grid-template-columns:repeat(3,minmax(72px,110px)) !important;
+  gap:7px !important;
+  justify-content:center !important;
+}
+
+/* Envelope and delay: one centered compact row */
+.envelope-panel{
+  margin-top:10px;
+}
+.envelope-controls{
+  grid-template-columns:repeat(8,minmax(72px,105px)) !important;
+  gap:7px !important;
+  justify-content:center !important;
+}
+
+/* Keyboard closer to controls */
+.synth-keyboard{
+  margin-top:9px !important;
+}
+
+@media(max-width:1180px){
+  .osc-grid{
+    grid-template-columns:1fr !important;
+  }
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(7,minmax(72px,100px)) !important;
+  }
+  .fm-lfo-layout{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .fm-filter-module{
+    grid-column:1/-1;
+  }
+  .envelope-controls{
+    grid-template-columns:repeat(4,minmax(78px,105px)) !important;
+  }
+}
+
+@media(max-width:760px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(4,minmax(78px,1fr)) !important;
+  }
+  .fm-lfo-layout{
+    grid-template-columns:1fr !important;
+  }
+  .fm-filter-module{
+    grid-column:auto;
+  }
+  .fm-filter-controls,
+  .lfo-controls{
+    grid-template-columns:repeat(3,minmax(78px,1fr)) !important;
+  }
+}
+
+@media(max-width:520px){
+  .synth-workspace-content .synth-panel{
+    padding:8px;
+  }
+  .synth-box{
+    padding:9px;
+  }
+  .osc-panel .synth-controls,
+  .envelope-controls{
+    grid-template-columns:repeat(2,minmax(82px,1fr)) !important;
+  }
+  .fm-filter-controls,
+  .lfo-controls{
+    grid-template-columns:repeat(2,minmax(82px,1fr)) !important;
+  }
+}
+
+
+/* Visualizer between Oscillator 1 and Oscillator 2 */
+.osc-grid{
+  grid-template-columns:minmax(0,1fr) minmax(220px,.72fr) minmax(0,1fr) !important;
+  align-items:stretch;
+}
+.osc-visualizer-panel{
+  min-width:0;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11,11,18,.78),
+      rgba(7,7,12,.58)
+    );
+  display:flex;
+  flex-direction:column;
+}
+#oscVisualizer{
+  display:block;
+  width:100%;
+  min-height:230px;
+  flex:1;
+  border-radius:12px;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(113,73,255,.10),
+      transparent 62%
+    ),
+    rgba(5,5,8,.72);
+  border:1px solid rgba(255,255,255,.06);
+}
+@media(max-width:1180px){
+  .osc-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .osc-visualizer-panel{
+    grid-column:1/-1;
+  }
+  #oscVisualizer{
+    min-height:180px;
+  }
+}
+@media(max-width:760px){
+  .osc-grid{
+    grid-template-columns:1fr !important;
+  }
+  .osc-visualizer-panel{
+    grid-column:auto;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2087,6 +2297,14 @@ body{
                   <input class="synth-rotary-input" id="osc1Res" type="range" min="0" max="20" value="5" step=".1">
                 </div>
               </div>
+            </div>
+
+            <div class="osc-visualizer-panel">
+              <div class="osc-title">
+                <strong>Wave Visualizer</strong>
+                <span>live synth waveform</span>
+              </div>
+              <canvas id="oscVisualizer" width="360" height="220" aria-label="Live synthesizer waveform visualizer"></canvas>
             </div>
 
             <div class="osc-panel">
@@ -2642,6 +2860,7 @@ let synthNotes=[60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64];
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,reverbNode=null,reverbWet=null,reverbDry=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
+let synthVisualizerAnalyser=null;
 let audioInputStream=null,audioInputSource=null,audioInputGain=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
@@ -2912,6 +3131,10 @@ function ensureAudio(){
   synthDelayFeedbackNode.connect(synthDelayNode);
   synthDelayNode.connect(synthDelayWet);
   synthDelayWet.connect(master);
+
+  synthVisualizerAnalyser=audio.createAnalyser();
+  synthVisualizerAnalyser.fftSize=1024;
+  synthVisualizerAnalyser.smoothingTimeConstant=.72;
 
   filter.connect(reverbDry);
   reverbDry.connect(master);
@@ -3339,6 +3562,12 @@ function leadSynth(t,n=60,v=.38){
   synthFilter.connect(synthDrive);
   synthDrive.connect(synthFmFilter);
   synthFmFilter.connect(filter);
+
+  if(synthVisualizerAnalyser){
+    synthFmFilter.connect(
+      synthVisualizerAnalyser
+    );
+  }
 
   if(synthDelayNode){
     synthFmFilter.connect(
@@ -4360,6 +4589,7 @@ async function restartAudioEngine(){
   synthDelayFeedbackNode=null;
   synthDelayWet=null;
   recordDestination=null;
+  synthVisualizerAnalyser=null;
   noise=null;
 
   ensureAudio();
@@ -4827,6 +5057,219 @@ bind("master","masterOut",v=>Math.round(v*100)+"%",v=>{if(master)master.gain.set
 $("bpm").addEventListener("input",()=>{$("bpmReadout").textContent=$("bpm").value});
 
 
+
+const oscVizCanvas=$("oscVisualizer");
+const oscVizCtx=
+  oscVizCanvas
+    ?oscVizCanvas.getContext("2d")
+    :null;
+
+let oscVizData=null;
+
+function resizeOscVisualizer(){
+  if(!oscVizCanvas||!oscVizCtx)return;
+
+  const rect=
+    oscVizCanvas.getBoundingClientRect();
+
+  const ratio=
+    Math.min(
+      window.devicePixelRatio||1,
+      2
+    );
+
+  const width=
+    Math.max(
+      240,
+      Math.floor(rect.width*ratio)
+    );
+
+  const height=
+    Math.max(
+      150,
+      Math.floor(rect.height*ratio)
+    );
+
+  if(
+    oscVizCanvas.width!==width ||
+    oscVizCanvas.height!==height
+  ){
+    oscVizCanvas.width=width;
+    oscVizCanvas.height=height;
+  }
+}
+
+function drawOscVisualizer(){
+  if(!oscVizCanvas||!oscVizCtx)return;
+
+  resizeOscVisualizer();
+
+  const width=oscVizCanvas.width;
+  const height=oscVizCanvas.height;
+
+  oscVizCtx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  oscVizCtx.fillStyle=
+    "rgba(5,5,8,.74)";
+
+  oscVizCtx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  oscVizCtx.strokeStyle=
+    "rgba(255,255,255,.055)";
+
+  oscVizCtx.lineWidth=1;
+
+  const gridStep=
+    Math.max(
+      26,
+      width/10
+    );
+
+  for(
+    let x=0;
+    x<=width;
+    x+=gridStep
+  ){
+    oscVizCtx.beginPath();
+    oscVizCtx.moveTo(x,0);
+    oscVizCtx.lineTo(x,height);
+    oscVizCtx.stroke();
+  }
+
+  for(
+    let y=0;
+    y<=height;
+    y+=gridStep
+  ){
+    oscVizCtx.beginPath();
+    oscVizCtx.moveTo(0,y);
+    oscVizCtx.lineTo(width,y);
+    oscVizCtx.stroke();
+  }
+
+  if(!synthVisualizerAnalyser){
+    oscVizCtx.strokeStyle=
+      "rgba(166,108,255,.46)";
+
+    oscVizCtx.lineWidth=2;
+    oscVizCtx.beginPath();
+
+    for(let i=0;i<width;i++){
+      const y=
+        height*.5+
+        Math.sin(i*.035)*
+        height*.05;
+
+      if(i===0){
+        oscVizCtx.moveTo(i,y);
+      }else{
+        oscVizCtx.lineTo(i,y);
+      }
+    }
+
+    oscVizCtx.stroke();
+    return;
+  }
+
+  if(
+    !oscVizData ||
+    oscVizData.length!==
+      synthVisualizerAnalyser.fftSize
+  ){
+    oscVizData=
+      new Uint8Array(
+        synthVisualizerAnalyser.fftSize
+      );
+  }
+
+  synthVisualizerAnalyser
+    .getByteTimeDomainData(
+      oscVizData
+    );
+
+  const gradient=
+    oscVizCtx.createLinearGradient(
+      0,
+      0,
+      width,
+      0
+    );
+
+  gradient.addColorStop(
+    0,
+    "rgba(113,73,255,.95)"
+  );
+
+  gradient.addColorStop(
+    .55,
+    "rgba(166,108,255,.98)"
+  );
+
+  gradient.addColorStop(
+    1,
+    "rgba(255,66,208,.95)"
+  );
+
+  oscVizCtx.strokeStyle=gradient;
+  oscVizCtx.lineWidth=
+    Math.max(
+      2,
+      width/320
+    );
+
+  oscVizCtx.shadowBlur=14;
+  oscVizCtx.shadowColor=
+    "rgba(166,108,255,.48)";
+
+  oscVizCtx.beginPath();
+
+  const slice=
+    width/
+    Math.max(
+      1,
+      oscVizData.length-1
+    );
+
+  for(
+    let i=0;
+    i<oscVizData.length;
+    i++
+  ){
+    const value=
+      oscVizData[i]/128;
+
+    const y=
+      value*height*.5;
+
+    const x=
+      i*slice;
+
+    if(i===0){
+      oscVizCtx.moveTo(x,y);
+    }else{
+      oscVizCtx.lineTo(x,y);
+    }
+  }
+
+  oscVizCtx.stroke();
+  oscVizCtx.shadowBlur=0;
+}
+
+window.addEventListener(
+  "resize",
+  resizeOscVisualizer
+);
+
 let pageBgFreqData=null;
 let pageBgTimeData=null;
 let pageBgBass=0;
@@ -5059,6 +5502,7 @@ new ResizeObserver(resize).observe(host);resize();
 
 const clock=new THREE.Clock();
 function animate(){
+  drawOscVisualizer();
   updatePageReactiveBackground();
   requestAnimationFrame(animate);
   const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
