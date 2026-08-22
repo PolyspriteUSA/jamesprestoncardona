@@ -242,6 +242,7 @@ canvas{display:block}
       <small>Health</small>
       <strong id="health">100</strong>
       <div class="healthbar"><div id="healthFill"></div></div>
+      <small id="hitsLeft" style="margin-top:5px">5 hits</small>
     </div>
   </div>
 </div>
@@ -303,30 +304,38 @@ renderer.setSize(innerWidth,innerHeight);
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 host.appendChild(renderer.domElement);
 
-scene.add(new THREE.HemisphereLight(0x9c82ff,0x07040d,1.8));
+scene.add(new THREE.HemisphereLight(0xb39cff,0x0b0812,2.8));
 
-const keyLight=new THREE.DirectionalLight(0xff55d5,2.3);
+const keyLight=new THREE.DirectionalLight(0xff75dd,3.6);
 keyLight.position.set(10,18,8);
 scene.add(keyLight);
 
-const violetLight=new THREE.PointLight(0x7149ff,70,34,2);
+const violetLight=new THREE.PointLight(0x8564ff,105,40,2);
 violetLight.position.set(-9,7,-7);
 scene.add(violetLight);
 
-const magentaLight=new THREE.PointLight(0xff42d0,60,32,2);
+const magentaLight=new THREE.PointLight(0xff5bd8,90,38,2);
 magentaLight.position.set(10,5,10);
 scene.add(magentaLight);
 
+const overheadFill=new THREE.DirectionalLight(0xc8c2ff,2.1);
+overheadFill.position.set(-4,18,-10);
+scene.add(overheadFill);
+
+const arenaGlow=new THREE.PointLight(0x9b7cff,55,28,2);
+arenaGlow.position.set(0,7,0);
+scene.add(arenaGlow);
+
 const matDark=new THREE.MeshStandardMaterial({
-  color:0x0d0d15,
-  metalness:.76,
-  roughness:.34
+  color:0x141421,
+  metalness:.88,
+  roughness:.18
 });
 
 const matGraphite=new THREE.MeshStandardMaterial({
-  color:0x1a1a27,
-  metalness:.72,
-  roughness:.28
+  color:0x29293a,
+  metalness:.76,
+  roughness:.22
 });
 
 const matViolet=new THREE.MeshStandardMaterial({
@@ -357,21 +366,27 @@ const arena=new THREE.Group();
 scene.add(arena);
 
 const floor=new THREE.Mesh(
-  new THREE.CylinderGeometry(18.5,19.4,1.2,12),
+  new THREE.CylinderGeometry(23.5,24.5,1.2,12),
   matDark
 );
 floor.position.y=-.75;
 arena.add(floor);
 
+const centerMaterial=new THREE.MeshStandardMaterial({
+  color:0x242436,
+  metalness:.84,
+  roughness:.16
+});
+
 const center=new THREE.Mesh(
-  new THREE.CylinderGeometry(5.3,5.8,.42,12),
-  matGraphite
+  new THREE.CylinderGeometry(6.2,6.8,.42,12),
+  centerMaterial
 );
 center.position.y=.08;
 arena.add(center);
 
 const ring=new THREE.Mesh(
-  new THREE.TorusGeometry(5.45,.11,8,64),
+  new THREE.TorusGeometry(6.35,.11,8,64),
   matViolet
 );
 ring.rotation.x=Math.PI/2;
@@ -382,14 +397,14 @@ for(let i=0;i<12;i++){
   const a=i/12*Math.PI*2;
 
   const stripe=new THREE.Mesh(
-    new THREE.BoxGeometry(.1,.05,8.2),
+    new THREE.BoxGeometry(.1,.05,10.5),
     i%2?matViolet:matMagenta
   );
 
   stripe.position.set(
-    Math.sin(a)*10,
+    Math.sin(a)*13,
     .18,
-    Math.cos(a)*10
+    Math.cos(a)*13
   );
 
   stripe.rotation.y=a;
@@ -405,9 +420,9 @@ for(let i=0;i<24;i++){
   );
 
   post.position.set(
-    Math.sin(a)*17.8,
+    Math.sin(a)*22.7,
     .15,
-    Math.cos(a)*17.8
+    Math.cos(a)*22.7
   );
 
   arena.add(post);
@@ -448,55 +463,151 @@ scene.add(
 function buildPlayer(){
   const g=new THREE.Group();
 
-  const body=new THREE.Mesh(
-    new THREE.CylinderGeometry(.48,.62,1.15,8),
+  const torso=new THREE.Mesh(
+    new THREE.BoxGeometry(.95,1.08,.72),
     matGraphite
   );
 
-  body.position.y=.72;
-  g.add(body);
+  torso.position.y=.78;
+  g.add(torso);
 
-  const chest=new THREE.Mesh(
-    new THREE.BoxGeometry(.72,.30,.32),
+  const chestPanel=new THREE.Mesh(
+    new THREE.BoxGeometry(.56,.24,.08),
     matViolet
   );
 
-  chest.position.set(0,.9,.35);
-  g.add(chest);
+  chestPanel.position.set(0,.86,.40);
+  g.add(chestPanel);
 
-  const head=new THREE.Mesh(
-    new THREE.IcosahedronGeometry(.34,1),
-    matGraphite
+  const coreLight=new THREE.Mesh(
+    new THREE.BoxGeometry(.18,.18,.10),
+    matMagenta
   );
 
-  head.position.y=1.5;
+  coreLight.position.set(0,.86,.48);
+  g.add(coreLight);
+
+  const head=new THREE.Mesh(
+    new THREE.BoxGeometry(.54,.54,.54),
+    matWhite
+  );
+
+  head.position.y=1.64;
   g.add(head);
 
   const visor=new THREE.Mesh(
-    new THREE.BoxGeometry(.40,.10,.12),
+    new THREE.BoxGeometry(.34,.10,.08),
     matMagenta
   );
 
-  visor.position.set(0,1.52,.30);
+  visor.position.set(0,1.66,.31);
   g.add(visor);
 
-  const gunPivot=new THREE.Group();
-  gunPivot.position.y=.9;
+  const antennaBase=new THREE.Mesh(
+    new THREE.CylinderGeometry(.03,.03,.20,8),
+    matWhite
+  );
 
-  const gun=new THREE.Mesh(
-    new THREE.BoxGeometry(.16,.16,1.0),
+  antennaBase.position.set(0,2.01,0);
+  g.add(antennaBase);
+
+  const antennaTip=new THREE.Mesh(
+    new THREE.SphereGeometry(.06,10,8),
+    matViolet
+  );
+
+  antennaTip.position.set(0,2.15,0);
+  g.add(antennaTip);
+
+  const armLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.20,.82,.20),
     matGraphite
   );
 
-  gun.position.z=.55;
-  gunPivot.add(gun);
+  armLeft.position.set(-.62,.80,0);
+  g.add(armLeft);
+
+  const armRight=new THREE.Mesh(
+    new THREE.BoxGeometry(.20,.82,.20),
+    matGraphite
+  );
+
+  armRight.position.set(.62,.80,0);
+  g.add(armRight);
+
+  const legLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.24,.74,.24),
+    matGraphite
+  );
+
+  legLeft.position.set(-.22,.06,0);
+  g.add(legLeft);
+
+  const legRight=new THREE.Mesh(
+    new THREE.BoxGeometry(.24,.74,.24),
+    matGraphite
+  );
+
+  legRight.position.set(.22,.06,0);
+  g.add(legRight);
+
+  const footLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.28,.10,.40),
+    matDark
+  );
+
+  footLeft.position.set(-.22,-.34,.06);
+  g.add(footLeft);
+
+  const footRight=new THREE.Mesh(
+    new THREE.BoxGeometry(.28,.10,.40),
+    matDark
+  );
+
+  footRight.position.set(.22,-.34,.06);
+  g.add(footRight);
+
+  const shoulderLeft=new THREE.Mesh(
+    new THREE.BoxGeometry(.18,.18,.18),
+    matViolet
+  );
+
+  shoulderLeft.position.set(-.50,1.18,0);
+  g.add(shoulderLeft);
+
+  const shoulderRight=new THREE.Mesh(
+    new THREE.BoxGeometry(.18,.18,.18),
+    matViolet
+  );
+
+  shoulderRight.position.set(.50,1.18,0);
+  g.add(shoulderRight);
+
+  const gunPivot=new THREE.Group();
+  gunPivot.position.set(0,.98,0);
+
+  const gunBody=new THREE.Mesh(
+    new THREE.BoxGeometry(.18,.18,1.04),
+    matGraphite
+  );
+
+  gunBody.position.z=.60;
+  gunPivot.add(gunBody);
+
+  const gunBarrel=new THREE.Mesh(
+    new THREE.BoxGeometry(.10,.10,.34),
+    matWhite
+  );
+
+  gunBarrel.position.z=1.20;
+  gunPivot.add(gunBarrel);
 
   const muzzle=new THREE.Mesh(
-    new THREE.BoxGeometry(.20,.20,.16),
+    new THREE.BoxGeometry(.22,.22,.18),
     matMagenta
   );
 
-  muzzle.position.z=1.07;
+  muzzle.position.z=1.40;
   gunPivot.add(muzzle);
 
   g.add(gunPivot);
@@ -505,7 +616,6 @@ function buildPlayer(){
   scene.add(g);
   return g;
 }
-
 const player=buildPlayer();
 player.position.set(0,.02,1);
 
@@ -513,20 +623,20 @@ function buildSpider(){
   const g=new THREE.Group();
 
   const body=new THREE.Mesh(
-    new THREE.IcosahedronGeometry(.62,1),
+    new THREE.IcosahedronGeometry(.44,1),
     matDark
   );
 
-  body.scale.set(1.16,.62,1.22);
-  body.position.y=.48;
+  body.scale.set(1.02,.52,1.08);
+  body.position.y=.52;
   g.add(body);
 
   const core=new THREE.Mesh(
-    new THREE.SphereGeometry(.17,10,8),
+    new THREE.SphereGeometry(.13,10,8),
     Math.random()>.5?matViolet:matMagenta
   );
 
-  core.position.set(0,.5,.62);
+  core.position.set(0,.53,.48);
   g.add(core);
 
   const legPivots=[];
@@ -535,31 +645,31 @@ function buildSpider(){
     for(let i=0;i<4;i++){
       const pivot=new THREE.Group();
       pivot.position.set(
-        side*.36,
+        side*.28,
         .44,
-        (i-1.5)*.25
+        (i-1.5)*.22
       );
 
       const upper=new THREE.Mesh(
-        new THREE.BoxGeometry(.66,.09,.09),
+        new THREE.BoxGeometry(.92,.075,.075),
         matGraphite
       );
 
-      upper.position.x=side*.31;
+      upper.position.x=side*.46;
       pivot.add(upper);
 
       const lower=new THREE.Mesh(
-        new THREE.BoxGeometry(.58,.08,.08),
+        new THREE.BoxGeometry(.86,.07,.07),
         matGraphite
       );
 
       lower.position.set(
-        side*.78,
-        -.14,
+        side*1.24,
+        -.22,
         0
       );
 
-      lower.rotation.z=side*.56;
+      lower.rotation.z=side*.68;
       pivot.add(lower);
 
       legPivots.push(pivot);
@@ -590,6 +700,9 @@ let fireCooldown=0;
 let spawnCooldown=0;
 let dashCooldown=0;
 let dashTime=0;
+let hitCooldown=0;
+const MAX_HEALTH=100;
+const DAMAGE_PER_HIT=20;
 let aimPoint=new THREE.Vector3(0,0,-5);
 let last=performance.now();
 
@@ -612,6 +725,18 @@ function updateHud(){
   $("healthFill").style.width=
     Math.max(0,health)+"%";
 
+  const hitsLeft=
+    Math.ceil(
+      Math.max(0,health)/
+      DAMAGE_PER_HIT
+    );
+
+  $("hitsLeft").textContent=
+    hitsLeft+
+    (hitsLeft===1
+      ?" hit"
+      :" hits");
+
   $("dashFill").style.width=
     Math.max(
       0,
@@ -626,7 +751,7 @@ function spawnSpider(){
   const spider=buildSpider();
 
   const a=Math.random()*Math.PI*2;
-  const r=16.5+Math.random()*1.2;
+  const r=21.2+Math.random()*1.6;
 
   spider.position.set(
     Math.cos(a)*r,
@@ -700,22 +825,35 @@ function fireBullet(){
   });
 }
 
-function damage(amount){
-  health-=amount;
+function damage(amount=DAMAGE_PER_HIT){
+  if(
+    !running ||
+    hitCooldown>0
+  ){
+    return;
+  }
+
+  health=
+    Math.max(
+      0,
+      health-amount
+    );
+
+  hitCooldown=.85;
+
   updateHud();
 
   $("damageFlash").style.opacity="1";
 
   setTimeout(
     ()=>$("damageFlash").style.opacity="0",
-    90
+    120
   );
 
   if(health<=0){
     endGame();
   }
 }
-
 function endGame(){
   running=false;
 
@@ -748,11 +886,12 @@ function resetGame(){
 
   score=0;
   wave=1;
-  health=100;
+  health=MAX_HEALTH;
   fireCooldown=0;
   spawnCooldown=.35;
   dashCooldown=0;
   dashTime=0;
+  hitCooldown=0;
 
   updateHud();
 
@@ -895,12 +1034,12 @@ function updatePlayer(dt){
       player.position.z
     );
 
-  if(radius>15.5){
+  if(radius>20.5){
     player.position.x*=
-      15.5/radius;
+      20.5/radius;
 
     player.position.z*=
-      15.5/radius;
+      20.5/radius;
   }
 
   const aimDir=
@@ -931,6 +1070,12 @@ function updatePlayer(dt){
     Math.max(
       0,
       dashCooldown-dt
+    );
+
+  hitCooldown=
+    Math.max(
+      0,
+      hitCooldown-dt
     );
 }
 
@@ -985,12 +1130,22 @@ function updateSpiders(dt,time){
     );
 
     if(distance<.95){
-      damage(17*dt);
+      const wasVulnerable=
+        hitCooldown<=0;
 
-      spider.position.addScaledVector(
-        direction,
-        -1.6*dt
-      );
+      damage();
+
+      if(wasVulnerable){
+        spider.position.addScaledVector(
+          direction,
+          -2.3
+        );
+
+        player.position.addScaledVector(
+          direction,
+          1.15
+        );
+      }
     }
   }
 }
@@ -1109,8 +1264,8 @@ function updateCamera(dt){
     target.clone().add(
       new THREE.Vector3(
         0,
-        22,
-        16
+        27,
+        20
       )
     );
 
