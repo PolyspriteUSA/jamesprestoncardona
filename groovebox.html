@@ -2399,6 +2399,248 @@ body{
   }
 }
 
+
+/* Virtual Tape Recorder */
+.tape-recorder{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.tape-recorder-head{
+  padding-top:0;
+}
+.tape-deck{
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20,19,29,.82),
+      rgba(8,8,13,.94)
+    );
+}
+.tape-window{
+  position:relative;
+  display:grid;
+  grid-template-columns:68px minmax(50px,1fr) 68px;
+  align-items:center;
+  gap:8px;
+  min-height:90px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(4,4,7,.95),
+      rgba(11,10,16,.82)
+    );
+  overflow:hidden;
+}
+.tape-window::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(113,73,255,.05),
+      rgba(255,66,208,.035),
+      transparent
+    );
+  pointer-events:none;
+}
+.tape-reel{
+  position:relative;
+  width:62px;
+  height:62px;
+  margin:auto;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(
+      circle,
+      #09090e 0 13%,
+      rgba(166,108,255,.40) 14% 18%,
+      #11111a 19% 42%,
+      rgba(255,255,255,.08) 43% 45%,
+      #09090e 46% 100%
+    );
+  box-shadow:
+    inset 0 0 0 5px rgba(255,255,255,.02),
+    0 0 18px rgba(113,73,255,.08);
+}
+.tape-reel span{
+  position:absolute;
+  inset:14px;
+  border-radius:50%;
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(255,255,255,.28) 0 8deg,
+      transparent 8deg 112deg,
+      rgba(255,255,255,.28) 112deg 120deg,
+      transparent 120deg 232deg,
+      rgba(255,255,255,.28) 232deg 240deg,
+      transparent 240deg 360deg
+    );
+}
+.tape-deck.recording .tape-reel,
+.tape-deck.playing .tape-reel{
+  animation:tapeSpin 1.1s linear infinite;
+}
+.tape-deck.playing .tape-reel{
+  animation-duration:.82s;
+}
+@keyframes tapeSpin{
+  to{transform:rotate(360deg)}
+}
+.tape-path{
+  position:relative;
+  min-width:0;
+  height:54px;
+}
+.tape-line{
+  position:absolute;
+  left:-8px;
+  right:-8px;
+  top:50%;
+  height:2px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.16),
+      rgba(166,108,255,.62),
+      rgba(255,66,208,.58),
+      rgba(255,255,255,.16)
+    );
+}
+.tape-head{
+  position:absolute;
+  width:22px;
+  height:18px;
+  left:50%;
+  bottom:4px;
+  transform:translateX(-50%);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:4px 4px 8px 8px;
+  background:#15151f;
+}
+.tape-counter{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:8px;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:rgba(0,0,0,.18);
+}
+.tape-counter span{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.tape-counter strong{
+  color:#ece7ff;
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.08em;
+}
+.tape-transport{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:6px;
+  margin-top:8px;
+}
+.tape-transport .btn{
+  min-width:0;
+  padding-left:6px;
+  padding-right:6px;
+}
+.tape-record-button.active{
+  border-color:rgba(255,66,208,.65);
+  background:rgba(255,66,208,.15);
+  color:#fff;
+  box-shadow:0 0 14px rgba(255,66,208,.12);
+}
+.tape-transport .btn:disabled{
+  opacity:.38;
+  cursor:not-allowed;
+}
+@media(max-width:620px){
+  .tape-window{
+    grid-template-columns:54px minmax(34px,1fr) 54px;
+  }
+  .tape-reel{
+    width:50px;
+    height:50px;
+  }
+  .tape-transport{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .tape-deck.recording .tape-reel,
+  .tape-deck.playing .tape-reel{
+    animation:none;
+  }
+}
+
+
+/* 4-sequence switcher */
+.sequence-switcher{
+  margin:12px 0 10px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(8,8,13,.48);
+}
+.sequence-switcher-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.sequence-switcher-head strong{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.sequence-switcher-head span,
+.sequence-status{
+  color:var(--muted);
+  font-size:10px;
+}
+.sequence-buttons{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+.sequence-btn.active{
+  border-color:rgba(166,108,255,.56);
+  box-shadow:0 0 16px rgba(113,73,255,.12);
+  background:rgba(113,73,255,.16);
+  color:#fff;
+}
+.sequence-status{
+  margin-top:8px;
+}
+@media(max-width:640px){
+  .sequence-buttons{
+    grid-template-columns:1fr 1fr;
+  }
+  .sequence-switcher-head{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2742,9 +2984,28 @@ body{
 
     <section class="card sequencer-card">
       <div class="card-head">
-        <h2>16-Step Sequencer</h2>
-        <span>click pads to program</span>
+        <h2>4 × 16-Step Sequencer</h2>
+        <span>64 steps total • click pads to program</span>
       </div>
+
+      <div class="sequence-switcher">
+        <div class="sequence-switcher-head">
+          <strong>Pattern Banks</strong>
+          <span>switch between 4 sequences</span>
+        </div>
+
+        <div class="sequence-buttons" id="sequenceButtons">
+          <button class="btn sequence-btn active" type="button" data-seq="0">Seq 1</button>
+          <button class="btn sequence-btn" type="button" data-seq="1">Seq 2</button>
+          <button class="btn sequence-btn" type="button" data-seq="2">Seq 3</button>
+          <button class="btn sequence-btn" type="button" data-seq="3">Seq 4</button>
+        </div>
+
+        <div class="sequence-status" id="sequenceStatus">
+          Editing Sequence 1 · steps 1–16
+        </div>
+      </div>
+
       <div class="seq-wrap" id="sequencer"></div>
 
       <div class="audio-recorder">
@@ -3032,6 +3293,53 @@ body{
           </div>
         </div>
 
+            <div class="tape-recorder">
+              <div class="embedded-mixer-head tape-recorder-head">
+                <strong>Virtual Tape Recorder</strong>
+                <span>record the full master session</span>
+              </div>
+
+              <div class="tape-deck" id="tapeDeck">
+                <div class="tape-window" aria-hidden="true">
+                  <div class="tape-reel tape-reel-left">
+                    <span></span>
+                  </div>
+
+                  <div class="tape-path">
+                    <div class="tape-line"></div>
+                    <div class="tape-head"></div>
+                  </div>
+
+                  <div class="tape-reel tape-reel-right">
+                    <span></span>
+                  </div>
+                </div>
+
+                <div class="tape-counter">
+                  <span id="tapeStatus">Ready</span>
+                  <strong id="tapeTime">00:00</strong>
+                </div>
+
+                <div class="tape-transport">
+                  <button class="btn tape-record-button" id="tapeRecordBtn" type="button">
+                    Record
+                  </button>
+                  <button class="btn" id="tapeStopBtn" type="button">
+                    Stop
+                  </button>
+                  <button class="btn" id="tapePlayBtn" type="button" disabled>
+                    Play
+                  </button>
+                  <button class="btn" id="tapeDownloadBtn" type="button" disabled>
+                    Save
+                  </button>
+                  <button class="btn" id="tapeClearBtn" type="button" disabled>
+                    Clear
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div class="sample-loader">
               <div class="embedded-mixer-head sample-loader-head">
                 <strong>Samples</strong>
@@ -3074,17 +3382,36 @@ body{
 import * as THREE from "three";
 
 const $=id=>document.getElementById(id);
+
+const SEQUENCE_COUNT=4;
+const STEPS_PER_SEQUENCE=16;
+
 const tracks=[
-  {name:"Kick",type:"kick",level:.86,pattern:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0]},
-  {name:"Snare",type:"snare",level:.56,pattern:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0]},
-  {name:"Closed Hat",type:"hat",level:.34,pattern:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},
-  {name:"Open Hat",type:"openhat",level:.22,pattern:[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0]},
-  {name:"Perc",type:"perc",level:.30,pattern:[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1]},
-  {name:"Bass",type:"bass",level:.46,pattern:[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0]},
-  {name:"Synth",type:"synth",level:.38,pattern:[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0]}
+  {name:"Kick",type:"kick",level:.86,patterns:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Snare",type:"snare",level:.56,patterns:[[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Closed Hat",type:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Open Hat",type:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Perc",type:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Bass",type:"bass",level:.46,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Synth",type:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]}
 ];
-let bassNotes=[36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39];
-let synthNotes=[60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64];
+
+let bassSequences=[
+  [36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39],
+  Array(STEPS_PER_SEQUENCE).fill(36),
+  Array(STEPS_PER_SEQUENCE).fill(36),
+  Array(STEPS_PER_SEQUENCE).fill(36)
+];
+
+let synthSequences=[
+  [60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64],
+  Array(STEPS_PER_SEQUENCE).fill(60),
+  Array(STEPS_PER_SEQUENCE).fill(60),
+  Array(STEPS_PER_SEQUENCE).fill(60)
+];
+
+let activeSequence=0;
+
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,reverbNode=null,reverbWet=null,reverbDry=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
@@ -3831,8 +4158,8 @@ function playTrack(track,t,step){
   if(track.type==="hat")hat(t,track.level,false);
   if(track.type==="openhat")hat(t,track.level,true);
   if(track.type==="perc")perc(t,track.level);
-  if(track.type==="bass")bass(t,bassNotes[step],track.level);
-  if(track.type==="synth")leadSynth(t,synthNotes[step],track.level);
+  if(track.type==="bass")bass(t,getStepNotes("bass")[step],track.level);
+  if(track.type==="synth")leadSynth(t,getStepNotes("synth")[step],track.level);
 }
 function secondsPerStep(){
   return 60/Math.max(60,Math.min(180,parseFloat($("bpm").value)||124))/4;
@@ -3841,7 +4168,7 @@ function scheduleStep(step,time){
   const swing=parseFloat($("swing").value)||0;
   const swingOffset=step%2?secondsPerStep()*swing:0;
   tracks.forEach(track=>{
-    if(track.pattern[step])playTrack(track,time+swingOffset,step);
+    if(getTrackPattern(track)[step])playTrack(track,time+swingOffset,step);
   });
   const delayMs=Math.max(0,(time-audio.currentTime)*1000);
   setTimeout(()=>{
@@ -3854,7 +4181,7 @@ function scheduler(){
   while(nextNoteTime<audio.currentTime+.12){
     scheduleStep(currentStep,nextNoteTime);
     nextNoteTime+=secondsPerStep();
-    currentStep=(currentStep+1)%16;
+    currentStep=(currentStep+1)%STEPS_PER_SEQUENCE;
   }
   timerId=setTimeout(scheduler,25);
 }
@@ -3885,6 +4212,75 @@ for(let midi=24;midi<=60;midi++)bassNoteChoices.push(midi);
 const synthNoteChoices=[];
 for(let midi=48;midi<=84;midi++)synthNoteChoices.push(midi);
 
+function getTrackPattern(track,sequence=activeSequence){
+  return track.patterns[sequence];
+}
+
+function getStepNotes(type,sequence=activeSequence){
+  return type==="bass"
+    ?bassSequences[sequence]
+    :synthSequences[sequence];
+}
+
+function refreshSequenceStatus(){
+  const status=$("sequenceStatus");
+  if(status){
+    const start=(activeSequence*STEPS_PER_SEQUENCE)+1;
+    const end=start+STEPS_PER_SEQUENCE-1;
+
+    status.textContent=
+      "Editing Sequence "+
+      (activeSequence+1)+
+      " · steps "+
+      start+
+      "–"+
+      end;
+  }
+
+  document.querySelectorAll(".sequence-btn").forEach(button=>{
+    button.classList.toggle(
+      "active",
+      parseInt(button.dataset.seq,10)===activeSequence
+    );
+  });
+}
+
+function refreshSequenceView(){
+  document.querySelectorAll(".step").forEach(stepEl=>{
+    const track=tracks[+stepEl.dataset.track];
+    const stepIndex=+stepEl.dataset.step;
+
+    stepEl.classList.toggle(
+      "on",
+      !!getTrackPattern(track)[stepIndex]
+    );
+  });
+
+  document.querySelectorAll(".step-note-select").forEach(select=>{
+    const stepIndex=+select.dataset.step;
+    select.value=String(
+      getStepNotes(select.dataset.type)[stepIndex]
+    );
+  });
+
+  document.querySelectorAll(".step").forEach(
+    stepEl=>stepEl.classList.remove("playing")
+  );
+
+  refreshSequenceStatus();
+}
+
+function switchSequence(sequenceIndex){
+  activeSequence=
+    Math.max(
+      0,
+      Math.min(SEQUENCE_COUNT-1,sequenceIndex)
+    );
+
+  refreshSequenceView();
+}
+
+
 function syncTrackButtons(){
   document.querySelectorAll(".mute").forEach(button=>{
     const type=button.dataset.type;
@@ -3913,7 +4309,10 @@ function makeNoteSelect(track,step){
 
   const isBass=track.type==="bass";
   const notes=isBass?bassNoteChoices:synthNoteChoices;
-  const current=isBass?bassNotes[step]:synthNotes[step];
+  const current=getStepNotes(track.type)[step];
+
+  select.dataset.step=step;
+  select.dataset.type=track.type;
 
   notes.forEach(midi=>{
     const option=document.createElement("option");
@@ -3936,12 +4335,12 @@ function makeNoteSelect(track,step){
     const midi=parseInt(select.value,10);
 
     if(isBass){
-      bassNotes[step]=midi;
+      getStepNotes("bass")[step]=midi;
       if(audio&&audio.state!=="suspended"){
         bass(audio.currentTime,midi,.34);
       }
     }else{
-      synthNotes[step]=midi;
+      getStepNotes("synth")[step]=midi;
       if(audio&&audio.state!=="suspended"){
         leadSynth(
           audio.currentTime,
@@ -3996,7 +4395,7 @@ tracks.forEach((track,ti)=>{
   name.append(title,buttons);
   row.appendChild(name);
 
-  track.pattern.forEach((on,si)=>{
+  getTrackPattern(track,0).forEach((on,si)=>{
     const noteTrack=
       track.type==="bass"||
       track.type==="synth";
@@ -4018,10 +4417,11 @@ tracks.forEach((track,ti)=>{
       );
 
       toggle.addEventListener("click",()=>{
-        track.pattern[si]=track.pattern[si]?0:1;
+        const pattern=getTrackPattern(track);
+        pattern[si]=pattern[si]?0:1;
         pad.classList.toggle(
           "on",
-          !!track.pattern[si]
+          !!pattern[si]
         );
       });
 
@@ -4036,10 +4436,11 @@ tracks.forEach((track,ti)=>{
       pad.dataset.step=si;
 
       pad.addEventListener("click",()=>{
-        track.pattern[si]=track.pattern[si]?0:1;
+        const pattern=getTrackPattern(track);
+        pattern[si]=pattern[si]?0:1;
         pad.classList.toggle(
           "on",
-          !!track.pattern[si]
+          !!pattern[si]
         );
       });
 
@@ -4054,41 +4455,40 @@ syncTrackButtons();
 
 $("randomBtn").addEventListener("click",()=>{
   tracks.forEach((t,ti)=>{
-    t.pattern=t.pattern.map((_,i)=>{
+    const pattern=getTrackPattern(t);
+
+    for(let i=0;i<pattern.length;i++){
       const chance=ti===0?.32:ti===1?.18:ti===2?.48:ti===5?.28:.20;
-      return Math.random()<chance?1:0;
-    });
-  });
-  document.querySelectorAll(".step").forEach(p=>{
-    const t=tracks[+p.dataset.track];
-    p.classList.toggle("on",!!t.pattern[+p.dataset.step]);
+      pattern[i]=Math.random()<chance?1:0;
+    }
   });
 
-  bassNotes=bassNotes.map(()=>{
-    const scale=[36,38,39,41,43,46,48];
-    return scale[Math.floor(Math.random()*scale.length)];
+  const bassScale=[36,38,39,41,43,46,48];
+  const synthScale=[60,62,64,65,67,69,71,72];
+
+  bassSequences[activeSequence]=getStepNotes("bass").map(()=>{
+    return bassScale[Math.floor(Math.random()*bassScale.length)];
   });
 
-  synthNotes=synthNotes.map(()=>{
-    const scale=[60,62,64,65,67,69,71,72];
-    return scale[Math.floor(Math.random()*scale.length)];
+  synthSequences[activeSequence]=getStepNotes("synth").map(()=>{
+    return synthScale[Math.floor(Math.random()*synthScale.length)];
   });
 
-  document.querySelectorAll(".step-note-select").forEach(select=>{
-    const pad=select.closest(".step");
-    if(!pad)return;
-    const track=tracks[+pad.dataset.track];
-    const step=+pad.dataset.step;
-    select.value=
-      track.type==="bass"
-        ?bassNotes[step]
-        :synthNotes[step];
-  });
+  refreshSequenceView();
 });
+
 $("clearBtn").addEventListener("click",()=>{
-  tracks.forEach(t=>t.pattern.fill(0));
-  document.querySelectorAll(".step").forEach(p=>p.classList.remove("on"));
+  tracks.forEach(t=>getTrackPattern(t).fill(0));
+  refreshSequenceView();
 });
+
+document.querySelectorAll(".sequence-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    switchSequence(parseInt(button.dataset.seq,10)||0);
+  });
+});
+
+refreshSequenceStatus();
 
 const sampleLibrary=[];
 const activeSamplePlayers=new Set();
@@ -4253,6 +4653,338 @@ let audioRecorderChunks=[];
 let audioRecordStart=0;
 let activeAudioChannel=0;
 let clipCounter=1;
+
+let tapeRecorder=null;
+let tapeRecorderChunks=[];
+let tapeRecordStart=0;
+let tapeTimerId=null;
+let tapeBlob=null;
+let tapeUrl="";
+let tapePlayer=null;
+
+
+
+function formatTapeTime(seconds){
+  const safe=
+    Math.max(
+      0,
+      Math.floor(
+        Number.isFinite(seconds)
+          ?seconds
+          :0
+      )
+    );
+
+  const minutes=
+    Math.floor(safe/60);
+
+  const secs=
+    safe%60;
+
+  return (
+    String(minutes).padStart(2,"0")+
+    ":"+
+    String(secs).padStart(2,"0")
+  );
+}
+
+function setTapeState(state,message){
+  const deck=$("tapeDeck");
+  if(!deck)return;
+
+  deck.classList.toggle(
+    "recording",
+    state==="recording"
+  );
+
+  deck.classList.toggle(
+    "playing",
+    state==="playing"
+  );
+
+  $("tapeRecordBtn").classList.toggle(
+    "active",
+    state==="recording"
+  );
+
+  $("tapeStatus").textContent=
+    message||state;
+}
+
+function stopTapeTimer(){
+  if(tapeTimerId){
+    clearInterval(tapeTimerId);
+    tapeTimerId=null;
+  }
+}
+
+function updateTapeButtons(){
+  const hasTape=!!tapeUrl;
+
+  $("tapePlayBtn").disabled=!hasTape;
+  $("tapeDownloadBtn").disabled=!hasTape;
+  $("tapeClearBtn").disabled=!hasTape;
+}
+
+function clearTapePlayback(){
+  if(tapePlayer){
+    try{
+      tapePlayer.pause();
+      tapePlayer.currentTime=0;
+    }catch(error){}
+
+    tapePlayer=null;
+  }
+
+  setTapeState(
+    "ready",
+    tapeUrl
+      ?"Tape loaded"
+      :"Ready"
+  );
+}
+
+async function startTapeRecording(){
+  ensureAudio();
+
+  if(audio.state==="suspended"){
+    await audio.resume();
+  }
+
+  if(!recordDestination){
+    setTapeState(
+      "ready",
+      "Recorder unavailable"
+    );
+    return;
+  }
+
+  if(
+    tapeRecorder&&
+    tapeRecorder.state==="recording"
+  ){
+    return;
+  }
+
+  clearTapePlayback();
+
+  const mimeTypes=[
+    "audio/webm;codecs=opus",
+    "audio/webm",
+    "audio/ogg;codecs=opus"
+  ];
+
+  const mimeType=
+    mimeTypes.find(
+      type=>MediaRecorder.isTypeSupported(type)
+    )||"";
+
+  try{
+    tapeRecorder=
+      mimeType
+        ?new MediaRecorder(
+            recordDestination.stream,
+            {mimeType}
+          )
+        :new MediaRecorder(
+            recordDestination.stream
+          );
+  }catch(error){
+    setTapeState(
+      "ready",
+      "Tape recording unsupported"
+    );
+    return;
+  }
+
+  tapeRecorderChunks=[];
+  tapeRecordStart=performance.now();
+
+  $("tapeTime").textContent="00:00";
+
+  tapeRecorder.ondataavailable=event=>{
+    if(event.data&&event.data.size){
+      tapeRecorderChunks.push(
+        event.data
+      );
+    }
+  };
+
+  tapeRecorder.onstop=()=>{
+    stopTapeTimer();
+
+    const duration=
+      Math.max(
+        0,
+        (performance.now()-tapeRecordStart)/1000
+      );
+
+    if(tapeUrl){
+      URL.revokeObjectURL(tapeUrl);
+      tapeUrl="";
+    }
+
+    tapeBlob=
+      new Blob(
+        tapeRecorderChunks,
+        {
+          type:
+            tapeRecorder.mimeType||
+            "audio/webm"
+        }
+      );
+
+    tapeUrl=
+      URL.createObjectURL(tapeBlob);
+
+    $("tapeTime").textContent=
+      formatTapeTime(duration);
+
+    setTapeState(
+      "ready",
+      "Session recorded"
+    );
+
+    updateTapeButtons();
+  };
+
+  tapeRecorder.start();
+  setTapeState(
+    "recording",
+    "Recording session"
+  );
+
+  tapeTimerId=setInterval(()=>{
+    const elapsed=
+      (performance.now()-tapeRecordStart)/1000;
+
+    $("tapeTime").textContent=
+      formatTapeTime(elapsed);
+  },250);
+}
+
+function stopTapeRecording(){
+  if(
+    tapeRecorder&&
+    tapeRecorder.state==="recording"
+  ){
+    tapeRecorder.stop();
+    return;
+  }
+
+  clearTapePlayback();
+}
+
+function playTapeRecording(){
+  if(!tapeUrl)return;
+
+  clearTapePlayback();
+
+  tapePlayer=
+    new Audio(tapeUrl);
+
+  setTapeState(
+    "playing",
+    "Playing tape"
+  );
+
+  tapePlayer.addEventListener(
+    "ended",
+    ()=>{
+      tapePlayer=null;
+      setTapeState(
+        "ready",
+        "Tape loaded"
+      );
+    },
+    {once:true}
+  );
+
+  tapePlayer.play().catch(()=>{
+    tapePlayer=null;
+    setTapeState(
+      "ready",
+      "Playback blocked"
+    );
+  });
+}
+
+function saveTapeRecording(){
+  if(!tapeUrl||!tapeBlob)return;
+
+  const link=
+    document.createElement("a");
+
+  const extension=
+    tapeBlob.type.includes("ogg")
+      ?"ogg"
+      :"webm";
+
+  link.href=tapeUrl;
+  link.download=
+    "neon-groovebox-session."+
+    extension;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+function clearTapeRecording(){
+  if(
+    tapeRecorder&&
+    tapeRecorder.state==="recording"
+  ){
+    tapeRecorder.stop();
+  }
+
+  stopTapeTimer();
+  clearTapePlayback();
+
+  if(tapeUrl){
+    URL.revokeObjectURL(tapeUrl);
+    tapeUrl="";
+  }
+
+  tapeBlob=null;
+  tapeRecorderChunks=[];
+
+  $("tapeTime").textContent="00:00";
+
+  setTapeState(
+    "ready",
+    "Ready"
+  );
+
+  updateTapeButtons();
+}
+
+$("tapeRecordBtn").addEventListener(
+  "click",
+  startTapeRecording
+);
+
+$("tapeStopBtn").addEventListener(
+  "click",
+  stopTapeRecording
+);
+
+$("tapePlayBtn").addEventListener(
+  "click",
+  playTapeRecording
+);
+
+$("tapeDownloadBtn").addEventListener(
+  "click",
+  saveTapeRecording
+);
+
+$("tapeClearBtn").addEventListener(
+  "click",
+  clearTapeRecording
+);
+
+updateTapeButtons();
 
 function buildTimelineRuler(){
   const ruler=$("timelineRuler");
@@ -4794,6 +5526,16 @@ async function applySelectedAudioOutput(){
 
 async function restartAudioEngine(){
   stopAudioInput();
+
+  if(
+    tapeRecorder&&
+    tapeRecorder.state==="recording"
+  ){
+    tapeRecorder.stop();
+  }
+
+  stopTapeTimer();
+  clearTapePlayback();
   const wasRunning=running;
 
   if(wasRunning){
