@@ -1668,12 +1668,7 @@ body{
         </div>
 
         <div class="synth-panel">
-        <div class="control-grid">
-          <div class="knob-card"><label>Cutoff <output id="cutoffOut">1400 Hz</output></label><input class="synth-rotary-input" id="cutoff" type="range" min="120" max="9000" value="1400"></div>
-          <div class="knob-card"><label>Resonance <output id="resOut">7.0</output></label><input class="synth-rotary-input" id="res" type="range" min="0" max="18" step=".1" value="7"></div>
-          <div class="knob-card"><label>Attack <output id="attackOut">0.01 s</output></label><input class="synth-rotary-input" id="attack" type="range" min=".005" max=".6" step=".005" value=".01"></div>
-          <div class="knob-card"><label>Release <output id="releaseOut">0.22 s</output></label><input class="synth-rotary-input" id="release" type="range" min=".04" max="1.4" step=".01" value=".22"></div>
-        </div>
+        
         
 
         <div class="synth-box">
@@ -2215,8 +2210,8 @@ function ensureAudio(){
 
   filter=audio.createBiquadFilter();
   filter.type="lowpass";
-  filter.frequency.value=parseFloat($("cutoff").value);
-  filter.Q.value=parseFloat($("res").value);
+  filter.frequency.value=1400;
+  filter.Q.value=7;
 
   reverbNode=audio.createConvolver();
   reverbWet=audio.createGain();
@@ -3749,24 +3744,6 @@ async function handleMidiMessage(event){
     const cc=data[1];
     const value=data[2]/127;
 
-    if(cc===74){
-      const cutoff=
-        120+
-        value*(9000-120);
-
-      $("cutoff").value=cutoff;
-      $("cutoff").dispatchEvent(
-        new Event("input")
-      );
-    }
-
-    if(cc===71){
-      $("res").value=value*18;
-      $("res").dispatchEvent(
-        new Event("input")
-      );
-    }
-
     if(cc===7){
       $("master").value=value;
       $("master").dispatchEvent(
@@ -3991,10 +3968,6 @@ document
 bind("synthFilterCutoff","synthFilterCutoffOut",v=>Math.round(v)+" Hz");
 bind("synthFilterRes","synthFilterResOut",v=>(+v).toFixed(1));
 bind("synthFilterDrive","synthFilterDriveOut",v=>Math.round(v*100)+"%");
-bind("cutoff","cutoffOut",v=>Math.round(v)+" Hz",v=>{if(filter)filter.frequency.setTargetAtTime(v,audio.currentTime,.02)});
-bind("res","resOut",v=>(+v).toFixed(1),v=>{if(filter)filter.Q.setTargetAtTime(v,audio.currentTime,.02)});
-bind("attack","attackOut",v=>(+v).toFixed(2)+" s");
-bind("release","releaseOut",v=>(+v).toFixed(2)+" s");
 bind("reverb","reverbOut",v=>Math.round(v*100)+"%",v=>{
   if(reverbWet){
     reverbWet.gain.setTargetAtTime(v,audio.currentTime,.02);
