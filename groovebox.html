@@ -202,6 +202,45 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   outline:none;
 }
 
+
+.embedded-mixer-row{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(290px,.85fr);
+  gap:14px;
+  align-items:stretch;
+}
+.mixer-section,
+.master-fx-section{
+  min-width:0;
+}
+.master-fx-section{
+  padding-left:14px;
+  border-left:1px solid var(--line);
+}
+.master-fx-section .fx{
+  padding:0;
+}
+.master-fx-section .fx-grid{
+  grid-template-columns:repeat(4,minmax(58px,1fr));
+  gap:7px;
+  overflow-x:auto;
+}
+.master-fx-section .fx-strip{
+  min-width:58px;
+  min-height:278px;
+}
+@media(max-width:1050px){
+  .embedded-mixer-row{
+    grid-template-columns:1fr;
+  }
+  .master-fx-section{
+    padding-left:0;
+    padding-top:12px;
+    border-left:0;
+    border-top:1px solid var(--line);
+  }
+}
+
 .embedded-mixer{
   border-top:1px solid var(--line);
   padding:0 16px 18px;
@@ -799,33 +838,8 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 
     <div class="side-stack">
       <section class="card">
-        <div class="card-head"><h2>Master FX</h2><span>send</span></div>
-        <div class="fx">
-          <div class="fx-grid">
-            <div class="fx-strip">
-              <label>Delay</label>
-              <input class="vertical-fader" id="delay" type="range" min="0" max=".55" step=".01" value=".18">
-              <output id="delayOut">18%</output>
-            </div>
-            <div class="fx-strip">
-              <label>Feedback</label>
-              <input class="vertical-fader" id="feedback" type="range" min="0" max=".72" step=".01" value=".24">
-              <output id="feedbackOut">24%</output>
-            </div>
-            <div class="fx-strip">
-              <label>Drive</label>
-              <input class="vertical-fader" id="drive" type="range" min="0" max=".6" step=".01" value=".08">
-              <output id="driveOut">8%</output>
-            </div>
-            <div class="fx-strip">
-              <label>Master</label>
-              <input class="vertical-fader" id="master" type="range" min="0" max="1" step=".01" value=".82">
-              <output id="masterOut">82%</output>
-            </div>
-          </div>
-        </div>
-
-        <div class="midi-panel">
+        <div class="card-head"><h2>MIDI Controller</h2><span>input</span></div>
+<div class="midi-panel">
           <div class="midi-grid">
             <button class="btn" id="midiConnect" type="button">Connect MIDI</button>
 
@@ -874,11 +888,46 @@ input[type=range]{width:100%;accent-color:var(--violet)}
       <div class="seq-wrap" id="sequencer"></div>
 
       <div class="embedded-mixer">
-        <div class="embedded-mixer-head">
-          <strong>Mixer</strong>
-          <span>channel levels • mute • solo</span>
+        <div class="embedded-mixer-row">
+          <div class="mixer-section">
+            <div class="embedded-mixer-head">
+              <strong>Mixer</strong>
+              <span>channel levels • mute • solo</span>
+            </div>
+            <div class="mixer" id="mixer"></div>
+          </div>
+
+          <div class="master-fx-section">
+            <div class="embedded-mixer-head">
+              <strong>Master FX</strong>
+              <span>delay • feedback • drive • master</span>
+            </div>
+            <div class="fx">
+          <div class="fx-grid">
+            <div class="fx-strip">
+              <label>Delay</label>
+              <input class="vertical-fader" id="delay" type="range" min="0" max=".55" step=".01" value=".18">
+              <output id="delayOut">18%</output>
+            </div>
+            <div class="fx-strip">
+              <label>Feedback</label>
+              <input class="vertical-fader" id="feedback" type="range" min="0" max=".72" step=".01" value=".24">
+              <output id="feedbackOut">24%</output>
+            </div>
+            <div class="fx-strip">
+              <label>Drive</label>
+              <input class="vertical-fader" id="drive" type="range" min="0" max=".6" step=".01" value=".08">
+              <output id="driveOut">8%</output>
+            </div>
+            <div class="fx-strip">
+              <label>Master</label>
+              <input class="vertical-fader" id="master" type="range" min="0" max="1" step=".01" value=".82">
+              <output id="masterOut">82%</output>
+            </div>
+          </div>
         </div>
-        <div class="mixer" id="mixer"></div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
