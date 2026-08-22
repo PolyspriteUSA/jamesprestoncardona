@@ -102,6 +102,12 @@ button{color:inherit}
 .card-head h2{font-size:14px;margin:0;letter-spacing:.06em;text-transform:uppercase}
 .card-head span{font-size:11px;color:var(--muted)}
 
+
+.synth-workspace-card{
+  grid-column:1/-1;
+  width:100%;
+}
+
 .synth-workspace{
   display:grid;
   grid-template-columns:minmax(360px,.82fr) minmax(0,1.18fr);
@@ -299,6 +305,73 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   gap:7px;
   overflow-x:auto;
 }
+
+.audio-settings{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.audio-settings-head{
+  padding-top:0;
+}
+.audio-settings-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.audio-setting{
+  display:grid;
+  gap:6px;
+}
+.audio-setting span{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.audio-setting select{
+  width:100%;
+  min-height:38px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#101018;
+  color:var(--text);
+  padding:0 8px;
+  outline:none;
+}
+.audio-output-setting{
+  grid-column:1/-1;
+}
+.audio-restart{
+  grid-column:1/-1;
+  width:100%;
+}
+.audio-status{
+  grid-column:1/-1;
+  min-height:30px;
+  display:flex;
+  align-items:center;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--muted);
+  font-size:10px;
+}
+.audio-status.active{
+  color:#e6ddff;
+  border-color:rgba(113,73,255,.40);
+}
+@media(max-width:620px){
+  .audio-settings-grid{
+    grid-template-columns:1fr;
+  }
+  .audio-output-setting,
+  .audio-restart,
+  .audio-status{
+    grid-column:auto;
+  }
+}
+
 .master-fx-section .fx-strip{
   min-width:58px;
   min-height:278px;
@@ -1009,6 +1082,49 @@ input[type=range]{width:100%;accent-color:var(--violet)}
             </div>
           </div>
         </div>
+
+            <div class="audio-settings">
+              <div class="embedded-mixer-head audio-settings-head">
+                <strong>Audio Settings</strong>
+                <span>engine • output • latency</span>
+              </div>
+
+              <div class="audio-settings-grid">
+                <label class="audio-setting">
+                  <span>Latency</span>
+                  <select id="audioLatency">
+                    <option value="interactive">Interactive</option>
+                    <option value="balanced">Balanced</option>
+                    <option value="playback">Playback</option>
+                  </select>
+                </label>
+
+                <label class="audio-setting">
+                  <span>Sample Rate</span>
+                  <select id="audioSampleRate">
+                    <option value="default">System Default</option>
+                    <option value="44100">44.1 kHz</option>
+                    <option value="48000">48 kHz</option>
+                    <option value="96000">96 kHz</option>
+                  </select>
+                </label>
+
+                <label class="audio-setting audio-output-setting">
+                  <span>Output Device</span>
+                  <select id="audioOutput">
+                    <option value="default">System Default</option>
+                  </select>
+                </label>
+
+                <button class="btn audio-restart" id="audioRestart" type="button">
+                  Restart Audio Engine
+                </button>
+
+                <div class="audio-status" id="audioStatus">
+                  Audio engine not started
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1050,7 +1166,28 @@ let soloed=new Set();
 function midiToHz(n){return 440*Math.pow(2,(n-69)/12)}
 function ensureAudio(){
   if(audio)return;
-  audio=new (window.AudioContext||window.webkitAudioContext)();
+  const AudioContextClass=
+    window.AudioContext||
+    window.webkitAudioContext;
+
+  const audioOptions={
+    latencyHint:
+      $("audioLatency")
+        ?$("audioLatency").value
+        :"interactive"
+  };
+
+  const selectedRate=
+    $("audioSampleRate")
+      ?$("audioSampleRate").value
+      :"default";
+
+  if(selectedRate!=="default"){
+    audioOptions.sampleRate=
+      parseInt(selectedRate,10);
+  }
+
+  audio=new AudioContextClass(audioOptions);
 
   master=audio.createGain();
   master.gain.value=parseFloat($("master").value);
@@ -1093,6 +1230,9 @@ function ensureAudio(){
   delayWet.connect(master);
   master.connect(analyser);
   analyser.connect(audio.destination);
+
+  updateAudioStatus();
+  applySelectedAudioOutput();
 }
 function out(node){
   ensureAudio();
@@ -1718,6 +1858,195 @@ tracks.forEach(track=>{
 });
 
 syncTrackButtons();
+
+function updateAudioStatus(message=""){
+  const status=$("audioStatus");
+  if(!status)return;
+
+  if(message){
+    status.textContent=message;
+    status.classList.toggle(
+      "active",
+      !!audio
+    );
+    return;
+  }
+
+  if(!audio){
+    status.textContent=
+      "Audio engine not started";
+    status.classList.remove("active");
+    return;
+  }
+
+  const latency=
+    typeof audio.baseLatency==="number"
+      ?Math.round(audio.baseLatency*1000)+" ms"
+      :"browser managed";
+
+  status.textContent=
+    Math.round(audio.sampleRate/100)/10+
+    " kHz • "+
+    latency+
+    " latency";
+
+  status.classList.add("active");
+}
+
+async function refreshAudioOutputs(){
+  const select=$("audioOutput");
+  if(!select)return;
+
+  const previous=select.value;
+
+  select.innerHTML=
+    '<option value="default">System Default</option>';
+
+  if(
+    !navigator.mediaDevices||
+    !navigator.mediaDevices.enumerateDevices
+  ){
+    return;
+  }
+
+  try{
+    const devices=
+      await navigator.mediaDevices.enumerateDevices();
+
+    devices
+      .filter(device=>device.kind==="audiooutput")
+      .forEach((device,index)=>{
+        const option=
+          document.createElement("option");
+
+        option.value=device.deviceId;
+        option.textContent=
+          device.label||
+          "Audio Output "+(index+1);
+
+        select.appendChild(option);
+      });
+
+    if(
+      previous &&
+      [...select.options].some(
+        option=>option.value===previous
+      )
+    ){
+      select.value=previous;
+    }
+  }catch(error){
+    updateAudioStatus(
+      "Output device list unavailable"
+    );
+  }
+}
+
+async function applySelectedAudioOutput(){
+  if(!audio||!$("audioOutput"))return;
+
+  const sinkId=
+    $("audioOutput").value;
+
+  if(
+    typeof audio.setSinkId!=="function"
+  ){
+    if(sinkId!=="default"){
+      updateAudioStatus(
+        "Output selection is not supported by this browser"
+      );
+    }
+    return;
+  }
+
+  try{
+    await audio.setSinkId(sinkId);
+    updateAudioStatus();
+  }catch(error){
+    updateAudioStatus(
+      "Could not change audio output"
+    );
+  }
+}
+
+async function restartAudioEngine(){
+  const wasRunning=running;
+
+  if(wasRunning){
+    stop();
+  }
+
+  if(audio){
+    try{
+      await audio.close();
+    }catch(error){}
+  }
+
+  audio=null;
+  master=null;
+  analyser=null;
+  filter=null;
+  delay=null;
+  feedback=null;
+  delayWet=null;
+  synthDelayNode=null;
+  synthDelayFeedbackNode=null;
+  synthDelayWet=null;
+  noise=null;
+
+  ensureAudio();
+
+  if(audio.state==="suspended"){
+    await audio.resume();
+  }
+
+  await applySelectedAudioOutput();
+  updateAudioStatus();
+
+  if(wasRunning){
+    start();
+  }
+}
+
+$("audioRestart").addEventListener(
+  "click",
+  restartAudioEngine
+);
+
+$("audioOutput").addEventListener(
+  "change",
+  applySelectedAudioOutput
+);
+
+$("audioLatency").addEventListener(
+  "change",
+  ()=>{
+    updateAudioStatus(
+      "Restart audio engine to apply latency"
+    );
+  }
+);
+
+$("audioSampleRate").addEventListener(
+  "change",
+  ()=>{
+    updateAudioStatus(
+      "Restart audio engine to apply sample rate"
+    );
+  }
+);
+
+refreshAudioOutputs();
+
+if(
+  navigator.mediaDevices &&
+  navigator.mediaDevices.addEventListener
+){
+  navigator.mediaDevices.addEventListener(
+    "devicechange",
+    refreshAudioOutputs
+  );
+}
 
 let midiAccess=null;
 let activeMidiInput=null;
