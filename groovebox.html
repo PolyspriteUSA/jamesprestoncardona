@@ -2945,6 +2945,40 @@ body{
   opacity:.55;
 }
 
+
+/* Move Samples controls into Audio Recorder without changing sequencer markup */
+.audio-recorder-sample-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin:0 0 8px;
+}
+.audio-recorder-sample-actions .sample-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0;
+}
+.audio-recorder-sample-actions .btn,
+.audio-recorder-sample-actions .sample-add-button{
+  min-width:110px;
+}
+@media(max-width:620px){
+  .audio-recorder-sample-actions{
+    justify-content:stretch;
+  }
+  .audio-recorder-sample-actions .sample-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .audio-recorder-sample-actions .btn,
+  .audio-recorder-sample-actions .sample-add-button{
+    width:100%;
+    min-width:0;
+    text-align:center;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -7583,6 +7617,58 @@ animate();
   ].forEach(function(id){
     setCollapsedState(id,false);
   });
+})();
+</script>
+
+
+<script>
+(function(){
+  function moveSampleControls(){
+    const actions=
+      document.querySelector(
+        ".sample-loader .sample-actions"
+      );
+
+    const recorderBody=
+      document.querySelector(
+        '[data-collapse-id="audio-recorder"]'
+      );
+
+    const dropHint=
+      recorderBody
+        ?recorderBody.querySelector(".audio-drop-hint")
+        :null;
+
+    if(!actions||!recorderBody||!dropHint){
+      return;
+    }
+
+    let host=
+      recorderBody.querySelector(
+        ".audio-recorder-sample-actions"
+      );
+
+    if(!host){
+      host=document.createElement("div");
+      host.className="audio-recorder-sample-actions";
+      dropHint.insertAdjacentElement(
+        "beforebegin",
+        host
+      );
+    }
+
+    host.appendChild(actions);
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      moveSampleControls,
+      {once:true}
+    );
+  }else{
+    moveSampleControls();
+  }
 })();
 </script>
 
