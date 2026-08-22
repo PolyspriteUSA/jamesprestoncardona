@@ -317,27 +317,150 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 .step.playing{outline:2px solid white;outline-offset:1px}
 .step.on.playing{box-shadow:0 0 30px rgba(255,66,208,.32)}
 .side-stack{display:grid;gap:16px}
-.mixer{padding:16px}
-.channel{
+.mixer{
   display:grid;
-  grid-template-columns:82px 1fr 52px;
-  gap:10px;
-  align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid var(--line)
+  grid-template-columns:repeat(7,minmax(64px,1fr));
+  gap:8px;
+  padding:14px;
+  overflow-x:auto;
 }
-.channel:last-child{border-bottom:0}
-.channel label{font-size:11px;color:var(--muted)}
-.channel output{font-size:11px;text-align:right;color:#d8d2ed}
-.fx{padding:16px}
-.fx-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.channel{
+  min-width:64px;
+  min-height:278px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:9px;
+  padding:12px 7px 10px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.012)
+    );
+}
+.channel label{
+  min-height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#dcd7eb;
+  font-size:10px;
+  line-height:1.25;
+}
+.channel output{
+  color:#d8d2ed;
+  font-size:10px;
+  text-align:center;
+}
+.channel-mute{
+  width:28px;
+  height:24px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#101018;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:9px;
+  font-weight:700;
+}
+.channel-mute.on{
+  color:white;
+  background:#3a2050;
+  border-color:rgba(255,66,208,.35);
+}
+.vertical-fader{
+  width:28px;
+  height:158px;
+  writing-mode:vertical-lr;
+  direction:rtl;
+  accent-color:var(--violet);
+}
+.fx{padding:14px}
+.fx-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(64px,1fr));
+  gap:8px;
+  overflow-x:auto;
+}
+.fx-strip{
+  min-width:64px;
+  min-height:250px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  padding:12px 7px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.012)
+    );
+}
+.fx-strip label{
+  min-height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#dcd7eb;
+  font-size:10px;
+}
+.fx-strip output{
+  color:#d8d2ed;
+  font-size:10px;
+}
+.midi-panel{
+  padding:14px;
+  border-top:1px solid var(--line);
+}
+.midi-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.midi-grid .btn,
+.midi-grid select{
+  width:100%;
+}
+.midi-grid select{
+  min-height:40px;
+  padding:0 9px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#101018;
+  color:var(--text);
+}
+.midi-status{
+  grid-column:1/-1;
+  min-height:32px;
+  display:flex;
+  align-items:center;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--muted);
+  font-size:10px;
+}
+.midi-status.connected{
+  color:#e6ddff;
+  border-color:rgba(113,73,255,.40);
+  box-shadow:0 0 18px rgba(113,73,255,.08);
+}
 .footer-note{
   text-align:center;color:var(--muted);font-size:11px;padding:18px
 }
 @media(max-width:980px){
   .grid{grid-template-columns:1fr}
   .control-grid{grid-template-columns:repeat(2,1fr)}
-  .side-stack{grid-template-columns:1fr 1fr}
+  .side-stack{grid-template-columns:1fr}
 }
 @media(max-width:680px){
   .topbar{align-items:flex-start;flex-direction:column}
@@ -441,10 +564,65 @@ input[type=range]{width:100%;accent-color:var(--violet)}
         <div class="card-head"><h2>Master FX</h2><span>send</span></div>
         <div class="fx">
           <div class="fx-grid">
-            <div class="knob-card"><label>Delay <output id="delayOut">18%</output></label><input id="delay" type="range" min="0" max=".55" step=".01" value=".18"></div>
-            <div class="knob-card"><label>Feedback <output id="feedbackOut">24%</output></label><input id="feedback" type="range" min="0" max=".72" step=".01" value=".24"></div>
-            <div class="knob-card"><label>Drive <output id="driveOut">8%</output></label><input id="drive" type="range" min="0" max=".6" step=".01" value=".08"></div>
-            <div class="knob-card"><label>Master <output id="masterOut">82%</output></label><input id="master" type="range" min="0" max="1" step=".01" value=".82"></div>
+            <div class="fx-strip">
+              <label>Delay</label>
+              <input class="vertical-fader" id="delay" type="range" min="0" max=".55" step=".01" value=".18">
+              <output id="delayOut">18%</output>
+            </div>
+            <div class="fx-strip">
+              <label>Feedback</label>
+              <input class="vertical-fader" id="feedback" type="range" min="0" max=".72" step=".01" value=".24">
+              <output id="feedbackOut">24%</output>
+            </div>
+            <div class="fx-strip">
+              <label>Drive</label>
+              <input class="vertical-fader" id="drive" type="range" min="0" max=".6" step=".01" value=".08">
+              <output id="driveOut">8%</output>
+            </div>
+            <div class="fx-strip">
+              <label>Master</label>
+              <input class="vertical-fader" id="master" type="range" min="0" max="1" step=".01" value=".82">
+              <output id="masterOut">82%</output>
+            </div>
+          </div>
+        </div>
+
+        <div class="midi-panel">
+          <div class="midi-grid">
+            <button class="btn" id="midiConnect" type="button">Connect MIDI</button>
+
+            <select id="midiTarget" aria-label="MIDI target instrument">
+              <option value="synth">Synth</option>
+              <option value="bass">Bass</option>
+            </select>
+
+            <select id="midiInput" aria-label="MIDI input">
+              <option value="">No MIDI input</option>
+            </select>
+
+            <select id="midiChannel" aria-label="MIDI channel">
+              <option value="all">All Channels</option>
+              <option value="1">Channel 1</option>
+              <option value="2">Channel 2</option>
+              <option value="3">Channel 3</option>
+              <option value="4">Channel 4</option>
+              <option value="5">Channel 5</option>
+              <option value="6">Channel 6</option>
+              <option value="7">Channel 7</option>
+              <option value="8">Channel 8</option>
+              <option value="9">Channel 9</option>
+              <option value="10">Channel 10</option>
+              <option value="11">Channel 11</option>
+              <option value="12">Channel 12</option>
+              <option value="13">Channel 13</option>
+              <option value="14">Channel 14</option>
+              <option value="15">Channel 15</option>
+              <option value="16">Channel 16</option>
+            </select>
+
+            <div class="midi-status" id="midiStatus">
+              MIDI disconnected
+            </div>
           </div>
         </div>
       </section>
@@ -463,6 +641,16 @@ input[type=range]{width:100%;accent-color:var(--violet)}
         </div>
         <div style="overflow:auto">
           <div class="note-grid" id="bassNoteGrid"></div>
+        </div>
+      </div>
+
+      <div class="note-editor">
+        <div class="note-editor-title">
+          <strong>Synth Notes</strong>
+          <span>choose the note played by the synth on each step</span>
+        </div>
+        <div style="overflow:auto">
+          <div class="note-grid" id="synthNoteGrid"></div>
         </div>
       </div>
     </section>
@@ -488,9 +676,11 @@ const tracks=[
   {name:"Closed Hat",type:"hat",level:.34,pattern:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]},
   {name:"Open Hat",type:"openhat",level:.22,pattern:[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0]},
   {name:"Perc",type:"perc",level:.30,pattern:[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1]},
-  {name:"Bass",type:"bass",level:.46,pattern:[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0]}
+  {name:"Bass",type:"bass",level:.46,pattern:[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0]},
+  {name:"Synth",type:"synth",level:.38,pattern:[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0]}
 ];
 let bassNotes=[36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39];
+let synthNotes=[60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64];
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,delay=null,feedback=null,delayWet=null;
@@ -618,6 +808,7 @@ function playTrack(track,t,step){
   if(track.type==="openhat")hat(t,track.level,true);
   if(track.type==="perc")perc(t,track.level);
   if(track.type==="bass")bass(t,bassNotes[step],track.level);
+  if(track.type==="synth")leadSynth(t,synthNotes[step],track.level);
 }
 function secondsPerStep(){
   return 60/Math.max(60,Math.min(180,parseFloat($("bpm").value)||124))/4;
@@ -722,6 +913,47 @@ function buildBassNoteEditor(){
 }
 buildBassNoteEditor();
 
+const synthNoteGrid=$("synthNoteGrid");
+const synthNoteChoices=[];
+for(let midi=48;midi<=84;midi++)synthNoteChoices.push(midi);
+
+function buildSynthNoteEditor(){
+  synthNoteGrid.innerHTML="";
+  for(let step=0;step<16;step++){
+    const cell=document.createElement("div");
+    cell.className="note-cell";
+
+    const label=document.createElement("label");
+    label.textContent=String(step+1).padStart(2,"0");
+
+    const select=document.createElement("select");
+    select.setAttribute("aria-label","Synth note step "+(step+1));
+
+    synthNoteChoices.forEach(midi=>{
+      const option=document.createElement("option");
+      option.value=midi;
+      option.textContent=noteName(midi);
+      if(midi===synthNotes[step])option.selected=true;
+      select.appendChild(option);
+    });
+
+    select.addEventListener("change",()=>{
+      synthNotes[step]=parseInt(select.value,10);
+      if(audio&&audio.state!=="suspended"){
+        leadSynth(
+          audio.currentTime,
+          synthNotes[step],
+          parseFloat($("synthLevel").value)
+        );
+      }
+    });
+
+    cell.append(label,select);
+    synthNoteGrid.appendChild(cell);
+  }
+}
+buildSynthNoteEditor();
+
 $("randomBtn").addEventListener("click",()=>{
   tracks.forEach((t,ti)=>{
     t.pattern=t.pattern.map((_,i)=>{
@@ -739,6 +971,12 @@ $("randomBtn").addEventListener("click",()=>{
     return scale[Math.floor(Math.random()*scale.length)];
   });
   buildBassNoteEditor();
+
+  synthNotes=synthNotes.map(()=>{
+    const scale=[60,62,64,65,67,69,71,72];
+    return scale[Math.floor(Math.random()*scale.length)];
+  });
+  buildSynthNoteEditor();
 });
 $("clearBtn").addEventListener("click",()=>{
   tracks.forEach(t=>t.pattern.fill(0));
@@ -747,16 +985,284 @@ $("clearBtn").addEventListener("click",()=>{
 
 const mixer=$("mixer");
 tracks.forEach(track=>{
-  const row=document.createElement("div");row.className="channel";
-  const label=document.createElement("label");label.textContent=track.name;
-  const range=document.createElement("input");range.type="range";range.min=0;range.max=1;range.step=.01;range.value=track.level;
-  const outv=document.createElement("output");outv.textContent=Math.round(track.level*100)+"%";
-  range.addEventListener("input",()=>{track.level=parseFloat(range.value);outv.textContent=Math.round(track.level*100)+"%"});
-  row.append(label,range,outv);mixer.appendChild(row);
+  const strip=document.createElement("div");
+  strip.className="channel";
+
+  const label=document.createElement("label");
+  label.textContent=track.name;
+
+  const muteButton=document.createElement("button");
+  muteButton.className="channel-mute";
+  muteButton.type="button";
+  muteButton.textContent="M";
+
+  const range=document.createElement("input");
+  range.className="vertical-fader";
+  range.type="range";
+  range.min=0;
+  range.max=1;
+  range.step=.01;
+  range.value=track.level;
+  range.setAttribute(
+    "aria-label",
+    track.name+" mixer level"
+  );
+
+  const outv=document.createElement("output");
+  outv.textContent=
+    Math.round(track.level*100)+"%";
+
+  muteButton.addEventListener("click",()=>{
+    if(muted.has(track.type)){
+      muted.delete(track.type);
+      muteButton.classList.remove("on");
+    }else{
+      muted.add(track.type);
+      muteButton.classList.add("on");
+    }
+
+    document
+      .querySelectorAll(".mute")
+      .forEach((button,index)=>{
+        if(tracks[index]===track){
+          button.classList.toggle(
+            "on",
+            muted.has(track.type)
+          );
+        }
+      });
+  });
+
+  range.addEventListener("input",()=>{
+    track.level=parseFloat(range.value);
+    outv.textContent=
+      Math.round(track.level*100)+"%";
+
+    if(track.type==="synth"){
+      $("synthLevel").value=
+        Math.min(.8,track.level);
+
+      $("synthLevelOut").textContent=
+        Math.round(
+          Math.min(.8,track.level)*100
+        )+"%";
+    }
+  });
+
+  strip.append(
+    label,
+    muteButton,
+    range,
+    outv
+  );
+
+  mixer.appendChild(strip);
 });
 
-const synthNotes=[60,62,64,65,67,69,71,72,74,76,77,79,81];
-synthNotes.forEach((note,i)=>{
+let midiAccess=null;
+let activeMidiInput=null;
+
+function setMidiStatus(text,connected=false){
+  const el=$("midiStatus");
+  el.textContent=text;
+  el.classList.toggle(
+    "connected",
+    connected
+  );
+}
+
+function refreshMidiInputs(){
+  const select=$("midiInput");
+  const previous=select.value;
+
+  select.innerHTML=
+    '<option value="">No MIDI input</option>';
+
+  if(!midiAccess)return;
+
+  for(const input of midiAccess.inputs.values()){
+    const option=
+      document.createElement("option");
+
+    option.value=input.id;
+    option.textContent=
+      input.name||
+      "MIDI Input";
+
+    select.appendChild(option);
+  }
+
+  if(
+    previous &&
+    [...select.options]
+      .some(option=>option.value===previous)
+  ){
+    select.value=previous;
+  }else if(select.options.length>1){
+    select.selectedIndex=1;
+  }
+
+  connectSelectedMidiInput();
+}
+
+function connectSelectedMidiInput(){
+  if(activeMidiInput){
+    activeMidiInput.onmidimessage=null;
+    activeMidiInput=null;
+  }
+
+  if(!midiAccess)return;
+
+  const id=$("midiInput").value;
+  const input=
+    midiAccess.inputs.get(id);
+
+  if(!input){
+    setMidiStatus(
+      "Choose a MIDI input"
+    );
+    return;
+  }
+
+  activeMidiInput=input;
+  activeMidiInput.onmidimessage=
+    handleMidiMessage;
+
+  setMidiStatus(
+    "Connected: "+
+    (input.name||"MIDI Controller"),
+    true
+  );
+}
+
+async function connectMidi(){
+  if(!navigator.requestMIDIAccess){
+    setMidiStatus(
+      "Web MIDI is not supported in this browser"
+    );
+    return;
+  }
+
+  try{
+    midiAccess=
+      await navigator.requestMIDIAccess();
+
+    midiAccess.onstatechange=
+      refreshMidiInputs;
+
+    refreshMidiInputs();
+
+    $("midiConnect").textContent=
+      "MIDI Connected";
+  }catch(error){
+    setMidiStatus(
+      "MIDI permission was not granted"
+    );
+  }
+}
+
+async function handleMidiMessage(event){
+  const data=event.data;
+  const status=data[0];
+  const command=status&0xf0;
+  const channel=(status&0x0f)+1;
+  const note=data[1];
+  const velocity=data[2]||0;
+
+  const selectedChannel=
+    $("midiChannel").value;
+
+  if(
+    selectedChannel!=="all" &&
+    Number(selectedChannel)!==channel
+  ){
+    return;
+  }
+
+  ensureAudio();
+
+  if(audio.state==="suspended"){
+    await audio.resume();
+  }
+
+  if(
+    command===0x90 &&
+    velocity>0
+  ){
+    const velocityGain=
+      velocity/127;
+
+    if(
+      $("midiTarget").value==="bass"
+    ){
+      bass(
+        audio.currentTime,
+        note,
+        .52*velocityGain
+      );
+    }else{
+      leadSynth(
+        audio.currentTime,
+        note,
+        Math.max(
+          .08,
+          parseFloat(
+            $("synthLevel").value
+          )*
+          velocityGain
+        )
+      );
+    }
+
+    pulseVisual();
+  }
+
+  if(command===0xb0){
+    const cc=data[1];
+    const value=data[2]/127;
+
+    if(cc===74){
+      const cutoff=
+        120+
+        value*
+        (9000-120);
+
+      $("cutoff").value=cutoff;
+      $("cutoff").dispatchEvent(
+        new Event("input")
+      );
+    }
+
+    if(cc===71){
+      $("res").value=
+        value*18;
+
+      $("res").dispatchEvent(
+        new Event("input")
+      );
+    }
+
+    if(cc===7){
+      $("master").value=value;
+      $("master").dispatchEvent(
+        new Event("input")
+      );
+    }
+  }
+}
+
+$("midiConnect").addEventListener(
+  "click",
+  connectMidi
+);
+
+$("midiInput").addEventListener(
+  "change",
+  connectSelectedMidiInput
+);
+
+const synthKeyboardNotes=[60,62,64,65,67,69,71,72,74,76,77,79,81];
+synthKeyboardNotes.forEach((note,i)=>{
   const b=document.createElement("button");
   b.className="synth-key"+([1,3,6,8,10].includes(i)?" black":"");
   b.textContent=noteName(note);
