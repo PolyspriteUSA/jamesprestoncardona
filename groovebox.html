@@ -2979,6 +2979,142 @@ body{
   }
 }
 
+
+/* Samples now live inside Audio Recorder */
+.audio-recorder .sample-loader{
+  margin:10px 0 12px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(8,8,13,.48);
+}
+.audio-recorder .sample-loader .embedded-mixer-head{
+  padding:0 0 10px;
+}
+.audio-recorder .sample-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:10px;
+}
+.audio-recorder .sample-track-source{
+  margin:0 0 10px;
+}
+.audio-recorder .sample-slots{
+  max-height:220px;
+  overflow:auto;
+}
+@media(max-width:620px){
+  .audio-recorder .sample-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .audio-recorder .sample-actions .btn,
+  .audio-recorder .sample-actions .sample-add-button{
+    width:100%;
+    text-align:center;
+  }
+}
+
+
+/* Records section */
+.records-section{
+  margin:14px 16px 0;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(8,8,13,.58);
+}
+.records-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.records-head>div:first-child{
+  display:grid;
+  gap:3px;
+}
+.records-head strong{
+  font-size:12px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.records-head span{
+  color:var(--muted);
+  font-size:10px;
+}
+.records-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.records-list{
+  display:grid;
+  gap:8px;
+}
+.records-empty{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px dashed rgba(255,255,255,.10);
+  border-radius:10px;
+  color:var(--muted);
+  font-size:10px;
+}
+.record-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.018);
+}
+.record-info{
+  min-width:0;
+  display:grid;
+  gap:3px;
+}
+.record-name{
+  font-size:11px;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.record-meta{
+  color:var(--muted);
+  font-size:9px;
+}
+.record-controls{
+  display:flex;
+  gap:6px;
+}
+.record-controls .btn{
+  min-width:64px;
+}
+@media(max-width:620px){
+  .records-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .records-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .record-item{
+    grid-template-columns:1fr;
+  }
+  .record-controls{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3303,6 +3439,28 @@ body{
 <div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-drop-hint">
 <span>Drag loaded samples or audio files onto any Audio track</span>
 </div>
+<div class="sample-loader">
+<div class="embedded-mixer-head sample-loader-head">
+<strong>Samples</strong>
+<span>load • preview • trigger</span>
+</div>
+<div class="sample-actions">
+<label class="btn sample-add-button">
+                  Add Samples
+                  <input accept="audio/*" hidden="" id="sampleFiles" multiple="" type="file"/>
+</label>
+<button class="btn" id="sampleStopAll" type="button">
+                  Stop Samples
+                </button>
+</div>
+<div class="sample-track-source">
+<label for="sampleTrackSource">Sequencer Sample</label>
+<select id="sampleTrackSource">
+<option value="-1">No sample loaded</option>
+</select>
+</div>
+<div class="sample-slots" id="sampleSlots"></div>
+</div>
 <div class="audio-timeline-wrap" id="audioTimelineDropzone">
 <div class="timeline-ruler" id="timelineRuler"></div>
 <div class="audio-timeline" id="audioTimeline"></div>
@@ -3310,6 +3468,23 @@ body{
           Select an audio channel and press Record
         </div></div>
 </div>
+
+<div class="records-section">
+  <div class="records-head">
+    <div>
+      <strong>Records</strong>
+      <span>saved recordings and takes</span>
+    </div>
+    <div class="records-actions">
+      <button class="btn" id="recordsRefreshBtn" type="button">Refresh</button>
+      <button class="btn" id="recordsClearBtn" type="button">Clear Records</button>
+    </div>
+  </div>
+  <div class="records-list" id="recordsList">
+    <div class="records-empty">No recordings yet</div>
+  </div>
+</div>
+
 <div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console">
 <div class="mixing-console-head">
 <strong>Mixing Console</strong>
@@ -3582,28 +3757,7 @@ body{
 </div>
 </div>
 </div>
-<div class="sample-loader">
-<div class="embedded-mixer-head sample-loader-head">
-<strong>Samples</strong>
-<span>load • preview • trigger</span>
-</div>
-<div class="sample-actions">
-<label class="btn sample-add-button">
-                  Add Samples
-                  <input accept="audio/*" hidden="" id="sampleFiles" multiple="" type="file"/>
-</label>
-<button class="btn" id="sampleStopAll" type="button">
-                  Stop Samples
-                </button>
-</div>
-<div class="sample-track-source">
-<label for="sampleTrackSource">Sequencer Sample</label>
-<select id="sampleTrackSource">
-<option value="-1">No sample loaded</option>
-</select>
-</div>
-<div class="sample-slots" id="sampleSlots"></div>
-</div>
+
 </div>
 </div>
 </div></div>
@@ -7616,56 +7770,7 @@ animate();
   });
 })();
 </script>
-<script>
-(function(){
-  function moveSampleControls(){
-    const actions=
-      document.querySelector(
-        ".sample-loader .sample-actions"
-      );
 
-    const recorderBody=
-      document.querySelector(
-        '[data-collapse-id="audio-recorder"]'
-      );
-
-    const dropHint=
-      recorderBody
-        ?recorderBody.querySelector(".audio-drop-hint")
-        :null;
-
-    if(!actions||!recorderBody||!dropHint){
-      return;
-    }
-
-    let host=
-      recorderBody.querySelector(
-        ".audio-recorder-sample-actions"
-      );
-
-    if(!host){
-      host=document.createElement("div");
-      host.className="audio-recorder-sample-actions";
-      dropHint.insertAdjacentElement(
-        "beforebegin",
-        host
-      );
-    }
-
-    host.appendChild(actions);
-  }
-
-  if(document.readyState==="loading"){
-    document.addEventListener(
-      "DOMContentLoaded",
-      moveSampleControls,
-      {once:true}
-    );
-  }else{
-    moveSampleControls();
-  }
-})();
-</script>
 <script>
 (function(){
   function updateSynthKnob(input){
@@ -7972,5 +8077,151 @@ animate();
     700
   );
 })();
+
+function renderRecords(){
+  const host=$("recordsList");
+  if(!host)return;
+
+  host.innerHTML="";
+
+  const records=[];
+
+  audioChannels.forEach((channel,channelIndex)=>{
+    channel.clips.forEach(clip=>{
+      if(
+        clip.sourceType==="recorded" ||
+        String(clip.name||"").startsWith("Take ")
+      ){
+        records.push({
+          channel,
+          channelIndex,
+          clip
+        });
+      }
+    });
+  });
+
+  if(records.length===0){
+    const empty=document.createElement("div");
+    empty.className="records-empty";
+    empty.textContent="No recordings yet";
+    host.appendChild(empty);
+    return;
+  }
+
+  records.forEach(item=>{
+    const row=document.createElement("div");
+    row.className="record-item";
+
+    const info=document.createElement("div");
+    info.className="record-info";
+
+    const name=document.createElement("div");
+    name.className="record-name";
+    name.textContent=item.clip.name;
+
+    const meta=document.createElement("div");
+    meta.className="record-meta";
+    meta.textContent=
+      item.channel.name+
+      " • "+
+      item.clip.duration.toFixed(2)+
+      " s"+
+      (item.clip.loop?" • loop":"");
+
+    info.append(name,meta);
+
+    const controls=document.createElement("div");
+    controls.className="record-controls";
+
+    const play=document.createElement("button");
+    play.className="btn";
+    play.type="button";
+    play.textContent="Play";
+
+    const add=document.createElement("button");
+    add.className="btn";
+    add.type="button";
+    add.textContent="Add";
+
+    play.addEventListener("click",()=>{
+      playAudioClip(
+        item.channel,
+        item.clip
+      );
+    });
+
+    add.addEventListener("click",()=>{
+      const copy={
+        id:clipCounter++,
+        name:item.clip.name+" Copy",
+        duration:item.clip.duration,
+        url:item.clip.url,
+        startPercent:0,
+        loop:false,
+        sourceType:"recorded-copy",
+        ownsUrl:false
+      };
+
+      audioChannels[
+        activeAudioChannel||0
+      ].clips.push(copy);
+
+      renderAudioTimeline();
+      renderRecords();
+
+      setRecordingStatus(
+        "Added "+
+        copy.name+
+        " to "+
+        audioChannels[
+          activeAudioChannel||0
+        ].name
+      );
+    });
+
+    controls.append(play,add);
+    row.append(info,controls);
+    host.appendChild(row);
+  });
+}
+
+$("recordsRefreshBtn").addEventListener(
+  "click",
+  renderRecords
+);
+
+$("recordsClearBtn").addEventListener(
+  "click",
+  ()=>{
+    audioChannels.forEach(channel=>{
+      channel.clips=
+        channel.clips.filter(
+          clip=>
+            !(
+              clip.sourceType==="recorded" ||
+              clip.sourceType==="recorded-copy" ||
+              String(clip.name||"").startsWith("Take ")
+            )
+        );
+    });
+
+    stopTimelinePlayback();
+    renderAudioTimeline();
+    renderRecords();
+    setRecordingStatus("Records cleared");
+  }
+);
+
+const originalRenderAudioTimeline=
+  renderAudioTimeline;
+
+renderAudioTimeline=function(){
+  originalRenderAudioTimeline();
+  renderRecords();
+};
+
+renderRecords();
+
 </script></body>
 </html>
