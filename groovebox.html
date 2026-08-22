@@ -3376,9 +3376,85 @@ body{
   grid-template-columns:repeat(8,minmax(54px,1fr));
 }
 
+
+/* nanoKONTROL MIDI Learn */
+.midi-learn-menu{
+  position:fixed;
+  z-index:9999;
+  display:none;
+  min-width:190px;
+  padding:7px;
+  border:1px solid rgba(166,108,255,.34);
+  border-radius:12px;
+  background:rgba(8,8,13,.97);
+  box-shadow:0 18px 50px rgba(0,0,0,.48);
+  backdrop-filter:blur(18px);
+}
+.midi-learn-menu.open{
+  display:block;
+}
+.midi-learn-menu button{
+  width:100%;
+  min-height:34px;
+  padding:7px 9px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#f7f5fb;
+  text-align:left;
+  font:inherit;
+  font-size:10px;
+  cursor:pointer;
+}
+.midi-learn-menu button:hover{
+  background:rgba(113,73,255,.16);
+}
+.midi-learn-menu .midi-learn-meta{
+  padding:6px 9px 8px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+}
+.midi-learn-target{
+  outline:2px solid rgba(255,66,208,.78)!important;
+  outline-offset:3px;
+  box-shadow:0 0 22px rgba(255,66,208,.20)!important;
+}
+.midi-mapped{
+  box-shadow:0 0 0 1px rgba(113,73,255,.36)!important;
+}
+#midiLearnToast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  z-index:9998;
+  transform:translateX(-50%) translateY(16px);
+  opacity:0;
+  pointer-events:none;
+  padding:9px 13px;
+  border:1px solid rgba(166,108,255,.32);
+  border-radius:10px;
+  background:rgba(8,8,13,.94);
+  color:#fff;
+  font-size:10px;
+  letter-spacing:.04em;
+  transition:opacity .16s ease,transform .16s ease;
+}
+#midiLearnToast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
 </style>
 </head>
 <body>
+<div class="midi-learn-menu" id="midiLearnMenu" role="menu" aria-hidden="true">
+  <div class="midi-learn-meta" id="midiLearnMeta">MIDI control</div>
+  <button id="midiLearnStart" type="button">MIDI Learn</button>
+  <button id="midiLearnClear" type="button">Clear MIDI Mapping</button>
+</div>
+<div id="midiLearnToast">Waiting for MIDI control…</div>
+
 <div aria-hidden="true" class="page-reactive-bg" id="pageReactiveBg">
 <div class="page-reactive-glow glow-a"></div>
 <div class="page-reactive-glow glow-b"></div>
@@ -6238,6 +6314,9 @@ function buildAudioChannelMixer(){
     range.max=1;
     range.step=.01;
     range.value=channel.level;
+    range.dataset.midiKey=
+      "audio-mixer."+
+      channelIndex;
     range.title=channel.name+" level";
 
     const controls=document.createElement("div");
@@ -6996,6 +7075,9 @@ tracks.forEach(track=>{
   range.max=1;
   range.step=.01;
   range.value=track.level;
+  range.dataset.midiKey=
+    "instrument-mixer."+
+    track.type;
   range.setAttribute(
     "aria-label",
     track.name+" mixer level"
@@ -7303,7 +7385,18 @@ function refreshMidiInputs(){
   ){
     select.value=previous;
   }else if(select.options.length>1){
-    select.selectedIndex=1;
+    const preferred=
+      [...select.options].findIndex(
+        option=>
+          /nano\s*kontrol|nanokontrol|korg/i.test(
+            option.textContent||""
+          )
+      );
+
+    select.selectedIndex=
+      preferred>0
+        ?preferred
+        :1;
   }
 
   connectSelectedMidiInput();
@@ -7353,6 +7446,414 @@ async function connectMidi(){
     );
   }
 }
+
+
+const MIDI_LEARN_STORAGE_KEY=
+  "neonGrooveboxMidiMappingsV1";
+
+let midiLearnTarget=null;
+let midiLearnMappings={};
+let midiLearnToastTimer=null;
+
+function loadMidiLearnMappings(){
+  try{
+    const saved=
+      JSON.parse(
+        localStorage.getItem(
+          MIDI_LEARN_STORAGE_KEY
+        )||"{}"
+      );
+
+    midiLearnMappings=
+      saved&&typeof saved==="object"
+        ?saved
+        :{};
+  }catch(error){
+    midiLearnMappings={};
+  }
+}
+
+function saveMidiLearnMappings(){
+  try{
+    localStorage.setItem(
+      MIDI_LEARN_STORAGE_KEY,
+      JSON.stringify(
+        midiLearnMappings
+      )
+    );
+  }catch(error){}
+}
+
+function midiControlKey(control){
+  if(!control)return "";
+
+  if(control.id){
+    return "id:"+control.id;
+  }
+
+  if(control.dataset.midiKey){
+    return "key:"+control.dataset.midiKey;
+  }
+
+  return "";
+}
+
+function findMidiControlByKey(key){
+  if(!key)return null;
+
+  if(key.startsWith("id:")){
+    return document.getElementById(
+      key.slice(3)
+    );
+  }
+
+  if(key.startsWith("key:")){
+    const value=
+      key.slice(4);
+
+    return document.querySelector(
+      '[data-midi-key="'+
+      CSS.escape(value)+
+      '"]'
+    );
+  }
+
+  return null;
+}
+
+function describeMidiControl(control){
+  if(!control)return "Control";
+
+  const container=
+    control.closest(
+      ".knob-card,.rotary-control,.channel,.fx-strip,.audio-channel-strip,.keyboard-scale-control"
+    );
+
+  if(container){
+    const label=
+      container.querySelector(
+        "label,span"
+      );
+
+    if(label&&label.textContent.trim()){
+      return label.textContent
+        .replace(/\s+/g," ")
+        .trim();
+    }
+  }
+
+  return (
+    control.getAttribute("aria-label")||
+    control.id||
+    control.dataset.midiKey||
+    "Control"
+  );
+}
+
+function showMidiLearnToast(text){
+  const toast=
+    document.getElementById(
+      "midiLearnToast"
+    );
+
+  if(!toast)return;
+
+  toast.textContent=text;
+  toast.classList.add("show");
+
+  clearTimeout(
+    midiLearnToastTimer
+  );
+
+  midiLearnToastTimer=
+    setTimeout(
+      ()=>toast.classList.remove("show"),
+      1800
+    );
+}
+
+function clearMidiLearnHighlight(){
+  document
+    .querySelectorAll(
+      ".midi-learn-target"
+    )
+    .forEach(
+      element=>
+        element.classList.remove(
+          "midi-learn-target"
+        )
+    );
+}
+
+function refreshMidiMappedVisuals(){
+  document
+    .querySelectorAll(
+      'input[type="range"]'
+    )
+    .forEach(control=>{
+      const key=
+        midiControlKey(control);
+
+      const mapped=
+        Object.values(
+          midiLearnMappings
+        ).some(
+          item=>
+            item&&
+            item.target===key
+        );
+
+      control.classList.toggle(
+        "midi-mapped",
+        mapped
+      );
+
+      const wrap=
+        control.closest(
+          ".synth-rotary-wrap,.rotary-knob-wrap,.channel,.fx-strip,.audio-channel-strip"
+        );
+
+      if(wrap){
+        wrap.classList.toggle(
+          "midi-mapped",
+          mapped
+        );
+      }
+    });
+}
+
+function removeMappingsForTarget(targetKey){
+  let changed=false;
+
+  Object.keys(
+    midiLearnMappings
+  ).forEach(mappingKey=>{
+    if(
+      midiLearnMappings[mappingKey]&&
+      midiLearnMappings[mappingKey].target===
+        targetKey
+    ){
+      delete midiLearnMappings[
+        mappingKey
+      ];
+
+      changed=true;
+    }
+  });
+
+  if(changed){
+    saveMidiLearnMappings();
+  }
+
+  refreshMidiMappedVisuals();
+
+  return changed;
+}
+
+function applyMidiValueToControl(control,value){
+  if(
+    !control ||
+    control.type!=="range"
+  ){
+    return false;
+  }
+
+  const min=
+    Number.isFinite(
+      parseFloat(control.min)
+    )
+      ?parseFloat(control.min)
+      :0;
+
+  const max=
+    Number.isFinite(
+      parseFloat(control.max)
+    )
+      ?parseFloat(control.max)
+      :1;
+
+  const step=
+    parseFloat(control.step);
+
+  let next=
+    min+
+    (max-min)*
+    Math.max(
+      0,
+      Math.min(
+        1,
+        value
+      )
+    );
+
+  if(
+    Number.isFinite(step)&&
+    step>0
+  ){
+    next=
+      min+
+      Math.round(
+        (next-min)/step
+      )*step;
+  }
+
+  next=
+    Math.max(
+      min,
+      Math.min(
+        max,
+        next
+      )
+    );
+
+  control.value=
+    String(next);
+
+  control.dispatchEvent(
+    new Event(
+      "input",
+      {bubbles:true}
+    )
+  );
+
+  return true;
+}
+
+function mappingLookupKey(channel,cc){
+  return channel+":"+cc;
+}
+
+function startMidiLearn(control){
+  const targetKey=
+    midiControlKey(control);
+
+  if(!targetKey){
+    showMidiLearnToast(
+      "This control cannot be mapped."
+    );
+    return;
+  }
+
+  midiLearnTarget=control;
+
+  clearMidiLearnHighlight();
+
+  control.classList.add(
+    "midi-learn-target"
+  );
+
+  const wrap=
+    control.closest(
+      ".synth-rotary-wrap,.rotary-knob-wrap,.channel,.fx-strip,.audio-channel-strip"
+    );
+
+  if(wrap){
+    wrap.classList.add(
+      "midi-learn-target"
+    );
+  }
+
+  setMidiStatus(
+    "MIDI Learn: move a nanoKONTROL knob or fader",
+    true
+  );
+
+  showMidiLearnToast(
+    "Move the nanoKONTROL control you want to assign…"
+  );
+}
+
+function finishMidiLearn(channel,cc){
+  if(!midiLearnTarget){
+    return false;
+  }
+
+  const targetKey=
+    midiControlKey(
+      midiLearnTarget
+    );
+
+  if(!targetKey){
+    midiLearnTarget=null;
+    clearMidiLearnHighlight();
+    return false;
+  }
+
+  removeMappingsForTarget(
+    targetKey
+  );
+
+  midiLearnMappings[
+    mappingLookupKey(
+      channel,
+      cc
+    )
+  ]={
+    target:targetKey,
+    channel,
+    cc
+  };
+
+  saveMidiLearnMappings();
+
+  const name=
+    describeMidiControl(
+      midiLearnTarget
+    );
+
+  midiLearnTarget=null;
+  clearMidiLearnHighlight();
+  refreshMidiMappedVisuals();
+
+  setMidiStatus(
+    "Mapped CC "+
+    cc+
+    " · Ch "+
+    channel+
+    " → "+
+    name,
+    true
+  );
+
+  showMidiLearnToast(
+    "Mapped CC "+
+    cc+
+    " to "+
+    name
+  );
+
+  return true;
+}
+
+function applyLearnedMidiMapping(channel,cc,value){
+  const mapping=
+    midiLearnMappings[
+      mappingLookupKey(
+        channel,
+        cc
+      )
+    ];
+
+  if(!mapping){
+    return false;
+  }
+
+  const control=
+    findMidiControlByKey(
+      mapping.target
+    );
+
+  if(!control){
+    return false;
+  }
+
+  return applyMidiValueToControl(
+    control,
+    value
+  );
+}
+
+loadMidiLearnMappings();
 
 async function handleMidiMessage(event){
   const data=event.data;
@@ -7406,6 +7907,24 @@ async function handleMidiMessage(event){
   if(command===0xb0){
     const cc=data[1];
     const value=data[2]/127;
+
+    if(midiLearnTarget){
+      finishMidiLearn(
+        channel,
+        cc
+      );
+      return;
+    }
+
+    if(
+      applyLearnedMidiMapping(
+        channel,
+        cc,
+        value
+      )
+    ){
+      return;
+    }
 
     if(cc===7){
       $("master").value=value;
@@ -8741,6 +9260,9 @@ animate();
       range.max="1";
       range.step=".01";
       range.value=String(item[2]);
+      range.dataset.midiKey=
+        "instrument-mixer."+
+        item[1];
 
       const out=document.createElement("output");
       out.textContent=
@@ -8872,6 +9394,9 @@ animate();
       range.max="1";
       range.step=".01";
       range.value="1";
+      range.dataset.midiKey=
+        "audio-mixer."+
+        i;
 
       const out=
         document.createElement("output");
@@ -10248,6 +10773,243 @@ animate();
   );
 
   rebuildKeyboard();
+})();
+</script>
+
+
+<script>
+(function(){
+  const menu=
+    document.getElementById(
+      "midiLearnMenu"
+    );
+
+  const meta=
+    document.getElementById(
+      "midiLearnMeta"
+    );
+
+  const learnButton=
+    document.getElementById(
+      "midiLearnStart"
+    );
+
+  const clearButton=
+    document.getElementById(
+      "midiLearnClear"
+    );
+
+  if(
+    !menu ||
+    !meta ||
+    !learnButton ||
+    !clearButton
+  ){
+    return;
+  }
+
+  let menuControl=null;
+
+  function closeMenu(){
+    menu.classList.remove(
+      "open"
+    );
+
+    menu.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+
+  function openMenu(
+    control,
+    x,
+    y
+  ){
+    menuControl=control;
+
+    const targetKey=
+      midiControlKey(control);
+
+    const mapping=
+      Object.values(
+        midiLearnMappings
+      ).find(
+        item=>
+          item&&
+          item.target===targetKey
+      );
+
+    meta.textContent=
+      describeMidiControl(control)+
+      (
+        mapping
+          ?" · CC "+mapping.cc+
+            " Ch "+mapping.channel
+          :" · not mapped"
+      );
+
+    clearButton.disabled=
+      !mapping;
+
+    menu.classList.add(
+      "open"
+    );
+
+    menu.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    const width=210;
+    const height=128;
+
+    menu.style.left=
+      Math.min(
+        x,
+        innerWidth-width-8
+      )+
+      "px";
+
+    menu.style.top=
+      Math.min(
+        y,
+        innerHeight-height-8
+      )+
+      "px";
+  }
+
+  document.addEventListener(
+    "contextmenu",
+    event=>{
+      const control=
+        event.target.closest(
+          'input[type="range"]'
+        );
+
+      if(!control){
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      openMenu(
+        control,
+        event.clientX,
+        event.clientY
+      );
+    }
+  );
+
+  learnButton.addEventListener(
+    "click",
+    async()=>{
+      if(!menuControl)return;
+
+      closeMenu();
+
+      if(!midiAccess){
+        await connectMidi();
+      }
+
+      if(
+        midiAccess &&
+        !activeMidiInput
+      ){
+        refreshMidiInputs();
+      }
+
+      if(!activeMidiInput){
+        showMidiLearnToast(
+          "Connect your Korg nanoKONTROL first."
+        );
+        return;
+      }
+
+      startMidiLearn(
+        menuControl
+      );
+    }
+  );
+
+  clearButton.addEventListener(
+    "click",
+    ()=>{
+      if(!menuControl)return;
+
+      const targetKey=
+        midiControlKey(
+          menuControl
+        );
+
+      const removed=
+        removeMappingsForTarget(
+          targetKey
+        );
+
+      closeMenu();
+
+      showMidiLearnToast(
+        removed
+          ?"MIDI mapping cleared."
+          :"No MIDI mapping on this control."
+      );
+    }
+  );
+
+  document.addEventListener(
+    "pointerdown",
+    event=>{
+      if(
+        menu.classList.contains("open") &&
+        !menu.contains(event.target)
+      ){
+        closeMenu();
+      }
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    event=>{
+      if(event.key==="Escape"){
+        closeMenu();
+
+        if(midiLearnTarget){
+          midiLearnTarget=null;
+          clearMidiLearnHighlight();
+
+          setMidiStatus(
+            activeMidiInput
+              ?"Connected: "+
+                (
+                  activeMidiInput.name||
+                  "MIDI Controller"
+                )
+              :"MIDI disconnected",
+            !!activeMidiInput
+          );
+
+          showMidiLearnToast(
+            "MIDI Learn cancelled."
+          );
+        }
+      }
+    }
+  );
+
+  new MutationObserver(
+    refreshMidiMappedVisuals
+  ).observe(
+    document.body,
+    {
+      childList:true,
+      subtree:true
+    }
+  );
+
+  refreshMidiMappedVisuals();
 })();
 </script>
 
