@@ -2797,6 +2797,66 @@ body{
   }
 }
 
+
+/* Final collapse + sequencer formatting fixes */
+.synth-workspace-card.is-collapsed{
+  min-height:0 !important;
+}
+.synth-workspace-card.is-collapsed .synth-background-layer{
+  display:none !important;
+}
+.synth-workspace-card.is-collapsed .synth-workspace-content{
+  min-height:0 !important;
+}
+.synth-workspace-card.is-collapsed .synth-workspace-head{
+  border-bottom:0;
+}
+
+/* Make sequencer body match the visual rhythm of other sections */
+.sequencer-collapse-body{
+  padding:16px 18px 18px;
+}
+.sequencer-collapse-body .sequence-switcher{
+  margin:0 0 12px;
+}
+.sequencer-collapse-body .seq-wrap{
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(8,8,13,.44);
+}
+.sequencer-card.is-collapsed > .card-head{
+  border-bottom:0;
+}
+
+/* Keep section headers consistent */
+.sequencer-card > .card-head,
+.synth-workspace-head{
+  min-height:58px;
+}
+.sequencer-card > .card-head > span,
+.synth-workspace-head > span{
+  margin-right:8px;
+}
+.pattern-edit-actions{
+  padding-top:2px;
+}
+
+/* Do not let older mobile rules stretch the top-right collapse control */
+@media(max-width:760px){
+  .collapse-head-actions{
+    width:auto !important;
+    margin-left:auto !important;
+  }
+  .collapse-toggle{
+    width:auto !important;
+    min-width:96px;
+  }
+  .sequencer-collapse-body{
+    padding:12px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -6831,94 +6891,94 @@ animate();
 
 
 
-function setCollapsedState(collapseId,collapsed){
-  const body=
-    document.querySelector(
-      '[data-collapse-id="'+collapseId+'"]'
+</script>
+
+<script>
+(function(){
+  function getCollapseBody(id){
+    return document.querySelector(
+      '[data-collapse-id="'+id+'"]'
     );
-
-  if(!body)return;
-
-  const container=
-    document.querySelector(
-      '[data-collapse-section="'+collapseId+'"]'
-    );
-
-  const hint=
-    document.querySelector(
-      '[data-collapse-hint="'+collapseId+'"]'
-    );
-
-  body.hidden=collapsed;
-
-  if(hint){
-    hint.hidden=!collapsed;
   }
 
-  if(container){
-    container.classList.toggle(
-      "is-collapsed",
-      collapsed
-    );
+  function setCollapsedState(id,collapsed){
+    const body=getCollapseBody(id);
+    if(!body)return;
+
+    const container=
+      document.querySelector(
+        '[data-collapse-section="'+id+'"]'
+      );
+
+    body.hidden=collapsed;
+
+    if(container){
+      container.classList.toggle(
+        "is-collapsed",
+        collapsed
+      );
+    }
+
+    document
+      .querySelectorAll(
+        '[data-collapse-target="'+id+'"]'
+      )
+      .forEach(function(button){
+        button.setAttribute(
+          "aria-expanded",
+          collapsed ? "false" : "true"
+        );
+
+        const icon=
+          button.querySelector(".collapse-icon");
+
+        const label=
+          button.querySelector(".collapse-label");
+
+        if(icon){
+          icon.textContent=
+            collapsed ? "+" : "−";
+        }
+
+        if(label){
+          label.textContent=
+            collapsed ? "Expand" : "Collapse";
+        }
+      });
   }
 
   document
-    .querySelectorAll(
-      '[data-collapse-target="'+collapseId+'"]'
-    )
-    .forEach(button=>{
-      button.setAttribute(
-        "aria-expanded",
-        collapsed ? "false" : "true"
+    .querySelectorAll("[data-collapse-target]")
+    .forEach(function(button){
+      button.addEventListener(
+        "click",
+        function(){
+          const id=
+            button.getAttribute(
+              "data-collapse-target"
+            );
+
+          const body=getCollapseBody(id);
+          if(!body)return;
+
+          setCollapsedState(
+            id,
+            !body.hidden
+          );
+        }
       );
-
-      const icon=
-        button.querySelector(".collapse-icon");
-      const label=
-        button.querySelector(".collapse-label");
-
-      if(icon){
-        icon.textContent=
-          collapsed ? "+" : "−";
-      }
-
-      if(label){
-        label.textContent=
-          collapsed ? "Expand" : "Collapse";
-      }
     });
-}
 
-function toggleCollapsedSection(collapseId){
-  const body=
-    document.querySelector(
-      '[data-collapse-id="'+collapseId+'"]'
-    );
-
-  if(!body)return;
-
-  setCollapsedState(
-    collapseId,
-    !body.hidden
-  );
-}
-
-document
-  .querySelectorAll("[data-collapse-target]")
-  .forEach(button=>{
-    button.addEventListener(
-      "click",
-      ()=>toggleCollapsedSection(
-        button.getAttribute(
-          "data-collapse-target"
-        )
-      )
-    );
+  [
+    "synth",
+    "sequencer",
+    "audio-recorder",
+    "mixing-console"
+  ].forEach(function(id){
+    setCollapsedState(id,false);
   });
-
-["synth","sequencer","audio-recorder","mixing-console"]
-  .forEach(id=>setCollapsedState(id,false));
-
+})();
 </script>
+
 </body>
 </html>
