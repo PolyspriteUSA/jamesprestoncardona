@@ -201,6 +201,74 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   color:var(--text);
   outline:none;
 }
+
+.embedded-mixer{
+  border-top:1px solid var(--line);
+  padding:0 16px 18px;
+}
+.embedded-mixer-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:15px 0 10px;
+}
+.embedded-mixer-head strong{
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.embedded-mixer-head span{
+  color:var(--muted);
+  font-size:10px;
+}
+.osc-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.osc-panel,
+.envelope-panel{
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.018);
+}
+.envelope-panel{
+  margin-top:10px;
+}
+.osc-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.osc-title strong{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.osc-title span{
+  font-size:10px;
+  color:var(--muted);
+}
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.envelope-controls{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+@media(max-width:1100px){
+  .osc-grid{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .osc-panel .synth-controls,
+  .envelope-controls{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
 .synth-box{
   margin-top:12px;
   padding:14px;
@@ -577,38 +645,150 @@ input[type=range]{width:100%;accent-color:var(--violet)}
           <div class="knob-card"><label>Attack <output id="attackOut">0.01 s</output></label><input id="attack" type="range" min=".005" max=".6" step=".005" value=".01"></div>
           <div class="knob-card"><label>Release <output id="releaseOut">0.22 s</output></label><input id="release" type="range" min=".04" max="1.4" step=".01" value=".22"></div>
         </div>
-        <div class="keys" id="keys"></div>
+        
 
         <div class="synth-box">
           <div class="synth-head">
-            <strong>Lead Synthesizer</strong>
-            <span>playable instrument</span>
+            <strong>Dual Oscillator Synthesizer</strong>
+            <span>two oscillators • individual filters • ADSR • delay</span>
           </div>
 
-          <div class="synth-controls">
-            <div class="knob-card">
-              <label>Waveform</label>
-              <select id="synthWave">
-                <option value="sawtooth">Saw</option>
-                <option value="square">Square</option>
-                <option value="triangle">Triangle</option>
-                <option value="sine">Sine</option>
-              </select>
+          <div class="osc-grid">
+            <div class="osc-panel">
+              <div class="osc-title">
+                <strong>Oscillator 1</strong>
+                <span>primary</span>
+              </div>
+
+              <div class="synth-controls">
+                <div class="knob-card">
+                  <label>Waveform</label>
+                  <select id="osc1Wave">
+                    <option value="sawtooth">Saw</option>
+                    <option value="square">Square</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sine">Sine</option>
+                  </select>
+                </div>
+
+                <div class="knob-card">
+                  <label>Octave <output id="osc1OctaveOut">0</output></label>
+                  <input id="osc1Octave" type="range" min="-2" max="2" value="0" step="1">
+                </div>
+
+                <div class="knob-card">
+                  <label>Detune <output id="osc1DetuneOut">-4 ct</output></label>
+                  <input id="osc1Detune" type="range" min="-50" max="50" value="-4" step="1">
+                </div>
+
+                <div class="knob-card">
+                  <label>Level <output id="osc1LevelOut">70%</output></label>
+                  <input id="osc1Level" type="range" min="0" max="1" value=".70" step=".01">
+                </div>
+
+                <div class="knob-card">
+                  <label>Filter <output id="osc1CutoffOut">3200 Hz</output></label>
+                  <input id="osc1Cutoff" type="range" min="120" max="12000" value="3200">
+                </div>
+
+                <div class="knob-card">
+                  <label>Resonance <output id="osc1ResOut">5.0</output></label>
+                  <input id="osc1Res" type="range" min="0" max="20" value="5" step=".1">
+                </div>
+              </div>
             </div>
 
-            <div class="knob-card">
-              <label>Octave <output id="synthOctaveOut">0</output></label>
-              <input id="synthOctave" type="range" min="-2" max="2" value="0" step="1">
+            <div class="osc-panel">
+              <div class="osc-title">
+                <strong>Oscillator 2</strong>
+                <span>layer</span>
+              </div>
+
+              <div class="synth-controls">
+                <div class="knob-card">
+                  <label>Waveform</label>
+                  <select id="osc2Wave">
+                    <option value="square">Square</option>
+                    <option value="sawtooth">Saw</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="sine">Sine</option>
+                  </select>
+                </div>
+
+                <div class="knob-card">
+                  <label>Octave <output id="osc2OctaveOut">0</output></label>
+                  <input id="osc2Octave" type="range" min="-2" max="2" value="0" step="1">
+                </div>
+
+                <div class="knob-card">
+                  <label>Detune <output id="osc2DetuneOut">7 ct</output></label>
+                  <input id="osc2Detune" type="range" min="-50" max="50" value="7" step="1">
+                </div>
+
+                <div class="knob-card">
+                  <label>Level <output id="osc2LevelOut">48%</output></label>
+                  <input id="osc2Level" type="range" min="0" max="1" value=".48" step=".01">
+                </div>
+
+                <div class="knob-card">
+                  <label>Filter <output id="osc2CutoffOut">1800 Hz</output></label>
+                  <input id="osc2Cutoff" type="range" min="120" max="12000" value="1800">
+                </div>
+
+                <div class="knob-card">
+                  <label>Resonance <output id="osc2ResOut">7.0</output></label>
+                  <input id="osc2Res" type="range" min="0" max="20" value="7" step=".1">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="envelope-panel">
+            <div class="osc-title">
+              <strong>Amplitude Envelope</strong>
+              <span>ADSR + synth delay</span>
             </div>
 
-            <div class="knob-card">
-              <label>Detune <output id="synthDetuneOut">0 ct</output></label>
-              <input id="synthDetune" type="range" min="-30" max="30" value="0" step="1">
-            </div>
+            <div class="synth-controls envelope-controls">
+              <div class="knob-card">
+                <label>Attack <output id="synthAttackOut">0.02 s</output></label>
+                <input id="synthAttack" type="range" min=".005" max="2" value=".02" step=".005">
+              </div>
 
-            <div class="knob-card">
-              <label>Level <output id="synthLevelOut">38%</output></label>
-              <input id="synthLevel" type="range" min="0" max=".8" value=".38" step=".01">
+              <div class="knob-card">
+                <label>Decay <output id="synthDecayOut">0.18 s</output></label>
+                <input id="synthDecay" type="range" min=".01" max="2" value=".18" step=".01">
+              </div>
+
+              <div class="knob-card">
+                <label>Sustain <output id="synthSustainOut">58%</output></label>
+                <input id="synthSustain" type="range" min=".01" max="1" value=".58" step=".01">
+              </div>
+
+              <div class="knob-card">
+                <label>Release <output id="synthReleaseOut">0.42 s</output></label>
+                <input id="synthRelease" type="range" min=".03" max="3" value=".42" step=".01">
+              </div>
+
+              <div class="knob-card">
+                <label>Delay Send <output id="synthDelayOut">22%</output></label>
+                <input id="synthDelay" type="range" min="0" max=".8" value=".22" step=".01">
+              </div>
+
+              <div class="knob-card">
+                <label>Delay Time <output id="synthDelayTimeOut">240 ms</output></label>
+                <input id="synthDelayTime" type="range" min=".04" max=".75" value=".24" step=".01">
+              </div>
+
+              <div class="knob-card">
+                <label>Delay Feedback <output id="synthDelayFeedbackOut">28%</output></label>
+                <input id="synthDelayFeedback" type="range" min="0" max=".75" value=".28" step=".01">
+              </div>
+
+              <div class="knob-card">
+                <label>Synth Level <output id="synthLevelOut">38%</output></label>
+                <input id="synthLevel" type="range" min="0" max=".8" value=".38" step=".01">
+              </div>
             </div>
           </div>
 
@@ -618,10 +798,6 @@ input[type=range]{width:100%;accent-color:var(--violet)}
     </section>
 
     <div class="side-stack">
-      <section class="card">
-        <div class="card-head"><h2>Mixer</h2><span>level</span></div>
-        <div class="mixer" id="mixer"></div>
-      </section>
       <section class="card">
         <div class="card-head"><h2>Master FX</h2><span>send</span></div>
         <div class="fx">
@@ -696,6 +872,14 @@ input[type=range]{width:100%;accent-color:var(--violet)}
         <span>click pads to program</span>
       </div>
       <div class="seq-wrap" id="sequencer"></div>
+
+      <div class="embedded-mixer">
+        <div class="embedded-mixer-head">
+          <strong>Mixer</strong>
+          <span>channel levels • mute • solo</span>
+        </div>
+        <div class="mixer" id="mixer"></div>
+      </div>
     </section>
   </main>
 
@@ -726,7 +910,7 @@ let bassNotes=[36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39];
 let synthNotes=[60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64];
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
-let audio=null,master=null,analyser=null,filter=null,delay=null,feedback=null,delayWet=null;
+let audio=null,master=null,analyser=null,filter=null,delay=null,feedback=null,delayWet=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
 let soloed=new Set();
@@ -754,6 +938,20 @@ function ensureAudio(){
   feedback.gain.value=parseFloat($("feedback").value);
   delayWet=audio.createGain();
   delayWet.gain.value=parseFloat($("delay").value);
+
+  synthDelayNode=audio.createDelay(1.5);
+  synthDelayNode.delayTime.value=parseFloat($("synthDelayTime").value);
+
+  synthDelayFeedbackNode=audio.createGain();
+  synthDelayFeedbackNode.gain.value=parseFloat($("synthDelayFeedback").value);
+
+  synthDelayWet=audio.createGain();
+  synthDelayWet.gain.value=parseFloat($("synthDelay").value);
+
+  synthDelayNode.connect(synthDelayFeedbackNode);
+  synthDelayFeedbackNode.connect(synthDelayNode);
+  synthDelayNode.connect(synthDelayWet);
+  synthDelayWet.connect(master);
 
   filter.connect(master);
   filter.connect(delay);
@@ -823,26 +1021,218 @@ function bass(t,n=36,v=.45){
 }
 function leadSynth(t,n=60,v=.38){
   ensureAudio();
-  const o1=audio.createOscillator(),o2=audio.createOscillator(),g=audio.createGain();
-  const wave=$("synthWave").value;
-  const oct=parseInt($("synthOctave").value,10)||0;
-  const det=parseFloat($("synthDetune").value)||0;
-  const level=parseFloat($("synthLevel").value)||v;
-  const note=n+oct*12;
-  o1.type=wave;
-  o2.type=wave;
-  o1.frequency.value=midiToHz(note);
-  o2.frequency.value=midiToHz(note);
-  o1.detune.value=det-5;
-  o2.detune.value=det+5;
-  const a=Math.max(.008,parseFloat($("attack").value));
-  const r=Math.max(.08,parseFloat($("release").value));
-  g.gain.setValueAtTime(.0001,t);
-  g.gain.exponentialRampToValueAtTime(Math.max(.001,level*.55),t+a);
-  g.gain.exponentialRampToValueAtTime(.001,t+a+r+.08);
-  o1.connect(g);o2.connect(g);out(g);
-  o1.start(t);o2.start(t);
-  o1.stop(t+a+r+.12);o2.stop(t+a+r+.12);
+
+  const synthLevel=
+    parseFloat($("synthLevel").value);
+
+  const requestedLevel=
+    Number.isFinite(v)
+      ?v
+      :synthLevel;
+
+  const level=
+    Math.min(
+      .9,
+      Math.max(
+        .001,
+        Math.min(
+          requestedLevel,
+          synthLevel
+        )
+      )
+    );
+
+  const attack=
+    Math.max(
+      .005,
+      parseFloat($("synthAttack").value)
+    );
+
+  const decay=
+    Math.max(
+      .01,
+      parseFloat($("synthDecay").value)
+    );
+
+  const sustain=
+    THREE.MathUtils.clamp(
+      parseFloat($("synthSustain").value),
+      .01,
+      1
+    );
+
+  const release=
+    Math.max(
+      .03,
+      parseFloat($("synthRelease").value)
+    );
+
+  const noteLength=
+    Math.max(
+      .10,
+      secondsPerStep()*.82
+    );
+
+  const sustainTime=
+    Math.max(
+      .02,
+      noteLength-attack-decay
+    );
+
+  const env=
+    audio.createGain();
+
+  env.gain.setValueAtTime(
+    .0001,
+    t
+  );
+
+  env.gain.exponentialRampToValueAtTime(
+    level,
+    t+attack
+  );
+
+  env.gain.exponentialRampToValueAtTime(
+    Math.max(
+      .001,
+      level*sustain
+    ),
+    t+attack+decay
+  );
+
+  env.gain.setValueAtTime(
+    Math.max(
+      .001,
+      level*sustain
+    ),
+    t+attack+decay+sustainTime
+  );
+
+  env.gain.exponentialRampToValueAtTime(
+    .001,
+    t+attack+decay+sustainTime+release
+  );
+
+  const osc1=
+    audio.createOscillator();
+
+  const osc2=
+    audio.createOscillator();
+
+  const osc1Gain=
+    audio.createGain();
+
+  const osc2Gain=
+    audio.createGain();
+
+  const osc1Filter=
+    audio.createBiquadFilter();
+
+  const osc2Filter=
+    audio.createBiquadFilter();
+
+  const osc1Octave=
+    parseInt(
+      $("osc1Octave").value,
+      10
+    )||0;
+
+  const osc2Octave=
+    parseInt(
+      $("osc2Octave").value,
+      10
+    )||0;
+
+  osc1.type=
+    $("osc1Wave").value;
+
+  osc2.type=
+    $("osc2Wave").value;
+
+  osc1.frequency.value=
+    midiToHz(
+      n+
+      osc1Octave*12
+    );
+
+  osc2.frequency.value=
+    midiToHz(
+      n+
+      osc2Octave*12
+    );
+
+  osc1.detune.value=
+    parseFloat(
+      $("osc1Detune").value
+    );
+
+  osc2.detune.value=
+    parseFloat(
+      $("osc2Detune").value
+    );
+
+  osc1Gain.gain.value=
+    parseFloat(
+      $("osc1Level").value
+    );
+
+  osc2Gain.gain.value=
+    parseFloat(
+      $("osc2Level").value
+    );
+
+  osc1Filter.type="lowpass";
+  osc2Filter.type="lowpass";
+
+  osc1Filter.frequency.value=
+    parseFloat(
+      $("osc1Cutoff").value
+    );
+
+  osc2Filter.frequency.value=
+    parseFloat(
+      $("osc2Cutoff").value
+    );
+
+  osc1Filter.Q.value=
+    parseFloat(
+      $("osc1Res").value
+    );
+
+  osc2Filter.Q.value=
+    parseFloat(
+      $("osc2Res").value
+    );
+
+  osc1.connect(osc1Gain);
+  osc1Gain.connect(osc1Filter);
+  osc1Filter.connect(env);
+
+  osc2.connect(osc2Gain);
+  osc2Gain.connect(osc2Filter);
+  osc2Filter.connect(env);
+
+  env.connect(filter);
+
+  if(synthDelayNode){
+    env.connect(
+      synthDelayNode
+    );
+  }
+
+  const stopTime=
+    t+
+    attack+
+    decay+
+    sustainTime+
+    release+
+    .05;
+
+  osc1.start(t);
+  osc2.start(t);
+
+  osc1.stop(stopTime);
+  osc2.stop(stopTime);
 }
 function playTrack(track,t,step){
   if(muted.has(track.type))return;
@@ -1356,6 +1746,46 @@ async function handleMidiMessage(event){
         new Event("input")
       );
     }
+
+    if(cc===73){
+      $("synthAttack").value=
+        .005+
+        value*1.995;
+
+      $("synthAttack").dispatchEvent(
+        new Event("input")
+      );
+    }
+
+    if(cc===72){
+      $("synthRelease").value=
+        .03+
+        value*2.97;
+
+      $("synthRelease").dispatchEvent(
+        new Event("input")
+      );
+    }
+
+    if(cc===75){
+      $("osc1Cutoff").value=
+        120+
+        value*(12000-120);
+
+      $("osc1Cutoff").dispatchEvent(
+        new Event("input")
+      );
+    }
+
+    if(cc===76){
+      $("osc2Cutoff").value=
+        120+
+        value*(12000-120);
+
+      $("osc2Cutoff").dispatchEvent(
+        new Event("input")
+      );
+    }
   }
 }
 
@@ -1388,27 +1818,42 @@ synthKeyboardNotes.forEach((note,i)=>{
   $("synthKeyboard").appendChild(b);
 });
 
-const keyNotes=[36,38,40,41,43,45,47,48,50,52,53,55,57];
-keyNotes.forEach((note,i)=>{
-  const b=document.createElement("button");
-  b.className="key"+([1,3,6,8,10].includes(i)?" black":"");
-  b.textContent=["C","D","E","F","G","A","B","C","D","E","F","G","A"][i];
-  const trigger=async()=>{
-    ensureAudio();if(audio.state==="suspended")await audio.resume();
-    bass(audio.currentTime,note,.42);
-    b.classList.add("on");setTimeout(()=>b.classList.remove("on"),120);pulseVisual();
-  };
-  b.addEventListener("pointerdown",trigger);
-  $("keys").appendChild(b);
-});
-
 function bind(id,outId,format,fn){
   const el=$(id),outEl=$(outId);
   const update=()=>{outEl.textContent=format(el.value);if(fn)fn(parseFloat(el.value))};
   el.addEventListener("input",update);update();
 }
-bind("synthOctave","synthOctaveOut",v=>String(+v));
-bind("synthDetune","synthDetuneOut",v=>Math.round(v)+" ct");
+bind("osc1Octave","osc1OctaveOut",v=>String(+v));
+bind("osc1Detune","osc1DetuneOut",v=>Math.round(v)+" ct");
+bind("osc1Level","osc1LevelOut",v=>Math.round(v*100)+"%");
+bind("osc1Cutoff","osc1CutoffOut",v=>Math.round(v)+" Hz");
+bind("osc1Res","osc1ResOut",v=>(+v).toFixed(1));
+
+bind("osc2Octave","osc2OctaveOut",v=>String(+v));
+bind("osc2Detune","osc2DetuneOut",v=>Math.round(v)+" ct");
+bind("osc2Level","osc2LevelOut",v=>Math.round(v*100)+"%");
+bind("osc2Cutoff","osc2CutoffOut",v=>Math.round(v)+" Hz");
+bind("osc2Res","osc2ResOut",v=>(+v).toFixed(1));
+
+bind("synthAttack","synthAttackOut",v=>(+v).toFixed(2)+" s");
+bind("synthDecay","synthDecayOut",v=>(+v).toFixed(2)+" s");
+bind("synthSustain","synthSustainOut",v=>Math.round(v*100)+"%");
+bind("synthRelease","synthReleaseOut",v=>(+v).toFixed(2)+" s");
+bind("synthDelay","synthDelayOut",v=>Math.round(v*100)+"%",v=>{
+  if(synthDelayWet){
+    synthDelayWet.gain.setTargetAtTime(v,audio.currentTime,.02);
+  }
+});
+bind("synthDelayTime","synthDelayTimeOut",v=>Math.round(v*1000)+" ms",v=>{
+  if(synthDelayNode){
+    synthDelayNode.delayTime.setTargetAtTime(v,audio.currentTime,.02);
+  }
+});
+bind("synthDelayFeedback","synthDelayFeedbackOut",v=>Math.round(v*100)+"%",v=>{
+  if(synthDelayFeedbackNode){
+    synthDelayFeedbackNode.gain.setTargetAtTime(v,audio.currentTime,.02);
+  }
+});
 bind("synthLevel","synthLevelOut",v=>Math.round(v*100)+"%");
 bind("cutoff","cutoffOut",v=>Math.round(v)+" Hz",v=>{if(filter)filter.frequency.setTargetAtTime(v,audio.currentTime,.02)});
 bind("res","resOut",v=>(+v).toFixed(1),v=>{if(filter)filter.Q.setTargetAtTime(v,audio.currentTime,.02)});
