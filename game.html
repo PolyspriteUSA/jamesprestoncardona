@@ -18,240 +18,258 @@
 <script type="module">
 import * as THREE from "three";
 const container=document.getElementById("game"),scoreValue=document.getElementById("scoreValue"),healthValue=document.getElementById("healthValue"),healthMeter=document.getElementById("healthMeter"),targetsValue=document.getElementById("targetsValue"),startPanel=document.getElementById("startPanel"),gameOverPanel=document.getElementById("gameOverPanel"),finalScore=document.getElementById("finalScore"),startButton=document.getElementById("startButton"),restartButton=document.getElementById("restartButton"),statusText=document.getElementById("statusText");
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x05030a,0.010);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.88;container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x05030a,0.008);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.88;container.appendChild(renderer.domElement);
 scene.add(new THREE.AmbientLight(0x8d81ff,.24));const playerLight=new THREE.PointLight(0xff42d0,4.5,16,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,8,30,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
 const player=new THREE.Group();scene.add(player);
 
-const hullWhiteMat=new THREE.MeshStandardMaterial({
-  color:0xd9dde3,
-  emissive:0x11131a,
-  emissiveIntensity:.10,
-  roughness:.30,
-  metalness:.32
+const graphiteMat=new THREE.MeshStandardMaterial({
+  color:0x111218,
+  emissive:0x08070d,
+  emissiveIntensity:.12,
+  roughness:.28,
+  metalness:.64
 });
 
-const hullGrayMat=new THREE.MeshStandardMaterial({
-  color:0xaeb3bc,
-  emissive:0x0d1016,
-  emissiveIntensity:.08,
-  roughness:.34,
-  metalness:.28
+const violetPanelMat=new THREE.MeshStandardMaterial({
+  color:0x4f33c9,
+  emissive:0x25105f,
+  emissiveIntensity:.52,
+  roughness:.24,
+  metalness:.38
 });
 
-const noseMat=new THREE.MeshStandardMaterial({
-  color:0x16253d,
-  emissive:0x0d1625,
-  emissiveIntensity:.16,
-  roughness:.22,
-  metalness:.34
-});
-
-const accentRedMat=new THREE.MeshStandardMaterial({
-  color:0xff5d79,
-  emissive:0xa21d48,
-  emissiveIntensity:.85,
-  roughness:.18,
-  metalness:.18
-});
-
-const canopyMat=new THREE.MeshPhysicalMaterial({
-  color:0x6fa0ff,
-  emissive:0x163670,
-  emissiveIntensity:.35,
-  roughness:.10,
-  metalness:.12,
+const magentaEdgeMat=new THREE.MeshBasicMaterial({
+  color:0xff42d0,
   transparent:true,
-  opacity:.74
-});
-
-const engineGlowMat=new THREE.MeshBasicMaterial({
-  color:0x8db8ff,
-  transparent:true,
-  opacity:.58,
+  opacity:.78,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
 
-const fuselage=new THREE.Mesh(
-  new THREE.BoxGeometry(.34,.22,1.14),
-  hullWhiteMat
-);
-fuselage.position.z=-.02;
-player.add(fuselage);
+const violetGlowMat=new THREE.MeshBasicMaterial({
+  color:0x7149ff,
+  transparent:true,
+  opacity:.88,
+  blending:THREE.AdditiveBlending,
+  depthWrite:false
+});
 
-const midBody=new THREE.Mesh(
-  new THREE.BoxGeometry(.46,.16,.58),
-  hullGrayMat
+const softGlowMat=new THREE.MeshBasicMaterial({
+  color:0xa66cff,
+  transparent:true,
+  opacity:.34,
+  blending:THREE.AdditiveBlending,
+  depthWrite:false
+});
+
+const centerBody=new THREE.Mesh(
+  new THREE.BoxGeometry(.52,.18,1.24),
+  graphiteMat
 );
-midBody.position.set(0,.10,-.05);
-player.add(midBody);
+centerBody.position.set(0,.02,-.18);
+player.add(centerBody);
 
 const nose=new THREE.Mesh(
-  new THREE.ConeGeometry(.16,.78,10),
-  noseMat
+  new THREE.ConeGeometry(.18,.88,8),
+  graphiteMat
 );
 nose.rotation.x=-Math.PI/2;
-nose.position.set(0,-.02,-.95);
-nose.scale.x=.78;
+nose.position.set(0,.00,-1.22);
+nose.scale.x=.74;
 player.add(nose);
 
 const canopy=new THREE.Mesh(
-  new THREE.SphereGeometry(.14,18,12),
-  canopyMat
+  new THREE.SphereGeometry(.15,18,12),
+  new THREE.MeshPhysicalMaterial({
+    color:0x20143f,
+    emissive:0x37106a,
+    emissiveIntensity:.52,
+    roughness:.08,
+    metalness:.14,
+    transparent:true,
+    opacity:.80
+  })
 );
-canopy.scale.set(.78,.42,1.35);
-canopy.position.set(0,.11,-.45);
+canopy.scale.set(.82,.42,1.42);
+canopy.position.set(0,.13,-.54);
 player.add(canopy);
 
 function makeWing(side){
+  const sx=side;
+
+  const vertices=new Float32Array([
+    0.00,0.02,-0.58,
+    sx*1.44,0.00,0.02,
+    sx*.92,0.00,.62,
+
+    0.00,0.02,-0.58,
+    sx*.92,0.00,.62,
+    sx*.18,0.00,.38
+  ]);
+
   const geometry=new THREE.BufferGeometry();
   geometry.setAttribute(
     "position",
     new THREE.BufferAttribute(
-      new Float32Array([
-        0.00, 0.02, -0.34,
-        side*1.08, 0.00, -0.08,
-        side*0.56, 0.00, 0.48,
-
-        0.00, 0.02, -0.34,
-        side*0.56, 0.00, 0.48,
-        0.16*side, 0.00, 0.26
-      ]),
+      vertices,
       3
     )
   );
+
+  // Ensure correct face winding for the mirrored wing.
+  if(side<0){
+    const index=new Uint16Array([
+      0,2,1,
+      3,5,4
+    ]);
+    geometry.setIndex(
+      new THREE.BufferAttribute(
+        index,
+        1
+      )
+    );
+  }
+
   geometry.computeVertexNormals();
 
   const wing=new THREE.Mesh(
     geometry,
-    hullWhiteMat
+    graphiteMat
   );
+
+  wing.material.side=THREE.DoubleSide;
   player.add(wing);
 
-  const wingTip=new THREE.Mesh(
-    new THREE.BoxGeometry(.16,.10,.24),
-    hullGrayMat
-  );
-  wingTip.position.set(side*1.02,.08,-.10);
-  wingTip.rotation.z=side*-.48;
-  wingTip.rotation.x=.06;
-  player.add(wingTip);
+  const panelVertices=new Float32Array([
+    sx*.18,.035,-.34,
+    sx*1.04,.028,.08,
+    sx*.70,.028,.42,
 
-  const wingAccent=new THREE.Mesh(
-    new THREE.BoxGeometry(.08,.02,.26),
-    accentRedMat
+    sx*.18,.035,-.34,
+    sx*.70,.028,.42,
+    sx*.28,.028,.28
+  ]);
+
+  const panelGeometry=new THREE.BufferGeometry();
+  panelGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      panelVertices,
+      3
+    )
   );
-  wingAccent.position.set(side*.74,-.01,.08);
-  wingAccent.rotation.y=side*.34;
-  player.add(wingAccent);
+
+  if(side<0){
+    const pIndex=new Uint16Array([
+      0,2,1,
+      3,5,4
+    ]);
+    panelGeometry.setIndex(
+      new THREE.BufferAttribute(
+        pIndex,
+        1
+      )
+    );
+  }
+
+  panelGeometry.computeVertexNormals();
+
+  const panel=new THREE.Mesh(
+    panelGeometry,
+    violetPanelMat
+  );
+
+  panel.material.side=THREE.DoubleSide;
+  player.add(panel);
+
+  const edge=new THREE.Mesh(
+    new THREE.BoxGeometry(.055,.025,.78),
+    magentaEdgeMat
+  );
+
+  edge.position.set(
+    sx*.94,
+    -.005,
+    .18
+  );
+
+  edge.rotation.y=
+    sx*.72;
+
+  player.add(edge);
 }
 
 makeWing(-1);
 makeWing(1);
 
-const rearBlock=new THREE.Mesh(
-  new THREE.BoxGeometry(.22,.26,.28),
-  hullWhiteMat
+const rearSpine=new THREE.Mesh(
+  new THREE.BoxGeometry(.30,.14,.54),
+  violetPanelMat
 );
-rearBlock.position.set(0,.16,.38);
-player.add(rearBlock);
+rearSpine.position.set(0,.12,.46);
+player.add(rearSpine);
 
-const dorsalFin=new THREE.Mesh(
-  new THREE.BoxGeometry(.07,.24,.18),
-  hullGrayMat
-);
-dorsalFin.position.set(0,.34,.36);
-player.add(dorsalFin);
+function makeEngine(side){
+  const group=new THREE.Group();
 
-const finAccent=new THREE.Mesh(
-  new THREE.BoxGeometry(.03,.12,.08),
-  accentRedMat
-);
-finAccent.position.set(0,.42,.36);
-player.add(finAccent);
+  const housing=new THREE.Mesh(
+    new THREE.CylinderGeometry(.17,.20,.54,12),
+    graphiteMat
+  );
+  housing.rotation.x=Math.PI/2;
+  housing.position.set(side*.72,.00,.54);
+  group.add(housing);
 
-const leftEngine=new THREE.Mesh(
-  new THREE.CylinderGeometry(.08,.09,.22,12),
-  engineGlowMat
-);
-leftEngine.rotation.z=Math.PI/2;
-leftEngine.position.set(-.34,.06,.50);
-player.add(leftEngine);
+  const core=new THREE.Mesh(
+    new THREE.CircleGeometry(.13,20),
+    violetGlowMat
+  );
+  core.position.set(side*.72,.00,.83);
+  core.rotation.x=Math.PI;
+  group.add(core);
 
-const rightEngine=leftEngine.clone();
-rightEngine.position.x=.34;
-player.add(rightEngine);
+  const trailOuter=new THREE.Mesh(
+    new THREE.ConeGeometry(.13,.82,18,1,true),
+    softGlowMat
+  );
+  trailOuter.rotation.x=Math.PI/2;
+  trailOuter.position.set(side*.72,.00,1.22);
+  group.add(trailOuter);
 
-const leftTrail=new THREE.Mesh(
-  new THREE.ConeGeometry(.10,.55,16,1,true),
-  new THREE.MeshBasicMaterial({
-    color:0x7149ff,
-    transparent:true,
-    opacity:.18,
-    blending:THREE.AdditiveBlending,
-    depthWrite:false
-  })
-);
-leftTrail.rotation.x=Math.PI/2;
-leftTrail.position.set(-.34,.06,.86);
-player.add(leftTrail);
+  const trailInner=new THREE.Mesh(
+    new THREE.ConeGeometry(.07,1.04,18,1,true),
+    magentaEdgeMat
+  );
+  trailInner.rotation.x=Math.PI/2;
+  trailInner.position.set(side*.72,.00,1.32);
+  group.add(trailInner);
 
-const rightTrail=leftTrail.clone();
-rightTrail.position.x=.34;
-player.add(rightTrail);
+  group.userData.outer=trailOuter;
+  group.userData.inner=trailInner;
+  group.userData.core=core;
 
-const leftTrailCore=new THREE.Mesh(
-  new THREE.ConeGeometry(.055,.78,16,1,true),
-  new THREE.MeshBasicMaterial({
-    color:0xff42d0,
-    transparent:true,
-    opacity:.56,
-    blending:THREE.AdditiveBlending,
-    depthWrite:false
-  })
-);
-leftTrailCore.rotation.x=Math.PI/2;
-leftTrailCore.position.set(-.34,.06,1.00);
-player.add(leftTrailCore);
+  player.add(group);
 
-const rightTrailCore=leftTrailCore.clone();
-rightTrailCore.position.x=.34;
-player.add(rightTrailCore);
+  return group;
+}
 
-const thrustHalo=new THREE.Mesh(
-  new THREE.TorusGeometry(.34,.018,8,32),
-  new THREE.MeshBasicMaterial({
-    color:0xa66cff,
-    transparent:true,
-    opacity:.20,
-    blending:THREE.AdditiveBlending,
-    depthWrite:false
-  })
-);
-thrustHalo.rotation.x=Math.PI/2;
-thrustHalo.position.set(0,.06,.72);
-player.add(thrustHalo);
+const leftEngineGroup=makeEngine(-1);
+const rightEngineGroup=makeEngine(1);
 
-const rearGlow=new THREE.Mesh(
-  new THREE.CircleGeometry(.16,24),
-  new THREE.MeshBasicMaterial({
-    color:0x7149ff,
-    transparent:true,
-    opacity:.045,
-    blending:THREE.AdditiveBlending,
-    depthWrite:false,
-    side:THREE.DoubleSide
-  })
-);
-rearGlow.position.set(0,.08,.54);
-player.add(rearGlow);
 
-const playerRing=leftEngine;
-const playerRingOuter=rightEngine;
-const cubePivot=dorsalFin;
-const coreGlow=rearGlow;
 
-player.scale.setScalar(.56);
+const playerRing=leftEngineGroup.userData.core;
+const playerRingOuter=rightEngineGroup.userData.core;
+const cubePivot=rearSpine;
+const coreGlow=leftEngineGroup.userData.core;
+
+const leftTrail=leftEngineGroup.userData.outer;
+const rightTrail=rightEngineGroup.userData.outer;
+const leftTrailCore=leftEngineGroup.userData.inner;
+const rightTrailCore=rightEngineGroup.userData.inner;
+const thrustHalo=null;
+
+player.scale.setScalar(.54);
 player.position.z=2;
 
 
@@ -262,15 +280,15 @@ player.position.z=2;
 
 let tunnelCurveTime=0;
 const tunnelSlices=[];
-const archSpacing=2.15;
-const tunnelCount=58;
-const tunnelRadius=4.85;
+const archSpacing=2.75;
+const tunnelCount=46;
+const tunnelRadius=5.05;
 const shapeSegments=96;
 
 const neonPink=new THREE.LineBasicMaterial({
   color:0xff42d0,
   transparent:true,
-  opacity:.46,
+  opacity:.58,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
@@ -278,7 +296,7 @@ const neonPink=new THREE.LineBasicMaterial({
 const neonViolet=new THREE.LineBasicMaterial({
   color:0x7149ff,
   transparent:true,
-  opacity:.38,
+  opacity:.48,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
@@ -286,7 +304,7 @@ const neonViolet=new THREE.LineBasicMaterial({
 const neonSoft=new THREE.LineBasicMaterial({
   color:0xa66cff,
   transparent:true,
-  opacity:.26,
+  opacity:.34,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
@@ -445,9 +463,9 @@ function createTunnelSlice(i){
   group.userData.z=-i*archSpacing;
 
   const offsets=[
-    -.26,
+    -.48,
     0,
-    .26
+    .48
   ];
 
   offsets.forEach((offset,layer)=>{
@@ -672,64 +690,73 @@ if(input.down)target.y-=s*dt;
 target.x=THREE.MathUtils.clamp(target.x,-3.65,3.65);
 target.y=THREE.MathUtils.clamp(target.y,-3,3);
 
-player.position.x=THREE.MathUtils.lerp(player.position.x,target.x,.18);
-player.position.y=THREE.MathUtils.lerp(player.position.y,target.y,.18);
+player.position.x=THREE.MathUtils.lerp(
+  player.position.x,
+  target.x,
+  .18
+);
+
+player.position.y=THREE.MathUtils.lerp(
+  player.position.y,
+  target.y,
+  .18
+);
 
 player.rotation.z=THREE.MathUtils.lerp(
   player.rotation.z,
-  (target.x-player.position.x)*-.18,
+  (target.x-player.position.x)*-.22,
   .14
 );
 
 player.rotation.x=THREE.MathUtils.lerp(
   player.rotation.x,
-  .04+(target.y-player.position.y)*-.10,
+  .035+(target.y-player.position.y)*-.10,
   .14
 );
 
 player.rotation.y=THREE.MathUtils.lerp(
   player.rotation.y,
-  (target.x-player.position.x)*.06,
+  (target.x-player.position.x)*.07,
   .12
 );
 
-cubePivot.rotation.z=Math.sin(elapsed*1.4)*.06;
+cubePivot.rotation.z=
+  Math.sin(elapsed*1.2)*.045;
 
-playerRing.scale.setScalar(1+Math.sin(elapsed*8.0)*.08);
-playerRingOuter.scale.setScalar(1+Math.sin(elapsed*8.0+.8)*.08);
+const thrustPulse=
+  .94+
+  Math.sin(elapsed*12.8)*.13;
 
-coreGlow.scale.setScalar(
-  1+Math.sin(elapsed*2.4)*.10
-);
-
-const thrustPulse=.92+Math.sin(elapsed*13.5)*.14;
-const thrustPulseCore=1.08+Math.sin(elapsed*13.5+.45)*.22;
+const thrustCorePulse=
+  1.05+
+  Math.sin(elapsed*13.4+.45)*.20;
 
 leftTrail.scale.set(1,1,thrustPulse);
 rightTrail.scale.set(1,1,thrustPulse);
 
-leftTrailCore.scale.set(1,1,thrustPulseCore);
-rightTrailCore.scale.set(1,1,thrustPulseCore);
+leftTrailCore.scale.set(1,1,thrustCorePulse);
+rightTrailCore.scale.set(1,1,thrustCorePulse);
 
-leftTrail.material.opacity=.18+Math.abs(Math.sin(elapsed*13.5))*.14;
-rightTrail.material.opacity=leftTrail.material.opacity;
+leftTrail.material.opacity=
+  .22+
+  Math.abs(Math.sin(elapsed*12.8))*.16;
 
-leftTrailCore.material.opacity=.38+Math.abs(Math.sin(elapsed*13.5+.45))*.24;
-rightTrailCore.material.opacity=leftTrailCore.material.opacity;
+rightTrail.material.opacity=
+  leftTrail.material.opacity;
 
-thrustHalo.scale.setScalar(.94+Math.sin(elapsed*9.0)*.06);
-thrustHalo.material.opacity=.14+Math.abs(Math.sin(elapsed*9.0))*.10;
+leftTrailCore.material.opacity=
+  .46+
+  Math.abs(Math.sin(elapsed*13.4+.45))*.22;
+
+rightTrailCore.material.opacity=
+  leftTrailCore.material.opacity;
 
 playerLight.position.x=player.position.x;
-playerLight.position.y=player.position.y+.55;
-playerLight.position.z=player.position.z-.85;
+playerLight.position.y=player.position.y+.40;
+playerLight.position.z=player.position.z-.95;
 
 if(input.fire)fire();
 }
-
-
-
-
 
 function updateTunnel(dt){
 const move=speed*dt;
@@ -756,7 +783,7 @@ tunnelSlices.forEach(slice=>{
 
   const farFade=
     THREE.MathUtils.clamp(
-      (132-depth)/108,
+      (146-depth)/118,
       .05,
       1
     );
@@ -769,8 +796,8 @@ tunnelSlices.forEach(slice=>{
     );
 
   const pulse=
-    .95+
-    .05*
+    .98+
+    .08*
     Math.sin(
       elapsed*.42+
       slice.userData.baseIndex*.13
