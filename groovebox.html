@@ -691,6 +691,18 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   }
 }
 
+
+.audio-input-enable{
+  align-self:end;
+}
+.audio-input-setting,
+.audio-monitor-setting{
+  min-width:0;
+}
+#audioInputStatus{
+  grid-column:1/-1;
+}
+
 .audio-settings{
   margin-top:12px;
   padding-top:12px;
@@ -2069,6 +2081,24 @@ body{
                     <option value="default">System Default</option>
                   </select>
                 </label>
+                <label class="audio-setting audio-input-setting">
+                  <span>Audio Input</span>
+                  <select id="audioInput">
+                    <option value="default">System Default</option>
+                  </select>
+                </label>
+
+                <button class="btn audio-input-enable" id="audioInputEnable" type="button">
+                  Enable Audio Input
+                </button>
+
+                <label class="audio-setting audio-monitor-setting">
+                  <span>Input Monitor</span>
+                  <select id="audioInputMonitor">
+                    <option value="off">Off</option>
+                    <option value="on">On</option>
+                  </select>
+                </label>
 
                 <button class="btn audio-restart" id="audioRestart" type="button">
                   Restart Audio Engine
@@ -2076,6 +2106,9 @@ body{
 
                 <div class="audio-status" id="audioStatus">
                   Audio engine not started
+                </div>
+                <div class="audio-status" id="audioInputStatus">
+                  Audio input disabled
                 </div>
               </div>
             </div>
@@ -2169,6 +2202,7 @@ let synthNotes=[60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64];
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,reverbNode=null,reverbWet=null,reverbDry=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
+let audioInputStream=null,audioInputSource=null,audioInputGain=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
 let soloed=new Set();
@@ -2238,6 +2272,143 @@ function refreshMasterReverb(){
 
   reverbNode.buffer=
     buildReverbImpulse(seconds);
+}
+
+
+async function refreshAudioInputs(){
+  const select=$("audioInput");
+  if(!select||!navigator.mediaDevices||!navigator.mediaDevices.enumerateDevices)return;
+
+  let devices=[];
+  try{
+    devices=await navigator.mediaDevices.enumerateDevices();
+  }catch(error){
+    return;
+  }
+
+  const current=select.value||"default";
+  select.innerHTML="";
+
+  const systemOption=document.createElement("option");
+  systemOption.value="default";
+  systemOption.textContent="System Default";
+  select.appendChild(systemOption);
+
+  devices
+    .filter(device=>device.kind==="audioinput")
+    .forEach((device,index)=>{
+      const option=document.createElement("option");
+      option.value=device.deviceId;
+      option.textContent=device.label||("Audio Input "+(index+1));
+      select.appendChild(option);
+    });
+
+  if([...select.options].some(option=>option.value===current)){
+    select.value=current;
+  }
+}
+
+function stopAudioInput(){
+  if(audioInputSource){
+    try{audioInputSource.disconnect();}catch(error){}
+    audioInputSource=null;
+  }
+
+  if(audioInputGain){
+    try{audioInputGain.disconnect();}catch(error){}
+    audioInputGain=null;
+  }
+
+  if(audioInputStream){
+    audioInputStream.getTracks().forEach(track=>track.stop());
+    audioInputStream=null;
+  }
+
+  if($("audioInputStatus")){
+    $("audioInputStatus").textContent="Audio input disabled";
+  }
+
+  if($("audioInputEnable")){
+    $("audioInputEnable").textContent="Enable Audio Input";
+    $("audioInputEnable").classList.remove("active");
+  }
+}
+
+function updateAudioInputMonitor(){
+  if(!audioInputGain||!audio)return;
+
+  const value=
+    $("audioInputMonitor").value==="on"
+      ?1
+      :0;
+
+  audioInputGain.gain.setTargetAtTime(
+    value,
+    audio.currentTime,
+    .02
+  );
+}
+
+async function enableAudioInput(){
+  ensureAudio();
+
+  if(audioInputStream){
+    stopAudioInput();
+    return;
+  }
+
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    $("audioInputStatus").textContent=
+      "Audio input not supported in this browser";
+    return;
+  }
+
+  const selected=$("audioInput").value;
+
+  const audioConstraint=
+    selected&&selected!=="default"
+      ?{
+          deviceId:{exact:selected},
+          echoCancellation:false,
+          noiseSuppression:false,
+          autoGainControl:false
+        }
+      :{
+          echoCancellation:false,
+          noiseSuppression:false,
+          autoGainControl:false
+        };
+
+  try{
+    audioInputStream=
+      await navigator.mediaDevices.getUserMedia({
+        audio:audioConstraint
+      });
+
+    audioInputSource=
+      audio.createMediaStreamSource(audioInputStream);
+
+    audioInputGain=
+      audio.createGain();
+
+    audioInputGain.gain.value=
+      $("audioInputMonitor").value==="on"
+        ?1
+        :0;
+
+    audioInputSource.connect(audioInputGain);
+    audioInputGain.connect(master);
+
+    $("audioInputStatus").textContent="Audio input active";
+    $("audioInputEnable").textContent="Disable Audio Input";
+    $("audioInputEnable").classList.add("active");
+
+    await refreshAudioInputs();
+  }catch(error){
+    stopAudioInput();
+    $("audioInputStatus").textContent=
+      "Could not access audio input";
+  }
 }
 
 function ensureAudio(){
@@ -3683,6 +3854,7 @@ async function applySelectedAudioOutput(){
 }
 
 async function restartAudioEngine(){
+  stopAudioInput();
   const wasRunning=running;
 
   if(wasRunning){
@@ -3727,6 +3899,28 @@ $("audioRestart").addEventListener(
   restartAudioEngine
 );
 
+$("audioInputEnable").addEventListener(
+  "click",
+  enableAudioInput
+);
+
+$("audioInputMonitor").addEventListener(
+  "change",
+  updateAudioInputMonitor
+);
+
+$("audioInput").addEventListener(
+  "change",
+  async()=>{
+    if(audioInputStream){
+      stopAudioInput();
+      await enableAudioInput();
+    }
+  }
+);
+
+refreshAudioInputs();
+
 $("audioOutput").addEventListener(
   "change",
   applySelectedAudioOutput
@@ -3758,7 +3952,10 @@ if(
 ){
   navigator.mediaDevices.addEventListener(
     "devicechange",
-    refreshAudioOutputs
+    ()=>{
+      refreshAudioOutputs();
+      refreshAudioInputs();
+    }
   );
 }
 
