@@ -1076,9 +1076,9 @@
       targetSize: 3.0,
       cameraZ: 6,
       desktopX: 0,
-      desktopY: 0.20,
+      desktopY: -0.05,
       mobileX: 0,
-      mobileY: 1.30,
+      mobileY: 1.10,
       baseRotationX: -8,
       baseRotationY: -25
     };
@@ -1089,7 +1089,7 @@
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(
-      40,
+      34,
       window.innerWidth / window.innerHeight,
       0.01,
       1000
@@ -1139,6 +1139,14 @@
     purpleLight.position.set(-4, 2, 3);
     scene.add(purpleLight);
 
+    const cursorLight = new THREE.PointLight(
+      0xff72df,
+      2.8,
+      18
+    );
+    cursorLight.position.set(0, 0.7, 4.2);
+    scene.add(cursorLight);
+
     const logoRoot = new THREE.Group();
     scene.add(logoRoot);
 
@@ -1146,6 +1154,7 @@
     logoRoot.add(logoPivot);
 
     let logo = null;
+    let logoBaseScale = 1;
 
     const loader = new GLTFLoader();
 
@@ -1181,10 +1190,11 @@
       logo.position.sub(center);
 
       const scale =
-        CONFIG.targetSize /
-        largestDimension;
+          CONFIG.targetSize /
+          largestDimension;
 
-      logoPivot.scale.setScalar(scale);
+        logoBaseScale = scale;
+        logoPivot.scale.setScalar(scale);
 
       logo.traverse(function (object) {
         if (!object.isMesh) {
@@ -1204,12 +1214,29 @@
             return;
           }
 
-          material.transparent = false;
-          material.opacity = 1;
+          material.transparent = true;
+          material.opacity = 0.72;
           material.alphaTest = 0;
-          material.depthWrite = true;
+          material.depthWrite = false;
           material.depthTest = true;
           material.side = THREE.DoubleSide;
+
+          if ("transmission" in material) {
+            material.transmission = 0.22;
+          }
+
+          if ("thickness" in material) {
+            material.thickness = 0.5;
+          }
+
+          if ("roughness" in material) {
+            material.roughness = 0.32;
+          }
+
+          if ("metalness" in material) {
+            material.metalness = 0.06;
+          }
+
           material.needsUpdate = true;
         });
       });
@@ -1321,6 +1348,7 @@
     positionLogo();
 
     const pointer = new THREE.Vector2();
+    const pointerTarget = new THREE.Vector2();
 
     window.addEventListener(
       "pointermove",
@@ -1330,7 +1358,7 @@
           return;
         }
 
-        pointer.x =
+        pointerTarget.x =
           (
             event.clientX /
             window.innerWidth
@@ -1340,7 +1368,7 @@
           -
           1;
 
-        pointer.y =
+        pointerTarget.y =
           (
             event.clientY /
             window.innerHeight
@@ -1353,6 +1381,13 @@
 
       {
         passive: true
+      }
+    );
+
+    window.addEventListener(
+      "pointerleave",
+      function () {
+        pointerTarget.set(0, 0);
       }
     );
 
@@ -1498,6 +1533,21 @@
       const elapsed =
         clock.getElapsedTime();
 
+      pointer.x =
+        THREE.MathUtils.lerp(
+          pointer.x,
+          pointerTarget.x,
+          0.12
+        );
+
+      pointer.y =
+        THREE.MathUtils.lerp(
+          pointer.y,
+          pointerTarget.y,
+          0.12
+        );
+
+
       if (
         !reducedMotion.matches
       ) {
@@ -1582,12 +1632,11 @@
               0.10;
 
             logoRoot.rotation.z =
-              Math.sin(
-                elapsed *
-                0.31
-              )
-              *
-              0.018;
+              THREE.MathUtils.lerp(
+                logoRoot.rotation.z,
+                0,
+                0.10
+              );
 
             logoRoot.position.y =
               CONFIG.mobileY
@@ -1598,68 +1647,20 @@
               )
               *
               0.055;
-          } else {
-            const targetX =
-              baseX
-              -
-              pointer.y *
-              0.19;
 
+
+          } else {
             const targetY =
               baseY
               +
               pointer.x *
-              0.34;
-
-            const targetZ =
-              pointer.x *
-              0.055;
-
-            logoRoot.rotation.x =
-              THREE.MathUtils.lerp(
-                logoRoot.rotation.x,
-                targetX,
-                0.085
-              );
+              0.58;
 
             logoRoot.rotation.y =
               THREE.MathUtils.lerp(
                 logoRoot.rotation.y,
                 targetY,
-                0.085
-              );
-
-            logoRoot.rotation.z =
-              THREE.MathUtils.lerp(
-                logoRoot.rotation.z,
-                targetZ,
-                0.07
-              );
-
-            logoRoot.position.x =
-              THREE.MathUtils.lerp(
-                logoRoot.position.x,
-                CONFIG.desktopX +
-                pointer.x *
-                0.10,
-                0.055
-              );
-
-            logoRoot.position.y =
-              THREE.MathUtils.lerp(
-                logoRoot.position.y,
-                CONFIG.desktopY
-                +
-                pointer.y *
-                0.06
-                +
-                Math.sin(
-                  elapsed *
-                  0.65
-                )
-                *
-                0.06,
-                0.07
+                0.12
               );
           }
         }
