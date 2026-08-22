@@ -3328,6 +3328,45 @@ body{
   transition:transform .04s linear;
 }
 
+
+/* Pattern bank reliability fix */
+#sequenceButtons{
+  position:relative;
+  z-index:8;
+  pointer-events:auto;
+}
+#sequenceButtons .sequence-btn{
+  position:relative;
+  z-index:9;
+  pointer-events:auto;
+  cursor:pointer;
+  min-height:40px;
+  touch-action:manipulation;
+}
+#sequenceButtons .sequence-btn.active{
+  outline:1px solid rgba(166,108,255,.45);
+  outline-offset:1px;
+}
+
+
+/* Keyboard octave slider reliability fix */
+.keyboard-scale-control{
+  position:relative;
+  z-index:20;
+  pointer-events:auto;
+}
+#keyScale{
+  position:relative;
+  z-index:21;
+  pointer-events:auto!important;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+#keyScaleOut{
+  min-width:58px;
+  text-align:right;
+}
+
 </style>
 </head>
 <body>
@@ -9927,6 +9966,296 @@ animate();
     initFilterKnobs,
     500
   );
+})();
+</script>
+
+
+<script>
+(function(){
+  function activatePatternBank(index){
+    const bank=
+      Math.max(
+        0,
+        Math.min(
+          3,
+          Number(index)||0
+        )
+      );
+
+    try{
+      if(typeof switchSequence==="function"){
+        switchSequence(bank);
+      }else{
+        activeSequence=bank;
+
+        if(typeof refreshSequenceView==="function"){
+          refreshSequenceView();
+        }
+
+        if(typeof refreshSequenceStatus==="function"){
+          refreshSequenceStatus();
+        }
+      }
+    }catch(error){
+      console.warn(
+        "Pattern bank switch failed:",
+        error
+      );
+      return;
+    }
+
+    document
+      .querySelectorAll(
+        "#sequenceButtons .sequence-btn"
+      )
+      .forEach(button=>{
+        button.classList.toggle(
+          "active",
+          Number(button.dataset.seq)===bank
+        );
+
+        button.setAttribute(
+          "aria-pressed",
+          Number(button.dataset.seq)===bank
+            ?"true"
+            :"false"
+        );
+      });
+
+    const status=
+      document.getElementById(
+        "sequenceStatus"
+      );
+
+    if(status){
+      const first=
+        bank*16+1;
+
+      status.textContent=
+        "Editing Sequence "+
+        (bank+1)+
+        " · steps "+
+        first+
+        "–"+
+        (first+15);
+    }
+  }
+
+  const container=
+    document.getElementById(
+      "sequenceButtons"
+    );
+
+  if(!container)return;
+
+  container
+    .querySelectorAll(".sequence-btn")
+    .forEach(button=>{
+      button.setAttribute(
+        "aria-pressed",
+        button.classList.contains("active")
+          ?"true"
+          :"false"
+      );
+    });
+
+  container.addEventListener(
+    "pointerdown",
+    event=>{
+      const button=
+        event.target.closest(
+          ".sequence-btn"
+        );
+
+      if(!button)return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      activatePatternBank(
+        button.dataset.seq
+      );
+    }
+  );
+
+  container.addEventListener(
+    "keydown",
+    event=>{
+      const button=
+        event.target.closest(
+          ".sequence-btn"
+        );
+
+      if(
+        !button ||
+        (
+          event.key!=="Enter" &&
+          event.key!==" "
+        )
+      ){
+        return;
+      }
+
+      event.preventDefault();
+
+      activatePatternBank(
+        button.dataset.seq
+      );
+    }
+  );
+})();
+</script>
+
+
+<script>
+(function(){
+  const slider=
+    document.getElementById(
+      "keyScale"
+    );
+
+  const output=
+    document.getElementById(
+      "keyScaleOut"
+    );
+
+  const keyboard=
+    document.getElementById(
+      "synthKeyboard"
+    );
+
+  if(
+    !slider ||
+    !output ||
+    !keyboard
+  ){
+    return;
+  }
+
+  const intervals=[
+    0,1,2,3,4,5,6,
+    7,8,9,10,11,12
+  ];
+
+  const black=
+    new Set([1,3,6,8,10]);
+
+  const whiteSlots={
+    0:0,
+    2:1,
+    4:2,
+    5:3,
+    7:4,
+    9:5,
+    11:6,
+    12:7
+  };
+
+  const blackSlots={
+    1:1,
+    3:2,
+    6:4,
+    8:5,
+    10:6
+  };
+
+  const names=[
+    "C","C#","D","D#","E","F",
+    "F#","G","G#","A","A#","B"
+  ];
+
+  function noteName(midi){
+    const octave=
+      Math.floor(midi/12)-1;
+
+    return (
+      names[midi%12]+
+      octave
+    );
+  }
+
+  function rebuildKeyboard(){
+    const octave=
+      Math.max(
+        2,
+        Math.min(
+          6,
+          parseInt(
+            slider.value,
+            10
+          )||4
+        )
+      );
+
+    slider.value=
+      String(octave);
+
+    output.textContent=
+      "C"+
+      octave+
+      "–C"+
+      (octave+1);
+
+    const baseMidi=
+      (octave+1)*12;
+
+    keyboard.innerHTML="";
+
+    intervals.forEach(interval=>{
+      const midi=
+        baseMidi+interval;
+
+      const key=
+        document.createElement(
+          "button"
+        );
+
+      key.type="button";
+      key.className=
+        "synth-key"+
+        (
+          black.has(interval)
+            ?" black"
+            :""
+        );
+
+      key.dataset.midi=
+        String(midi);
+
+      if(black.has(interval)){
+        key.style.setProperty(
+          "--black-slot",
+          String(
+            blackSlots[interval]
+          )
+        );
+      }else{
+        key.style.setProperty(
+          "--white-slot",
+          String(
+            whiteSlots[interval]
+          )
+        );
+
+        key.textContent=
+          noteName(midi);
+      }
+
+      keyboard.appendChild(key);
+    });
+  }
+
+  slider.addEventListener(
+    "input",
+    rebuildKeyboard
+  );
+
+  slider.addEventListener(
+    "change",
+    rebuildKeyboard
+  );
+
+  rebuildKeyboard();
 })();
 </script>
 
