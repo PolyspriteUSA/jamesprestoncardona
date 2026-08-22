@@ -351,15 +351,10 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 }
 
 
-.embedded-mixer-row{
-  display:grid;
-  grid-template-columns:minmax(620px,1.55fr) minmax(340px,.72fr) minmax(340px,.73fr);
-  gap:0;
-  align-items:stretch;
-  border:1px solid var(--line);
-  border-radius:16px;
-  overflow:hidden;
-  background:rgba(8,8,13,.58);
+.embedded-mixer{
+  width:100%;
+  max-width:none;
+  padding:0 16px 18px;
 }
 .mixing-console-head{
   display:flex;
@@ -377,19 +372,83 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   color:var(--muted);
   font-size:10px;
 }
-.mixer-section,
-.audio-fader-section,
-.master-fx-section{
+.embedded-mixer-row{
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(0,.78fr) minmax(0,.72fr);
+  gap:0;
+  align-items:stretch;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(8,8,13,.62);
+}
+.console-column{
+  min-width:0;
   padding:14px;
 }
-.mixer-section{
-  border-right:1px solid var(--line);
+.console-column + .console-column{
+  border-left:1px solid var(--line);
 }
-.audio-fader-section{
-  border-right:1px solid var(--line);
+.console-column .mixer-section,
+.console-column .audio-fader-section,
+.console-column .master-fx-section{
+  min-width:0;
+  padding:0;
+  border:0;
 }
-
-
+.console-instruments .mixer{
+  width:100%;
+  padding:0;
+  grid-template-columns:repeat(7,minmax(54px,1fr));
+}
+.console-audio .audio-channel-mixer{
+  width:100%;
+  grid-template-columns:repeat(4,minmax(52px,1fr));
+}
+.console-master .fx{
+  padding:0;
+}
+.console-master .fx-grid{
+  width:100%;
+  grid-template-columns:repeat(4,minmax(52px,1fr));
+  gap:7px;
+}
+@media(max-width:1260px){
+  .embedded-mixer-row{
+    grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
+  }
+  .console-master{
+    grid-column:1/-1;
+    border-left:0 !important;
+    border-top:1px solid var(--line);
+  }
+}
+@media(max-width:860px){
+  .embedded-mixer-row{
+    grid-template-columns:1fr;
+  }
+  .console-column + .console-column{
+    border-left:0;
+    border-top:1px solid var(--line);
+  }
+  .console-master{
+    grid-column:auto;
+  }
+}
+@media(max-width:620px){
+  .embedded-mixer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .console-column{
+    padding:10px;
+  }
+  .mixing-console-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
 .mixer-midi{
   margin-top:12px;
   padding-top:12px;
@@ -422,14 +481,6 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   }
 }
 
-.mixer-section,
-.audio-fader-section,
-.master-fx-section{
-  min-width:0;
-}
-.master-fx-section{
-  min-width:0;
-}
 .master-fx-section .fx{
   padding:0;
 }
@@ -615,16 +666,6 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 .master-fx-section .fx-strip{
   min-width:58px;
   min-height:278px;
-}
-@media(max-width:1280px){
-  .embedded-mixer-row{
-    grid-template-columns:1fr;
-  }
-  .mixer-section,
-  .audio-fader-section{
-    border-right:0;
-    border-bottom:1px solid var(--line);
-  }
 }
 
 
@@ -1381,6 +1422,8 @@ body{
   }
 }
 
+
+.sequencer-card{grid-column:1/-1;width:100%}
 </style>
 </head>
 <body>
@@ -1675,7 +1718,8 @@ body{
         </div>
 
         <div class="embedded-mixer-row">
-          <div class="mixer-section">
+          <div class="console-column console-instruments">
+<div class="mixer-section">
             <div class="embedded-mixer-head">
               <strong>Instrument Mixer</strong>
               <span>channel levels • mute • solo</span>
@@ -1727,8 +1771,10 @@ body{
         </div>
             </div>
           </div>
+          </div>
 
-          <div class="audio-fader-section">
+          <div class="console-column console-audio">
+<div class="audio-fader-section">
             <div class="embedded-mixer-head">
               <strong>Audio Mixer</strong>
               <span>recorded tracks</span>
@@ -1780,7 +1826,8 @@ body{
           </div>
           </div>
 
-          <div class="master-fx-section">
+          <div class="console-column console-master">
+<div class="master-fx-section">
             <div class="embedded-mixer-head">
               <strong>Master FX</strong>
               <span>reverb • decay • drive • master</span>
@@ -1831,6 +1878,8 @@ body{
             </div>
 
             
+        </div>
+          </div>
         </div>
       </div>
     </section>
