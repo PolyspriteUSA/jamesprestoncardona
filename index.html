@@ -36,13 +36,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       --max-width: 1240px;
     }
 
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
 
     html {
       scroll-behavior: smooth;
@@ -50,16 +48,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       -webkit-text-size-adjust: 100%;
     }
 
-
     body {
       margin: 0;
-
       min-width: 320px;
-
       overflow-x: hidden;
 
       background: var(--bg);
-
       color: var(--text);
 
       font-family:
@@ -69,18 +63,13 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       -webkit-font-smoothing: antialiased;
 
-      padding-left:
-        env(safe-area-inset-left);
-
-      padding-right:
-        env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
-
 
     body.contact-open {
       overflow: hidden;
     }
-
 
     a {
       color: inherit;
@@ -88,18 +77,15 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       -webkit-tap-highlight-color: transparent;
     }
 
-
     button {
       font: inherit;
       color: inherit;
       -webkit-tap-highlight-color: transparent;
     }
 
-
     canvas {
       display: block;
     }
-
 
 
     /* =========================================================
@@ -116,59 +102,36 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       z-index: 30;
 
       padding:
-        calc(
-          18px +
-          env(safe-area-inset-top)
-        )
+        calc(18px + env(safe-area-inset-top))
         24px
         18px;
     }
 
-
     .nav {
-      width:
-        min(
-          var(--max-width),
-          100%
-        );
-
+      width: min(var(--max-width), 100%);
       margin: 0 auto;
 
       display: flex;
-
       align-items: center;
-
-      justify-content:
-        space-between;
+      justify-content: space-between;
 
       gap: 20px;
     }
 
-
     .brand {
       font-size: 0.74rem;
-
       font-weight: 700;
 
       letter-spacing: 0.16em;
-
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.90
-        );
+      color: rgba(255,255,255,0.90);
 
       white-space: nowrap;
     }
 
-
     .nav-links {
       display: flex;
-
       align-items: center;
 
       gap: 20px;
@@ -176,18 +139,22 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       font-size: 0.68rem;
 
       letter-spacing: 0.12em;
-
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.50
-        );
+      color: rgba(255,255,255,0.50);
     }
 
+    .nav-links a {
+      transition: color 180ms ease;
+    }
+
+    @media (hover:hover) {
+
+      .nav-links a:hover {
+        color: white;
+      }
+
+    }
 
 
     /* =========================================================
@@ -218,7 +185,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         #050507;
     }
 
-
     #three-container {
       position: absolute;
 
@@ -232,12 +198,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       pointer-events: none;
     }
 
-
     #three-container canvas {
       width: 100%;
       height: 100%;
     }
-
 
     .hero-grid {
       position: absolute;
@@ -263,11 +227,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           transparent 1px
         );
 
-      background-size:
-        64px
-        64px;
+      background-size: 64px 64px;
     }
-
 
     .hero-overlay {
       position: absolute;
@@ -292,7 +253,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           rgba(5,5,7,0.04) 100%
         );
     }
-
 
     .hero-content {
       position: relative;
@@ -321,7 +281,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       pointer-events: none;
     }
 
-
     .hero-copy {
       width: 57%;
 
@@ -329,28 +288,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       min-width: 0;
     }
-
-
-    .eyebrow {
-      margin-bottom: 18px;
-
-      font-size: 0.70rem;
-
-      font-weight: 700;
-
-      letter-spacing: 0.25em;
-
-      text-transform: uppercase;
-
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.48
-        );
-    }
-
 
     h1 {
       max-width: 820px;
@@ -373,7 +310,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       padding-bottom: 0.06em;
     }
 
-
     .gradient-text {
       display: inline;
 
@@ -387,13 +323,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         );
 
       -webkit-background-clip: text;
-
       background-clip: text;
 
-      -webkit-text-fill-color:
-        transparent;
+      -webkit-text-fill-color: transparent;
     }
-
 
     .subtitle {
       max-width: 650px;
@@ -412,7 +345,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       color: var(--muted);
     }
 
-
     .meta {
       margin-top: 18px;
 
@@ -421,18 +353,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       line-height: 1.8;
 
       letter-spacing: 0.12em;
-
       text-transform: uppercase;
 
-      color:
-        rgba(
-          255,
-          255,
-          255,
-          0.33
-        );
+      color: rgba(255,255,255,0.33);
     }
-
 
     .hero-actions {
       margin-top: 30px;
@@ -447,7 +371,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     }
 
 
-
     /* =========================================================
        BUTTONS
        ========================================================= */
@@ -458,7 +381,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       display: inline-flex;
 
       align-items: center;
-
       justify-content: center;
 
       padding:
@@ -466,30 +388,13 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         21px;
 
       border:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.16
-        );
+        1px solid rgba(255,255,255,0.16);
 
       background:
-        rgba(
-          255,
-          255,
-          255,
-          0.035
-        );
+        rgba(255,255,255,0.035);
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.92
-        );
+        rgba(255,255,255,0.92);
 
       font-size: 0.72rem;
 
@@ -501,13 +406,15 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       cursor: pointer;
 
-      backdrop-filter:
-        blur(10px);
+      backdrop-filter: blur(10px);
 
-      -webkit-backdrop-filter:
-        blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
     }
-
 
     button.button {
       appearance: none;
@@ -515,43 +422,44 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       -webkit-appearance: none;
     }
 
-
     .button.primary {
       border-color:
-        rgba(
-          255,
-          56,
-          209,
-          0.58
-        );
+        rgba(255,56,209,0.58);
 
       background:
 
         linear-gradient(
           135deg,
 
-          rgba(
-            165,
-            0,
-            170,
-            0.22
-          ),
+          rgba(165,0,170,0.22),
 
-          rgba(
-            92,
-            43,
-            175,
-            0.18
-          )
+          rgba(92,43,175,0.18)
         );
     }
 
+    @media (hover:hover) {
+
+      .button:hover {
+        transform: translateY(-2px);
+
+        border-color:
+          rgba(255,255,255,0.38);
+
+        background:
+          rgba(255,255,255,0.065);
+      }
+
+      .button.primary:hover {
+        border-color:
+          rgba(255,56,209,0.92);
+      }
+
+    }
 
     .loading {
       position: absolute;
 
       right: 22px;
-
       bottom: 22px;
 
       z-index: 12;
@@ -563,28 +471,16 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       font-size: 0.62rem;
 
       letter-spacing: 0.15em;
-
       text-transform: uppercase;
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.44
-        );
+        rgba(255,255,255,0.44);
 
       background:
-        rgba(
-          0,
-          0,
-          0,
-          0.22
-        );
+        rgba(0,0,0,0.22);
 
       pointer-events: none;
     }
-
 
 
     /* =========================================================
@@ -603,11 +499,9 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       background: var(--bg2);
     }
 
-
     .section.alt {
       background: #07070a;
     }
-
 
     .section-inner {
       width:
@@ -618,7 +512,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       margin: 0 auto;
     }
-
 
     .section-kicker {
       margin-bottom: 13px;
@@ -633,7 +526,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       color: var(--violet);
     }
-
 
     .section-title {
       max-width: 880px;
@@ -652,7 +544,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       letter-spacing: -0.046em;
     }
 
-
     .section-intro {
       max-width: 740px;
 
@@ -662,7 +553,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       color: var(--muted);
     }
-
 
 
     /* =========================================================
@@ -681,7 +571,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       gap: 18px;
     }
 
-
     .project-card {
       position: relative;
 
@@ -690,9 +579,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       padding: 24px;
 
       border:
-        1px
-        solid
-        var(--border);
+        1px solid var(--border);
 
       overflow: hidden;
 
@@ -701,22 +588,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         linear-gradient(
           145deg,
 
-          rgba(
-            130,
-            0,
-            180,
-            0.11
-          ),
+          rgba(130,0,180,0.11),
 
-          rgba(
-            255,
-            0,
-            180,
-            0.02
-          )
+          rgba(255,0,180,0.02)
         );
     }
-
 
     .project-number {
       font-size: 0.62rem;
@@ -724,25 +600,16 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       letter-spacing: 0.15em;
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.34
-        );
+        rgba(255,255,255,0.34);
     }
-
 
     .project-content {
       position: absolute;
 
       left: 24px;
-
       right: 24px;
-
       bottom: 24px;
     }
-
 
     .project-content h3 {
       margin-bottom: 9px;
@@ -750,21 +617,14 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       font-size: 1.2rem;
     }
 
-
     .project-content p {
       font-size: 0.91rem;
 
       line-height: 1.55;
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.56
-        );
+        rgba(255,255,255,0.56);
     }
-
 
 
     /* =========================================================
@@ -781,36 +641,25 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       gap: 54px;
     }
 
-
     .about-copy {
       line-height: 1.78;
 
       color: var(--muted);
     }
 
-
     .about-copy p + p {
       margin-top: 17px;
     }
-
 
     .skills-panel {
       padding: 25px;
 
       border:
-        1px
-        solid
-        var(--border);
+        1px solid var(--border);
 
       background:
-        rgba(
-          255,
-          255,
-          255,
-          0.025
-        );
+        rgba(255,255,255,0.025);
     }
-
 
     .skills-panel h3 {
       margin-bottom: 17px;
@@ -822,7 +671,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       text-transform: uppercase;
     }
 
-
     .skill-list {
       display: flex;
 
@@ -831,33 +679,19 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       gap: 8px;
     }
 
-
     .skill {
       padding:
         8px
         9px;
 
       border:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
+        1px solid rgba(255,255,255,0.08);
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.58
-        );
+        rgba(255,255,255,0.58);
 
       font-size: 0.70rem;
     }
-
 
 
     /* =========================================================
@@ -868,25 +702,20 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       padding-top: 38px;
 
       border-top:
-        1px
-        solid
-        var(--border);
+        1px solid var(--border);
 
       display: flex;
 
       align-items: flex-end;
 
-      justify-content:
-        space-between;
+      justify-content: space-between;
 
       gap: 30px;
     }
 
-
     .contact-copy {
       max-width: 750px;
     }
-
 
     .contact-copy h2 {
       margin-bottom: 15px;
@@ -903,13 +732,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       letter-spacing: -0.045em;
     }
 
-
     .contact-copy p {
       line-height: 1.65;
 
       color: var(--muted);
     }
-
 
 
     /* =========================================================
@@ -926,26 +753,13 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       display: flex;
 
       align-items: center;
-
       justify-content: center;
 
       padding:
-        calc(
-          24px +
-          env(safe-area-inset-top)
-        )
-        calc(
-          18px +
-          env(safe-area-inset-right)
-        )
-        calc(
-          24px +
-          env(safe-area-inset-bottom)
-        )
-        calc(
-          18px +
-          env(safe-area-inset-left)
-        );
+        calc(24px + env(safe-area-inset-top))
+        calc(18px + env(safe-area-inset-right))
+        calc(24px + env(safe-area-inset-bottom))
+        calc(18px + env(safe-area-inset-left));
 
       visibility: hidden;
 
@@ -958,7 +772,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         visibility 200ms ease;
     }
 
-
     .contact-modal.open {
       visibility: visible;
 
@@ -967,27 +780,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       pointer-events: auto;
     }
 
-
     .contact-backdrop {
       position: absolute;
 
       inset: 0;
 
       background:
-        rgba(
-          2,
-          2,
-          5,
-          0.80
-        );
+        rgba(2,2,5,0.80);
 
-      backdrop-filter:
-        blur(18px);
+      backdrop-filter: blur(18px);
 
-      -webkit-backdrop-filter:
-        blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
-
 
     .contact-panel {
       position: relative;
@@ -1003,14 +807,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       padding: 38px;
 
       border:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.13
-        );
+        1px solid rgba(255,255,255,0.13);
 
       background:
 
@@ -1026,63 +823,36 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           transparent 34%
         ),
 
-        rgba(
-          8,
-          8,
-          13,
-          0.97
-        );
+        rgba(8,8,13,0.97);
     }
-
 
     .contact-close {
       position: absolute;
 
       top: 18px;
-
       right: 18px;
 
       width: 44px;
-
       height: 44px;
 
       display: flex;
 
       align-items: center;
-
       justify-content: center;
 
       border:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.10
-        );
+        1px solid rgba(255,255,255,0.10);
 
       background:
-        rgba(
-          255,
-          255,
-          255,
-          0.025
-        );
+        rgba(255,255,255,0.025);
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.65
-        );
+        rgba(255,255,255,0.65);
 
       font-size: 1.35rem;
 
       cursor: pointer;
     }
-
 
     .contact-panel-kicker {
       margin-bottom: 13px;
@@ -1097,7 +867,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       text-transform: uppercase;
     }
-
 
     .contact-panel h2 {
       max-width: 480px;
@@ -1116,7 +885,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       letter-spacing: -0.048em;
     }
 
-
     .contact-panel-intro {
       max-width: 470px;
 
@@ -1129,7 +897,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       line-height: 1.6;
     }
 
-
     .contact-options {
       margin-top: 30px;
 
@@ -1137,7 +904,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       gap: 10px;
     }
-
 
     .contact-option {
       min-height: 72px;
@@ -1158,64 +924,40 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       gap: 14px;
 
       border:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.09
-        );
+        1px solid rgba(255,255,255,0.09);
 
       background:
-        rgba(
-          255,
-          255,
-          255,
-          0.025
-        );
-    }
+        rgba(255,255,255,0.025);
 
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+    }
 
     .contact-option-icon {
       width: 42px;
-
       height: 42px;
 
       display: flex;
 
       align-items: center;
-
       justify-content: center;
 
       border:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.09
-        );
+        1px solid rgba(255,255,255,0.09);
 
       background:
-        rgba(
-          128,
-          72,
-          255,
-          0.08
-        );
+        rgba(128,72,255,0.08);
 
       color: #d7c6ff;
 
       font-size: 1rem;
     }
 
-
     .contact-option-content {
       min-width: 0;
     }
-
 
     .contact-option-label {
       margin-bottom: 4px;
@@ -1231,32 +973,46 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       text-transform: uppercase;
     }
 
-
     .contact-option-value {
       overflow-wrap: anywhere;
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.90
-        );
+        rgba(255,255,255,0.90);
 
       font-size: 0.91rem;
     }
 
-
     .contact-option-arrow {
+      padding-left: 8px;
+
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.33
-        );
+        rgba(255,255,255,0.33);
+
+      transition:
+        transform 180ms ease,
+        color 180ms ease;
     }
 
+    @media (hover:hover) {
+
+      .contact-option:hover {
+        transform: translateX(4px);
+
+        border-color:
+          rgba(255,56,209,0.30);
+
+        background:
+          rgba(255,255,255,0.045);
+      }
+
+      .contact-option:hover
+      .contact-option-arrow {
+        transform: translateX(3px);
+
+        color: var(--magenta);
+      }
+
+    }
 
     .contact-panel-footer {
       margin-top: 22px;
@@ -1264,29 +1020,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       padding-top: 18px;
 
       border-top:
-        1px
-        solid
-        rgba(
-          255,
-          255,
-          255,
-          0.07
-        );
+        1px solid rgba(255,255,255,0.07);
 
       display: flex;
 
-      justify-content:
-        space-between;
+      align-items: center;
+
+      justify-content: space-between;
 
       gap: 16px;
 
       color:
-        rgba(
-          255,
-          255,
-          255,
-          0.32
-        );
+        rgba(255,255,255,0.32);
 
       font-size: 0.61rem;
 
@@ -1296,25 +1041,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     }
 
 
-
     /* =========================================================
-       MOBILE / IPHONE
+       MOBILE
        ========================================================= */
 
-    @media (
-      max-width: 767px
-    ) {
+    @media (max-width: 767px) {
 
       .site-header {
         padding:
-          calc(
-            15px +
-            env(safe-area-inset-top)
-          )
+          calc(15px + env(safe-area-inset-top))
           15px
           15px;
       }
-
 
       .brand {
         font-size: 0.62rem;
@@ -1322,25 +1060,15 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         letter-spacing: 0.10em;
       }
 
-
       .nav-links {
         gap: 12px;
 
         font-size: 0.59rem;
       }
 
-
-      .nav-links
-      a:nth-child(2) {
+      .nav-links a:nth-child(2) {
         display: none;
       }
-
-
-      /*
-        Allow the hero to grow taller
-        than the iPhone viewport when
-        the content needs more room.
-      */
 
       #hero {
         min-height: 100svh;
@@ -1348,47 +1076,21 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         height: auto;
       }
 
-
       .hero-overlay {
         background:
 
           linear-gradient(
             to bottom,
 
-            rgba(
-              5,
-              5,
-              7,
-              0.01
-            )
-            0%,
+            rgba(5,5,7,0.01) 0%,
 
-            rgba(
-              5,
-              5,
-              7,
-              0.03
-            )
-            35%,
+            rgba(5,5,7,0.03) 35%,
 
-            rgba(
-              5,
-              5,
-              7,
-              0.56
-            )
-            60%,
+            rgba(5,5,7,0.56) 60%,
 
-            rgba(
-              5,
-              5,
-              7,
-              0.98
-            )
-            100%
+            rgba(5,5,7,0.98) 100%
           );
       }
-
 
       .hero-grid {
         background-size:
@@ -1396,12 +1098,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           48px;
       }
 
-
       .hero-content {
         width:
           calc(
-            100% -
-            30px
+            100% - 30px
           );
 
         min-height:
@@ -1412,14 +1112,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         align-items:
           flex-end;
 
-        /*
-          Extra space at top gives
-          the higher 3D logo room.
-
-          Extra bottom space prevents
-          text/buttons clipping.
-        */
-
         padding:
           115px
           0
@@ -1429,30 +1121,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           );
       }
 
-
       .hero-copy {
         width: 100%;
 
         max-width: 560px;
-
-        min-width: 0;
       }
-
-
-      .eyebrow {
-        margin-bottom: 11px;
-
-        font-size: 0.61rem;
-
-        letter-spacing: 0.16em;
-      }
-
-
-      /*
-        More conservative iPhone size
-        and line-height so every line
-        remains fully visible.
-      */
 
       h1 {
         width: 100%;
@@ -1478,7 +1151,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           0.10em;
       }
 
-
       .subtitle {
         margin-top: 18px;
 
@@ -1489,7 +1161,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         line-height: 1.52;
       }
 
-
       .meta {
         margin-top: 13px;
 
@@ -1497,7 +1168,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
         line-height: 1.6;
       }
-
 
       .hero-actions {
         width: 100%;
@@ -1513,7 +1183,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         margin-top: 21px;
       }
 
-
       .button {
         width: 100%;
 
@@ -1524,14 +1193,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           12px;
       }
 
-
       .hero-actions
       .button:last-child {
         grid-column:
           1 /
           -1;
       }
-
 
       .loading {
         top:
@@ -1545,13 +1212,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         bottom: auto;
       }
 
-
       .section {
         padding:
           80px
           16px;
       }
-
 
       .section-title {
         font-size:
@@ -1562,7 +1227,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           );
       }
 
-
       .project-grid {
         grid-template-columns:
           1fr;
@@ -1570,11 +1234,9 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         gap: 13px;
       }
 
-
       .project-card {
         min-height: 230px;
       }
-
 
       .about-grid {
         grid-template-columns:
@@ -1583,13 +1245,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         gap: 31px;
       }
 
-
       .contact-box {
         flex-direction: column;
 
         align-items: stretch;
       }
-
 
       .contact-panel {
         padding:
@@ -1598,28 +1258,55 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           22px;
       }
 
+      .contact-option {
+        min-height: 70px;
+
+        padding:
+          12px
+          12px;
+
+        grid-template-columns:
+          42px
+          minmax(0,1fr)
+          20px;
+
+        gap: 11px;
+      }
+
+      .contact-option-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .contact-option-value {
+        font-size: 0.83rem;
+      }
+
+      .contact-panel-footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 6px;
+      }
+
     }
 
 
-
     /* =========================================================
-       SMALL IPHONES
+       SMALL PHONES
        ========================================================= */
 
-    @media (
-      max-width: 390px
-    ) {
+    @media (max-width: 390px) {
 
       .hero-content {
         width:
           calc(
-            100% -
-            24px
+            100% - 24px
           );
 
         padding-top: 105px;
       }
-
 
       h1 {
         font-size:
@@ -1632,39 +1319,32 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         line-height: 1.02;
       }
 
-
       .subtitle {
         font-size: 0.88rem;
 
         line-height: 1.48;
       }
 
-
       .meta {
         display: none;
       }
 
-
       .hero-actions {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
 
         margin-top: 19px;
       }
-
 
       .hero-actions
       .button:last-child {
         grid-column: auto;
       }
 
-
       .contact-modal {
         padding-left: 10px;
 
         padding-right: 10px;
       }
-
 
       .contact-panel {
         padding:
@@ -1676,10 +1356,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     }
 
 
+    /* =========================================================
+       ACCESSIBILITY
+       ========================================================= */
 
-    @media (
-      prefers-reduced-motion: reduce
-    ) {
+    :focus-visible {
+      outline:
+        2px solid var(--magenta);
+
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
 
       html {
         scroll-behavior: auto;
@@ -1708,7 +1396,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
   >
     James Preston Cardona
   </a>
-
 
   <div class="nav-links">
 
@@ -1743,22 +1430,20 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
   aria-hidden="true"
 ></div>
 
-
 <div class="hero-grid"></div>
-
 
 <div class="hero-overlay"></div>
 
 
 <div class="hero-content">
 
-
   <div class="hero-copy">
 
 
-    <div class="eyebrow">
-      James Preston Cardona
-    </div>
+    <!--
+      SECOND "JAMES PRESTON CARDONA"
+      HAS BEEN REMOVED.
+    -->
 
 
     <h1>
@@ -1795,7 +1480,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     <div class="hero-actions">
 
-
       <a
         class="button primary"
         href="#work"
@@ -1819,12 +1503,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         Contact
       </button>
 
-
     </div>
 
 
   </div>
-
 
 </div>
 
@@ -1850,7 +1532,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 ```
 <div class="section-inner">
-
 
   <div class="section-kicker">
     Selected Work
@@ -1885,6 +1566,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         01 // REAL-TIME
       </div>
 
+
       <div class="project-content">
 
         <h3>
@@ -1892,10 +1574,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         </h3>
 
         <p>
+
           Interactive Unreal Engine environments,
           real-time lighting, materials,
           cinematics, and client-facing
           architectural experiences.
+
         </p>
 
       </div>
@@ -1909,6 +1593,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         02 // DIGITAL HUMAN
       </div>
 
+
       <div class="project-content">
 
         <h3>
@@ -1916,9 +1601,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         </h3>
 
         <p>
+
           Character design, digital-human workflows,
           clothing, motion capture, animation,
           and real-time character integration.
+
         </p>
 
       </div>
@@ -1932,6 +1619,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         03 // PRODUCTION
       </div>
 
+
       <div class="project-content">
 
         <h3>
@@ -1939,10 +1627,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         </h3>
 
         <p>
+
           Unreal Engine environments,
           lighting, cinematography,
           Sequencer, compositing,
           VFX, and real-time production pipelines.
+
         </p>
 
       </div>
@@ -1989,7 +1679,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     <div class="about-copy">
 
-
       <p>
 
         I am a multidisciplinary real-time 3D designer
@@ -2010,12 +1699,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       </p>
 
-
     </div>
 
 
     <div class="skills-panel">
-
 
       <h3>
         Core Tools
@@ -2054,7 +1741,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       </div>
 
-
     </div>
 
 
@@ -2067,7 +1753,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
   </section>
 
   <!-- ========================================================
-       CONTACT SECTION
+       CONTACT
        ======================================================== -->
 
   <section
@@ -2196,6 +1882,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         @
       </div>
 
+
       <div class="contact-option-content">
 
         <div class="contact-option-label">
@@ -2208,12 +1895,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       </div>
 
+
       <div class="contact-option-arrow">
         →
       </div>
 
     </a>
-
 
 
     <a
@@ -2227,6 +1914,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         in
       </div>
 
+
       <div class="contact-option-content">
 
         <div class="contact-option-label">
@@ -2239,12 +1927,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
       </div>
 
+
       <div class="contact-option-arrow">
         →
       </div>
 
     </a>
-
 
 
     <a
@@ -2255,6 +1943,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       <div class="contact-option-icon">
         ☎
       </div>
+
 
       <div class="contact-option-content">
 
@@ -2267,6 +1956,7 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         </div>
 
       </div>
+
 
       <div class="contact-option-arrow">
         →
@@ -2340,7 +2030,16 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       );
 
 
+    let previousFocus =
+      null;
+
+
     function openContactPanel() {
+
+
+      previousFocus =
+        document.activeElement;
+
 
       contactModal.classList.add(
         "open"
@@ -2357,10 +2056,25 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         "contact-open"
       );
 
+
+      setTimeout(
+
+        function () {
+
+          contactClose.focus();
+
+        },
+
+        50
+
+      );
+
+
     }
 
 
     function closeContactPanel() {
+
 
       contactModal.classList.remove(
         "open"
@@ -2376,6 +2090,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       document.body.classList.remove(
         "contact-open"
       );
+
+
+      if (
+        previousFocus &&
+        typeof previousFocus.focus ===
+        "function"
+      ) {
+
+        previousFocus.focus();
+
+      }
+
 
     }
 
@@ -2431,8 +2157,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       ) {
 
         if (
-          event.key ===
-          "Escape"
+          event.key === "Escape" &&
+          contactModal.classList.contains(
+            "open"
+          )
         ) {
 
           closeContactPanel();
@@ -2461,7 +2189,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       from "three/addons/loaders/GLTFLoader.js";
 
 
-
     /* =========================================================
        CONFIG
        ========================================================= */
@@ -2479,19 +2206,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
       /*
-        LOGO MOVED HIGHER
+        DESKTOP LOGO
       */
 
       desktopX:
         1.9,
 
       desktopY:
-        0.95,
+        1.45,
 
 
       /*
-        IPHONE LOGO MOVED
-        SIGNIFICANTLY HIGHER
+        MOBILE LOGO
       */
 
       mobileX:
@@ -2510,7 +2236,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     };
 
 
-
     /* =========================================================
        DOM
        ========================================================= */
@@ -2527,14 +2252,12 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       );
 
 
-
     /* =========================================================
        SCENE
        ========================================================= */
 
     const scene =
       new THREE.Scene();
-
 
 
     /* =========================================================
@@ -2578,7 +2301,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
     /* =========================================================
        RENDERER
        ========================================================= */
@@ -2596,7 +2318,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           "high-performance"
 
       });
-
 
 
     function pixelRatio() {
@@ -2632,11 +2353,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     }
 
 
-
     renderer.setPixelRatio(
-
       pixelRatio()
-
     );
 
 
@@ -2677,7 +2395,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
     /* =========================================================
        LIGHTING
        ========================================================= */
@@ -2697,7 +2414,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
     const hemisphere =
       new THREE.HemisphereLight(
 
@@ -2713,7 +2429,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     scene.add(
       hemisphere
     );
-
 
 
     const keyLight =
@@ -2740,7 +2455,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     scene.add(
       keyLight
     );
-
 
 
     const magentaLight =
@@ -2771,7 +2485,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
     const purpleLight =
       new THREE.PointLight(
 
@@ -2800,9 +2513,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
     /* =========================================================
-       LOGO
+       LOGO ROOT
        ========================================================= */
 
     const logoRoot =
@@ -2816,7 +2528,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
     let logo =
       null;
-
 
 
     /* =========================================================
@@ -2839,8 +2550,11 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
         console.log(
+
           "SUCCESS: logo.glb loaded",
+
           gltf
+
         );
 
 
@@ -2858,9 +2572,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         );
 
 
-
         /* -----------------------------------------------------
-           BOUNDS
+           MODEL BOUNDS
            ----------------------------------------------------- */
 
         const box =
@@ -2880,6 +2593,18 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           box.getSize(
             new THREE.Vector3()
           );
+
+
+        console.log(
+          "Logo center:",
+          center
+        );
+
+
+        console.log(
+          "Logo size:",
+          size
+        );
 
 
         const largestDimension =
@@ -2902,9 +2627,15 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
           ||
 
-          largestDimension <= 0
+          largestDimension <=
+          0
 
         ) {
+
+
+          console.error(
+            "Invalid GLB size"
+          );
 
 
           loading.textContent =
@@ -2914,7 +2645,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
           return;
 
         }
-
 
 
         /* -----------------------------------------------------
@@ -2932,7 +2662,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         );
 
 
-
         /* -----------------------------------------------------
            SCALE MODEL
            ----------------------------------------------------- */
@@ -2947,12 +2676,9 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
         );
 
 
-
-        /* -----------------------------------------------------
+        /* =====================================================
            MATERIALS
-
-           OPAQUE + DOUBLE SIDED
-           ----------------------------------------------------- */
+           ===================================================== */
 
         let meshCount =
           0;
@@ -2983,6 +2709,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
             object.frustumCulled =
               false;
+
+
+            object.renderOrder =
+              0;
 
 
             const materials =
@@ -3018,6 +2748,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
                 }
 
 
+                /*
+                  LOGO IS OPAQUE
+                */
+
                 material.transparent =
                   false;
 
@@ -3030,6 +2764,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
                   0;
 
 
+                /*
+                  NORMAL DEPTH RENDERING
+                */
+
                 material.depthWrite =
                   true;
 
@@ -3039,7 +2777,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
                 /*
-                  Keep both sides visible.
+                  KEEP BOTH SIDES OF
+                  BLENDER GEOMETRY VISIBLE
                 */
 
                 material.side =
@@ -3061,14 +2800,16 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
         console.log(
+
           "Visible logo meshes:",
+
           meshCount
+
         );
 
 
-
         /* -----------------------------------------------------
-           ROTATION
+           STARTING ROTATION
            ----------------------------------------------------- */
 
         logoRoot.rotation.x =
@@ -3107,7 +2848,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       },
 
 
-
       function (
         event
       ) {
@@ -3144,7 +2884,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
       },
 
 
-
       function (
         error
       ) {
@@ -3169,9 +2908,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
     /* =========================================================
-       RESPONSIVE POSITION
+       RESPONSIVE LOGO POSITION
        ========================================================= */
 
     function positionLogo() {
@@ -3233,9 +2971,8 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     positionLogo();
 
 
-
     /* =========================================================
-       POINTER
+       POINTER INTERACTION
        ========================================================= */
 
     const pointer =
@@ -3299,143 +3036,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
     );
 
 
-
-    /* =========================================================
-       PARTICLES
-       ========================================================= */
-
-    const particleCount =
-
-      window.innerWidth <
-      768
-
-        ?
-
-        180
-
-        :
-
-        650;
-
-
-    const positions =
-      new Float32Array(
-
-        particleCount *
-        3
-
-      );
-
-
-    for (
-
-      let i = 0;
-
-      i <
-      particleCount;
-
-      i++
-
-    ) {
-
-
-      const p =
-        i *
-        3;
-
-
-      positions[p] =
-
-        (
-          Math.random() -
-          0.5
-        )
-
-        *
-        18;
-
-
-      positions[p + 1] =
-
-        (
-          Math.random() -
-          0.5
-        )
-
-        *
-        11;
-
-
-      positions[p + 2] =
-
-        (
-          Math.random() -
-          0.5
-        )
-
-        *
-        14;
-
-
-    }
-
-
-    const particleGeometry =
-      new THREE.BufferGeometry();
-
-
-    particleGeometry.setAttribute(
-
-      "position",
-
-      new THREE.BufferAttribute(
-
-        positions,
-
-        3
-
-      )
-
-    );
-
-
-    const particleMaterial =
-      new THREE.PointsMaterial({
-
-        size:
-          0.012,
-
-        color:
-          0xb870ff,
-
-        transparent:
-          true,
-
-        opacity:
-          0.22,
-
-        depthWrite:
-          false
-
-      });
-
-
-    const particles =
-      new THREE.Points(
-
-        particleGeometry,
-
-        particleMaterial
-
-      );
-
-
-    scene.add(
-      particles
-    );
-
-
-
     /* =========================================================
        ANIMATION
        ========================================================= */
@@ -3470,14 +3070,20 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
         const baseX =
+
           THREE.MathUtils.degToRad(
+
             CONFIG.baseRotationX
+
           );
 
 
         const baseY =
+
           THREE.MathUtils.degToRad(
+
             CONFIG.baseRotationY
+
           );
 
 
@@ -3499,8 +3105,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
               +
 
               Math.sin(
+
                 elapsed *
                 0.45
+
               )
 
               *
@@ -3514,8 +3122,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
               +
 
               Math.sin(
+
                 elapsed *
                 0.30
+
               )
 
               *
@@ -3529,8 +3139,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
               +
 
               Math.sin(
+
                 elapsed *
                 0.55
+
               )
 
               *
@@ -3596,8 +3208,10 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
               +
 
               Math.sin(
+
                 elapsed *
                 0.55
+
               )
 
               *
@@ -3605,12 +3219,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
           }
-
-
-          particles.rotation.y =
-
-            elapsed *
-            0.006;
 
 
         }
@@ -3632,7 +3240,6 @@ content="James Preston Cardona — Senior Real-Time 3D Designer specializing in 
 
 
     animate();
-
 
 
     /* =========================================================
