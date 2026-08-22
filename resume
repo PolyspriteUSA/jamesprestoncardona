@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1, viewport-fit=cover"
+
+>
+
+  <title>
+    Resume | James Preston Cardona
+  </title>
+
+<meta
+name="description"
+content="Resume of James Preston Cardona — Senior Real-Time 3D Designer specializing in Unreal Engine, immersive experiences, architectural visualization, and virtual production."
+
+>
+
+  <style>
+
+    :root {
+      --bg: #050507;
+      --bg2: #08080c;
+      --panel: rgba(255,255,255,0.025);
+      --text: #f5f5f7;
+      --muted: rgba(255,255,255,0.64);
+      --muted2: rgba(255,255,255,0.42);
+      --border: rgba(255,255,255,0.09);
+      --violet: #9a62ff;
+      --magenta: #ff38d1;
+      --max-width: 1120px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      -webkit-text-size-adjust: 100%;
+    }
+
+
+    body {
+      min-width: 320px;
+      overflow-x: hidden;
+
+      background:
+        radial-gradient(
+          circle at 75% 10%,
+          rgba(141,0,203,0.12),
+          transparent 26%
+        ),
+        radial-gradient(
+          circle at 15% 35%,
+          rgba(255,0,186,0.04),
+          transparent 22%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      -webkit-font-smoothing: antialiased;
+
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+
+    /* =========================================================
+       NAV
+       ========================================================= */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+
+      padding:
+        calc(16px + env(safe-area-inset-top))
+        22px
+        16px;
+
+      background:
+        rgba(5,5,7,0.82);
+
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.05);
+    }
+
+
+    .nav {
+      width: min(var(--max-width), 100%);
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+    }
+
+
+    .brand {
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+
+      color: var(--muted2);
+
+      font-size: 0.67rem;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .resume-page {
+      width:
+        min(
+          var(--max-width),
+          calc(100% - 44px)
+        );
+
+      margin: 0 auto;
+
+      padding:
+        86px
+        0
+        110px;
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .resume-hero {
+      padding-bottom: 50px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .eyebrow {
+      margin-bottom: 14px;
+
+      font-size: 0.68rem;
+      font-weight: 700;
+
+      letter-spacing: 0.23em;
+      text-transform: uppercase;
+
+      color: var(--violet);
+    }
+
+
+    h1 {
+      font-size:
+        clamp(
+          3.2rem,
+          8vw,
+          6.6rem
+        );
+
+      line-height: 0.92;
+      letter-spacing: -0.055em;
+
+      max-width: 900px;
+    }
+
+
+    .gradient-text {
+      background:
+        linear-gradient(
+          90deg,
+          #ffffff 0%,
+          #d9c8ff 45%,
+          #ff3bd5 100%
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+
+    .title-line {
+      margin-top: 20px;
+
+      max-width: 850px;
+
+      font-size:
+        clamp(
+          1rem,
+          1.8vw,
+          1.25rem
+        );
+
+      line-height: 1.55;
+
+      color: var(--muted);
+    }
+
+
+    .contact-line {
+      margin-top: 18px;
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+
+      font-size: 0.73rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      color: var(--muted2);
+    }
+
+
+    .resume-actions {
+      margin-top: 28px;
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+
+    .button {
+      min-height: 47px;
+
+      padding: 0 18px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid rgba(255,255,255,0.15);
+
+      background:
+        rgba(255,255,255,0.035);
+
+      font-size: 0.70rem;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+    }
+
+
+    .button.primary {
+      border-color:
+        rgba(255,56,209,0.56);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(165,0,170,0.22),
+          rgba(92,43,175,0.18)
+        );
+    }
+
+
+    /* =========================================================
+       SECTIONS
+       ========================================================= */
+
+    .resume-section {
+      padding: 50px 0;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .section-label {
+      margin-bottom: 22px;
+
+      font-size: 0.67rem;
+      font-weight: 700;
+
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+
+      color: var(--violet);
+    }
+
+
+    .summary {
+      max-width: 900px;
+
+      font-size: 1rem;
+      line-height: 1.75;
+
+      color: var(--muted);
+    }
+
+
+    /* =========================================================
+       EXPERTISE
+       ========================================================= */
+
+    .tag-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+
+    .tag {
+      padding: 9px 11px;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      background:
+        rgba(255,255,255,0.022);
+
+      font-size: 0.70rem;
+
+      color: rgba(255,255,255,0.62);
+    }
+
+
+    /* =========================================================
+       TOOLS
+       ========================================================= */
+
+    .tools-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap: 16px;
+    }
+
+
+    .tool-group {
+      padding: 20px;
+
+      border:
+        1px solid var(--border);
+
+      background: var(--panel);
+    }
+
+
+    .tool-group h3 {
+      margin-bottom: 10px;
+
+      font-size: 0.72rem;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+
+      color: rgba(255,255,255,0.82);
+    }
+
+
+    .tool-group p {
+      font-size: 0.90rem;
+      line-height: 1.65;
+
+      color: var(--muted);
+    }
+
+
+    /* =========================================================
+       EXPERIENCE
+       ========================================================= */
+
+    .experience-list {
+      display: grid;
+      gap: 38px;
+    }
+
+
+    .job {
+      display: grid;
+
+      grid-template-columns:
+        220px
+        1fr;
+
+      gap: 34px;
+    }
+
+
+    .job-meta {
+      color: var(--muted2);
+    }
+
+
+    .job-company {
+      font-size: 0.78rem;
+      font-weight: 700;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      color: var(--violet);
+    }
+
+
+    .job-role {
+      margin-top: 8px;
+
+      font-size: 1rem;
+      line-height: 1.35;
+
+      color: rgba(255,255,255,0.88);
+    }
+
+
+    .job-dates {
+      margin-top: 8px;
+
+      font-size: 0.72rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+
+    .job-description ul {
+      list-style: none;
+
+      display: grid;
+      gap: 10px;
+    }
+
+
+    .job-description li {
+      position: relative;
+
+      padding-left: 18px;
+
+      font-size: 0.94rem;
+      line-height: 1.62;
+
+      color: var(--muted);
+    }
+
+
+    .job-description li::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      top: 0.72em;
+
+      width: 6px;
+      height: 1px;
+
+      background: var(--magenta);
+    }
+
+
+    /* =========================================================
+       EDUCATION
+       ========================================================= */
+
+    .education-list {
+      display: grid;
+      gap: 15px;
+    }
+
+
+    .education-item {
+      padding: 18px 20px;
+
+      border:
+        1px solid var(--border);
+
+      background: var(--panel);
+    }
+
+
+    .education-item strong {
+      display: block;
+
+      margin-bottom: 5px;
+
+      font-size: 0.88rem;
+    }
+
+
+    .education-item span {
+      font-size: 0.86rem;
+      line-height: 1.5;
+
+      color: var(--muted);
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .footer {
+      padding: 46px 0 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      color: var(--muted2);
+
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 760px) {
+
+      .site-header {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+
+      .brand {
+        font-size: 0.63rem;
+      }
+
+
+      .nav-links {
+        gap: 12px;
+        font-size: 0.60rem;
+      }
+
+
+      .resume-page {
+        width: calc(100% - 30px);
+
+        padding:
+          62px
+          0
+          80px;
+      }
+
+
+      h1 {
+        font-size:
+          clamp(
+            2.8rem,
+            14vw,
+            4.4rem
+          );
+      }
+
+
+      .contact-line {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+
+      .resume-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+
+      .button {
+        width: 100%;
+        min-height: 50px;
+      }
+
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .job {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+
+      .job-meta {
+        padding-bottom: 12px;
+
+        border-bottom:
+          1px solid rgba(255,255,255,0.06);
+      }
+
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+    }
+
+
+    @media print {
+
+      .site-header,
+      .resume-actions,
+      .footer {
+        display: none;
+      }
+
+
+      body {
+        background: white;
+        color: black;
+      }
+
+
+      .resume-page {
+        width: 100%;
+        padding: 0;
+      }
+
+
+      .resume-section,
+      .resume-hero {
+        border-color: #cccccc;
+      }
+
+
+      .summary,
+      .tool-group p,
+      .job-description li,
+      .education-item span {
+        color: #333333;
+      }
+
+
+      .job-company,
+      .section-label,
+      .eyebrow {
+        color: #5b2aa8;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- ========================================================
+       NAV
+       ======================================================== -->
+
+  <header class="site-header">
+
+```
+<nav class="nav">
+
+  <a
+    class="brand"
+    href="./index.html"
+  >
+    James Preston Cardona
+  </a>
+
+
+  <div class="nav-links">
+
+    <a href="./index.html">
+      Home
+    </a>
+
+    <a href="./index.html#work">
+      Work
+    </a>
+
+    <a href="mailto:JamesPrestonCardona@gmail.com">
+      Contact
+    </a>
+
+  </div>
+
+</nav>
+```
+
+  </header>
+
+  <main class="resume-page">
+
+```
+<!-- ======================================================
+     HERO
+     ====================================================== -->
+
+<section class="resume-hero">
+
+  <div class="eyebrow">
+    Resume
+  </div>
+
+
+  <h1>
+
+    James Preston
+    <span class="gradient-text">
+      Cardona
+    </span>
+
+  </h1>
+
+
+  <p class="title-line">
+
+    Senior Real-Time 3D Designer |
+    Unreal Engine |
+    Immersive Experiences |
+    Virtual Production
+
+  </p>
+
+
+  <div class="contact-line">
+
+    <span>
+      Dallas, TX
+    </span>
+
+    <span>
+      JamesPrestonCardona.com
+    </span>
+
+    <a href="mailto:JamesPrestonCardona@gmail.com">
+      JamesPrestonCardona@gmail.com
+    </a>
+
+    <span>
+      (214) 883-9567
+    </span>
+
+  </div>
+
+
+  <div class="resume-actions">
+
+    <a
+      class="button primary"
+      href="./resume.pdf"
+      target="_blank"
+      rel="noopener"
+    >
+      Download PDF
+    </a>
+
+    <a
+      class="button"
+      href="mailto:JamesPrestonCardona@gmail.com"
+    >
+      Contact
+    </a>
+
+    <a
+      class="button"
+      href="./index.html"
+    >
+      Back to Portfolio
+    </a>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     SUMMARY
+     ====================================================== -->
+
+<section class="resume-section">
+
+  <div class="section-label">
+    Professional Summary
+  </div>
+
+  <p class="summary">
+
+    Senior multidisciplinary real-time 3D and digital
+    experience designer with 20+ years of professional
+    experience spanning Unreal Engine development,
+    architectural visualization, immersive VR/AR,
+    virtual production, character design, motion capture,
+    UX/UI, full-stack development, motion graphics,
+    broadcast production, and technical direction.
+
+    Combines creative design, real-time technology,
+    and production expertise to translate concepts into
+    interactive environments, cinematic content,
+    digital products, and client-facing experiences.
+
+    Experienced leading projects and collaborating across
+    design, architecture, production, and development teams.
+
+  </p>
+
+</section>
+
+
+
+<!-- ======================================================
+     CORE EXPERTISE
+     ====================================================== -->
+
+<section class="resume-section">
+
+  <div class="section-label">
+    Core Expertise
+  </div>
+
+
+  <div class="tag-grid">
+
+    <div class="tag">Unreal Engine</div>
+    <div class="tag">Real-Time 3D</div>
+    <div class="tag">Architectural Visualization</div>
+    <div class="tag">Environment / Level Design</div>
+    <div class="tag">Virtual Production</div>
+    <div class="tag">VR / AR</div>
+    <div class="tag">Character Design</div>
+    <div class="tag">Motion Capture</div>
+    <div class="tag">Cinematics</div>
+    <div class="tag">Lighting</div>
+    <div class="tag">Compositing</div>
+    <div class="tag">Visual Effects</div>
+    <div class="tag">UX / UI</div>
+    <div class="tag">Technical Direction</div>
+    <div class="tag">Project Management</div>
+    <div class="tag">Digital Asset Management</div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     TOOLS
+     ====================================================== -->
+
+<section class="resume-section">
+
+  <div class="section-label">
+    Tools & Technologies
+  </div>
+
+
+  <div class="tools-grid">
+
+    <div class="tool-group">
+
+      <h3>
+        3D / Real-Time
+      </h3>
+
+      <p>
+        Unreal Engine, Blender, 3ds Max, Maya, ZBrush,
+        Substance, Marvelous Designer, Twinmotion,
+        Revit, Unity, Anima, Daz
+      </p>
+
+    </div>
+
+
+    <div class="tool-group">
+
+      <h3>
+        VFX / Production
+      </h3>
+
+      <p>
+        Nuke, After Effects, Premiere Pro,
+        DaVinci Resolve, Syntheyes,
+        Photoshop, Illustrator, InDesign
+      </p>
+
+    </div>
+
+
+    <div class="tool-group">
+
+      <h3>
+        Development
+      </h3>
+
+      <p>
+        C++, C#, Python, JavaScript, Three.js,
+        React, Angular, Java, PHP, SQL, MySQL,
+        HTML5, CSS3, XML, Android Studio
+      </p>
+
+    </div>
+
+
+    <div class="tool-group">
+
+      <h3>
+        Additional
+      </h3>
+
+      <p>
+        Pro Tools, FL Studio
+        <br><br>
+        Accessibility / Compliance:
+        ADA, HIPAA
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     EXPERIENCE
+     ====================================================== -->
+
+<section class="resume-section">
+
+  <div class="section-label">
+    Professional Experience
+  </div>
+
+
+  <div class="experience-list">
+
+
+    <!-- VLK -->
+
+    <article class="job">
+
+      <div class="job-meta">
+
+        <div class="job-company">
+          VLK Architects
+        </div>
+
+        <div class="job-role">
+          Experience Designer
+        </div>
+
+        <div class="job-dates">
+          Mar 2020 – Present
+        </div>
+
+      </div>
+
+
+      <div class="job-description">
+
+        <ul>
+
+          <li>
+            Develop interactive real-time architectural
+            environments and visualization experiences
+            in Unreal Engine for design communication
+            and client-facing presentations.
+          </li>
+
+          <li>
+            Lead character design and motion-capture
+            animation workflows for digital experiences
+            and visualization projects.
+          </li>
+
+          <li>
+            Create and composite architectural visualization
+            content, combining real-time 3D, animation,
+            cinematography, lighting, editing,
+            motion graphics, and visual effects.
+          </li>
+
+          <li>
+            Develop immersive VR architectural experiences
+            using Unreal Engine and head-mounted display
+            workflows.
+          </li>
+
+          <li>
+            Design and refine virtual-production pipelines
+            for live and real-time productions.
+          </li>
+
+          <li>
+            Collaborate with architects, designers,
+            creative teams, and technical stakeholders
+            to translate concepts into polished interactive
+            and cinematic experiences.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- ITOURS -->
+
+    <article class="job">
+
+      <div class="job-meta">
+
+        <div class="job-company">
+          iTours
+        </div>
+
+        <div class="job-role">
+          Director of Digital Design
+        </div>
+
+        <div class="job-dates">
+          Aug 2016 – Mar 2020
+        </div>
+
+      </div>
+
+
+      <div class="job-description">
+
+        <ul>
+
+          <li>
+            Directed digital design and technical production
+            across interactive, mobile, VR, AR, animation,
+            and commercial media projects.
+          </li>
+
+          <li>
+            Managed client relationships, project planning,
+            technical direction, contracts,
+            and cross-functional production workflows.
+          </li>
+
+          <li>
+            Led mobile VR / AR application design,
+            development, and production oversight.
+          </li>
+
+          <li>
+            Directed commercial content from concept
+            and script through animation, cinematography,
+            lighting, editing, and color correction.
+          </li>
+
+          <li>
+            Combined creative direction and technical
+            execution to deliver digital experiences
+            across multiple platforms.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- CITY OF DALLAS -->
+
+    <article class="job">
+
+      <div class="job-meta">
+
+        <div class="job-company">
+          City of Dallas
+        </div>
+
+        <div class="job-role">
+          Coordinator III / Digital Designer
+        </div>
+
+        <div class="job-dates">
+          Aug 2006 – Aug 2016
+        </div>
+
+      </div>
+
+
+      <div class="job-description">
+
+        <ul>
+
+          <li>
+            Designed and developed digital products
+            and interactive systems for Dallas Municipal Court,
+            City Attorney’s Office, City Manager’s Office,
+            Community Prosecution, Community Court,
+            Dallas Love Field Airport,
+            and Dallas Police Bodycam initiatives.
+          </li>
+
+          <li>
+            Led UX / UI design and full-stack development
+            for public-facing and internal digital applications.
+          </li>
+
+          <li>
+            Researched, designed, and developed Municipal Court
+            payment kiosk experiences, digital docket systems,
+            and digital signage.
+          </li>
+
+          <li>
+            Supported server, Active Directory, database,
+            VMware, and network-security administration
+            for digital systems and services.
+          </li>
+
+          <li>
+            Designed and administered multimedia streaming
+            infrastructure supporting multicast
+            and unicast delivery.
+          </li>
+
+          <li>
+            Produced documentary video, motion graphics,
+            and digital media for City Attorney,
+            Community Prosecution, Dallas Police,
+            and Dallas City Council initiatives.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- KVIA -->
+
+    <article class="job">
+
+      <div class="job-meta">
+
+        <div class="job-company">
+          KVIA ABC Channel 7
+        </div>
+
+        <div class="job-role">
+          Master Controller
+        </div>
+
+        <div class="job-dates">
+          May 2004 – May 2006
+        </div>
+
+      </div>
+
+
+      <div class="job-description">
+
+        <ul>
+
+          <li>
+            Managed master-control and technical-directing
+            functions for broadcast operations.
+          </li>
+
+          <li>
+            Supported satellite linking,
+            rebroadcasting, and live television workflows.
+          </li>
+
+          <li>
+            Performed linear and non-linear broadcast editing,
+            motion graphics, camera operation,
+            and production support.
+          </li>
+
+          <li>
+            Contributed to creative productions
+            and commercial script development.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     EDUCATION
+     ====================================================== -->
+
+<section class="resume-section">
+
+  <div class="section-label">
+    Education
+  </div>
+
+
+  <div class="education-list">
+
+    <div class="education-item">
+
+      <strong>
+        University of Texas at Dallas
+      </strong>
+
+      <span>
+        Bachelor of Arts and Technology,
+        Game Design — 2018
+      </span>
+
+    </div>
+
+
+    <div class="education-item">
+
+      <strong>
+        TechSkills
+      </strong>
+
+      <span>
+        Microsoft Systems Engineer — 2009
+      </span>
+
+    </div>
+
+
+    <div class="education-item">
+
+      <strong>
+        El Paso Community College
+      </strong>
+
+      <span>
+        Associate of Multimedia Production Technology,
+        Web Design — 2006
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
+
+<footer class="footer">
+
+  <span>
+    James Preston Cardona
+  </span>
+
+  <a
+    href="./index.html"
+  >
+    Return to Portfolio
+  </a>
+
+</footer>
+```
+
+  </main>
+
+</body>
+
+</html>
