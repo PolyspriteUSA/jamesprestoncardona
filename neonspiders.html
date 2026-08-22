@@ -681,7 +681,19 @@ function buildPlayer(){
   return g;
 }
 const player=buildPlayer();
-player.position.set(0,.02,1);
+player.position.set(0,.42,1);
+
+const playerShadow=new THREE.Mesh(
+  new THREE.CircleGeometry(1.6,24),
+  new THREE.MeshBasicMaterial({
+    color:0x000000,
+    transparent:true,
+    opacity:.22
+  })
+);
+playerShadow.rotation.x=-Math.PI/2;
+playerShadow.position.y=.01;
+scene.add(playerShadow);
 
 function buildSpider(){
   const g=new THREE.Group();
@@ -1177,7 +1189,7 @@ function resetGame(){
     pickup=>scene.remove(pickup)
   );
 
-  player.position.set(0,.02,1);
+  player.position.set(0,.42,1);
 
   score=0;
   wave=1;
@@ -1343,6 +1355,12 @@ function updatePlayer(dt){
     player.position.z*=
       20.5/radius;
   }
+
+  playerShadow.position.x=
+    player.position.x;
+
+  playerShadow.position.z=
+    player.position.z;
 
   const aimDir=
     aimPoint.clone()
