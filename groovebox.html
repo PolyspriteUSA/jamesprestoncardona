@@ -1596,6 +1596,108 @@ body{
 
 
 .sequencer-card{grid-column:1/-1;width:100%}
+
+/* Compact Synth Workspace Layout */
+.synth-workspace-content .synth-panel{
+  padding:14px;
+}
+.synth-box{
+  width:100%;
+}
+.osc-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.osc-panel,
+.envelope-panel,
+.synth-fm-filter-panel{
+  min-width:0;
+}
+.synth-controls{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(82px,1fr));
+  gap:10px;
+  align-items:start;
+}
+.envelope-controls{
+  grid-template-columns:repeat(8,minmax(78px,1fr));
+}
+.synth-fm-controls{
+  grid-template-columns:repeat(5,minmax(88px,1fr));
+}
+.synth-controls .knob-card{
+  min-width:0;
+  padding:10px 8px;
+}
+.synth-controls .knob-card label{
+  min-height:34px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:3px;
+  text-align:center;
+  font-size:9px;
+  line-height:1.2;
+}
+.synth-controls .knob-card output{
+  font-size:9px;
+}
+.synth-controls select{
+  min-height:34px;
+  font-size:10px;
+  padding:0 6px;
+}
+.synth-vertical-fader{
+  height:104px !important;
+  margin-top:6px !important;
+}
+.synth-keyboard{
+  margin-top:12px;
+}
+
+@media(max-width:1180px){
+  .synth-controls{
+    grid-template-columns:repeat(3,minmax(90px,1fr));
+  }
+  .envelope-controls{
+    grid-template-columns:repeat(4,minmax(90px,1fr));
+  }
+  .synth-fm-controls{
+    grid-template-columns:repeat(3,minmax(90px,1fr));
+  }
+}
+
+@media(max-width:820px){
+  .osc-grid{
+    grid-template-columns:1fr;
+  }
+  .synth-controls,
+  .envelope-controls,
+  .synth-fm-controls{
+    grid-template-columns:repeat(2,minmax(92px,1fr));
+  }
+}
+
+@media(max-width:520px){
+  .synth-workspace-content .synth-panel{
+    padding:10px;
+  }
+  .synth-controls,
+  .envelope-controls,
+  .synth-fm-controls{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .synth-controls .knob-card{
+    padding:8px 6px;
+  }
+  .synth-vertical-fader{
+    height:92px !important;
+  }
+}
+
 </style>
 </head>
 <body>
