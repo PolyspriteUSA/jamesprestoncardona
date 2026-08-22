@@ -294,6 +294,68 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   background:#101018;cursor:pointer;color:var(--muted);font-size:10px
 }
 .mute.on{color:white;background:#34204a}
+
+.step.note-pad{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:space-between;
+  padding:4px;
+  min-height:54px;
+}
+.step-toggle{
+  flex:1;
+  width:100%;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  border-radius:6px;
+}
+.step-note-select{
+  width:100%;
+  min-height:20px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:5px;
+  background:#0b0b11;
+  color:#ded8ef;
+  font-size:9px;
+  padding:0 2px;
+  text-align:center;
+  outline:none;
+}
+.step.note-pad.on .step-note-select{
+  border-color:rgba(255,255,255,.22);
+  background:rgba(8,8,14,.76);
+}
+.solo,
+.channel-solo{
+  width:28px;
+  height:24px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#101018;
+  cursor:pointer;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:700;
+}
+.solo.on,
+.channel-solo.on{
+  color:#fff;
+  background:#382c12;
+  border-color:rgba(255,205,92,.45);
+  box-shadow:0 0 14px rgba(255,205,92,.10);
+}
+.track-buttons{
+  display:flex;
+  gap:4px;
+  align-items:center;
+}
+.channel-buttons{
+  display:flex;
+  gap:4px;
+}
+
 .step{
   aspect-ratio:1/1;
   min-height:34px;
@@ -634,25 +696,6 @@ input[type=range]{width:100%;accent-color:var(--violet)}
         <span>click pads to program</span>
       </div>
       <div class="seq-wrap" id="sequencer"></div>
-      <div class="note-editor">
-        <div class="note-editor-title">
-          <strong>Bass Notes</strong>
-          <span>choose the note played on each of the 16 steps</span>
-        </div>
-        <div style="overflow:auto">
-          <div class="note-grid" id="bassNoteGrid"></div>
-        </div>
-      </div>
-
-      <div class="note-editor">
-        <div class="note-editor-title">
-          <strong>Synth Notes</strong>
-          <span>choose the note played by the synth on each step</span>
-        </div>
-        <div style="overflow:auto">
-          <div class="note-grid" id="synthNoteGrid"></div>
-        </div>
-      </div>
     </section>
   </main>
 
@@ -686,6 +729,7 @@ function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,delay=null,feedback=null,delayWet=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
+let soloed=new Set();
 
 function midiToHz(n){return 440*Math.pow(2,(n-69)/12)}
 function ensureAudio(){
@@ -802,6 +846,7 @@ function leadSynth(t,n=60,v=.38){
 }
 function playTrack(track,t,step){
   if(muted.has(track.type))return;
+  if(soloed.size>0&&!soloed.has(track.type))return;
   if(track.type==="kick")kick(t,track.level);
   if(track.type==="snare")snare(t,track.level);
   if(track.type==="hat")hat(t,track.level,false);
@@ -854,105 +899,179 @@ $("playBtn").addEventListener("click",start);
 $("stopBtn").addEventListener("click",stop);
 
 const sequencer=$("sequencer");
-tracks.forEach((track,ti)=>{
-  const row=document.createElement("div");row.className="track";
-  const name=document.createElement("div");name.className="track-name";
-  name.innerHTML="<span>"+track.name+"</span>";
-  const mute=document.createElement("button");mute.className="mute";mute.textContent="M";
-  mute.addEventListener("click",()=>{
-    if(muted.has(track.type)){muted.delete(track.type);mute.classList.remove("on")}
-    else{muted.add(track.type);mute.classList.add("on")}
-  });
-  name.appendChild(mute);row.appendChild(name);
-  track.pattern.forEach((on,si)=>{
-    const pad=document.createElement("button");
-    pad.className="step"+(on?" on":"");
-    pad.dataset.track=ti;pad.dataset.step=si;
-    pad.addEventListener("click",()=>{
-      track.pattern[si]=track.pattern[si]?0:1;
-      pad.classList.toggle("on",!!track.pattern[si]);
-    });
-    row.appendChild(pad);
-  });
-  sequencer.appendChild(row);
-});
-const bassNoteGrid=$("bassNoteGrid");
+
 const bassNoteChoices=[];
 for(let midi=24;midi<=60;midi++)bassNoteChoices.push(midi);
 
-function buildBassNoteEditor(){
-  bassNoteGrid.innerHTML="";
-  for(let step=0;step<16;step++){
-    const cell=document.createElement("div");
-    cell.className="note-cell";
-
-    const label=document.createElement("label");
-    label.textContent=String(step+1).padStart(2,"0");
-
-    const select=document.createElement("select");
-    select.setAttribute("aria-label","Bass note step "+(step+1));
-
-    bassNoteChoices.forEach(midi=>{
-      const option=document.createElement("option");
-      option.value=midi;
-      option.textContent=noteName(midi);
-      if(midi===bassNotes[step])option.selected=true;
-      select.appendChild(option);
-    });
-
-    select.addEventListener("change",()=>{
-      bassNotes[step]=parseInt(select.value,10);
-      if(audio&&audio.state!=="suspended"){
-        bass(audio.currentTime,bassNotes[step],.34);
-      }
-    });
-
-    cell.append(label,select);
-    bassNoteGrid.appendChild(cell);
-  }
-}
-buildBassNoteEditor();
-
-const synthNoteGrid=$("synthNoteGrid");
 const synthNoteChoices=[];
 for(let midi=48;midi<=84;midi++)synthNoteChoices.push(midi);
 
-function buildSynthNoteEditor(){
-  synthNoteGrid.innerHTML="";
-  for(let step=0;step<16;step++){
-    const cell=document.createElement("div");
-    cell.className="note-cell";
+function syncTrackButtons(){
+  document.querySelectorAll(".mute").forEach(button=>{
+    const type=button.dataset.type;
+    button.classList.toggle("on",muted.has(type));
+  });
 
-    const label=document.createElement("label");
-    label.textContent=String(step+1).padStart(2,"0");
+  document.querySelectorAll(".solo").forEach(button=>{
+    const type=button.dataset.type;
+    button.classList.toggle("on",soloed.has(type));
+  });
 
-    const select=document.createElement("select");
-    select.setAttribute("aria-label","Synth note step "+(step+1));
+  document.querySelectorAll(".channel-mute").forEach(button=>{
+    const type=button.dataset.type;
+    button.classList.toggle("on",muted.has(type));
+  });
 
-    synthNoteChoices.forEach(midi=>{
-      const option=document.createElement("option");
-      option.value=midi;
-      option.textContent=noteName(midi);
-      if(midi===synthNotes[step])option.selected=true;
-      select.appendChild(option);
-    });
+  document.querySelectorAll(".channel-solo").forEach(button=>{
+    const type=button.dataset.type;
+    button.classList.toggle("on",soloed.has(type));
+  });
+}
 
-    select.addEventListener("change",()=>{
-      synthNotes[step]=parseInt(select.value,10);
+function makeNoteSelect(track,step){
+  const select=document.createElement("select");
+  select.className="step-note-select";
+
+  const isBass=track.type==="bass";
+  const notes=isBass?bassNoteChoices:synthNoteChoices;
+  const current=isBass?bassNotes[step]:synthNotes[step];
+
+  notes.forEach(midi=>{
+    const option=document.createElement("option");
+    option.value=midi;
+    option.textContent=noteName(midi);
+    if(midi===current)option.selected=true;
+    select.appendChild(option);
+  });
+
+  select.addEventListener("pointerdown",event=>{
+    event.stopPropagation();
+  });
+
+  select.addEventListener("click",event=>{
+    event.stopPropagation();
+  });
+
+  select.addEventListener("change",event=>{
+    event.stopPropagation();
+    const midi=parseInt(select.value,10);
+
+    if(isBass){
+      bassNotes[step]=midi;
+      if(audio&&audio.state!=="suspended"){
+        bass(audio.currentTime,midi,.34);
+      }
+    }else{
+      synthNotes[step]=midi;
       if(audio&&audio.state!=="suspended"){
         leadSynth(
           audio.currentTime,
-          synthNotes[step],
+          midi,
           parseFloat($("synthLevel").value)
         );
       }
-    });
+    }
+  });
 
-    cell.append(label,select);
-    synthNoteGrid.appendChild(cell);
-  }
+  return select;
 }
-buildSynthNoteEditor();
+
+tracks.forEach((track,ti)=>{
+  const row=document.createElement("div");
+  row.className="track";
+
+  const name=document.createElement("div");
+  name.className="track-name";
+
+  const title=document.createElement("span");
+  title.textContent=track.name;
+
+  const buttons=document.createElement("div");
+  buttons.className="track-buttons";
+
+  const mute=document.createElement("button");
+  mute.className="mute";
+  mute.dataset.type=track.type;
+  mute.textContent="M";
+  mute.title="Mute "+track.name;
+
+  const solo=document.createElement("button");
+  solo.className="solo";
+  solo.dataset.type=track.type;
+  solo.textContent="S";
+  solo.title="Solo "+track.name;
+
+  mute.addEventListener("click",()=>{
+    if(muted.has(track.type))muted.delete(track.type);
+    else muted.add(track.type);
+    syncTrackButtons();
+  });
+
+  solo.addEventListener("click",()=>{
+    if(soloed.has(track.type))soloed.delete(track.type);
+    else soloed.add(track.type);
+    syncTrackButtons();
+  });
+
+  buttons.append(mute,solo);
+  name.append(title,buttons);
+  row.appendChild(name);
+
+  track.pattern.forEach((on,si)=>{
+    const noteTrack=
+      track.type==="bass"||
+      track.type==="synth";
+
+    if(noteTrack){
+      const pad=document.createElement("div");
+      pad.className=
+        "step note-pad"+
+        (on?" on":"");
+      pad.dataset.track=ti;
+      pad.dataset.step=si;
+
+      const toggle=document.createElement("button");
+      toggle.type="button";
+      toggle.className="step-toggle";
+      toggle.setAttribute(
+        "aria-label",
+        track.name+" step "+(si+1)
+      );
+
+      toggle.addEventListener("click",()=>{
+        track.pattern[si]=track.pattern[si]?0:1;
+        pad.classList.toggle(
+          "on",
+          !!track.pattern[si]
+        );
+      });
+
+      const select=makeNoteSelect(track,si);
+
+      pad.append(toggle,select);
+      row.appendChild(pad);
+    }else{
+      const pad=document.createElement("button");
+      pad.className="step"+(on?" on":"");
+      pad.dataset.track=ti;
+      pad.dataset.step=si;
+
+      pad.addEventListener("click",()=>{
+        track.pattern[si]=track.pattern[si]?0:1;
+        pad.classList.toggle(
+          "on",
+          !!track.pattern[si]
+        );
+      });
+
+      row.appendChild(pad);
+    }
+  });
+
+  sequencer.appendChild(row);
+});
+
+syncTrackButtons();
 
 $("randomBtn").addEventListener("click",()=>{
   tracks.forEach((t,ti)=>{
@@ -970,13 +1089,22 @@ $("randomBtn").addEventListener("click",()=>{
     const scale=[36,38,39,41,43,46,48];
     return scale[Math.floor(Math.random()*scale.length)];
   });
-  buildBassNoteEditor();
 
   synthNotes=synthNotes.map(()=>{
     const scale=[60,62,64,65,67,69,71,72];
     return scale[Math.floor(Math.random()*scale.length)];
   });
-  buildSynthNoteEditor();
+
+  document.querySelectorAll(".step-note-select").forEach(select=>{
+    const pad=select.closest(".step");
+    if(!pad)return;
+    const track=tracks[+pad.dataset.track];
+    const step=+pad.dataset.step;
+    select.value=
+      track.type==="bass"
+        ?bassNotes[step]
+        :synthNotes[step];
+  });
 });
 $("clearBtn").addEventListener("click",()=>{
   tracks.forEach(t=>t.pattern.fill(0));
@@ -991,10 +1119,22 @@ tracks.forEach(track=>{
   const label=document.createElement("label");
   label.textContent=track.name;
 
+  const buttons=document.createElement("div");
+  buttons.className="channel-buttons";
+
   const muteButton=document.createElement("button");
   muteButton.className="channel-mute";
+  muteButton.dataset.type=track.type;
   muteButton.type="button";
   muteButton.textContent="M";
+  muteButton.title="Mute "+track.name;
+
+  const soloButton=document.createElement("button");
+  soloButton.className="channel-solo";
+  soloButton.dataset.type=track.type;
+  soloButton.type="button";
+  soloButton.textContent="S";
+  soloButton.title="Solo "+track.name;
 
   const range=document.createElement("input");
   range.className="vertical-fader";
@@ -1013,24 +1153,15 @@ tracks.forEach(track=>{
     Math.round(track.level*100)+"%";
 
   muteButton.addEventListener("click",()=>{
-    if(muted.has(track.type)){
-      muted.delete(track.type);
-      muteButton.classList.remove("on");
-    }else{
-      muted.add(track.type);
-      muteButton.classList.add("on");
-    }
+    if(muted.has(track.type))muted.delete(track.type);
+    else muted.add(track.type);
+    syncTrackButtons();
+  });
 
-    document
-      .querySelectorAll(".mute")
-      .forEach((button,index)=>{
-        if(tracks[index]===track){
-          button.classList.toggle(
-            "on",
-            muted.has(track.type)
-          );
-        }
-      });
+  soloButton.addEventListener("click",()=>{
+    if(soloed.has(track.type))soloed.delete(track.type);
+    else soloed.add(track.type);
+    syncTrackButtons();
   });
 
   range.addEventListener("input",()=>{
@@ -1049,9 +1180,14 @@ tracks.forEach(track=>{
     }
   });
 
+  buttons.append(
+    muteButton,
+    soloButton
+  );
+
   strip.append(
     label,
-    muteButton,
+    buttons,
     range,
     outv
   );
@@ -1059,16 +1195,15 @@ tracks.forEach(track=>{
   mixer.appendChild(strip);
 });
 
+syncTrackButtons();
+
 let midiAccess=null;
 let activeMidiInput=null;
 
 function setMidiStatus(text,connected=false){
   const el=$("midiStatus");
   el.textContent=text;
-  el.classList.toggle(
-    "connected",
-    connected
-  );
+  el.classList.toggle("connected",connected);
 }
 
 function refreshMidiInputs(){
@@ -1081,21 +1216,17 @@ function refreshMidiInputs(){
   if(!midiAccess)return;
 
   for(const input of midiAccess.inputs.values()){
-    const option=
-      document.createElement("option");
-
+    const option=document.createElement("option");
     option.value=input.id;
-    option.textContent=
-      input.name||
-      "MIDI Input";
-
+    option.textContent=input.name||"MIDI Input";
     select.appendChild(option);
   }
 
   if(
     previous &&
-    [...select.options]
-      .some(option=>option.value===previous)
+    [...select.options].some(
+      option=>option.value===previous
+    )
   ){
     select.value=previous;
   }else if(select.options.length>1){
@@ -1114,23 +1245,18 @@ function connectSelectedMidiInput(){
   if(!midiAccess)return;
 
   const id=$("midiInput").value;
-  const input=
-    midiAccess.inputs.get(id);
+  const input=midiAccess.inputs.get(id);
 
   if(!input){
-    setMidiStatus(
-      "Choose a MIDI input"
-    );
+    setMidiStatus("Choose a MIDI input");
     return;
   }
 
   activeMidiInput=input;
-  activeMidiInput.onmidimessage=
-    handleMidiMessage;
+  activeMidiInput.onmidimessage=handleMidiMessage;
 
   setMidiStatus(
-    "Connected: "+
-    (input.name||"MIDI Controller"),
+    "Connected: "+(input.name||"MIDI Controller"),
     true
   );
 }
@@ -1144,16 +1270,10 @@ async function connectMidi(){
   }
 
   try{
-    midiAccess=
-      await navigator.requestMIDIAccess();
-
-    midiAccess.onstatechange=
-      refreshMidiInputs;
-
+    midiAccess=await navigator.requestMIDIAccess();
+    midiAccess.onstatechange=refreshMidiInputs;
     refreshMidiInputs();
-
-    $("midiConnect").textContent=
-      "MIDI Connected";
+    $("midiConnect").textContent="MIDI Connected";
   }catch(error){
     setMidiStatus(
       "MIDI permission was not granted"
@@ -1169,8 +1289,7 @@ async function handleMidiMessage(event){
   const note=data[1];
   const velocity=data[2]||0;
 
-  const selectedChannel=
-    $("midiChannel").value;
+  const selectedChannel=$("midiChannel").value;
 
   if(
     selectedChannel!=="all" &&
@@ -1185,16 +1304,10 @@ async function handleMidiMessage(event){
     await audio.resume();
   }
 
-  if(
-    command===0x90 &&
-    velocity>0
-  ){
-    const velocityGain=
-      velocity/127;
+  if(command===0x90&&velocity>0){
+    const velocityGain=velocity/127;
 
-    if(
-      $("midiTarget").value==="bass"
-    ){
+    if($("midiTarget").value==="bass"){
       bass(
         audio.currentTime,
         note,
@@ -1206,9 +1319,7 @@ async function handleMidiMessage(event){
         note,
         Math.max(
           .08,
-          parseFloat(
-            $("synthLevel").value
-          )*
+          parseFloat($("synthLevel").value)*
           velocityGain
         )
       );
@@ -1224,8 +1335,7 @@ async function handleMidiMessage(event){
     if(cc===74){
       const cutoff=
         120+
-        value*
-        (9000-120);
+        value*(9000-120);
 
       $("cutoff").value=cutoff;
       $("cutoff").dispatchEvent(
@@ -1234,9 +1344,7 @@ async function handleMidiMessage(event){
     }
 
     if(cc===71){
-      $("res").value=
-        value*18;
-
+      $("res").value=value*18;
       $("res").dispatchEvent(
         new Event("input")
       );
