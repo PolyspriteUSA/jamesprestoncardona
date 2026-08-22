@@ -3017,7 +3017,6 @@ body{
 }
 
 
-/* Records section */
 .records-section{
   margin:14px 16px 0;
   padding:14px;
@@ -3032,7 +3031,7 @@ body{
   gap:12px;
   margin-bottom:12px;
 }
-.records-head>div:first-child{
+.records-head>div{
   display:grid;
   gap:3px;
 }
@@ -3044,11 +3043,6 @@ body{
 .records-head span{
   color:var(--muted);
   font-size:10px;
-}
-.records-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
 }
 .records-list{
   display:grid;
@@ -3065,10 +3059,10 @@ body{
   font-size:10px;
 }
 .record-item{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:10px;
+  display:flex;
   align-items:center;
+  justify-content:space-between;
+  gap:10px;
   padding:10px;
   border:1px solid var(--line);
   border-radius:12px;
@@ -3081,7 +3075,6 @@ body{
 }
 .record-name{
   font-size:11px;
-  color:var(--text);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -3094,25 +3087,23 @@ body{
   display:flex;
   gap:6px;
 }
-.record-controls .btn{
-  min-width:64px;
-}
 @media(max-width:620px){
-  .records-head{
+  .records-head,
+  .record-item{
     align-items:stretch;
     flex-direction:column;
-  }
-  .records-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-  }
-  .record-item{
-    grid-template-columns:1fr;
   }
   .record-controls{
     display:grid;
     grid-template-columns:1fr 1fr;
   }
+}
+
+
+/* Records positioned directly below Virtual Tape Recorder */
+.master-fx-section .records-section{
+  margin:12px 0 0;
+  padding:12px;
 }
 
 </style>
@@ -3469,21 +3460,7 @@ body{
         </div></div>
 </div>
 
-<div class="records-section">
-  <div class="records-head">
-    <div>
-      <strong>Records</strong>
-      <span>saved recordings and takes</span>
-    </div>
-    <div class="records-actions">
-      <button class="btn" id="recordsRefreshBtn" type="button">Refresh</button>
-      <button class="btn" id="recordsClearBtn" type="button">Clear Records</button>
-    </div>
-  </div>
-  <div class="records-list" id="recordsList">
-    <div class="records-empty">No recordings yet</div>
-  </div>
-</div>
+
 
 <div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console">
 <div class="mixing-console-head">
@@ -3756,6 +3733,18 @@ body{
                   </button>
 </div>
 </div>
+</div>
+<div class="records-section">
+  <div class="records-head">
+    <div>
+      <strong>Records</strong>
+      <span>recorded takes</span>
+    </div>
+    <button class="btn" id="recordsClearBtn" type="button">Clear Records</button>
+  </div>
+  <div class="records-list" id="recordsList">
+    <div class="records-empty">No recordings yet</div>
+  </div>
 </div>
 
 </div>
@@ -6173,6 +6162,113 @@ function renderAudioTimeline(){
     timeline.appendChild(row);
   });
 }
+
+function renderRecords(){
+  const host=$("recordsList");
+  if(!host)return;
+
+  host.innerHTML="";
+
+  const records=[];
+
+  audioChannels.forEach((channel,channelIndex)=>{
+    channel.clips.forEach(clip=>{
+      if(clip.sourceType==="recorded"){
+        records.push({
+          channel,
+          channelIndex,
+          clip
+        });
+      }
+    });
+  });
+
+  if(records.length===0){
+    const empty=document.createElement("div");
+    empty.className="records-empty";
+    empty.textContent="No recordings yet";
+    host.appendChild(empty);
+    return;
+  }
+
+  records.forEach(item=>{
+    const row=document.createElement("div");
+    row.className="record-item";
+
+    const info=document.createElement("div");
+    info.className="record-info";
+
+    const name=document.createElement("div");
+    name.className="record-name";
+    name.textContent=item.clip.name;
+
+    const meta=document.createElement("div");
+    meta.className="record-meta";
+    meta.textContent=
+      item.channel.name+
+      " • "+
+      item.clip.duration.toFixed(2)+
+      " s";
+
+    const controls=document.createElement("div");
+    controls.className="record-controls";
+
+    const play=document.createElement("button");
+    play.className="btn";
+    play.type="button";
+    play.textContent="Play";
+
+    const add=document.createElement("button");
+    add.className="btn";
+    add.type="button";
+    add.textContent="Add to Track";
+
+    play.addEventListener("click",()=>{
+      playAudioClip(
+        item.channel,
+        item.clip
+      );
+    });
+
+    add.addEventListener("click",()=>{
+      const targetIndex=
+        audioChannels.findIndex(
+          channel=>channel.armed
+        );
+
+      const destination=
+        targetIndex>=0
+          ?targetIndex
+          :0;
+
+      audioChannels[destination].clips.push({
+        id:clipCounter++,
+        name:item.clip.name+" Copy",
+        duration:item.clip.duration,
+        url:item.clip.url,
+        startPercent:0,
+        loop:false,
+        sourceType:"recorded-copy",
+        ownsUrl:false
+      });
+
+      renderAudioTimeline();
+
+      setRecordingStatus(
+        "Added "+
+        item.clip.name+
+        " to "+
+        audioChannels[destination].name
+      );
+    });
+
+    info.append(name,meta);
+    controls.append(play,add);
+    row.append(info,controls);
+    host.appendChild(row);
+  });
+}
+
 function setRecordingStatus(text,active=false){
   const status=$("recordingStatus");
   status.textContent=text;
@@ -6268,6 +6364,7 @@ async function startAudioRecording(){
 
     clipCounter++;
     renderAudioTimeline();
+    renderRecords();
 
     setRecordingStatus(
       "Recorded "+
@@ -6413,8 +6510,29 @@ function clearAudioRecordings(){
   });
 
   renderAudioTimeline();
+  renderRecords();
   setRecordingStatus("Audio timeline cleared");
 }
+
+
+$("recordsClearBtn").addEventListener(
+  "click",
+  ()=>{
+    audioChannels.forEach(channel=>{
+      channel.clips=
+        channel.clips.filter(
+          clip=>clip.sourceType!=="recorded"
+        );
+    });
+
+    stopTimelinePlayback();
+    renderAudioTimeline();
+    renderRecords();
+    setRecordingStatus("Records cleared");
+  }
+);
+
+renderRecords();
 
 $("audioRecordBtn").addEventListener(
   "click",
@@ -8077,151 +8195,5 @@ animate();
     700
   );
 })();
-
-function renderRecords(){
-  const host=$("recordsList");
-  if(!host)return;
-
-  host.innerHTML="";
-
-  const records=[];
-
-  audioChannels.forEach((channel,channelIndex)=>{
-    channel.clips.forEach(clip=>{
-      if(
-        clip.sourceType==="recorded" ||
-        String(clip.name||"").startsWith("Take ")
-      ){
-        records.push({
-          channel,
-          channelIndex,
-          clip
-        });
-      }
-    });
-  });
-
-  if(records.length===0){
-    const empty=document.createElement("div");
-    empty.className="records-empty";
-    empty.textContent="No recordings yet";
-    host.appendChild(empty);
-    return;
-  }
-
-  records.forEach(item=>{
-    const row=document.createElement("div");
-    row.className="record-item";
-
-    const info=document.createElement("div");
-    info.className="record-info";
-
-    const name=document.createElement("div");
-    name.className="record-name";
-    name.textContent=item.clip.name;
-
-    const meta=document.createElement("div");
-    meta.className="record-meta";
-    meta.textContent=
-      item.channel.name+
-      " • "+
-      item.clip.duration.toFixed(2)+
-      " s"+
-      (item.clip.loop?" • loop":"");
-
-    info.append(name,meta);
-
-    const controls=document.createElement("div");
-    controls.className="record-controls";
-
-    const play=document.createElement("button");
-    play.className="btn";
-    play.type="button";
-    play.textContent="Play";
-
-    const add=document.createElement("button");
-    add.className="btn";
-    add.type="button";
-    add.textContent="Add";
-
-    play.addEventListener("click",()=>{
-      playAudioClip(
-        item.channel,
-        item.clip
-      );
-    });
-
-    add.addEventListener("click",()=>{
-      const copy={
-        id:clipCounter++,
-        name:item.clip.name+" Copy",
-        duration:item.clip.duration,
-        url:item.clip.url,
-        startPercent:0,
-        loop:false,
-        sourceType:"recorded-copy",
-        ownsUrl:false
-      };
-
-      audioChannels[
-        activeAudioChannel||0
-      ].clips.push(copy);
-
-      renderAudioTimeline();
-      renderRecords();
-
-      setRecordingStatus(
-        "Added "+
-        copy.name+
-        " to "+
-        audioChannels[
-          activeAudioChannel||0
-        ].name
-      );
-    });
-
-    controls.append(play,add);
-    row.append(info,controls);
-    host.appendChild(row);
-  });
-}
-
-$("recordsRefreshBtn").addEventListener(
-  "click",
-  renderRecords
-);
-
-$("recordsClearBtn").addEventListener(
-  "click",
-  ()=>{
-    audioChannels.forEach(channel=>{
-      channel.clips=
-        channel.clips.filter(
-          clip=>
-            !(
-              clip.sourceType==="recorded" ||
-              clip.sourceType==="recorded-copy" ||
-              String(clip.name||"").startsWith("Take ")
-            )
-        );
-    });
-
-    stopTimelinePlayback();
-    renderAudioTimeline();
-    renderRecords();
-    setRecordingStatus("Records cleared");
-  }
-);
-
-const originalRenderAudioTimeline=
-  renderAudioTimeline;
-
-renderAudioTimeline=function(){
-  originalRenderAudioTimeline();
-  renderRecords();
-};
-
-renderRecords();
-
 </script></body>
 </html>
