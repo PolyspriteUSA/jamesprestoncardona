@@ -436,45 +436,6 @@
     }
 
 
-    .experience-card {
-      position: relative;
-      isolation: isolate;
-    }
-
-    .experience-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border: 1px solid transparent;
-      pointer-events: none;
-      transition: border-color 180ms ease, box-shadow 180ms ease;
-    }
-
-    .experience-card:hover::after,
-    .experience-card:focus-visible::after {
-      border-color: rgba(166,108,255,0.34);
-      box-shadow:
-        inset 0 0 42px rgba(113,73,255,0.045),
-        0 0 34px rgba(255,66,208,0.04);
-    }
-
-    .experience-trigger {
-      width: 100%;
-      min-height: 100%;
-      padding: 0;
-      border: 0;
-      color: inherit;
-      text-align: left;
-      background: transparent;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .experience-trigger:focus-visible {
-      outline: 1px solid rgba(255,255,255,0.55);
-      outline-offset: -5px;
-    }
-
     .experience-modal {
       position: fixed;
       inset: 0;
@@ -1166,28 +1127,27 @@
           </div>
         </a>
 
-        <div class="project-card experience-card">
-          <button
-            class="experience-trigger"
-            id="experience-trigger"
-            type="button"
-            aria-haspopup="dialog"
-            aria-controls="experience-modal"
-            aria-expanded="false"
-          >
-            <div class="project-number">03 // INTERACTIVE</div>
+        <a
+          class="project-card"
+          id="experience-trigger"
+          href="#interactive-experiences"
+          aria-haspopup="dialog"
+          aria-controls="experience-modal"
+          aria-expanded="false"
+          aria-label="Open Interactive Experiments menu"
+        >
+          <div class="project-number">03 // INTERACTIVE</div>
 
-            <div class="project-content">
-              <h3>Interactive Experiments</h3>
-              <p>
-                Browser-based real-time experiences,
-                procedural games, audio tools,
-                and experimental Three.js interfaces.
-              </p>
-              <div class="project-link-label">Open Experiences →</div>
-            </div>
-          </button>
-        </div>
+          <div class="project-content">
+            <h3>Interactive Experiments</h3>
+            <p>
+              Browser-based real-time experiences,
+              procedural games, audio tools,
+              and experimental Three.js interfaces.
+            </p>
+            <div class="project-link-label">Open Experiences →</div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1498,7 +1458,10 @@
 
     experienceTrigger.addEventListener(
       "click",
-      openExperiencePanel
+      function (event) {
+        event.preventDefault();
+        openExperiencePanel();
+      }
     );
 
     experienceClose.addEventListener(
