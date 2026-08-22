@@ -1116,32 +1116,32 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 0.92;
     renderer.setClearColor(0x000000, 0);
 
     container.appendChild(renderer.domElement);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 1.9);
+    const ambient = new THREE.AmbientLight(0xffffff, 1.15);
     scene.add(ambient);
 
-    const hemisphere = new THREE.HemisphereLight(0xffffff, 0x251436, 1.8);
+    const hemisphere = new THREE.HemisphereLight(0xffffff, 0x251436, 1.1);
     scene.add(hemisphere);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
     keyLight.position.set(4, 5, 6);
     scene.add(keyLight);
 
-    const magentaLight = new THREE.PointLight(0xff25d0, 7, 20);
+    const magentaLight = new THREE.PointLight(0xff25d0, 3.6, 20);
     magentaLight.position.set(4, 2, 4);
     scene.add(magentaLight);
 
-    const purpleLight = new THREE.PointLight(0x6437ff, 7, 20);
+    const purpleLight = new THREE.PointLight(0x6437ff, 3.6, 20);
     purpleLight.position.set(-4, 2, 3);
     scene.add(purpleLight);
 
     const cursorLight = new THREE.PointLight(
       0xff72df,
-      2.8,
+      1.4,
       18
     );
     cursorLight.position.set(0, 0.7, 4.2);
@@ -1215,26 +1215,27 @@
           }
 
           material.transparent = true;
-          material.opacity = 0.72;
+          material.opacity = 0.48;
           material.alphaTest = 0;
           material.depthWrite = false;
           material.depthTest = true;
           material.side = THREE.DoubleSide;
+          material.blending = THREE.NormalBlending;
 
           if ("transmission" in material) {
-            material.transmission = 0.22;
+            material.transmission = 0;
           }
 
           if ("thickness" in material) {
-            material.thickness = 0.5;
+            material.thickness = 0;
           }
 
           if ("roughness" in material) {
-            material.roughness = 0.32;
+            material.roughness = 0.38;
           }
 
           if ("metalness" in material) {
-            material.metalness = 0.06;
+            material.metalness = 0.04;
           }
 
           material.needsUpdate = true;
