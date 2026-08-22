@@ -426,7 +426,7 @@ const overheadFill=new THREE.DirectionalLight(0xc8c2ff,2.1);
 overheadFill.position.set(-4,18,-10);
 scene.add(overheadFill);
 
-const arenaGlow=new THREE.PointLight(0x9b7cff,55,28,2);
+const arenaGlow=new THREE.PointLight(0x9b7cff,68,30,2);
 arenaGlow.position.set(0,7,0);
 scene.add(arenaGlow);
 
@@ -783,25 +783,285 @@ playerShadow.rotation.x=-Math.PI/2;
 playerShadow.position.y=.01;
 scene.add(playerShadow);
 
-function buildSpider(){
+function buildSpider(type="jumper"){
+  const presets={
+    jumper:{
+      type:"jumper",
+      thoraxColor:0x6a2d22,
+      abdomenColor:0xb84621,
+      glowColor:0xff7a3c,
+      legColor:0x8d7a72,
+      eyeColor:0xfff3cf,
+      thoraxScale:[1.10,.92,1.00],
+      abdomenScale:[1.28,1.08,1.18],
+      thoraxY:.96,
+      abdomenY:.92,
+      abdomenZ:.42,
+      eyeY:1.00,
+      eyeZ:.26,
+      legRootX:.30,
+      legRootY:.82,
+      legSpreadZ:.28,
+      upperLen:.96,
+      upperThickness:.09,
+      upperX:.46,
+      upperRot:.28,
+      lowerLen:.88,
+      lowerThickness:.08,
+      lowerX:1.08,
+      lowerY:-.34,
+      lowerRot:.82,
+      tipX:1.54,
+      tipY:-.60,
+      jointSize:.06,
+      hoverBase:.34,
+      hp:2,
+      damage:16,
+      speed:1.85,
+      speedJitter:.45,
+      hitRadius:1.00,
+      bulletRadius:.92,
+      hitHeight:.98,
+      bulletHeightTolerance:.92,
+      knockback:-2.4,
+      playerPush:1.05,
+      burstCount:1,
+      scoreValue:1
+    },
+    orbweaver:{
+      type:"orbweaver",
+      thoraxColor:0x4f6e34,
+      abdomenColor:0xd2cc47,
+      glowColor:0xf5ea72,
+      legColor:0x2a2a31,
+      eyeColor:0xc9f7ff,
+      thoraxScale:[1.16,.95,1.12],
+      abdomenScale:[1.55,1.22,1.85],
+      thoraxY:1.08,
+      abdomenY:1.02,
+      abdomenZ:.56,
+      eyeY:1.10,
+      eyeZ:.34,
+      legRootX:.42,
+      legRootY:.98,
+      legSpreadZ:.38,
+      upperLen:1.34,
+      upperThickness:.075,
+      upperX:.66,
+      upperRot:.36,
+      lowerLen:1.30,
+      lowerThickness:.07,
+      lowerX:1.58,
+      lowerY:-.56,
+      lowerRot:.98,
+      tipX:2.12,
+      tipY:-.96,
+      jointSize:.055,
+      hoverBase:.42,
+      hp:4,
+      damage:24,
+      speed:1.38,
+      speedJitter:.34,
+      hitRadius:1.28,
+      bulletRadius:1.12,
+      hitHeight:1.12,
+      bulletHeightTolerance:1.12,
+      knockback:-2.0,
+      playerPush:1.28,
+      burstCount:2,
+      scoreValue:2
+    },
+    widow:{
+      type:"widow",
+      thoraxColor:0x17171d,
+      abdomenColor:0x1d0f16,
+      glowColor:0xff385f,
+      legColor:0x111116,
+      eyeColor:0xff8aa0,
+      thoraxScale:[.92,.84,.95],
+      abdomenScale:[1.34,1.12,1.46],
+      thoraxY:1.02,
+      abdomenY:.98,
+      abdomenZ:.48,
+      eyeY:1.04,
+      eyeZ:.28,
+      legRootX:.40,
+      legRootY:1.00,
+      legSpreadZ:.44,
+      upperLen:1.52,
+      upperThickness:.055,
+      upperX:.74,
+      upperRot:.44,
+      lowerLen:1.48,
+      lowerThickness:.05,
+      lowerX:1.84,
+      lowerY:-.64,
+      lowerRot:1.08,
+      tipX:2.46,
+      tipY:-1.14,
+      jointSize:.045,
+      hoverBase:.40,
+      hp:6,
+      damage:38,
+      speed:1.70,
+      speedJitter:.42,
+      hitRadius:1.18,
+      bulletRadius:1.02,
+      hitHeight:1.02,
+      bulletHeightTolerance:1.00,
+      knockback:-1.6,
+      playerPush:1.64,
+      burstCount:3,
+      scoreValue:3
+    }
+  };
+
+  const preset=
+    presets[type]||
+    presets.jumper;
+
   const g=new THREE.Group();
 
-  const body=new THREE.Mesh(
-    new THREE.IcosahedronGeometry(.44,1),
-    matDark
+  const thoraxMaterial=
+    new THREE.MeshStandardMaterial({
+      color:preset.thoraxColor,
+      emissive:preset.glowColor,
+      emissiveIntensity:.28,
+      metalness:.50,
+      roughness:.40
+    });
+
+  const abdomenMaterial=
+    new THREE.MeshStandardMaterial({
+      color:preset.abdomenColor,
+      emissive:preset.glowColor,
+      emissiveIntensity:
+        preset.type==="widow"
+          ?.30
+          :.42,
+      metalness:
+        preset.type==="widow"
+          ?.72
+          :.44,
+      roughness:
+        preset.type==="widow"
+          ?.20
+          :.48
+    });
+
+  const legMaterial=
+    new THREE.MeshStandardMaterial({
+      color:preset.legColor,
+      emissive:
+        preset.type==="widow"
+          ?0x18060a
+          :0x101018,
+      emissiveIntensity:.40,
+      metalness:.56,
+      roughness:.24
+    });
+
+  const thorax=new THREE.Mesh(
+    new THREE.SphereGeometry(.28,16,12),
+    thoraxMaterial
   );
-
-  body.scale.set(1.02,.52,1.08);
-  body.position.y=.98;
-  g.add(body);
-
-  const core=new THREE.Mesh(
-    new THREE.SphereGeometry(.13,10,8),
-    Math.random()>.5?matViolet:matMagenta
+  thorax.scale.set(
+    preset.thoraxScale[0],
+    preset.thoraxScale[1],
+    preset.thoraxScale[2]
   );
+  thorax.position.y=preset.thoraxY;
+  g.add(thorax);
 
-  core.position.set(0,1.02,.50);
-  g.add(core);
+  const abdomen=new THREE.Mesh(
+    new THREE.SphereGeometry(.34,18,14),
+    abdomenMaterial
+  );
+  abdomen.scale.set(
+    preset.abdomenScale[0],
+    preset.abdomenScale[1],
+    preset.abdomenScale[2]
+  );
+  abdomen.position.set(
+    0,
+    preset.abdomenY,
+    preset.abdomenZ
+  );
+  g.add(abdomen);
+
+  if(preset.type==="orbweaver"){
+    for(let i=0;i<4;i++){
+      const stripe=new THREE.Mesh(
+        new THREE.BoxGeometry(.12,.05,.44),
+        matGraphite
+      );
+      stripe.position.set(
+        0,
+        preset.abdomenY+.02,
+        .30+i*.14
+      );
+      stripe.rotation.x=.25;
+      g.add(stripe);
+    }
+  }
+
+  if(preset.type==="widow"){
+    const redMarkA=new THREE.Mesh(
+      new THREE.SphereGeometry(.07,10,8),
+      matMagenta
+    );
+    redMarkA.position.set(-.10,preset.abdomenY+.06,preset.abdomenZ+.28);
+    g.add(redMarkA);
+
+    const redMarkB=redMarkA.clone();
+    redMarkB.position.x=.10;
+    g.add(redMarkB);
+  }
+
+  const faceStrip=new THREE.Mesh(
+    new THREE.BoxGeometry(
+      preset.type==="widow"
+        ?.18
+        :.24,
+      .06,
+      .04
+    ),
+    preset.type==="widow"
+      ?matMagenta
+      :matWhite
+  );
+  faceStrip.position.set(
+    0,
+    preset.eyeY,
+    preset.eyeZ
+  );
+  g.add(faceStrip);
+
+  for(let e=-1;e<=1;e+=2){
+    const eye=new THREE.Mesh(
+      new THREE.SphereGeometry(
+        preset.type==="widow"
+          ?.03
+          :.04,
+        8,
+        8
+      ),
+      new THREE.MeshStandardMaterial({
+        color:preset.eyeColor,
+        emissive:preset.eyeColor,
+        emissiveIntensity:1.6,
+        metalness:.35,
+        roughness:.18
+      })
+    );
+
+    eye.position.set(
+      e*(preset.type==="widow"?.08:.07),
+      preset.eyeY,
+      preset.eyeZ+.03
+    );
+    g.add(eye);
+  }
 
   const legPivots=[];
 
@@ -809,33 +1069,81 @@ function buildSpider(){
     for(let i=0;i<4;i++){
       const pivot=new THREE.Group();
       pivot.position.set(
-        side*.44,
-        .78,
-        (i-1.5)*.36
+        side*preset.legRootX,
+        preset.legRootY,
+        (i-1.5)*preset.legSpreadZ
       );
 
       const upper=new THREE.Mesh(
-        new THREE.BoxGeometry(1.28,.075,.075),
-        matGraphite
+        new THREE.BoxGeometry(
+          preset.upperLen,
+          preset.upperThickness,
+          preset.upperThickness
+        ),
+        legMaterial
       );
-
-      upper.position.x=side*.60;
-      upper.rotation.z=-side*.35;
+      upper.position.x=
+        side*preset.upperX;
+      upper.rotation.z=
+        -side*preset.upperRot;
       pivot.add(upper);
 
-      const lower=new THREE.Mesh(
-        new THREE.BoxGeometry(1.28,.07,.07),
-        matGraphite
+      const joint=new THREE.Mesh(
+        new THREE.SphereGeometry(
+          preset.jointSize,
+          8,
+          8
+        ),
+        preset.type==="widow"
+          ?matMagenta
+          :matViolet
       );
-
-      lower.position.set(
-        side*1.55,
-        -.55,
+      joint.position.set(
+        side*(preset.upperX+preset.upperLen*.46),
+        -preset.upperLen*.08,
         0
       );
+      pivot.add(joint);
 
-      lower.rotation.z=-side*.95;
+      const lower=new THREE.Mesh(
+        new THREE.BoxGeometry(
+          preset.lowerLen,
+          preset.lowerThickness,
+          preset.lowerThickness
+        ),
+        legMaterial
+      );
+      lower.position.set(
+        side*preset.lowerX,
+        preset.lowerY,
+        0
+      );
+      lower.rotation.z=
+        -side*preset.lowerRot;
       pivot.add(lower);
+
+      const footTip=new THREE.Mesh(
+        new THREE.BoxGeometry(
+          preset.type==="widow"
+            ?.10
+            :.08,
+          preset.type==="widow"
+            ?.10
+            :.08,
+          preset.type==="widow"
+            ?.10
+            :.08
+        ),
+        preset.type==="widow"
+          ?matMagenta
+          :matViolet
+      );
+      footTip.position.set(
+        side*preset.tipX,
+        preset.tipY,
+        0
+      );
+      pivot.add(footTip);
 
       legPivots.push(pivot);
       g.add(pivot);
@@ -843,14 +1151,27 @@ function buildSpider(){
   }
 
   g.userData.legs=legPivots;
-  g.userData.hp=2;
-  g.userData.speed=1.45+Math.random()*.55;
+  g.userData.type=preset.type;
+  g.userData.hp=preset.hp;
+  g.userData.damage=preset.damage;
+  g.userData.hitRadius=preset.hitRadius;
+  g.userData.bulletRadius=preset.bulletRadius;
+  g.userData.hitHeight=preset.hitHeight;
+  g.userData.bulletHeightTolerance=
+    preset.bulletHeightTolerance;
+  g.userData.speed=
+    preset.speed+
+    Math.random()*preset.speedJitter;
   g.userData.phase=Math.random()*Math.PI*2;
+  g.userData.hoverBase=preset.hoverBase;
+  g.userData.knockback=preset.knockback;
+  g.userData.playerPush=preset.playerPush;
+  g.userData.burstCount=preset.burstCount;
+  g.userData.scoreValue=preset.scoreValue;
 
   scene.add(g);
   return g;
 }
-
 const spiders=[];
 const bullets=[];
 const particles=[];
@@ -917,23 +1238,43 @@ function updateHud(){
 }
 
 function spawnSpider(){
-  const spider=buildSpider();
+  const roll=Math.random();
+  let type="jumper";
+
+  if(wave<3){
+    type=
+      roll<.75
+        ?"jumper"
+        :"orbweaver";
+  }else if(wave<6){
+    type=
+      roll<.45
+        ?"jumper"
+        :roll<.82
+          ?"orbweaver"
+          :"widow";
+  }else{
+    type=
+      roll<.28
+        ?"jumper"
+        :roll<.65
+          ?"orbweaver"
+          :"widow";
+  }
+
+  const spider=buildSpider(type);
 
   const a=Math.random()*Math.PI*2;
   const r=21.2+Math.random()*1.6;
 
   spider.position.set(
-    Math.cos(a)*r,
-    .02,
-    Math.sin(a)*r
+    Math.sin(a)*r,
+    0,
+    Math.cos(a)*r
   );
-
-  spider.userData.speed+=
-    wave*.09;
 
   spiders.push(spider);
 }
-
 function spawnBurst(position){
   for(let i=0;i<8;i++){
     const piece=new THREE.Mesh(
@@ -1535,7 +1876,7 @@ function updateSpiders(dt,time){
       );
 
     spider.position.y=
-      .36+
+      spider.userData.hoverBase+
       Math.sin(
         time*8+
         spider.userData.phase
@@ -1552,21 +1893,26 @@ function updateSpiders(dt,time){
       }
     );
 
-    if(distance<1.10){
+    if(
+      distance<
+      spider.userData.hitRadius
+    ){
       const wasVulnerable=
         hitCooldown<=0;
 
-      damage();
+      damage(
+        spider.userData.damage
+      );
 
       if(wasVulnerable){
         spider.position.addScaledVector(
           direction,
-          -2.3
+          spider.userData.knockback
         );
 
         player.position.addScaledVector(
           direction,
-          1.15
+          spider.userData.playerPush
         );
       }
     }
@@ -1600,7 +1946,8 @@ function updateBullets(dt){
       const target=
         spider.position.clone();
 
-      target.y=1.15;
+      target.y=
+        spider.userData.hitHeight;
 
       const bulletHeightDifference=
         Math.abs(
@@ -1617,8 +1964,10 @@ function updateBullets(dt){
         );
 
       if(
-        planarDistance<.95 &&
-        bulletHeightDifference<1.05
+        planarDistance<
+          spider.userData.bulletRadius &&
+        bulletHeightDifference<
+          spider.userData.bulletHeightTolerance
       ){
         spider.userData.hp-=
           powerShotTime>0
@@ -1634,6 +1983,23 @@ function updateBullets(dt){
 
         if(spider.userData.hp<=0){
           spawnBurst(target);
+
+          for(
+            let burstIndex=1;
+            burstIndex<
+            spider.userData.burstCount;
+            burstIndex++
+          ){
+            spawnBurst(
+              target.clone().add(
+                new THREE.Vector3(
+                  (burstIndex%2?1:-1)*.32*burstIndex,
+                  .12*burstIndex,
+                  (burstIndex%2?-1:1)*.12
+                )
+              )
+            );
+          }
           maybeSpawnKillPickup(
             spider.position.clone()
           );
@@ -1641,7 +2007,8 @@ function updateBullets(dt){
           scene.remove(spider);
           spiders.splice(j,1);
 
-          score++;
+          score+=
+            spider.userData.scoreValue||1;
           wave=
             1+
             Math.floor(
