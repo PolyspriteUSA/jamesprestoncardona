@@ -2210,6 +2210,140 @@ body{
   }
 }
 
+
+/* Make Synth Workspace responsive like the sequencer:
+   full-width on desktop, preserve usable control sizes,
+   horizontal scroll instead of squashing on smaller screens. */
+.synth-workspace-card{
+  width:100%;
+  grid-column:1/-1;
+}
+
+.synth-workspace-content{
+  width:100%;
+  min-width:0;
+}
+
+.synth-workspace-content .synth-panel{
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:12px;
+}
+
+.synth-box{
+  width:100%;
+  max-width:none !important;
+  min-width:1180px;
+  margin:10px 0 0 !important;
+}
+
+.osc-grid{
+  width:100%;
+  grid-template-columns:minmax(360px,1fr) minmax(300px,.72fr) minmax(360px,1fr) !important;
+  gap:10px !important;
+}
+
+.osc-panel,
+.osc-visualizer-panel{
+  min-width:0;
+}
+
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(4,minmax(78px,1fr)) !important;
+  gap:8px !important;
+}
+
+.fm-lfo-layout{
+  width:100%;
+  grid-template-columns:repeat(3,minmax(300px,1fr)) !important;
+  gap:10px !important;
+}
+
+.envelope-controls{
+  width:100%;
+  grid-template-columns:repeat(8,minmax(92px,1fr)) !important;
+  gap:8px !important;
+}
+
+/* Keep the controls at a comfortable size instead of compressing them. */
+.synth-controls .knob-card{
+  min-width:76px;
+}
+
+.synth-rotary-wrap{
+  width:60px !important;
+  height:60px !important;
+}
+
+.synth-rotary-input{
+  width:60px !important;
+  height:60px !important;
+}
+
+#oscVisualizer{
+  min-height:220px;
+}
+
+/* On narrower screens, keep the desktop synth layout and allow horizontal scrolling,
+   matching the behavior of the 16-step sequencer. */
+@media(max-width:1180px){
+  .synth-box{
+    min-width:1180px;
+  }
+
+  .osc-grid{
+    grid-template-columns:minmax(360px,1fr) minmax(300px,.72fr) minmax(360px,1fr) !important;
+  }
+
+  .osc-visualizer-panel{
+    grid-column:auto !important;
+  }
+
+  .fm-lfo-layout{
+    grid-template-columns:repeat(3,minmax(300px,1fr)) !important;
+  }
+
+  .fm-filter-module{
+    grid-column:auto !important;
+  }
+
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(4,minmax(78px,1fr)) !important;
+  }
+
+  .envelope-controls{
+    grid-template-columns:repeat(8,minmax(92px,1fr)) !important;
+  }
+}
+
+@media(max-width:760px){
+  .synth-workspace-content .synth-panel{
+    padding:10px;
+  }
+
+  .osc-grid{
+    grid-template-columns:minmax(360px,1fr) minmax(300px,.72fr) minmax(360px,1fr) !important;
+  }
+
+  .fm-lfo-layout{
+    grid-template-columns:repeat(3,minmax(300px,1fr)) !important;
+  }
+
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(4,minmax(78px,1fr)) !important;
+  }
+
+  .fm-filter-controls,
+  .lfo-controls{
+    grid-template-columns:repeat(3,minmax(84px,1fr)) !important;
+  }
+
+  .envelope-controls{
+    grid-template-columns:repeat(8,minmax(92px,1fr)) !important;
+  }
+}
+
 </style>
 </head>
 <body>
