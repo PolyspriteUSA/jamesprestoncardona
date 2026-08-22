@@ -317,6 +317,175 @@ canvas{display:block}
   }
 }
 
+
+#startScreen .card{
+  width:min(920px,calc(100vw - 34px));
+}
+.robot-select-title{
+  margin:18px 0 10px;
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.robot-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:0 0 20px;
+}
+.robot-option{
+  position:relative;
+  min-height:150px;
+  padding:16px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+  cursor:pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+.robot-option:hover{
+  transform:translateY(-2px);
+  border-color:rgba(166,108,255,.42);
+}
+.robot-option.selected{
+  border-color:rgba(255,66,208,.75);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(113,73,255,.16),
+      rgba(255,66,208,.10)
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(255,66,208,.16),
+    0 0 28px rgba(255,66,208,.08);
+}
+.robot-option .robot-name{
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.robot-option .robot-role{
+  margin-top:5px;
+  color:var(--magenta);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.robot-option .robot-stats{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.65;
+}
+.robot-option .robot-mark{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  box-shadow:0 0 0 rgba(255,66,208,0);
+}
+.robot-option.selected .robot-mark{
+  background:var(--magenta);
+  box-shadow:0 0 14px rgba(255,66,208,.75);
+}
+#selectedRobotText{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+@media(max-width:760px){
+  #startScreen{
+    overflow:auto;
+    padding:86px 0 28px;
+  }
+  #startScreen .card{
+    margin:auto;
+  }
+  .robot-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+#startScreen{
+  overflow-y:auto;
+  padding:90px 16px 28px;
+  place-items:start center;
+}
+#startScreen .card{
+  margin:auto;
+  max-height:none;
+}
+#startBtn{
+  width:100%;
+  min-height:50px;
+  margin-top:4px;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.45),
+    0 0 28px rgba(255,66,208,.12);
+}
+@media(max-height:760px){
+  #startScreen{
+    padding-top:78px;
+  }
+  #startScreen .card{
+    padding:22px;
+  }
+  #startScreen .card h1{
+    font-size:clamp(38px,7vw,62px);
+  }
+  .robot-option{
+    min-height:124px;
+    padding:13px;
+  }
+}
+
+
+
+
+#gameOver{
+  overflow-y:auto;
+  padding:90px 16px 28px;
+  place-items:start center;
+}
+#gameOver .card{
+  width:min(920px,calc(100vw - 34px));
+  margin:auto;
+}
+#restartSelectedRobotText{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+#restartBtn{
+  width:100%;
+  min-height:50px;
+}
+@media(max-height:760px){
+  #gameOver{
+    padding-top:78px;
+  }
+  #gameOver .card{
+    padding:22px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -367,7 +536,46 @@ canvas{display:block}
   <div class="card">
     <div class="kicker">03 // Arcade</div>
     <h1>NEON<br>SPIDERS</h1>
-    <p>This version uses a fixed isometric arena camera instead of third-person controls. Movement and aiming are completely separate: WASD moves the character, the mouse aims anywhere in the arena, and holding the mouse button fires continuously.</p>
+    <p>Choose a combat robot, then enter the arena. WASD moves independently from mouse aim, hold click to fire, and Space dashes.</p>
+
+    <div class="robot-select-title">Select Combat Unit</div>
+
+    <div class="robot-grid">
+      <div class="robot-option selected" data-robot="dual" tabindex="0" role="button" aria-label="Select Twin Reaper">
+        <div class="robot-mark"></div>
+        <div class="robot-name">Twin Reaper</div>
+        <div class="robot-role">Dual Shooter</div>
+        <div class="robot-stats">
+          Two synchronized guns<br>
+          Medium fire rate<br>
+          Balanced damage
+        </div>
+      </div>
+
+      <div class="robot-option" data-robot="rapid" tabindex="0" role="button" aria-label="Select Razor">
+        <div class="robot-mark"></div>
+        <div class="robot-name">Razor</div>
+        <div class="robot-role">Rapid Single Shooter</div>
+        <div class="robot-stats">
+          One center-mounted gun<br>
+          Fastest fire rate<br>
+          Precision pressure
+        </div>
+      </div>
+
+      <div class="robot-option" data-robot="cannon" tabindex="0" role="button" aria-label="Select Juggernaut">
+        <div class="robot-mark"></div>
+        <div class="robot-name">Juggernaut</div>
+        <div class="robot-role">Heavy Cannon</div>
+        <div class="robot-stats">
+          One oversized cannon<br>
+          Slow fire rate<br>
+          Heavy impact damage
+        </div>
+      </div>
+    </div>
+
+    <div id="selectedRobotText">Selected: Twin Reaper</div>
     <button id="startBtn">Enter Arena</button>
   </div>
 </div>
@@ -377,6 +585,45 @@ canvas{display:block}
     <div class="kicker">Arena Overrun</div>
     <h1>SYSTEM<br>DOWN</h1>
     <p id="finalText">Destroyed 0 spiders.</p>
+
+    <div class="robot-select-title">Select Combat Unit</div>
+
+    <div class="robot-grid restart-robot-grid">
+      <div class="robot-option restart-robot-option selected" data-robot="dual" tabindex="0" role="button" aria-label="Select Twin Reaper">
+        <div class="robot-mark"></div>
+        <div class="robot-name">Twin Reaper</div>
+        <div class="robot-role">Dual Shooter</div>
+        <div class="robot-stats">
+          Two synchronized guns<br>
+          Medium fire rate<br>
+          Balanced damage
+        </div>
+      </div>
+
+      <div class="robot-option restart-robot-option" data-robot="rapid" tabindex="0" role="button" aria-label="Select Razor">
+        <div class="robot-mark"></div>
+        <div class="robot-name">Razor</div>
+        <div class="robot-role">Rapid Single Shooter</div>
+        <div class="robot-stats">
+          One center-mounted gun<br>
+          Fastest fire rate<br>
+          Precision pressure
+        </div>
+      </div>
+
+      <div class="robot-option restart-robot-option" data-robot="cannon" tabindex="0" role="button" aria-label="Select Juggernaut">
+        <div class="robot-mark"></div>
+        <div class="robot-name">Juggernaut</div>
+        <div class="robot-role">Heavy Cannon</div>
+        <div class="robot-stats">
+          One oversized cannon<br>
+          Slow fire rate<br>
+          Heavy impact damage
+        </div>
+      </div>
+    </div>
+
+    <div id="restartSelectedRobotText">Selected: Twin Reaper</div>
     <button id="restartBtn">Restart</button>
   </div>
 </div>
@@ -564,8 +811,42 @@ scene.add(
   )
 );
 
-function buildPlayer(){
+function buildPlayer(type="dual"){
   const g=new THREE.Group();
+
+  const profiles={
+    dual:{
+      name:"Twin Reaper",
+      fireInterval:.11,
+      baseDamage:1,
+      bulletSpeed:18,
+      bulletRadius:.07,
+      bulletLife:1.25,
+      weaponType:"dual"
+    },
+    rapid:{
+      name:"Razor",
+      fireInterval:.055,
+      baseDamage:1,
+      bulletSpeed:20,
+      bulletRadius:.065,
+      bulletLife:1.18,
+      weaponType:"rapid"
+    },
+    cannon:{
+      name:"Juggernaut",
+      fireInterval:.68,
+      baseDamage:4,
+      bulletSpeed:14,
+      bulletRadius:.20,
+      bulletLife:1.55,
+      weaponType:"cannon"
+    }
+  };
+
+  const profile=
+    profiles[type]||
+    profiles.dual;
 
   const makeTrack=(side)=>{
     const track=new THREE.Group();
@@ -591,7 +872,11 @@ function buildPlayer(){
         matWhite
       );
       wheel.rotation.z=Math.PI/2;
-      wheel.position.set(0,-.10,-.58+i*.29);
+      wheel.position.set(
+        0,
+        -.10,
+        -.58+i*.29
+      );
       track.add(wheel);
     }
 
@@ -623,30 +908,46 @@ function buildPlayer(){
   waist.position.set(0,.88,0);
   g.add(waist);
 
+  const torsoWidth=
+    type==="cannon"
+      ?1.52
+      :type==="rapid"
+        ?1.18
+        :1.38;
+
   const torsoCore=new THREE.Mesh(
-    new THREE.BoxGeometry(1.38,1.08,1.08),
+    new THREE.BoxGeometry(
+      torsoWidth,
+      1.08,
+      1.08
+    ),
     matGraphite
   );
   torsoCore.position.set(0,1.72,0);
   g.add(torsoCore);
 
   const chestArmor=new THREE.Mesh(
-    new THREE.BoxGeometry(1.12,.84,.16),
+    new THREE.BoxGeometry(
+      torsoWidth-.24,
+      .84,
+      .16
+    ),
     matWhite
   );
   chestArmor.position.set(0,1.76,.60);
   g.add(chestArmor);
 
   const chestSlashLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.42,.12,.08),
+    new THREE.BoxGeometry(.36,.11,.08),
     matViolet
   );
-  chestSlashLeft.position.set(-.28,1.88,.70);
+  chestSlashLeft.position.set(-.25,1.88,.70);
   chestSlashLeft.rotation.z=.28;
   g.add(chestSlashLeft);
 
-  const chestSlashRight=chestSlashLeft.clone();
-  chestSlashRight.position.x=.28;
+  const chestSlashRight=
+    chestSlashLeft.clone();
+  chestSlashRight.position.x=.25;
   chestSlashRight.rotation.z=-.28;
   g.add(chestSlashRight);
 
@@ -657,26 +958,41 @@ function buildPlayer(){
   reactor.position.set(0,1.58,.72);
   g.add(reactor);
 
+  const shoulderSize=
+    type==="cannon"
+      ?.66
+      :.56;
+
   const shoulderLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.56,.48,.62),
+    new THREE.BoxGeometry(
+      shoulderSize,
+      .48,
+      .62
+    ),
     matGraphite
   );
   shoulderLeft.position.set(-1.02,1.88,.04);
   g.add(shoulderLeft);
 
-  const shoulderRight=shoulderLeft.clone();
+  const shoulderRight=
+    shoulderLeft.clone();
   shoulderRight.position.x=1.02;
   g.add(shoulderRight);
 
   const shoulderPlateLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.72,.16,.72),
+    new THREE.BoxGeometry(
+      type==="cannon"?.82:.72,
+      .16,
+      .72
+    ),
     matWhite
   );
   shoulderPlateLeft.position.set(-1.04,2.13,.05);
   shoulderPlateLeft.rotation.z=-.14;
   g.add(shoulderPlateLeft);
 
-  const shoulderPlateRight=shoulderPlateLeft.clone();
+  const shoulderPlateRight=
+    shoulderPlateLeft.clone();
   shoulderPlateRight.position.x=1.04;
   shoulderPlateRight.rotation.z=.14;
   g.add(shoulderPlateRight);
@@ -689,7 +1005,11 @@ function buildPlayer(){
   g.add(neck);
 
   const head=new THREE.Mesh(
-    new THREE.BoxGeometry(.88,.64,.78),
+    new THREE.BoxGeometry(
+      type==="rapid"?.78:.88,
+      .64,
+      .78
+    ),
     matGraphite
   );
   head.position.set(0,2.80,.02);
@@ -703,7 +1023,8 @@ function buildPlayer(){
   browLeft.rotation.z=-.18;
   g.add(browLeft);
 
-  const browRight=browLeft.clone();
+  const browRight=
+    browLeft.clone();
   browRight.position.x=.20;
   browRight.rotation.z=.18;
   g.add(browRight);
@@ -715,7 +1036,8 @@ function buildPlayer(){
   eyeLeft.position.set(-.18,2.82,.44);
   g.add(eyeLeft);
 
-  const eyeRight=eyeLeft.clone();
+  const eyeRight=
+    eyeLeft.clone();
   eyeRight.position.x=.18;
   g.add(eyeRight);
 
@@ -726,14 +1048,9 @@ function buildPlayer(){
   jaw.position.set(0,2.58,.34);
   g.add(jaw);
 
-  const gunMount=new THREE.Mesh(
-    new THREE.BoxGeometry(2.42,.20,.22),
-    matDark
-  );
-  gunMount.position.set(0,1.76,.24);
-  g.add(gunMount);
+  const muzzles=[];
 
-  const makeGun=(side)=>{
+  const makeSideGun=(side)=>{
     const pivot=new THREE.Group();
     pivot.position.set(side*1.30,1.70,.18);
 
@@ -781,37 +1098,135 @@ function buildPlayer(){
     muzzle.position.set(0,0,1.92);
     pivot.add(muzzle);
 
-    return {pivot,muzzle};
+    g.add(pivot);
+    muzzles.push(muzzle);
   };
 
-  const leftGun=makeGun(-1);
-  const rightGun=makeGun(1);
+  const makeRapidGun=()=>{
+    const mount=new THREE.Mesh(
+      new THREE.BoxGeometry(.74,.46,.66),
+      matGraphite
+    );
+    mount.position.set(0,1.74,.58);
+    g.add(mount);
 
-  g.add(leftGun.pivot);
-  g.add(rightGun.pivot);
+    const shroud=new THREE.Mesh(
+      new THREE.BoxGeometry(.52,.34,1.10),
+      matWhite
+    );
+    shroud.position.set(0,1.74,1.06);
+    g.add(shroud);
 
-  const bladeLeft=new THREE.Mesh(
-    new THREE.BoxGeometry(.12,.64,.18),
-    matWhite
-  );
-  bladeLeft.position.set(-.94,1.34,-.34);
-  bladeLeft.rotation.z=.26;
-  g.add(bladeLeft);
+    const barrel=new THREE.Mesh(
+      new THREE.CylinderGeometry(.085,.085,1.30,14),
+      matDark
+    );
+    barrel.rotation.x=Math.PI/2;
+    barrel.position.set(0,1.74,1.86);
+    g.add(barrel);
 
-  const bladeRight=bladeLeft.clone();
-  bladeRight.position.x=.94;
-  bladeRight.rotation.z=-.26;
-  g.add(bladeRight);
+    const muzzle=new THREE.Mesh(
+      new THREE.BoxGeometry(.20,.20,.20),
+      matMagenta
+    );
+    muzzle.position.set(0,1.74,2.54);
+    g.add(muzzle);
 
-  g.userData.muzzles=[
-    leftGun.muzzle,
-    rightGun.muzzle
-  ];
+    const finLeft=new THREE.Mesh(
+      new THREE.BoxGeometry(.12,.42,.64),
+      matViolet
+    );
+    finLeft.position.set(-.34,1.78,1.02);
+    g.add(finLeft);
+
+    const finRight=finLeft.clone();
+    finRight.position.x=.34;
+    g.add(finRight);
+
+    muzzles.push(muzzle);
+  };
+
+  const makeCannon=()=>{
+    const cradle=new THREE.Mesh(
+      new THREE.BoxGeometry(1.18,.64,.86),
+      matGraphite
+    );
+    cradle.position.set(0,1.72,.62);
+    g.add(cradle);
+
+    const cannonBody=new THREE.Mesh(
+      new THREE.CylinderGeometry(.28,.34,1.42,16),
+      matWhite
+    );
+    cannonBody.rotation.x=Math.PI/2;
+    cannonBody.position.set(0,1.76,1.42);
+    g.add(cannonBody);
+
+    const cannonBarrel=new THREE.Mesh(
+      new THREE.CylinderGeometry(.18,.18,1.44,16),
+      matDark
+    );
+    cannonBarrel.rotation.x=Math.PI/2;
+    cannonBarrel.position.set(0,1.76,2.55);
+    g.add(cannonBarrel);
+
+    const muzzleRing=new THREE.Mesh(
+      new THREE.CylinderGeometry(.30,.30,.20,16),
+      matMagenta
+    );
+    muzzleRing.rotation.x=Math.PI/2;
+    muzzleRing.position.set(0,1.76,3.30);
+    g.add(muzzleRing);
+
+    const muzzle=new THREE.Object3D();
+    muzzle.position.set(0,1.76,3.42);
+    g.add(muzzle);
+
+    const braceLeft=new THREE.Mesh(
+      new THREE.BoxGeometry(.18,.58,1.18),
+      matViolet
+    );
+    braceLeft.position.set(-.48,1.70,1.28);
+    g.add(braceLeft);
+
+    const braceRight=braceLeft.clone();
+    braceRight.position.x=.48;
+    g.add(braceRight);
+
+    muzzles.push(muzzle);
+  };
+
+  if(type==="rapid"){
+    makeRapidGun();
+  }else if(type==="cannon"){
+    makeCannon();
+  }else{
+    const gunMount=new THREE.Mesh(
+      new THREE.BoxGeometry(2.42,.20,.22),
+      matDark
+    );
+    gunMount.position.set(0,1.76,.24);
+    g.add(gunMount);
+
+    makeSideGun(-1);
+    makeSideGun(1);
+  }
+
+  g.userData.muzzles=muzzles;
+  g.userData.robotType=type;
+  g.userData.robotName=profile.name;
+  g.userData.weaponType=profile.weaponType;
+  g.userData.fireInterval=profile.fireInterval;
+  g.userData.baseDamage=profile.baseDamage;
+  g.userData.bulletSpeed=profile.bulletSpeed;
+  g.userData.bulletRadius=profile.bulletRadius;
+  g.userData.bulletLife=profile.bulletLife;
 
   scene.add(g);
   return g;
 }
-const player=buildPlayer();
+let selectedRobotType="dual";
+let player=buildPlayer(selectedRobotType);
 player.position.set(0,.42,1);
 
 const playerShadow=new THREE.Mesh(
@@ -826,6 +1241,82 @@ playerShadow.rotation.x=-Math.PI/2;
 playerShadow.position.y=.01;
 scene.add(playerShadow);
 
+function rebuildPlayer(type){
+  const oldPosition=
+    player
+      ?player.position.clone()
+      :new THREE.Vector3(0,.42,1);
+
+  const oldRotationY=
+    player
+      ?player.rotation.y
+      :0;
+
+  if(player){
+    scene.remove(player);
+  }
+
+  selectedRobotType=type;
+  player=buildPlayer(type);
+  player.position.copy(oldPosition);
+  player.rotation.y=oldRotationY;
+}
+
+function selectRobot(type){
+  const names={
+    dual:"Twin Reaper",
+    rapid:"Razor",
+    cannon:"Juggernaut"
+  };
+
+  document
+    .querySelectorAll(".robot-option")
+    .forEach(option=>{
+      option.classList.toggle(
+        "selected",
+        option.dataset.robot===type
+      );
+    });
+
+  $("selectedRobotText").textContent=
+    "Selected: "+names[type];
+
+  if($("restartSelectedRobotText")){
+    $("restartSelectedRobotText").textContent=
+      "Selected: "+names[type];
+  }
+
+  rebuildPlayer(type);
+}
+
+document
+  .querySelectorAll(".robot-option")
+  .forEach(option=>{
+    const choose=()=>{
+      selectRobot(
+        option.dataset.robot
+      );
+    };
+
+    option.addEventListener(
+      "click",
+      choose
+    );
+
+    option.addEventListener(
+      "keydown",
+      event=>{
+        if(
+          event.key==="Enter" ||
+          event.key===" "
+        ){
+          event.preventDefault();
+          choose();
+        }
+      }
+    );
+  });
+
 function buildSpider(type="jumper"){
   const presets={
     jumper:{
@@ -833,7 +1324,7 @@ function buildSpider(type="jumper"){
       thoraxColor:0x171820,
       abdomenColor:0x24263a,
       glowColor:0x8c6cff,
-      legColor:0x343744,
+      legColor:0x2a1838,
       eyeColor:0xff42d0,
       thoraxScale:[1.10,.92,1.00],
       abdomenScale:[1.28,1.08,1.18],
@@ -876,7 +1367,7 @@ function buildSpider(type="jumper"){
       thoraxColor:0x191720,
       abdomenColor:0x2a2238,
       glowColor:0xd45bff,
-      legColor:0x343744,
+      legColor:0x2a1838,
       eyeColor:0xff42d0,
       thoraxScale:[1.16,.95,1.12],
       abdomenScale:[1.55,1.22,1.85],
@@ -919,7 +1410,7 @@ function buildSpider(type="jumper"){
       thoraxColor:0x121116,
       abdomenColor:0x201725,
       glowColor:0xff5dc7,
-      legColor:0x343744,
+      legColor:0x2a1838,
       eyeColor:0xff42d0,
       thoraxScale:[.92,.84,.95],
       abdomenScale:[1.34,1.12,1.46],
@@ -995,10 +1486,10 @@ function buildSpider(type="jumper"){
   const legMaterial=
     new THREE.MeshStandardMaterial({
       color:preset.legColor,
-      emissive:0x141620,
-      emissiveIntensity:.40,
-      metalness:.56,
-      roughness:.24
+      emissive:0x120818,
+      emissiveIntensity:.22,
+      metalness:.46,
+      roughness:.30
     });
 
   const thorax=new THREE.Mesh(
@@ -1160,9 +1651,7 @@ function buildSpider(type="jumper"){
           8,
           8
         ),
-        preset.type==="widow"
-          ?matMagenta
-          :matViolet
+        legMaterial
       );
       joint.position.set(
         side*(preset.upperX+preset.upperLen*.46),
@@ -1200,9 +1689,7 @@ function buildSpider(type="jumper"){
             ?.10
             :.08
         ),
-        preset.type==="widow"
-          ?matMagenta
-          :matViolet
+        legMaterial
       );
       footTip.position.set(
         side*preset.tipX,
@@ -1570,6 +2057,9 @@ function fireBullet(){
 
   baseDirection.normalize();
 
+  const weaponType=
+    player.userData.weaponType;
+
   muzzles.forEach((muzzle,index)=>{
     const worldMuzzle=
       new THREE.Vector3();
@@ -1578,25 +2068,46 @@ function fireBullet(){
       worldMuzzle
     );
 
+    const powerActive=
+      powerShotTime>0;
+
+    const baseRadius=
+      player.userData.bulletRadius;
+
+    const radius=
+      baseRadius*
+      (powerActive?1.55:1);
+
+    const material=
+      weaponType==="cannon"
+        ?matMagenta
+        :index%2
+          ?matViolet
+          :matMagenta;
+
     const bullet=new THREE.Mesh(
       new THREE.SphereGeometry(
-        powerShotTime>0
-          ?.14
-          :.07,
-        10,
-        8
+        radius,
+        weaponType==="cannon"
+          ?14
+          :10,
+        weaponType==="cannon"
+          ?10
+          :8
       ),
-      index%2
-        ?matViolet
-        :matMagenta
+      material
     );
 
     bullet.position.copy(worldMuzzle);
 
-    const spread=
-      index===0
-        ?-.028
-        :.028;
+    let spread=0;
+
+    if(weaponType==="dual"){
+      spread=
+        index===0
+          ?-.028
+          :.028;
+    }
 
     const velocity=
       baseDirection.clone();
@@ -1610,17 +2121,22 @@ function fireBullet(){
     velocity
       .normalize()
       .multiplyScalar(
-        powerShotTime>0
-          ?24
-          :18
+        player.userData.bulletSpeed*
+        (powerActive?1.18:1)
       );
+
+    const damage=
+      player.userData.baseDamage*
+      (powerActive?2:1);
 
     scene.add(bullet);
 
     bullets.push({
       mesh:bullet,
       velocity,
-      life:1.25
+      damage,
+      life:
+        player.userData.bulletLife
     });
   });
 }
@@ -1685,6 +2201,7 @@ function resetGame(){
     pickup=>scene.remove(pickup)
   );
 
+  rebuildPlayer(selectedRobotType);
   player.position.set(0,.42,1);
 
   score=0;
@@ -1718,6 +2235,10 @@ function startGame(){
   );
 
   resetGame();
+
+  $("pickupStatus").textContent=
+    player.userData.robotName+
+    " ready";
 }
 
 $("startBtn").addEventListener(
@@ -2036,9 +2557,7 @@ function updateBullets(dt){
           spider.userData.bulletHeightTolerance
       ){
         spider.userData.hp-=
-          powerShotTime>0
-            ?2
-            :1;
+          bullet.damage||1;
 
         scene.remove(
           bullet.mesh
@@ -2190,7 +2709,7 @@ function animate(now){
       fireCooldown<=0
     ){
       fireBullet();
-      fireCooldown=.11;
+      fireCooldown=player.userData.fireInterval;
     }
 
     spawnCooldown-=dt;
