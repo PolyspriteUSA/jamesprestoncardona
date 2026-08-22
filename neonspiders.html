@@ -787,11 +787,11 @@ function buildSpider(type="jumper"){
   const presets={
     jumper:{
       type:"jumper",
-      thoraxColor:0x30324c,
-      abdomenColor:0x5e63b8,
+      thoraxColor:0x171820,
+      abdomenColor:0x24263a,
       glowColor:0x8c6cff,
-      legColor:0x7076a0,
-      eyeColor:0xf5f7ff,
+      legColor:0x3a3d50,
+      eyeColor:0xff42d0,
       thoraxScale:[1.10,.92,1.00],
       abdomenScale:[1.28,1.08,1.18],
       thoraxY:1.12,
@@ -830,11 +830,11 @@ function buildSpider(type="jumper"){
     },
     orbweaver:{
       type:"orbweaver",
-      thoraxColor:0x3b3153,
-      abdomenColor:0x8b64ff,
+      thoraxColor:0x191720,
+      abdomenColor:0x2a2238,
       glowColor:0xd45bff,
-      legColor:0x5f5d7f,
-      eyeColor:0xf3f6ff,
+      legColor:0x343142,
+      eyeColor:0xff42d0,
       thoraxScale:[1.16,.95,1.12],
       abdomenScale:[1.55,1.22,1.85],
       thoraxY:1.28,
@@ -873,11 +873,11 @@ function buildSpider(type="jumper"){
     },
     widow:{
       type:"widow",
-      thoraxColor:0x251a32,
-      abdomenColor:0x3b2a52,
+      thoraxColor:0x121116,
+      abdomenColor:0x201725,
       glowColor:0xff5dc7,
-      legColor:0x4b455c,
-      eyeColor:0xffffff,
+      legColor:0x292631,
+      eyeColor:0xff42d0,
       thoraxScale:[.92,.84,.95],
       abdomenScale:[1.34,1.12,1.46],
       thoraxY:1.30,
@@ -926,7 +926,7 @@ function buildSpider(type="jumper"){
     new THREE.MeshStandardMaterial({
       color:preset.thoraxColor,
       emissive:preset.glowColor,
-      emissiveIntensity:.46,
+      emissiveIntensity:.22,
       metalness:.50,
       roughness:.40
     });
@@ -937,8 +937,8 @@ function buildSpider(type="jumper"){
       emissive:preset.glowColor,
       emissiveIntensity:
         preset.type==="widow"
-          ?.58
-          :.70,
+          ?.28
+          :.34,
       metalness:
         preset.type==="widow"
           ?.72
@@ -1041,7 +1041,7 @@ function buildSpider(type="jumper"){
     new THREE.MeshStandardMaterial({
       color:preset.eyeColor,
       emissive:preset.eyeColor,
-      emissiveIntensity:2.2,
+      emissiveIntensity:3.2,
       metalness:.15,
       roughness:.10
     });
