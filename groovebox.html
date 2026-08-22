@@ -2857,6 +2857,94 @@ body{
   }
 }
 
+
+/* Per-pad sample chooser */
+.step-sample-select{
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.step.note-pad .step-sample-select{
+  font-size:8px;
+}
+
+
+/* Audio recorder looping + drag/drop */
+.audio-drop-hint{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  margin-bottom:8px;
+  padding:7px 10px;
+  border:1px dashed rgba(166,108,255,.28);
+  border-radius:10px;
+  background:rgba(113,73,255,.055);
+  color:var(--muted);
+  font-size:10px;
+  text-align:center;
+}
+.audio-track-row.drag-over{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(113,73,255,.12),
+      rgba(255,66,208,.08)
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(166,108,255,.35);
+}
+.audio-clip{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding-right:4px;
+}
+.audio-clip > span{
+  flex:1;
+  min-width:0;
+}
+.audio-clip-controls{
+  position:relative;
+  z-index:4;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  margin-left:auto;
+}
+.audio-clip-loop{
+  min-width:30px;
+  height:20px;
+  padding:0 5px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:5px;
+  background:rgba(5,5,9,.72);
+  color:var(--muted);
+  font-size:7px;
+  cursor:pointer;
+}
+.audio-clip-loop.on{
+  color:#fff;
+  border-color:rgba(166,108,255,.55);
+  background:rgba(113,73,255,.30);
+}
+.audio-clip.sample-clip{
+  border-color:rgba(255,66,208,.40);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,66,208,.25),
+      rgba(113,73,255,.16)
+    );
+}
+.sample-slot[draggable="true"]{
+  cursor:grab;
+}
+.sample-slot.dragging{
+  opacity:.55;
+}
+
 </style>
 </head>
 <body>
@@ -3178,7 +3266,10 @@ body{
 <button class="btn" id="audioPlayBtn" type="button">Play All</button>
 <button class="btn" id="audioClearBtn" type="button">Clear</button>
 </div>
-<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-timeline-wrap">
+<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-drop-hint">
+<span>Drag loaded samples or audio files onto any Audio track</span>
+</div>
+<div class="audio-timeline-wrap" id="audioTimelineDropzone">
 <div class="timeline-ruler" id="timelineRuler"></div>
 <div class="audio-timeline" id="audioTimeline"></div>
 </div><div class="recording-status" id="recordingStatus">
@@ -3529,6 +3620,15 @@ let synthSequences=[
 
 let activeSequence=0;
 let copiedPattern=null;
+
+
+let sampleIdCounter=1;
+
+let sampleStepSelections=
+  Array.from(
+    {length:SEQUENCE_COUNT},
+    ()=>Array(STEPS_PER_SEQUENCE).fill(null)
+  );
 
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
@@ -4278,7 +4378,13 @@ function playTrack(track,t,step){
   if(track.type==="perc")perc(t,track.level);
   if(track.type==="bass")bass(t,getStepNotes("bass")[step],track.level);
   if(track.type==="synth")leadSynth(t,getStepNotes("synth")[step],track.level);
-  if(track.type==="sample")triggerSequencerSample(t,track.level);
+  if(track.type==="sample"){
+    triggerSequencerSample(
+      t,
+      track.level,
+      step
+    );
+  }
 }
 function secondsPerStep(){
   return 60/Math.max(60,Math.min(180,parseFloat($("bpm").value)||124))/4;
@@ -4341,6 +4447,68 @@ function getStepNotes(type,sequence=activeSequence){
     :synthSequences[sequence];
 }
 
+function getSampleStepSelections(sequence=activeSequence){
+  return sampleStepSelections[sequence];
+}
+
+function getSampleById(sampleId){
+  return sampleLibrary.find(
+    sample=>sample.id===sampleId
+  )||null;
+}
+
+function refreshSamplePadSelects(){
+  document
+    .querySelectorAll(".step-sample-select")
+    .forEach(select=>{
+      const step=
+        parseInt(
+          select.dataset.step,
+          10
+        );
+
+      const assigned=
+        getSampleStepSelections()[step];
+
+      select.innerHTML="";
+
+      const none=
+        document.createElement("option");
+
+      none.value="";
+      none.textContent=
+        sampleLibrary.length
+          ?"Choose sample"
+          :"Load sample";
+
+      select.appendChild(none);
+
+      sampleLibrary.forEach((sample,index)=>{
+        const option=
+          document.createElement("option");
+
+        option.value=String(sample.id);
+        option.textContent=
+          (index+1)+". "+sample.name;
+
+        select.appendChild(option);
+      });
+
+      select.value=
+        assigned==null
+          ?""
+          :String(assigned);
+
+      if(
+        assigned!=null &&
+        !getSampleById(assigned)
+      ){
+        getSampleStepSelections()[step]=null;
+        select.value="";
+      }
+    });
+}
+
 function refreshSequenceStatus(){
   const status=$("sequenceStatus");
   if(status){
@@ -4386,6 +4554,7 @@ function refreshSequenceView(){
     stepEl=>stepEl.classList.remove("playing")
   );
 
+  refreshSamplePadSelects();
   refreshSequenceStatus();
 }
 
@@ -4395,7 +4564,9 @@ function copyCurrentPattern(){
     sourceSequence:activeSequence,
     trackPatterns:tracks.map(track=>getTrackPattern(track).slice()),
     bassNotes:getStepNotes("bass").slice(),
-    synthNotes:getStepNotes("synth").slice()
+    synthNotes:getStepNotes("synth").slice(),
+    sampleSelections:
+      getSampleStepSelections().slice()
   };
 
   $("pastePatternBtn").disabled=false;
@@ -4434,6 +4605,11 @@ function pastePatternToCurrent(){
 
   bassSequences[activeSequence]=copiedPattern.bassNotes.slice();
   synthSequences[activeSequence]=copiedPattern.synthNotes.slice();
+
+  sampleStepSelections[activeSequence]=
+    copiedPattern.sampleSelections
+      ?copiedPattern.sampleSelections.slice()
+      :Array(STEPS_PER_SEQUENCE).fill(null);
 
   refreshSequenceView();
 
@@ -4531,6 +4707,66 @@ function makeNoteSelect(track,step){
   return select;
 }
 
+function makeSampleSelect(step){
+  const select=
+    document.createElement("select");
+
+  select.className=
+    "step-note-select step-sample-select";
+
+  select.dataset.step=step;
+  select.dataset.type="sample";
+
+  select.addEventListener(
+    "pointerdown",
+    event=>event.stopPropagation()
+  );
+
+  select.addEventListener(
+    "click",
+    event=>event.stopPropagation()
+  );
+
+  select.addEventListener(
+    "change",
+    event=>{
+      event.stopPropagation();
+
+      const raw=
+        event.target.value;
+
+      const sampleId=
+        raw===""
+          ?null
+          :parseInt(raw,10);
+
+      getSampleStepSelections()[step]=
+        Number.isFinite(sampleId)
+          ?sampleId
+          :null;
+
+      const selected=
+        getSampleById(
+          getSampleStepSelections()[step]
+        );
+
+      if(
+        selected &&
+        audio &&
+        audio.state!=="suspended"
+      ){
+        triggerSequencerSample(
+          audio.currentTime,
+          .55,
+          step
+        );
+      }
+    }
+  );
+
+  return select;
+}
+
 tracks.forEach((track,ti)=>{
   const row=document.createElement("div");
   row.className="track";
@@ -4577,7 +4813,10 @@ tracks.forEach((track,ti)=>{
       track.type==="bass"||
       track.type==="synth";
 
-    if(noteTrack){
+    const sampleTrack=
+      track.type==="sample";
+
+    if(noteTrack||sampleTrack){
       const pad=document.createElement("div");
       pad.className=
         "step note-pad"+
@@ -4602,7 +4841,10 @@ tracks.forEach((track,ti)=>{
         );
       });
 
-      const select=makeNoteSelect(track,si);
+      const select=
+        sampleTrack
+          ?makeSampleSelect(si)
+          :makeNoteSelect(track,si);
 
       pad.append(toggle,select);
       row.appendChild(pad);
@@ -4629,6 +4871,7 @@ tracks.forEach((track,ti)=>{
 });
 
 syncTrackButtons();
+refreshSamplePadSelects();
 
 $("randomBtn").addEventListener("click",()=>{
   tracks.forEach((t,ti)=>{
@@ -4711,11 +4954,14 @@ function refreshSampleTrackSource(){
     String(selectedSampleIndex);
 }
 
-function triggerSequencerSample(t,level=.7){
+function triggerSequencerSample(t,level=.7,step=0){
   if(!audio)return;
 
+  const sampleId=
+    getSampleStepSelections()[step];
+
   const sample=
-    sampleLibrary[selectedSampleIndex];
+    getSampleById(sampleId);
 
   if(!sample||!sample.buffer)return;
 
@@ -4776,6 +5022,28 @@ function renderSampleSlots(){
   sampleLibrary.forEach((sample,index)=>{
     const slot=document.createElement("div");
     slot.className="sample-slot";
+    slot.draggable=true;
+    slot.dataset.sampleId=String(sample.id);
+
+    slot.addEventListener("dragstart",event=>{
+      slot.classList.add("dragging");
+
+      if(event.dataTransfer){
+        event.dataTransfer.effectAllowed="copy";
+        event.dataTransfer.setData(
+          "application/x-groovebox-sample",
+          String(sample.id)
+        );
+        event.dataTransfer.setData(
+          "text/plain",
+          sample.name
+        );
+      }
+    });
+
+    slot.addEventListener("dragend",()=>{
+      slot.classList.remove("dragging");
+    });
 
     const info=document.createElement("div");
     info.className="sample-info";
@@ -4843,8 +5111,21 @@ function renderSampleSlots(){
     });
 
     remove.addEventListener("click",()=>{
+      const removedId=sample.id;
+
       URL.revokeObjectURL(sample.url);
       sampleLibrary.splice(index,1);
+
+      sampleStepSelections=
+        sampleStepSelections.map(
+          sequence=>
+            sequence.map(
+              sampleId=>
+                sampleId===removedId
+                  ?null
+                  :sampleId
+            )
+        );
 
       if(sampleLibrary.length===0){
         selectedSampleIndex=-1;
@@ -4855,12 +5136,15 @@ function renderSampleSlots(){
       }
 
       renderSampleSlots();
+      refreshSamplePadSelects();
     });
 
     controls.append(play,volume,remove);
     slot.append(info,controls);
     host.appendChild(slot);
   });
+
+  refreshSamplePadSelects();
 }
 
 async function addSampleFiles(files){
@@ -4877,6 +5161,7 @@ async function addSampleFiles(files){
     const probe=new Audio(url);
 
     const sample={
+      id:sampleIdCounter++,
       name:file.name,
       url,
       duration:NaN,
@@ -4912,7 +5197,42 @@ async function addSampleFiles(files){
     selectedSampleIndex=0;
   }
 
+  const firstSample=
+    sampleLibrary[0];
+
+  if(firstSample){
+    const sampleTrack=
+      tracks.find(
+        track=>track.type==="sample"
+      );
+
+    if(sampleTrack){
+      sampleStepSelections.forEach(
+        (sequenceSelections,sequenceIndex)=>{
+          const pattern=
+            getTrackPattern(
+              sampleTrack,
+              sequenceIndex
+            );
+
+          sequenceSelections.forEach(
+            (selection,step)=>{
+              if(
+                selection==null &&
+                pattern[step]
+              ){
+                sequenceSelections[step]=
+                  firstSample.id;
+              }
+            }
+          );
+        }
+      );
+    }
+  }
+
   renderSampleSlots();
+  refreshSamplePadSelects();
 }
 
 function stopAllSamples(){
@@ -4973,6 +5293,7 @@ let audioRecorderChunks=[];
 let audioRecordStart=0;
 let activeAudioChannel=0;
 let clipCounter=1;
+const activeTimelinePlayers=new Set();
 
 let tapeRecorder=null;
 let tapeRecorderChunks=[];
@@ -5392,6 +5713,100 @@ function buildAudioChannelMixer(){
   });
 }
 
+function getTimelineSeconds(){
+  const totalWindow=16;
+
+  const secondsPerBar=
+    (60/(parseFloat($("bpm").value)||124))*4;
+
+  return totalWindow*secondsPerBar;
+}
+
+function positionPercentFromDrop(row,event){
+  const rect=row.getBoundingClientRect();
+
+  if(rect.width<=0)return 0;
+
+  return Math.max(
+    0,
+    Math.min(
+      96,
+      ((event.clientX-rect.left)/rect.width)*100
+    )
+  );
+}
+
+function addSampleClipToChannel(channelIndex,sample,startPercent=0){
+  if(!sample)return;
+
+  const duration=
+    Number.isFinite(sample.duration)
+      ?sample.duration
+      :(sample.buffer
+          ?sample.buffer.duration
+          :1);
+
+  audioChannels[channelIndex].clips.push({
+    id:clipCounter++,
+    name:sample.name,
+    duration:Math.max(.05,duration||1),
+    url:sample.url,
+    startPercent,
+    loop:false,
+    sourceType:"sample",
+    ownsUrl:false
+  });
+
+  renderAudioTimeline();
+
+  setRecordingStatus(
+    "Added "+
+    sample.name+
+    " to "+
+    audioChannels[channelIndex].name
+  );
+}
+
+function addDroppedAudioFile(channelIndex,file,startPercent=0){
+  if(!file||!file.type.startsWith("audio/"))return;
+
+  const url=URL.createObjectURL(file);
+  const probe=new Audio(url);
+
+  const clip={
+    id:clipCounter++,
+    name:file.name,
+    duration:1,
+    url,
+    startPercent,
+    loop:false,
+    sourceType:"file",
+    ownsUrl:true
+  };
+
+  audioChannels[channelIndex].clips.push(clip);
+  renderAudioTimeline();
+
+  probe.addEventListener(
+    "loadedmetadata",
+    ()=>{
+      if(Number.isFinite(probe.duration)){
+        clip.duration=Math.max(.05,probe.duration);
+      }
+
+      renderAudioTimeline();
+    },
+    {once:true}
+  );
+
+  setRecordingStatus(
+    "Dropped "+
+    file.name+
+    " onto "+
+    audioChannels[channelIndex].name
+  );
+}
+
 function renderAudioTimeline(){
   const timeline=$("audioTimeline");
   timeline.innerHTML="";
@@ -5399,6 +5814,7 @@ function renderAudioTimeline(){
   audioChannels.forEach((channel,index)=>{
     const row=document.createElement("div");
     row.className="audio-track-row";
+    row.dataset.audioChannel=String(index);
 
     const label=document.createElement("div");
     label.className="audio-track-label";
@@ -5408,16 +5824,92 @@ function renderAudioTimeline(){
 
     row.appendChild(label);
 
-    channel.clips.forEach(clip=>{
-      const el=document.createElement("div");
-      el.className="audio-clip";
+    row.addEventListener("dragenter",event=>{
+      event.preventDefault();
+      row.classList.add("drag-over");
+    });
 
-      const totalWindow=16;
-      const secondsPerBar=
-        (60/(parseFloat($("bpm").value)||124))*4;
+    row.addEventListener("dragover",event=>{
+      event.preventDefault();
+      row.classList.add("drag-over");
+
+      if(event.dataTransfer){
+        event.dataTransfer.dropEffect="copy";
+      }
+    });
+
+    row.addEventListener("dragleave",event=>{
+      if(!row.contains(event.relatedTarget)){
+        row.classList.remove("drag-over");
+      }
+    });
+
+    row.addEventListener("drop",event=>{
+      event.preventDefault();
+      row.classList.remove("drag-over");
+
+      const startPercent=
+        positionPercentFromDrop(
+          row,
+          event
+        );
+
+      const sampleIdText=
+        event.dataTransfer
+          ?event.dataTransfer.getData(
+              "application/x-groovebox-sample"
+            )
+          :"";
+
+      const sampleId=
+        parseInt(sampleIdText,10);
+
+      if(Number.isFinite(sampleId)){
+        addSampleClipToChannel(
+          index,
+          getSampleById(sampleId),
+          startPercent
+        );
+        return;
+      }
+
+      const files=
+        event.dataTransfer
+          ?[...event.dataTransfer.files]
+          :[];
+
+      const audioFile=
+        files.find(
+          file=>file.type.startsWith("audio/")
+        );
+
+      if(audioFile){
+        addDroppedAudioFile(
+          index,
+          audioFile,
+          startPercent
+        );
+      }
+    });
+
+    channel.clips.forEach(clip=>{
+      if(typeof clip.loop!=="boolean"){
+        clip.loop=false;
+      }
+
+      if(!clip.sourceType){
+        clip.sourceType="recorded";
+      }
+
+      const el=document.createElement("div");
+      el.className=
+        "audio-clip"+
+        (clip.sourceType==="sample"
+          ?" sample-clip"
+          :"");
 
       const timelineSeconds=
-        totalWindow*secondsPerBar;
+        getTimelineSeconds();
 
       const width=
         Math.max(
@@ -5430,17 +5922,62 @@ function renderAudioTimeline(){
 
       el.style.left=(clip.startPercent||0)+"%";
       el.style.width=width+"%";
+
       el.title=
         clip.name+
         " • "+
         clip.duration.toFixed(2)+
-        " s";
+        " s"+
+        (clip.loop?" • looping":"");
 
       const text=document.createElement("span");
       text.textContent=clip.name;
-      el.appendChild(text);
 
-      el.addEventListener("click",()=>{
+      const controls=
+        document.createElement("div");
+
+      controls.className=
+        "audio-clip-controls";
+
+      const loop=
+        document.createElement("button");
+
+      loop.type="button";
+      loop.className=
+        "audio-clip-loop"+
+        (clip.loop?" on":"");
+
+      loop.textContent="Loop";
+      loop.title=
+        clip.loop
+          ?"Disable loop"
+          :"Enable loop";
+
+      loop.addEventListener("click",event=>{
+        event.stopPropagation();
+        clip.loop=!clip.loop;
+        renderAudioTimeline();
+
+        setRecordingStatus(
+          clip.name+
+          (clip.loop
+            ?" loop enabled"
+            :" loop disabled")
+        );
+      });
+
+      controls.appendChild(loop);
+      el.append(text,controls);
+
+      el.addEventListener("click",event=>{
+        if(
+          event.target.closest(
+            ".audio-clip-controls"
+          )
+        ){
+          return;
+        }
+
         playAudioClip(channel,clip);
       });
 
@@ -5450,7 +5987,6 @@ function renderAudioTimeline(){
     timeline.appendChild(row);
   });
 }
-
 function setRecordingStatus(text,active=false){
   const status=$("recordingStatus");
   status.textContent=text;
@@ -5538,7 +6074,10 @@ async function startAudioRecording(){
       name:"Take "+clipCounter,
       duration,
       url,
-      startPercent:0
+      startPercent:0,
+      loop:false,
+      sourceType:"recorded",
+      ownsUrl:true
     });
 
     clipCounter++;
@@ -5572,7 +6111,18 @@ function stopAudioRecording(){
     audioRecorder.stop();
   }
 
+  stopTimelinePlayback();
+
   $("audioRecordBtn").classList.remove("active");
+
+  if(
+    !audioRecorder ||
+    audioRecorder.state!=="recording"
+  ){
+    setRecordingStatus(
+      "Recorded audio playback stopped"
+    );
+  }
 }
 
 function channelCanPlay(channel){
@@ -5590,33 +6140,89 @@ function playAudioClip(channel,clip){
   if(!channelCanPlay(channel))return;
 
   const player=new Audio(clip.url);
+
   player.volume=
     Math.max(
       0,
       Math.min(1,channel.level)
     );
-  player.play();
+
+  player.loop=!!clip.loop;
+
+  activeTimelinePlayers.add(player);
+
+  const cleanup=()=>{
+    activeTimelinePlayers.delete(player);
+  };
+
+  player.addEventListener(
+    "ended",
+    cleanup,
+    {once:true}
+  );
+
+  player.play().catch(cleanup);
+}
+
+function stopTimelinePlayback(){
+  activeTimelinePlayers.forEach(player=>{
+    try{
+      player.pause();
+      player.currentTime=0;
+    }catch(error){}
+  });
+
+  activeTimelinePlayers.clear();
 }
 
 function playAllAudioClips(){
+  stopTimelinePlayback();
+
+  const timelineMs=
+    getTimelineSeconds()*1000;
+
   audioChannels.forEach(channel=>{
     if(!channelCanPlay(channel))return;
 
     channel.clips.forEach(clip=>{
+      const delay=
+        Math.max(
+          0,
+          ((clip.startPercent||0)/100)*
+          timelineMs
+        );
+
       setTimeout(()=>{
         playAudioClip(channel,clip);
-      },(clip.startPercent||0)*100);
+      },delay);
     });
   });
 
-  setRecordingStatus("Playing recorded audio");
+  setRecordingStatus(
+    "Playing recorded audio"+
+    (
+      audioChannels.some(
+        channel=>
+          channel.clips.some(
+            clip=>clip.loop
+          )
+      )
+        ?" • loops active"
+        :""
+    )
+  );
 }
 
 function clearAudioRecordings(){
+  stopTimelinePlayback();
+
   audioChannels.forEach(channel=>{
     channel.clips.forEach(clip=>{
-      URL.revokeObjectURL(clip.url);
+      if(clip.ownsUrl){
+        URL.revokeObjectURL(clip.url);
+      }
     });
+
     channel.clips=[];
   });
 
