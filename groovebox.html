@@ -1115,6 +1115,7 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 .osc-panel 
 
 
+
 .synth-controls .knob-card,
 .control-grid .knob-card{
   display:flex;
@@ -1130,19 +1131,73 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   width:100%;
 }
 
-.synth-vertical-fader{
-  width:30px !important;
-  height:132px !important;
-  min-width:30px;
-  writing-mode:vertical-lr;
-  direction:rtl;
-  accent-color:var(--violet);
-  margin:8px auto 2px !important;
+.synth-rotary-wrap{
+  position:relative;
+  width:68px;
+  height:68px;
+  margin:8px auto 2px;
+  flex:0 0 auto;
+}
+.synth-rotary-input{
+  position:absolute;
+  inset:0;
+  width:68px !important;
+  height:68px !important;
+  opacity:0;
   cursor:pointer;
+  z-index:3;
+  writing-mode:horizontal-tb !important;
+  direction:ltr !important;
+  margin:0 !important;
+}
+.synth-rotary-knob{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.14);
+  background:
+    radial-gradient(
+      circle at 34% 28%,
+      rgba(255,255,255,.17),
+      transparent 22%
+    ),
+    linear-gradient(
+      145deg,
+      #242431,
+      #0d0d13 72%
+    );
+  box-shadow:
+    inset 0 0 0 7px rgba(255,255,255,.018),
+    0 8px 22px rgba(0,0,0,.26),
+    0 0 16px rgba(113,73,255,.06);
+  pointer-events:none;
+}
+.synth-rotary-knob::after{
+  content:"";
+  position:absolute;
+  width:2px;
+  height:21px;
+  left:50%;
+  top:7px;
+  transform:translateX(-50%);
+  border-radius:2px;
+  background:linear-gradient(var(--magenta),var(--violet));
+  box-shadow:0 0 8px rgba(166,108,255,.42);
+}
+.synth-rotary-wrap:hover .synth-rotary-knob{
+  border-color:rgba(166,108,255,.35);
 }
 @media(max-width:680px){
-  .synth-vertical-fader{
-    height:112px !important;
+  .synth-rotary-wrap{
+    width:58px;
+    height:58px;
+  }
+  .synth-rotary-input{
+    width:58px !important;
+    height:58px !important;
+  }
+  .synth-rotary-knob::after{
+    height:18px;
   }
 }
 
@@ -1750,6 +1805,170 @@ body{
   }
 }
 
+
+/* Center FM Filter and Envelope controls like the oscillator panels */
+.synth-fm-controls,
+.envelope-controls{
+  justify-content:center !important;
+}
+
+.synth-fm-filter-panel,
+.envelope-panel{
+  text-align:center;
+}
+
+.synth-fm-filter-panel .osc-title,
+.envelope-panel .osc-title{
+  text-align:left;
+}
+
+@media(max-width:980px){
+  .synth-fm-controls,
+  .envelope-controls{
+    justify-content:center !important;
+  }
+}
+
+
+/* Dual LFO frequency modulation section */
+.fm-lfo-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+  align-items:stretch;
+}
+.fm-module{
+  min-width:0;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(7,7,12,.46);
+}
+.fm-module-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.fm-module-title strong{
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.fm-module-title span{
+  color:var(--muted);
+  font-size:9px;
+}
+.fm-filter-controls,
+.lfo-controls{
+  grid-template-columns:repeat(3,minmax(78px,1fr)) !important;
+  justify-content:center !important;
+}
+.fm-filter-controls .knob-card,
+.lfo-controls .knob-card{
+  min-width:0;
+  padding:8px 6px;
+}
+.fm-filter-controls .synth-vertical-fader,
+.lfo-controls .synth-vertical-fader{
+  height:92px !important;
+}
+@media(max-width:1050px){
+  .fm-lfo-layout{
+    grid-template-columns:1fr 1fr;
+  }
+  .fm-filter-module{
+    grid-column:1/-1;
+  }
+}
+@media(max-width:700px){
+  .fm-lfo-layout{
+    grid-template-columns:1fr;
+  }
+  .fm-filter-module{
+    grid-column:auto;
+  }
+}
+@media(max-width:480px){
+  .fm-filter-controls,
+  .lfo-controls{
+    grid-template-columns:repeat(2,minmax(82px,1fr)) !important;
+  }
+}
+
+
+/* Oscillator pitch controls */
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(6,minmax(82px,1fr));
+}
+@media(max-width:1180px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(3,minmax(90px,1fr));
+  }
+}
+@media(max-width:680px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(2,minmax(92px,1fr));
+  }
+}
+
+
+/* Rotary synth layout tuning */
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(6,minmax(86px,118px)) !important;
+  justify-content:center !important;
+}
+.synth-fm-controls,
+.envelope-controls,
+.fm-filter-controls,
+.lfo-controls{
+  justify-content:center !important;
+}
+.envelope-controls{
+  grid-template-columns:repeat(8,minmax(86px,118px)) !important;
+}
+.fm-filter-controls,
+.lfo-controls{
+  grid-template-columns:repeat(3,minmax(86px,118px)) !important;
+}
+.synth-controls .knob-card{
+  width:100%;
+  min-width:0;
+  min-height:0;
+  padding:8px 6px;
+}
+.synth-controls .knob-card label{
+  min-height:34px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:3px;
+  text-align:center;
+  font-size:9px;
+  line-height:1.2;
+}
+.synth-controls .knob-card output{
+  font-size:9px;
+}
+@media(max-width:1180px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(3,minmax(90px,118px)) !important;
+  }
+  .envelope-controls{
+    grid-template-columns:repeat(4,minmax(90px,118px)) !important;
+  }
+}
+@media(max-width:820px){
+  .osc-panel .synth-controls,
+  .envelope-controls,
+  .fm-filter-controls,
+  .lfo-controls{
+    grid-template-columns:repeat(2,minmax(92px,118px)) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1840,27 +2059,32 @@ body{
 
                 <div class="knob-card">
                   <label>Octave <output id="osc1OctaveOut">0</output></label>
-                  <input class="synth-vertical-fader" id="osc1Octave" type="range" min="-2" max="2" value="0" step="1">
+                  <input class="synth-rotary-input" id="osc1Octave" type="range" min="-2" max="2" value="0" step="1">
+                </div>
+
+                <div class="knob-card">
+                  <label>Pitch <output id="osc1PitchOut">0 st</output></label>
+                  <input class="synth-rotary-input" id="osc1Pitch" type="range" min="-12" max="12" value="0" step="1">
                 </div>
 
                 <div class="knob-card">
                   <label>Detune <output id="osc1DetuneOut">-4 ct</output></label>
-                  <input class="synth-vertical-fader" id="osc1Detune" type="range" min="-50" max="50" value="-4" step="1">
+                  <input class="synth-rotary-input" id="osc1Detune" type="range" min="-50" max="50" value="-4" step="1">
                 </div>
 
                 <div class="knob-card">
                   <label>Level <output id="osc1LevelOut">70%</output></label>
-                  <input class="synth-vertical-fader" id="osc1Level" type="range" min="0" max="1" value=".70" step=".01">
+                  <input class="synth-rotary-input" id="osc1Level" type="range" min="0" max="1" value=".70" step=".01">
                 </div>
 
                 <div class="knob-card">
                   <label>Filter <output id="osc1CutoffOut">3200 Hz</output></label>
-                  <input class="synth-vertical-fader" id="osc1Cutoff" type="range" min="120" max="12000" value="3200">
+                  <input class="synth-rotary-input" id="osc1Cutoff" type="range" min="120" max="12000" value="3200">
                 </div>
 
                 <div class="knob-card">
                   <label>Resonance <output id="osc1ResOut">5.0</output></label>
-                  <input class="synth-vertical-fader" id="osc1Res" type="range" min="0" max="20" value="5" step=".1">
+                  <input class="synth-rotary-input" id="osc1Res" type="range" min="0" max="20" value="5" step=".1">
                 </div>
               </div>
             </div>
@@ -1884,27 +2108,32 @@ body{
 
                 <div class="knob-card">
                   <label>Octave <output id="osc2OctaveOut">0</output></label>
-                  <input class="synth-vertical-fader" id="osc2Octave" type="range" min="-2" max="2" value="0" step="1">
+                  <input class="synth-rotary-input" id="osc2Octave" type="range" min="-2" max="2" value="0" step="1">
+                </div>
+
+                <div class="knob-card">
+                  <label>Pitch <output id="osc2PitchOut">0 st</output></label>
+                  <input class="synth-rotary-input" id="osc2Pitch" type="range" min="-12" max="12" value="0" step="1">
                 </div>
 
                 <div class="knob-card">
                   <label>Detune <output id="osc2DetuneOut">7 ct</output></label>
-                  <input class="synth-vertical-fader" id="osc2Detune" type="range" min="-50" max="50" value="7" step="1">
+                  <input class="synth-rotary-input" id="osc2Detune" type="range" min="-50" max="50" value="7" step="1">
                 </div>
 
                 <div class="knob-card">
                   <label>Level <output id="osc2LevelOut">48%</output></label>
-                  <input class="synth-vertical-fader" id="osc2Level" type="range" min="0" max="1" value=".48" step=".01">
+                  <input class="synth-rotary-input" id="osc2Level" type="range" min="0" max="1" value=".48" step=".01">
                 </div>
 
                 <div class="knob-card">
                   <label>Filter <output id="osc2CutoffOut">1800 Hz</output></label>
-                  <input class="synth-vertical-fader" id="osc2Cutoff" type="range" min="120" max="12000" value="1800">
+                  <input class="synth-rotary-input" id="osc2Cutoff" type="range" min="120" max="12000" value="1800">
                 </div>
 
                 <div class="knob-card">
                   <label>Resonance <output id="osc2ResOut">7.0</output></label>
-                  <input class="synth-vertical-fader" id="osc2Res" type="range" min="0" max="20" value="7" step=".1">
+                  <input class="synth-rotary-input" id="osc2Res" type="range" min="0" max="20" value="7" step=".1">
                 </div>
               </div>
             </div>
@@ -1914,38 +2143,95 @@ body{
           <div class="synth-fm-filter-panel">
             <div class="osc-title">
               <strong>Frequency Mod Filter</strong>
-              <span>additional filter • LFO frequency modulation</span>
+              <span>filter + dual low frequency oscillators</span>
             </div>
 
-            <div class="synth-controls synth-fm-controls">
-              <div class="knob-card">
-                <label>Type</label>
-                <select id="synthFmFilterType">
-                  <option value="lowpass">Low Pass</option>
-                  <option value="highpass">High Pass</option>
-                  <option value="bandpass">Band Pass</option>
-                  <option value="notch">Notch</option>
-                </select>
+            <div class="fm-lfo-layout">
+              <div class="fm-module fm-filter-module">
+                <div class="fm-module-title">
+                  <strong>Filter</strong>
+                  <span>modulated cutoff</span>
+                </div>
+
+                <div class="synth-controls fm-filter-controls">
+                  <div class="knob-card">
+                    <label>Type</label>
+                    <select id="synthFmFilterType">
+                      <option value="lowpass">Low Pass</option>
+                      <option value="highpass">High Pass</option>
+                      <option value="bandpass">Band Pass</option>
+                      <option value="notch">Notch</option>
+                    </select>
+                  </div>
+
+                  <div class="knob-card">
+                    <label>Cutoff <output id="synthFmCutoffOut">2400 Hz</output></label>
+                    <input class="synth-rotary-input" id="synthFmCutoff" type="range" min="80" max="14000" value="2400">
+                  </div>
+
+                  <div class="knob-card">
+                    <label>Resonance <output id="synthFmResOut">5.0</output></label>
+                    <input class="synth-rotary-input" id="synthFmRes" type="range" min=".1" max="24" value="5" step=".1">
+                  </div>
+                </div>
               </div>
 
-              <div class="knob-card">
-                <label>Cutoff <output id="synthFmCutoffOut">2400 Hz</output></label>
-                <input class="synth-vertical-fader" id="synthFmCutoff" type="range" min="80" max="14000" value="2400">
+              <div class="fm-module lfo-module">
+                <div class="fm-module-title">
+                  <strong>LFO 1</strong>
+                  <span>frequency modulation</span>
+                </div>
+
+                <div class="synth-controls lfo-controls">
+                  <div class="knob-card">
+                    <label>Wave</label>
+                    <select id="synthFmWave1">
+                      <option value="sine">Sine</option>
+                      <option value="triangle">Triangle</option>
+                      <option value="square">Square</option>
+                      <option value="sawtooth">Saw</option>
+                    </select>
+                  </div>
+
+                  <div class="knob-card">
+                    <label>Rate <output id="synthFmRateOut">1.50 Hz</output></label>
+                    <input class="synth-rotary-input" id="synthFmRate" type="range" min=".05" max="20" value="1.5" step=".05">
+                  </div>
+
+                  <div class="knob-card">
+                    <label>Depth <output id="synthFmDepthOut">900 Hz</output></label>
+                    <input class="synth-rotary-input" id="synthFmDepth" type="range" min="0" max="6000" value="900" step="10">
+                  </div>
+                </div>
               </div>
 
-              <div class="knob-card">
-                <label>Resonance <output id="synthFmResOut">5.0</output></label>
-                <input class="synth-vertical-fader" id="synthFmRes" type="range" min=".1" max="24" value="5" step=".1">
-              </div>
+              <div class="fm-module lfo-module">
+                <div class="fm-module-title">
+                  <strong>LFO 2</strong>
+                  <span>secondary modulation</span>
+                </div>
 
-              <div class="knob-card">
-                <label>Mod Rate <output id="synthFmRateOut">1.50 Hz</output></label>
-                <input class="synth-vertical-fader" id="synthFmRate" type="range" min=".05" max="20" value="1.5" step=".05">
-              </div>
+                <div class="synth-controls lfo-controls">
+                  <div class="knob-card">
+                    <label>Wave</label>
+                    <select id="synthFmWave2">
+                      <option value="triangle">Triangle</option>
+                      <option value="sine">Sine</option>
+                      <option value="square">Square</option>
+                      <option value="sawtooth">Saw</option>
+                    </select>
+                  </div>
 
-              <div class="knob-card">
-                <label>Mod Depth <output id="synthFmDepthOut">900 Hz</output></label>
-                <input class="synth-vertical-fader" id="synthFmDepth" type="range" min="0" max="6000" value="900" step="10">
+                  <div class="knob-card">
+                    <label>Rate <output id="synthFmRate2Out">0.35 Hz</output></label>
+                    <input class="synth-rotary-input" id="synthFmRate2" type="range" min=".05" max="20" value=".35" step=".05">
+                  </div>
+
+                  <div class="knob-card">
+                    <label>Depth <output id="synthFmDepth2Out">450 Hz</output></label>
+                    <input class="synth-rotary-input" id="synthFmDepth2" type="range" min="0" max="6000" value="450" step="10">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1959,42 +2245,42 @@ body{
             <div class="synth-controls envelope-controls">
               <div class="knob-card">
                 <label>Attack <output id="synthAttackOut">0.02 s</output></label>
-                <input class="synth-vertical-fader" id="synthAttack" type="range" min=".005" max="2" value=".02" step=".005">
+                <input class="synth-rotary-input" id="synthAttack" type="range" min=".005" max="2" value=".02" step=".005">
               </div>
 
               <div class="knob-card">
                 <label>Decay <output id="synthDecayOut">0.18 s</output></label>
-                <input class="synth-vertical-fader" id="synthDecay" type="range" min=".01" max="2" value=".18" step=".01">
+                <input class="synth-rotary-input" id="synthDecay" type="range" min=".01" max="2" value=".18" step=".01">
               </div>
 
               <div class="knob-card">
                 <label>Sustain <output id="synthSustainOut">58%</output></label>
-                <input class="synth-vertical-fader" id="synthSustain" type="range" min=".01" max="1" value=".58" step=".01">
+                <input class="synth-rotary-input" id="synthSustain" type="range" min=".01" max="1" value=".58" step=".01">
               </div>
 
               <div class="knob-card">
                 <label>Release <output id="synthReleaseOut">0.42 s</output></label>
-                <input class="synth-vertical-fader" id="synthRelease" type="range" min=".03" max="3" value=".42" step=".01">
+                <input class="synth-rotary-input" id="synthRelease" type="range" min=".03" max="3" value=".42" step=".01">
               </div>
 
               <div class="knob-card">
                 <label>Delay Send <output id="synthDelayOut">22%</output></label>
-                <input class="synth-vertical-fader" id="synthDelay" type="range" min="0" max=".8" value=".22" step=".01">
+                <input class="synth-rotary-input" id="synthDelay" type="range" min="0" max=".8" value=".22" step=".01">
               </div>
 
               <div class="knob-card">
                 <label>Delay Time <output id="synthDelayTimeOut">240 ms</output></label>
-                <input class="synth-vertical-fader" id="synthDelayTime" type="range" min=".04" max=".75" value=".24" step=".01">
+                <input class="synth-rotary-input" id="synthDelayTime" type="range" min=".04" max=".75" value=".24" step=".01">
               </div>
 
               <div class="knob-card">
                 <label>Delay Feedback <output id="synthDelayFeedbackOut">28%</output></label>
-                <input class="synth-vertical-fader" id="synthDelayFeedback" type="range" min="0" max=".75" value=".28" step=".01">
+                <input class="synth-rotary-input" id="synthDelayFeedback" type="range" min="0" max=".75" value=".28" step=".01">
               </div>
 
               <div class="knob-card">
                 <label>Synth Level <output id="synthLevelOut">38%</output></label>
-                <input class="synth-vertical-fader" id="synthLevel" type="range" min="0" max=".8" value=".38" step=".01">
+                <input class="synth-rotary-input" id="synthLevel" type="range" min="0" max=".8" value=".38" step=".01">
               </div>
             </div>
           </div>
@@ -2877,16 +3163,30 @@ function leadSynth(t,n=60,v=.38){
   osc2.type=
     $("osc2Wave").value;
 
+  const osc1Pitch=
+    parseInt(
+      $("osc1Pitch").value,
+      10
+    )||0;
+
   osc1.frequency.value=
     midiToHz(
       n+
-      osc1Octave*12
+      osc1Octave*12+
+      osc1Pitch
     );
+
+  const osc2Pitch=
+    parseInt(
+      $("osc2Pitch").value,
+      10
+    )||0;
 
   osc2.frequency.value=
     midiToHz(
       n+
-      osc2Octave*12
+      osc2Octave*12+
+      osc2Pitch
     );
 
   osc1.detune.value=
@@ -2993,7 +3293,14 @@ function leadSynth(t,n=60,v=.38){
   const synthFmDepth=
     audio.createGain();
 
-  synthFmLfo.type="sine";
+  const synthFmLfo2=
+    audio.createOscillator();
+
+  const synthFmDepth2=
+    audio.createGain();
+
+  synthFmLfo.type=
+    $("synthFmWave1").value;
 
   synthFmLfo.frequency.value=
     parseFloat(
@@ -3005,8 +3312,26 @@ function leadSynth(t,n=60,v=.38){
       $("synthFmDepth").value
     );
 
+  synthFmLfo2.type=
+    $("synthFmWave2").value;
+
+  synthFmLfo2.frequency.value=
+    parseFloat(
+      $("synthFmRate2").value
+    );
+
+  synthFmDepth2.gain.value=
+    parseFloat(
+      $("synthFmDepth2").value
+    );
+
   synthFmLfo.connect(synthFmDepth);
   synthFmDepth.connect(
+    synthFmFilter.frequency
+  );
+
+  synthFmLfo2.connect(synthFmDepth2);
+  synthFmDepth2.connect(
     synthFmFilter.frequency
   );
 
@@ -3030,7 +3355,10 @@ function leadSynth(t,n=60,v=.38){
     .05;
 
   synthFmLfo.start(t);
+  synthFmLfo2.start(t);
+
   synthFmLfo.stop(stopTime);
+  synthFmLfo2.stop(stopTime);
 
   osc1.start(t);
   osc2.start(t);
@@ -4352,12 +4680,14 @@ function bind(id,outId,format,fn){
   el.addEventListener("input",update);update();
 }
 bind("osc1Octave","osc1OctaveOut",v=>String(+v));
+bind("osc1Pitch","osc1PitchOut",v=>Math.round(v)+" st");
 bind("osc1Detune","osc1DetuneOut",v=>Math.round(v)+" ct");
 bind("osc1Level","osc1LevelOut",v=>Math.round(v*100)+"%");
 bind("osc1Cutoff","osc1CutoffOut",v=>Math.round(v)+" Hz");
 bind("osc1Res","osc1ResOut",v=>(+v).toFixed(1));
 
 bind("osc2Octave","osc2OctaveOut",v=>String(+v));
+bind("osc2Pitch","osc2PitchOut",v=>Math.round(v)+" st");
 bind("osc2Detune","osc2DetuneOut",v=>Math.round(v)+" ct");
 bind("osc2Level","osc2LevelOut",v=>Math.round(v*100)+"%");
 bind("osc2Cutoff","osc2CutoffOut",v=>Math.round(v)+" Hz");
@@ -4384,6 +4714,55 @@ bind("synthDelayFeedback","synthDelayFeedbackOut",v=>Math.round(v*100)+"%",v=>{
 });
 bind("synthLevel","synthLevelOut",v=>Math.round(v*100)+"%");
 
+
+
+function updateSynthRotaryKnob(input){
+  const wrap=input.closest(".synth-rotary-wrap");
+  if(!wrap)return;
+
+  const knob=wrap.querySelector(".synth-rotary-knob");
+  if(!knob)return;
+
+  const min=parseFloat(input.min||0);
+  const max=parseFloat(input.max||1);
+  const value=parseFloat(input.value||0);
+
+  const normalized=
+    max>min
+      ?(value-min)/(max-min)
+      :0;
+
+  const degrees=
+    -135+
+    Math.max(0,Math.min(1,normalized))*270;
+
+  knob.style.transform=
+    "rotate("+degrees+"deg)";
+}
+
+document
+  .querySelectorAll(".synth-rotary-input")
+  .forEach(input=>{
+    if(!input.closest(".synth-rotary-wrap")){
+      const wrap=document.createElement("div");
+      wrap.className="synth-rotary-wrap";
+
+      const knob=document.createElement("div");
+      knob.className="synth-rotary-knob";
+      knob.setAttribute("aria-hidden","true");
+
+      input.parentNode.insertBefore(wrap,input);
+      wrap.appendChild(input);
+      wrap.appendChild(knob);
+    }
+
+    updateSynthRotaryKnob(input);
+
+    input.addEventListener(
+      "input",
+      ()=>updateSynthRotaryKnob(input)
+    );
+  });
 
 function updateRotaryKnob(input){
   const knob=
@@ -4429,6 +4808,8 @@ bind("synthFmCutoff","synthFmCutoffOut",v=>Math.round(v)+" Hz");
 bind("synthFmRes","synthFmResOut",v=>(+v).toFixed(1));
 bind("synthFmRate","synthFmRateOut",v=>(+v).toFixed(2)+" Hz");
 bind("synthFmDepth","synthFmDepthOut",v=>Math.round(v)+" Hz");
+bind("synthFmRate2","synthFmRate2Out",v=>(+v).toFixed(2)+" Hz");
+bind("synthFmDepth2","synthFmDepth2Out",v=>Math.round(v)+" Hz");
 
 bind("synthFilterCutoff","synthFilterCutoffOut",v=>Math.round(v)+" Hz");
 bind("synthFilterRes","synthFilterResOut",v=>(+v).toFixed(1));
