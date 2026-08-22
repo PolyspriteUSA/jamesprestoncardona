@@ -3445,6 +3445,74 @@ body{
   transform:translateX(-50%) translateY(0);
 }
 
+
+/* Synth 1 / Synth 2 editor switch */
+.synth-selector{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  width:min(520px,100%);
+  margin:0 auto 12px;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(8,8,13,.68);
+}
+.synth-selector>span{
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.synth-selector-buttons{
+  display:flex;
+  gap:6px;
+}
+.synth-select-btn{
+  min-width:82px;
+  min-height:34px;
+  padding:7px 10px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:9px;
+  background:#101018;
+  color:var(--muted);
+  font:inherit;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.synth-select-btn.active{
+  color:#fff;
+  border-color:rgba(255,66,208,.55);
+  background:linear-gradient(
+    135deg,
+    rgba(113,73,255,.30),
+    rgba(255,66,208,.20)
+  );
+  box-shadow:0 0 18px rgba(255,66,208,.10);
+}
+#activeSynthLabel{
+  min-width:58px;
+  color:var(--magenta);
+  font-size:10px;
+  letter-spacing:.06em;
+}
+@media(max-width:560px){
+  .synth-selector{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .synth-selector-buttons{
+    width:100%;
+  }
+  .synth-select-btn{
+    flex:1;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3511,6 +3579,14 @@ body{
 <div class="synth-head">
 <strong>Dual Oscillator Synthesizer</strong>
 <span>two oscillators • filters • frequency modulation • ADSR • delay</span>
+</div>
+<div class="synth-selector" aria-label="Select synthesizer">
+  <span>Editing</span>
+  <div class="synth-selector-buttons">
+    <button class="synth-select-btn active" data-synth-select="synth" type="button">Synth 1</button>
+    <button class="synth-select-btn" data-synth-select="synth2" type="button">Synth 2</button>
+  </div>
+  <strong id="activeSynthLabel">Synth 1</strong>
 </div>
 <div class="osc-grid">
 <div class="osc-panel">
@@ -4556,11 +4632,234 @@ function bass(t,n=36,v=.45){
   o.start(t);
   o.stop(t+a+r+.03);
 }
-function leadSynth(t,n=60,v=.38){
+
+const SYNTH_PARAMETER_IDS=[
+  "osc1Wave",
+  "osc1Octave",
+  "osc1Pitch",
+  "osc1Detune",
+  "osc1Level",
+  "osc1Cutoff",
+  "osc1Res",
+  "osc2Wave",
+  "osc2Octave",
+  "osc2Pitch",
+  "osc2Detune",
+  "osc2Level",
+  "osc2Cutoff",
+  "osc2Res",
+  "synthFmFilterType",
+  "synthFmCutoff",
+  "synthFmRes",
+  "synthFmRate",
+  "synthFmDepth",
+  "synthFmWave1",
+  "synthFmRate2",
+  "synthFmDepth2",
+  "synthFmWave2",
+  "synthAttack",
+  "synthDecay",
+  "synthSustain",
+  "synthRelease",
+  "synthDelay",
+  "synthDelayTime",
+  "synthDelayFeedback",
+  "synthLevel",
+  "synthFilterType",
+  "synthFilterCutoff",
+  "synthFilterRes",
+  "synthFilterDrive"
+];
+
+let activeSynthEditor="synth";
+
+function captureCurrentSynthState(){
+  const state={};
+
+  SYNTH_PARAMETER_IDS.forEach(id=>{
+    const control=$(id);
+    if(control){
+      state[id]=control.value;
+    }
+  });
+
+  return state;
+}
+
+const synthParameterStates={
+  synth:null,
+  synth2:null
+};
+
+function initializeSynthParameterStates(){
+  if(synthParameterStates.synth)return;
+
+  const base=
+    captureCurrentSynthState();
+
+  synthParameterStates.synth=
+    Object.assign({},base);
+
+  synthParameterStates.synth2=
+    Object.assign({},base,{
+      osc1Wave:"square",
+      osc2Wave:"sawtooth",
+      osc1Detune:"-8",
+      osc2Detune:"9",
+      synthFmRate:"1.2",
+      synthFmRate2:"3.1",
+      synthFmDepth:"520",
+      synthFmDepth2:"260",
+      synthFilterCutoff:"5200",
+      synthLevel:".34"
+    });
+}
+
+function saveActiveSynthState(){
+  initializeSynthParameterStates();
+
+  synthParameterStates[
+    activeSynthEditor
+  ]=
+    captureCurrentSynthState();
+}
+
+function applySynthState(type){
+  initializeSynthParameterStates();
+
+  const state=
+    synthParameterStates[type];
+
+  if(!state)return;
+
+  SYNTH_PARAMETER_IDS.forEach(id=>{
+    const control=$(id);
+
+    if(
+      !control ||
+      state[id]===undefined
+    ){
+      return;
+    }
+
+    control.value=
+      state[id];
+
+    control.dispatchEvent(
+      new Event(
+        "input",
+        {bubbles:true}
+      )
+    );
+  });
+}
+
+function getSynthParamValue(id,type="synth"){
+  initializeSynthParameterStates();
+
+  const state=
+    synthParameterStates[type]||
+    synthParameterStates.synth;
+
+  if(
+    state &&
+    state[id]!==undefined
+  ){
+    return state[id];
+  }
+
+  const control=$(id);
+
+  return control
+    ?control.value
+    :"";
+}
+
+function switchSynthEditor(type){
+  if(
+    type!=="synth" &&
+    type!=="synth2"
+  ){
+    return;
+  }
+
+  saveActiveSynthState();
+
+  activeSynthEditor=type;
+
+  applySynthState(type);
+
+  document
+    .querySelectorAll(
+      ".synth-select-btn"
+    )
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.synthSelect===type
+      );
+    });
+
+  const label=
+    $("activeSynthLabel");
+
+  if(label){
+    label.textContent=
+      type==="synth2"
+        ?"Synth 2"
+        :"Synth 1";
+  }
+
+  if($("midiTarget")){
+    $("midiTarget").value=type;
+  }
+
+  showMidiLearnToast(
+    type==="synth2"
+      ?"Editing Synth 2"
+      :"Editing Synth 1"
+  );
+}
+
+initializeSynthParameterStates();
+
+SYNTH_PARAMETER_IDS.forEach(id=>{
+  const control=$(id);
+
+  if(!control)return;
+
+  control.addEventListener(
+    "input",
+    ()=>{
+      initializeSynthParameterStates();
+
+      synthParameterStates[
+        activeSynthEditor
+      ][id]=control.value;
+    }
+  );
+});
+
+document
+  .querySelectorAll(
+    ".synth-select-btn"
+  )
+  .forEach(button=>{
+    button.addEventListener(
+      "click",
+      ()=>{
+        switchSynthEditor(
+          button.dataset.synthSelect
+        );
+      }
+    );
+  });
+
+function leadSynth(t,n=60,v=.38,synthType="synth"){
   ensureAudio();
 
   const synthLevel=
-    parseFloat($("synthLevel").value);
+    parseFloat(getSynthParamValue("synthLevel",synthType));
 
   const requestedLevel=
     Number.isFinite(v)
@@ -4582,13 +4881,13 @@ function leadSynth(t,n=60,v=.38){
   const attack=
     Math.max(
       .005,
-      parseFloat($("synthAttack").value)
+      parseFloat(getSynthParamValue("synthAttack",synthType))
     );
 
   const decay=
     Math.max(
       .01,
-      parseFloat($("synthDecay").value)
+      parseFloat(getSynthParamValue("synthDecay",synthType))
     );
 
   const sustain=
@@ -4596,14 +4895,14 @@ function leadSynth(t,n=60,v=.38){
       .01,
       Math.min(
         1,
-        parseFloat($("synthSustain").value)
+        parseFloat(getSynthParamValue("synthSustain",synthType))
       )
     );
 
   const release=
     Math.max(
       .03,
-      parseFloat($("synthRelease").value)
+      parseFloat(getSynthParamValue("synthRelease",synthType))
     );
 
   const noteLength=
@@ -4672,25 +4971,25 @@ function leadSynth(t,n=60,v=.38){
 
   const osc1Octave=
     parseInt(
-      $("osc1Octave").value,
+      getSynthParamValue("osc1Octave",synthType),
       10
     )||0;
 
   const osc2Octave=
     parseInt(
-      $("osc2Octave").value,
+      getSynthParamValue("osc2Octave",synthType),
       10
     )||0;
 
   osc1.type=
-    $("osc1Wave").value;
+    getSynthParamValue("osc1Wave",synthType);
 
   osc2.type=
-    $("osc2Wave").value;
+    getSynthParamValue("osc2Wave",synthType);
 
   const osc1Pitch=
     parseInt(
-      $("osc1Pitch").value,
+      getSynthParamValue("osc1Pitch",synthType),
       10
     )||0;
 
@@ -4703,7 +5002,7 @@ function leadSynth(t,n=60,v=.38){
 
   const osc2Pitch=
     parseInt(
-      $("osc2Pitch").value,
+      getSynthParamValue("osc2Pitch",synthType),
       10
     )||0;
 
@@ -4716,22 +5015,22 @@ function leadSynth(t,n=60,v=.38){
 
   osc1.detune.value=
     parseFloat(
-      $("osc1Detune").value
+      getSynthParamValue("osc1Detune",synthType)
     );
 
   osc2.detune.value=
     parseFloat(
-      $("osc2Detune").value
+      getSynthParamValue("osc2Detune",synthType)
     );
 
   osc1Gain.gain.value=
     parseFloat(
-      $("osc1Level").value
+      getSynthParamValue("osc1Level",synthType)
     );
 
   osc2Gain.gain.value=
     parseFloat(
-      $("osc2Level").value
+      getSynthParamValue("osc2Level",synthType)
     );
 
   osc1Filter.type="lowpass";
@@ -4739,22 +5038,22 @@ function leadSynth(t,n=60,v=.38){
 
   osc1Filter.frequency.value=
     parseFloat(
-      $("osc1Cutoff").value
+      getSynthParamValue("osc1Cutoff",synthType)
     );
 
   osc2Filter.frequency.value=
     parseFloat(
-      $("osc2Cutoff").value
+      getSynthParamValue("osc2Cutoff",synthType)
     );
 
   osc1Filter.Q.value=
     parseFloat(
-      $("osc1Res").value
+      getSynthParamValue("osc1Res",synthType)
     );
 
   osc2Filter.Q.value=
     parseFloat(
-      $("osc2Res").value
+      getSynthParamValue("osc2Res",synthType)
     );
 
   osc1.connect(osc1Gain);
@@ -4769,16 +5068,16 @@ function leadSynth(t,n=60,v=.38){
     audio.createBiquadFilter();
 
   synthFilter.type=
-    $("synthFilterType").value;
+    getSynthParamValue("synthFilterType",synthType);
 
   synthFilter.frequency.value=
     parseFloat(
-      $("synthFilterCutoff").value
+      getSynthParamValue("synthFilterCutoff",synthType)
     );
 
   synthFilter.Q.value=
     parseFloat(
-      $("synthFilterRes").value
+      getSynthParamValue("synthFilterRes",synthType)
     );
 
   const synthDrive=
@@ -4786,7 +5085,7 @@ function leadSynth(t,n=60,v=.38){
 
   const driveAmount=
     parseFloat(
-      $("synthFilterDrive").value
+      getSynthParamValue("synthFilterDrive",synthType)
     );
 
   synthDrive.curve=
@@ -4800,16 +5099,16 @@ function leadSynth(t,n=60,v=.38){
     audio.createBiquadFilter();
 
   synthFmFilter.type=
-    $("synthFmFilterType").value;
+    getSynthParamValue("synthFmFilterType",synthType);
 
   synthFmFilter.frequency.value=
     parseFloat(
-      $("synthFmCutoff").value
+      getSynthParamValue("synthFmCutoff",synthType)
     );
 
   synthFmFilter.Q.value=
     parseFloat(
-      $("synthFmRes").value
+      getSynthParamValue("synthFmRes",synthType)
     );
 
   const synthFmLfo=
@@ -4825,29 +5124,29 @@ function leadSynth(t,n=60,v=.38){
     audio.createGain();
 
   synthFmLfo.type=
-    $("synthFmWave1").value;
+    getSynthParamValue("synthFmWave1",synthType);
 
   synthFmLfo.frequency.value=
     parseFloat(
-      $("synthFmRate").value
+      getSynthParamValue("synthFmRate",synthType)
     );
 
   synthFmDepth.gain.value=
     parseFloat(
-      $("synthFmDepth").value
+      getSynthParamValue("synthFmDepth",synthType)
     );
 
   synthFmLfo2.type=
-    $("synthFmWave2").value;
+    getSynthParamValue("synthFmWave2",synthType);
 
   synthFmLfo2.frequency.value=
     parseFloat(
-      $("synthFmRate2").value
+      getSynthParamValue("synthFmRate2",synthType)
     );
 
   synthFmDepth2.gain.value=
     parseFloat(
-      $("synthFmDepth2").value
+      getSynthParamValue("synthFmDepth2",synthType)
     );
 
   synthFmLfo.connect(synthFmDepth);
@@ -4905,8 +5204,23 @@ function playTrack(track,t,step){
   if(track.type==="hat")hat(t,track.level,false);
   if(track.type==="openhat")hat(t,track.level,true);
   if(track.type==="perc")perc(t,track.level);
-  if(track.type==="synth")leadSynth(t,getStepNotes("synth")[step],track.level);
-  if(track.type==="synth2")leadSynth(t,getStepNotes("synth2")[step],track.level);
+  if(track.type==="synth"){
+    leadSynth(
+      t,
+      getStepNotes("synth")[step],
+      track.level,
+      "synth"
+    );
+  }
+
+  if(track.type==="synth2"){
+    leadSynth(
+      t,
+      getStepNotes("synth2")[step],
+      track.level,
+      "synth2"
+    );
+  }
   if(track.type==="sample"){
     triggerSequencerSample(
       t,
@@ -5357,7 +5671,8 @@ function makeNoteSelect(track,step){
       leadSynth(
         audio.currentTime,
         midi,
-        track.level
+        track.level,
+        track.type
       );
     }
   });
@@ -7898,7 +8213,8 @@ async function handleMidiMessage(event){
         .08,
         (midiTrack?midiTrack.level:.38)*
         velocityGain
-      )
+      ),
+      midiTrackType
     );
 
     pulseVisual();
@@ -8005,6 +8321,15 @@ $("midiInput").addEventListener(
   connectSelectedMidiInput
 );
 
+$("midiTarget").addEventListener(
+  "change",
+  ()=>{
+    switchSynthEditor(
+      $("midiTarget").value
+    );
+  }
+);
+
 const keyboardIntervals=[0,1,2,3,4,5,6,7,8,9,10,11,12];
 const keyboardBlackIntervals=new Set([1,3,6,8,10]);
 
@@ -8078,8 +8403,12 @@ function buildSynthKeyboard(octave){
         audio.currentTime,
         note,
         parseFloat(
-          $("synthLevel").value
-        )
+          getSynthParamValue(
+            "synthLevel",
+            activeSynthEditor
+          )
+        ),
+        activeSynthEditor
       );
 
       b.classList.add("on");
@@ -11010,6 +11339,23 @@ animate();
   );
 
   refreshMidiMappedVisuals();
+})();
+</script>
+
+
+<script>
+(function(){
+  if(
+    typeof initializeSynthParameterStates==="function"
+  ){
+    initializeSynthParameterStates();
+  }
+
+  if(
+    typeof switchSynthEditor==="function"
+  ){
+    switchSynthEditor("synth");
+  }
 })();
 </script>
 
