@@ -2351,7 +2351,6 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:12px;
   margin:10px auto 8px;
   padding:8px 10px;
   width:min(420px,100%);
@@ -3494,12 +3493,6 @@ body{
   );
   box-shadow:0 0 18px rgba(255,66,208,.10);
 }
-#activeSynthLabel{
-  min-width:58px;
-  color:var(--magenta);
-  font-size:10px;
-  letter-spacing:.06em;
-}
 @media(max-width:560px){
   .synth-selector{
     align-items:stretch;
@@ -3581,12 +3574,10 @@ body{
 <span>two oscillators • filters • frequency modulation • ADSR • delay</span>
 </div>
 <div class="synth-selector" aria-label="Select synthesizer">
-  <span>Editing</span>
   <div class="synth-selector-buttons">
     <button class="synth-select-btn active" data-synth-select="synth" type="button">Synth 1</button>
     <button class="synth-select-btn" data-synth-select="synth2" type="button">Synth 2</button>
   </div>
-  <strong id="activeSynthLabel">Synth 1</strong>
 </div>
 <div class="osc-grid">
 <div class="osc-panel">
