@@ -23,7 +23,8 @@ body{overflow-x:hidden}
 button,input,select{font:inherit}
 button{color:inherit}
 .app{
-  width:min(1440px,calc(100% - 28px));
+  width:calc(100% - 24px);
+  max-width:none;
   margin:0 auto;
   padding:18px 0 28px;
 }
@@ -328,7 +329,7 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   display:grid;
   grid-template-columns:repeat(16,minmax(48px,1fr));
   gap:6px;
-  min-width:910px;
+  min-width:1180px;
 }
 .note-cell{
   display:grid;
@@ -352,10 +353,42 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 
 .embedded-mixer-row{
   display:grid;
-  grid-template-columns:minmax(0,1.45fr) minmax(300px,.72fr) minmax(290px,.83fr);
-  gap:14px;
+  grid-template-columns:minmax(620px,1.55fr) minmax(340px,.72fr) minmax(340px,.73fr);
+  gap:0;
   align-items:stretch;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(8,8,13,.58);
 }
+.mixing-console-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:16px 2px 11px;
+}
+.mixing-console-head strong{
+  font-size:12px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.mixing-console-head span{
+  color:var(--muted);
+  font-size:10px;
+}
+.mixer-section,
+.audio-fader-section,
+.master-fx-section{
+  padding:14px;
+}
+.mixer-section{
+  border-right:1px solid var(--line);
+}
+.audio-fader-section{
+  border-right:1px solid var(--line);
+}
+
 
 .mixer-midi{
   margin-top:12px;
@@ -395,8 +428,7 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   min-width:0;
 }
 .master-fx-section{
-  padding-left:14px;
-  border-left:1px solid var(--line);
+  min-width:0;
 }
 .master-fx-section .fx{
   padding:0;
@@ -584,18 +616,17 @@ input[type=range]{width:100%;accent-color:var(--violet)}
   min-width:58px;
   min-height:278px;
 }
-@media(max-width:1180px){
+@media(max-width:1280px){
   .embedded-mixer-row{
     grid-template-columns:1fr;
   }
-  .audio-fader-section,
-  .master-fx-section{
-    padding-left:0;
-    padding-top:12px;
-    border-left:0;
-    border-top:1px solid var(--line);
+  .mixer-section,
+  .audio-fader-section{
+    border-right:0;
+    border-bottom:1px solid var(--line);
   }
 }
+
 
 
 .audio-recorder{
@@ -638,8 +669,6 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 }
 .audio-fader-section{
   min-width:0;
-  padding-left:14px;
-  border-left:1px solid var(--line);
 }
 .audio-channel-mixer{
   display:grid;
@@ -991,10 +1020,10 @@ input[type=range]{width:100%;accent-color:var(--violet)}
 }
 
 .sequencer-card{grid-column:1/-1}
-.seq-wrap{padding:16px;overflow:auto}
+.seq-wrap{padding:16px;overflow-x:auto;overflow-y:hidden;width:100%}
 .track{
   display:grid;
-  grid-template-columns:130px repeat(16,minmax(34px,1fr));
+  grid-template-columns:140px repeat(16,minmax(42px,1fr));
   gap:6px;
   align-items:center;
   margin-bottom:8px;
@@ -1640,10 +1669,15 @@ body{
       </div>
 
       <div class="embedded-mixer">
+        <div class="mixing-console-head">
+          <strong>Mixing Console</strong>
+          <span>instruments • recorded audio • master effects</span>
+        </div>
+
         <div class="embedded-mixer-row">
           <div class="mixer-section">
             <div class="embedded-mixer-head">
-              <strong>Mixer</strong>
+              <strong>Instrument Mixer</strong>
               <span>channel levels • mute • solo</span>
             </div>
             <div class="mixer" id="mixer"></div>
@@ -1696,7 +1730,7 @@ body{
 
           <div class="audio-fader-section">
             <div class="embedded-mixer-head">
-              <strong>Audio</strong>
+              <strong>Audio Mixer</strong>
               <span>recorded tracks</span>
             </div>
             <div class="audio-channel-mixer" id="audioChannelMixer"></div>
@@ -1749,19 +1783,19 @@ body{
           <div class="master-fx-section">
             <div class="embedded-mixer-head">
               <strong>Master FX</strong>
-              <span>delay • feedback • drive • master</span>
+              <span>reverb • decay • drive • master</span>
             </div>
             <div class="fx">
           <div class="fx-grid">
             <div class="fx-strip">
-              <label>Delay</label>
-              <input class="vertical-fader" id="delay" type="range" min="0" max=".55" step=".01" value=".18">
-              <output id="delayOut">18%</output>
+              <label>Reverb</label>
+              <input class="vertical-fader" id="reverb" type="range" min="0" max=".8" step=".01" value=".22">
+              <output id="reverbOut">22%</output>
             </div>
             <div class="fx-strip">
-              <label>Feedback</label>
-              <input class="vertical-fader" id="feedback" type="range" min="0" max=".72" step=".01" value=".24">
-              <output id="feedbackOut">24%</output>
+              <label>Decay</label>
+              <input class="vertical-fader" id="reverbDecay" type="range" min=".3" max="6" step=".1" value="2.4">
+              <output id="reverbDecayOut">2.4 s</output>
             </div>
             <div class="fx-strip">
               <label>Drive</label>
@@ -1829,7 +1863,7 @@ let bassNotes=[36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39];
 let synthNotes=[60,62,64,67,69,67,64,62,60,62,64,67,71,69,67,64];
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
-let audio=null,master=null,analyser=null,filter=null,delay=null,feedback=null,delayWet=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
+let audio=null,master=null,analyser=null,filter=null,reverbNode=null,reverbWet=null,reverbDry=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
 let running=false,currentStep=0,nextNoteTime=0,timerId=null;
 let muted=new Set();
 let soloed=new Set();
@@ -1850,6 +1884,55 @@ function makeDriveCurve(amount){
   }
 
   return curve;
+}
+
+function buildReverbImpulse(seconds=2.4){
+  if(!audio)return null;
+
+  const duration=
+    Math.max(.3,Math.min(6,seconds));
+
+  const length=
+    Math.max(
+      1,
+      Math.floor(audio.sampleRate*duration)
+    );
+
+  const impulse=
+    audio.createBuffer(
+      2,
+      length,
+      audio.sampleRate
+    );
+
+  for(let channel=0;channel<2;channel++){
+    const data=
+      impulse.getChannelData(channel);
+
+    for(let i=0;i<length;i++){
+      const progress=i/length;
+      const envelope=
+        Math.pow(1-progress,2.4);
+
+      data[i]=
+        (Math.random()*2-1)*
+        envelope;
+    }
+  }
+
+  return impulse;
+}
+
+function refreshMasterReverb(){
+  if(!reverbNode||!audio)return;
+
+  const seconds=
+    parseFloat(
+      $("reverbDecay").value
+    )||2.4;
+
+  reverbNode.buffer=
+    buildReverbImpulse(seconds);
 }
 
 function ensureAudio(){
@@ -1889,12 +1972,16 @@ function ensureAudio(){
   filter.frequency.value=parseFloat($("cutoff").value);
   filter.Q.value=parseFloat($("res").value);
 
-  delay=audio.createDelay(1.5);
-  delay.delayTime.value=.245;
-  feedback=audio.createGain();
-  feedback.gain.value=parseFloat($("feedback").value);
-  delayWet=audio.createGain();
-  delayWet.gain.value=parseFloat($("delay").value);
+  reverbNode=audio.createConvolver();
+  reverbWet=audio.createGain();
+  reverbDry=audio.createGain();
+
+  reverbWet.gain.value=
+    parseFloat($("reverb").value);
+
+  reverbDry.gain.value=1;
+
+  refreshMasterReverb();
 
   synthDelayNode=audio.createDelay(1.5);
   synthDelayNode.delayTime.value=parseFloat($("synthDelayTime").value);
@@ -1910,12 +1997,13 @@ function ensureAudio(){
   synthDelayNode.connect(synthDelayWet);
   synthDelayWet.connect(master);
 
-  filter.connect(master);
-  filter.connect(delay);
-  delay.connect(feedback);
-  feedback.connect(delay);
-  delay.connect(delayWet);
-  delayWet.connect(master);
+  filter.connect(reverbDry);
+  reverbDry.connect(master);
+
+  filter.connect(reverbNode);
+  reverbNode.connect(reverbWet);
+  reverbWet.connect(master);
+
   master.connect(analyser);
 
   recordDestination=audio.createMediaStreamDestination();
@@ -3217,9 +3305,9 @@ async function restartAudioEngine(){
   master=null;
   analyser=null;
   filter=null;
-  delay=null;
-  feedback=null;
-  delayWet=null;
+  reverbNode=null;
+  reverbWet=null;
+  reverbDry=null;
   synthDelayNode=null;
   synthDelayFeedbackNode=null;
   synthDelayWet=null;
@@ -3575,8 +3663,14 @@ bind("cutoff","cutoffOut",v=>Math.round(v)+" Hz",v=>{if(filter)filter.frequency.
 bind("res","resOut",v=>(+v).toFixed(1),v=>{if(filter)filter.Q.setTargetAtTime(v,audio.currentTime,.02)});
 bind("attack","attackOut",v=>(+v).toFixed(2)+" s");
 bind("release","releaseOut",v=>(+v).toFixed(2)+" s");
-bind("delay","delayOut",v=>Math.round(v*100)+"%",v=>{if(delayWet)delayWet.gain.setTargetAtTime(v,audio.currentTime,.02)});
-bind("feedback","feedbackOut",v=>Math.round(v*100)+"%",v=>{if(feedback)feedback.gain.setTargetAtTime(v,audio.currentTime,.02)});
+bind("reverb","reverbOut",v=>Math.round(v*100)+"%",v=>{
+  if(reverbWet){
+    reverbWet.gain.setTargetAtTime(v,audio.currentTime,.02);
+  }
+});
+bind("reverbDecay","reverbDecayOut",v=>(+v).toFixed(1)+" s",()=>{
+  refreshMasterReverb();
+});
 bind("drive","driveOut",v=>Math.round(v*100)+"%");
 bind("master","masterOut",v=>Math.round(v*100)+"%",v=>{if(master)master.gain.setTargetAtTime(v,audio.currentTime,.02)});
 $("bpm").addEventListener("input",()=>{$("bpmReadout").textContent=$("bpm").value});
