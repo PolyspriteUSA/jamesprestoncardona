@@ -3367,6 +3367,15 @@ body{
   text-align:right;
 }
 
+
+/* Dual synth mixer: legacy bass filter hidden, DOM retained for compatibility */
+.instrument-bass-filter{
+  display:none!important;
+}
+.console-instruments .mixer{
+  grid-template-columns:repeat(8,minmax(54px,1fr));
+}
+
 </style>
 </head>
 <body>
@@ -3643,10 +3652,10 @@ body{
 </div>
 <div class="keyboard-scale-control">
 <label for="keyScale">
-<span>Keyboard Octave</span>
+<span>Keyboard Octave · Full Range</span>
 <output id="keyScaleOut">C4–C5</output>
 </label>
-<input id="keyScale" max="6" min="2" step="1" type="range" value="4"/>
+<input id="keyScale" max="8" min="0" step="1" type="range" value="4"/>
 </div>
 <div class="synth-keyboard" id="synthKeyboard"><button class="synth-key" data-midi="60" style="--white-slot:0" type="button">C4</button><button class="synth-key black" data-midi="61" style="--black-slot:1" type="button"></button><button class="synth-key" data-midi="62" style="--white-slot:1" type="button">D4</button><button class="synth-key black" data-midi="63" style="--black-slot:2" type="button"></button><button class="synth-key" data-midi="64" style="--white-slot:2" type="button">E4</button><button class="synth-key" data-midi="65" style="--white-slot:3" type="button">F4</button><button class="synth-key black" data-midi="66" style="--black-slot:4" type="button"></button><button class="synth-key" data-midi="67" style="--white-slot:4" type="button">G4</button><button class="synth-key black" data-midi="68" style="--black-slot:5" type="button"></button><button class="synth-key" data-midi="69" style="--white-slot:5" type="button">A4</button><button class="synth-key black" data-midi="70" style="--black-slot:6" type="button"></button><button class="synth-key" data-midi="71" style="--white-slot:6" type="button">B4</button><button class="synth-key" data-midi="72" style="--white-slot:7" type="button">C5</button></div>
 </div>
@@ -3826,8 +3835,8 @@ body{
 <div class="midi-grid">
 <button class="btn" id="midiConnect" type="button">Connect MIDI</button>
 <select aria-label="MIDI target instrument" id="midiTarget">
-<option value="synth">Synth</option>
-<option value="bass">Bass</option>
+<option value="synth">Synth 1</option>
+<option value="synth2">Synth 2</option>
 </select>
 <select aria-label="MIDI input" id="midiInput">
 <option value="">No MIDI input</option>
@@ -4035,16 +4044,16 @@ const tracks=[
   {name:"Closed Hat",type:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Open Hat",type:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Perc",type:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
-  {name:"Bass",type:"bass",level:.46,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
-  {name:"Synth",type:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Synth 2",type:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
+  {name:"Synth 1",type:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Sample",type:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]}
 ];
 
-let bassSequences=[
-  [36,36,43,36,39,36,46,43,36,36,43,39,36,46,43,39],
-  Array(STEPS_PER_SEQUENCE).fill(36),
-  Array(STEPS_PER_SEQUENCE).fill(36),
-  Array(STEPS_PER_SEQUENCE).fill(36)
+let synth2Sequences=[
+  [48,48,55,48,51,48,58,55,48,48,55,51,48,58,55,51],
+  Array(STEPS_PER_SEQUENCE).fill(48),
+  Array(STEPS_PER_SEQUENCE).fill(48),
+  Array(STEPS_PER_SEQUENCE).fill(48)
 ];
 
 let synthSequences=[
@@ -4820,8 +4829,8 @@ function playTrack(track,t,step){
   if(track.type==="hat")hat(t,track.level,false);
   if(track.type==="openhat")hat(t,track.level,true);
   if(track.type==="perc")perc(t,track.level);
-  if(track.type==="bass")bass(t,getStepNotes("bass")[step],track.level);
   if(track.type==="synth")leadSynth(t,getStepNotes("synth")[step],track.level);
+  if(track.type==="synth2")leadSynth(t,getStepNotes("synth2")[step],track.level);
   if(track.type==="sample"){
     triggerSequencerSample(
       t,
@@ -5014,19 +5023,16 @@ $("stopBtn").addEventListener("click",stop);
 
 const sequencer=$("sequencer");
 
-const bassNoteChoices=[];
-for(let midi=24;midi<=60;midi++)bassNoteChoices.push(midi);
-
 const synthNoteChoices=[];
-for(let midi=48;midi<=84;midi++)synthNoteChoices.push(midi);
+for(let midi=12;midi<=120;midi++)synthNoteChoices.push(midi);
 
 function getTrackPattern(track,sequence=activeSequence){
   return track.patterns[sequence];
 }
 
 function getStepNotes(type,sequence=activeSequence){
-  return type==="bass"
-    ?bassSequences[sequence]
+  return type==="synth2"
+    ?synth2Sequences[sequence]
     :synthSequences[sequence];
 }
 
@@ -5146,7 +5152,7 @@ function copyCurrentPattern(){
   copiedPattern={
     sourceSequence:activeSequence,
     trackPatterns:tracks.map(track=>getTrackPattern(track).slice()),
-    bassNotes:getStepNotes("bass").slice(),
+    synth2Notes:getStepNotes("synth2").slice(),
     synthNotes:getStepNotes("synth").slice(),
     sampleSelections:
       getSampleStepSelections().slice()
@@ -5186,7 +5192,7 @@ function pastePatternToCurrent(){
     }
   });
 
-  bassSequences[activeSequence]=copiedPattern.bassNotes.slice();
+  synth2Sequences[activeSequence]=copiedPattern.synth2Notes.slice();
   synthSequences[activeSequence]=copiedPattern.synthNotes.slice();
 
   sampleStepSelections[activeSequence]=
@@ -5243,8 +5249,7 @@ function makeNoteSelect(track,step){
   const select=document.createElement("select");
   select.className="step-note-select";
 
-  const isBass=track.type==="bass";
-  const notes=isBass?bassNoteChoices:synthNoteChoices;
+  const notes=synthNoteChoices;
   const current=getStepNotes(track.type)[step];
 
   select.dataset.step=step;
@@ -5270,20 +5275,14 @@ function makeNoteSelect(track,step){
     event.stopPropagation();
     const midi=parseInt(select.value,10);
 
-    if(isBass){
-      getStepNotes("bass")[step]=midi;
-      if(audio&&audio.state!=="suspended"){
-        bass(audio.currentTime,midi,.34);
-      }
-    }else{
-      getStepNotes("synth")[step]=midi;
-      if(audio&&audio.state!=="suspended"){
-        leadSynth(
-          audio.currentTime,
-          midi,
-          parseFloat($("synthLevel").value)
-        );
-      }
+    getStepNotes(track.type)[step]=midi;
+
+    if(audio&&audio.state!=="suspended"){
+      leadSynth(
+        audio.currentTime,
+        midi,
+        track.level
+      );
     }
   });
 
@@ -5393,8 +5392,8 @@ tracks.forEach((track,ti)=>{
 
   getTrackPattern(track,0).forEach((on,si)=>{
     const noteTrack=
-      track.type==="bass"||
-      track.type==="synth";
+      track.type==="synth"||
+      track.type==="synth2";
 
     const sampleTrack=
       track.type==="sample";
@@ -5466,11 +5465,10 @@ $("randomBtn").addEventListener("click",()=>{
     }
   });
 
-  const bassScale=[36,38,39,41,43,46,48];
-  const synthScale=[60,62,64,65,67,69,71,72];
+  const synthScale=[48,50,52,53,55,57,59,60,62,64,65,67,69,71,72];
 
-  bassSequences[activeSequence]=getStepNotes("bass").map(()=>{
-    return bassScale[Math.floor(Math.random()*bassScale.length)];
+  synth2Sequences[activeSequence]=getStepNotes("synth2").map(()=>{
+    return synthScale[Math.floor(Math.random()*synthScale.length)];
   });
 
   synthSequences[activeSequence]=getStepNotes("synth").map(()=>{
@@ -7024,15 +7022,7 @@ tracks.forEach(track=>{
     outv.textContent=
       Math.round(track.level*100)+"%";
 
-    if(track.type==="synth"){
-      $("synthLevel").value=
-        Math.min(.8,track.level);
 
-      $("synthLevelOut").textContent=
-        Math.round(
-          Math.min(.8,track.level)*100
-        )+"%";
-    }
   });
 
   buttons.append(
@@ -7390,23 +7380,25 @@ async function handleMidiMessage(event){
   if(command===0x90&&velocity>0){
     const velocityGain=velocity/127;
 
-    if($("midiTarget").value==="bass"){
-      bass(
-        audio.currentTime,
-        note,
-        .52*velocityGain
+    const midiTrackType=
+      $("midiTarget").value==="synth2"
+        ?"synth2"
+        :"synth";
+
+    const midiTrack=
+      tracks.find(
+        track=>track.type===midiTrackType
       );
-    }else{
-      leadSynth(
-        audio.currentTime,
-        note,
-        Math.max(
-          .08,
-          parseFloat($("synthLevel").value)*
-          velocityGain
-        )
-      );
-    }
+
+    leadSynth(
+      audio.currentTime,
+      note,
+      Math.max(
+        .08,
+        (midiTrack?midiTrack.level:.38)*
+        velocityGain
+      )
+    );
 
     pulseVisual();
   }
@@ -7597,9 +7589,9 @@ function updateKeyScale(){
 
   const octave=
     Math.max(
-      2,
+      0,
       Math.min(
-        6,
+        8,
         parseInt(slider.value,10)||4
       )
     );
@@ -8707,8 +8699,8 @@ animate();
       ["Closed Hat","hat",.34],
       ["Open Hat","openhat",.22],
       ["Perc","perc",.30],
-      ["Bass","bass",.46],
-      ["Synth","synth",.38],
+      ["Synth 2","synth2",.34],
+      ["Synth 1","synth",.38],
       ["Sample","sample",.70]
     ];
 
@@ -10177,9 +10169,9 @@ animate();
   function rebuildKeyboard(){
     const octave=
       Math.max(
-        2,
+        0,
         Math.min(
-          6,
+          8,
           parseInt(
             slider.value,
             10
