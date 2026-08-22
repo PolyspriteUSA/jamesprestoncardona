@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Neon Groovebox</title>
-<meta name="description" content="A browser-based synthesizer and drum machine using Three.js and the Web Audio API.">
+<meta content="A browser-based synthesizer and drum machine using Three.js and the Web Audio API." name="description"/>
 <style>
 :root{
   --bg:#050507;
@@ -2345,10 +2346,7 @@ body{
 }
 
 
-/* Adjustable synth keyboard scale */
-.synth-box{
-  --key-scale:1;
-}
+/* Synth keyboard octave control */
 .keyboard-scale-control{
   display:flex;
   align-items:center;
@@ -2366,7 +2364,7 @@ body{
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  min-width:112px;
+  min-width:145px;
   color:var(--muted);
   font-size:10px;
 }
@@ -2377,17 +2375,6 @@ body{
 .keyboard-scale-control input[type=range]{
   flex:1;
   min-width:120px;
-}
-.synth-keyboard{
-  gap:calc(5px * var(--key-scale)) !important;
-}
-.synth-key{
-  min-height:calc(58px * var(--key-scale)) !important;
-  font-size:calc(10px * var(--key-scale));
-  padding:
-    calc(7px * var(--key-scale))
-    calc(2px * var(--key-scale)) !important;
-  border-radius:calc(8px * var(--key-scale));
 }
 @media(max-width:560px){
   .keyboard-scale-control{
@@ -2641,735 +2628,717 @@ body{
   }
 }
 
+
+
+/* Collapsible sections */
+.collapse-head-actions{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+}
+.collapse-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-width:108px;
+  white-space:nowrap;
+}
+.collapse-icon{
+  display:inline-flex;
+  width:18px;
+  height:18px;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  font-size:13px;
+  line-height:1;
+  flex:0 0 auto;
+}
+.collapse-label{
+  letter-spacing:.04em;
+}
+.collapsible-body[hidden]{
+  display:none !important;
+}
+.collapse-hint{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:10px;
+  padding:12px 14px;
+  border:1px dashed rgba(166,108,255,.34);
+  border-radius:14px;
+  background:rgba(113,73,255,.08);
+}
+.collapse-hint span{
+  color:var(--muted);
+  font-size:11px;
+}
+.collapse-reopen{
+  min-width:96px;
+}
+.is-collapsed{
+  border-color:rgba(166,108,255,.26);
+}
+.synth-workspace-card.is-collapsed .synth-background-layer{
+  opacity:.32;
+}
+.sequencer-card .card-head,
+.synth-workspace-head,
+.recorder-head,
+.mixing-console-head{
+  flex-wrap:wrap;
+}
+.recorder-head .collapse-head-actions{
+  margin-left:0;
+}
+@media(max-width:760px){
+  .collapse-head-actions{
+    width:100%;
+    margin-left:0;
+  }
+  .collapse-toggle{
+    width:100%;
+  }
+  .collapse-hint{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .collapse-reopen{
+    width:100%;
+  }
+}
 </style>
 </head>
 <body>
-<div class="page-reactive-bg" id="pageReactiveBg" aria-hidden="true">
-  <div class="page-reactive-glow glow-a"></div>
-  <div class="page-reactive-glow glow-b"></div>
-  <div class="page-reactive-grid"></div>
-  <div class="page-reactive-pulse"></div>
+<div aria-hidden="true" class="page-reactive-bg" id="pageReactiveBg">
+<div class="page-reactive-glow glow-a"></div>
+<div class="page-reactive-glow glow-b"></div>
+<div class="page-reactive-grid"></div>
+<div class="page-reactive-pulse"></div>
 </div>
 <div class="app">
-  <nav class="site-nav" aria-label="Main website navigation">
-    <a class="site-nav-brand" href="./index.html">James Preston Cardona</a>
+<nav aria-label="Main website navigation" class="site-nav">
+<a class="site-nav-brand" href="./index.html">James Preston Cardona</a>
+<div class="site-nav-links">
+<a href="./index.html#work">Work</a>
+<a href="./index.html#about">About</a>
+<a href="./resume.html">Resume</a>
+<a href="./index.html#contact">Contact</a>
+</div>
+</nav>
+<header class="topbar">
+<div class="brand">
+<div aria-hidden="true" class="brand-mark"></div>
+<div>
+<h1>Neon Groovebox</h1>
+</div>
+</div>
+<div class="transport">
+<button class="btn primary" id="playBtn">Play</button>
+<button class="btn" id="stopBtn">Stop</button>
+<button class="btn" id="randomBtn">Randomize</button>
+<button class="btn" id="clearBtn">Clear</button>
+<label class="field">BPM <input id="bpm" max="180" min="60" type="number" value="124"/></label>
+<label class="field">Swing <input id="swing" max="0.45" min="0" step="0.01" type="range" value="0.08"/></label>
+</div>
+</header>
+<main class="grid">
+<section class="card synth-workspace-card collapsible-section" data-collapse-section="synth">
+<div aria-hidden="true" class="synth-background-layer">
+<div class="visual">
+<div id="three"></div>
+<div class="visual-overlay">
+<div>
+<div class="big-bpm"><span id="bpmReadout">124</span></div>
+<div class="caption">beats per minute</div>
+</div>
+<div class="caption" id="status">ready</div>
+</div>
+</div>
+</div>
+<div class="synth-workspace-content">
+<div class="card-head synth-workspace-head">
+<h2>Synth Workspace</h2>
+<span>dual oscillator synthesizer</span>
+<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="synth" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div>
+<div class="synth-panel collapsible-body" data-collapse-id="synth">
+<div class="synth-box">
+<div class="synth-head">
+<strong>Dual Oscillator Synthesizer</strong>
+<span>two oscillators • filters • frequency modulation • ADSR • delay</span>
+</div>
+<div class="osc-grid">
+<div class="osc-panel">
+<div class="osc-title">
+<strong>Oscillator 1</strong>
+<span>primary</span>
+</div>
+<div class="synth-controls">
+<div class="knob-card">
+<label>Waveform</label>
+<select id="osc1Wave">
+<option value="sawtooth">Saw</option>
+<option value="square">Square</option>
+<option value="triangle">Triangle</option>
+<option value="sine">Sine</option>
+</select>
+</div>
+<div class="knob-card">
+<label>Octave <output id="osc1OctaveOut">0</output></label>
+<input class="synth-rotary-input" id="osc1Octave" max="2" min="-2" step="1" type="range" value="0"/>
+</div>
+<div class="knob-card">
+<label>Pitch <output id="osc1PitchOut">0 st</output></label>
+<input class="synth-rotary-input" id="osc1Pitch" max="12" min="-12" step="1" type="range" value="0"/>
+</div>
+<div class="knob-card">
+<label>Detune <output id="osc1DetuneOut">-4 ct</output></label>
+<input class="synth-rotary-input" id="osc1Detune" max="50" min="-50" step="1" type="range" value="-4"/>
+</div>
+<div class="knob-card">
+<label>Level <output id="osc1LevelOut">70%</output></label>
+<input class="synth-rotary-input" id="osc1Level" max="1" min="0" step=".01" type="range" value=".70"/>
+</div>
+<div class="knob-card">
+<label>Filter <output id="osc1CutoffOut">3200 Hz</output></label>
+<input class="synth-rotary-input" id="osc1Cutoff" max="12000" min="120" type="range" value="3200"/>
+</div>
+<div class="knob-card">
+<label>Resonance <output id="osc1ResOut">5.0</output></label>
+<input class="synth-rotary-input" id="osc1Res" max="20" min="0" step=".1" type="range" value="5"/>
+</div>
+</div>
+</div>
+<div class="osc-visualizer-panel">
+<div class="osc-title">
+<strong>Wave Visualizer</strong>
+<span>live synth waveform</span>
+</div>
+<canvas aria-label="Live synthesizer waveform visualizer" height="220" id="oscVisualizer" width="360"></canvas>
+</div>
+<div class="osc-panel">
+<div class="osc-title">
+<strong>Oscillator 2</strong>
+<span>layer</span>
+</div>
+<div class="synth-controls">
+<div class="knob-card">
+<label>Waveform</label>
+<select id="osc2Wave">
+<option value="square">Square</option>
+<option value="sawtooth">Saw</option>
+<option value="triangle">Triangle</option>
+<option value="sine">Sine</option>
+</select>
+</div>
+<div class="knob-card">
+<label>Octave <output id="osc2OctaveOut">0</output></label>
+<input class="synth-rotary-input" id="osc2Octave" max="2" min="-2" step="1" type="range" value="0"/>
+</div>
+<div class="knob-card">
+<label>Pitch <output id="osc2PitchOut">0 st</output></label>
+<input class="synth-rotary-input" id="osc2Pitch" max="12" min="-12" step="1" type="range" value="0"/>
+</div>
+<div class="knob-card">
+<label>Detune <output id="osc2DetuneOut">7 ct</output></label>
+<input class="synth-rotary-input" id="osc2Detune" max="50" min="-50" step="1" type="range" value="7"/>
+</div>
+<div class="knob-card">
+<label>Level <output id="osc2LevelOut">48%</output></label>
+<input class="synth-rotary-input" id="osc2Level" max="1" min="0" step=".01" type="range" value=".48"/>
+</div>
+<div class="knob-card">
+<label>Filter <output id="osc2CutoffOut">1800 Hz</output></label>
+<input class="synth-rotary-input" id="osc2Cutoff" max="12000" min="120" type="range" value="1800"/>
+</div>
+<div class="knob-card">
+<label>Resonance <output id="osc2ResOut">7.0</output></label>
+<input class="synth-rotary-input" id="osc2Res" max="20" min="0" step=".1" type="range" value="7"/>
+</div>
+</div>
+</div>
+</div>
+<div class="synth-fm-filter-panel">
+<div class="osc-title">
+<strong>Frequency Mod Filter</strong>
+<span>filter + dual low frequency oscillators</span>
+</div>
+<div class="fm-lfo-layout">
+<div class="fm-module fm-filter-module">
+<div class="fm-module-title">
+<strong>Filter</strong>
+<span>modulated cutoff</span>
+</div>
+<div class="synth-controls fm-filter-controls">
+<div class="knob-card">
+<label>Type</label>
+<select id="synthFmFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</div>
+<div class="knob-card">
+<label>Cutoff <output id="synthFmCutoffOut">2400 Hz</output></label>
+<input class="synth-rotary-input" id="synthFmCutoff" max="14000" min="80" type="range" value="2400"/>
+</div>
+<div class="knob-card">
+<label>Resonance <output id="synthFmResOut">5.0</output></label>
+<input class="synth-rotary-input" id="synthFmRes" max="24" min=".1" step=".1" type="range" value="5"/>
+</div>
+</div>
+</div>
+<div class="fm-module lfo-module">
+<div class="fm-module-title">
+<strong>LFO 1</strong>
+<span>frequency modulation</span>
+</div>
+<div class="synth-controls lfo-controls">
+<div class="knob-card">
+<label>Wave</label>
+<select id="synthFmWave1">
+<option value="sine">Sine</option>
+<option value="triangle">Triangle</option>
+<option value="square">Square</option>
+<option value="sawtooth">Saw</option>
+</select>
+</div>
+<div class="knob-card">
+<label>Rate <output id="synthFmRateOut">1.50 Hz</output></label>
+<input class="synth-rotary-input" id="synthFmRate" max="20" min=".05" step=".05" type="range" value="1.5"/>
+</div>
+<div class="knob-card">
+<label>Depth <output id="synthFmDepthOut">900 Hz</output></label>
+<input class="synth-rotary-input" id="synthFmDepth" max="6000" min="0" step="10" type="range" value="900"/>
+</div>
+</div>
+</div>
+<div class="fm-module lfo-module">
+<div class="fm-module-title">
+<strong>LFO 2</strong>
+<span>secondary modulation</span>
+</div>
+<div class="synth-controls lfo-controls">
+<div class="knob-card">
+<label>Wave</label>
+<select id="synthFmWave2">
+<option value="triangle">Triangle</option>
+<option value="sine">Sine</option>
+<option value="square">Square</option>
+<option value="sawtooth">Saw</option>
+</select>
+</div>
+<div class="knob-card">
+<label>Rate <output id="synthFmRate2Out">0.35 Hz</output></label>
+<input class="synth-rotary-input" id="synthFmRate2" max="20" min=".05" step=".05" type="range" value=".35"/>
+</div>
+<div class="knob-card">
+<label>Depth <output id="synthFmDepth2Out">450 Hz</output></label>
+<input class="synth-rotary-input" id="synthFmDepth2" max="6000" min="0" step="10" type="range" value="450"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="envelope-panel">
+<div class="osc-title">
+<strong>Amplitude Envelope</strong>
+<span>ADSR + synth delay</span>
+</div>
+<div class="synth-controls envelope-controls">
+<div class="knob-card">
+<label>Attack <output id="synthAttackOut">0.02 s</output></label>
+<input class="synth-rotary-input" id="synthAttack" max="2" min=".005" step=".005" type="range" value=".02"/>
+</div>
+<div class="knob-card">
+<label>Decay <output id="synthDecayOut">0.18 s</output></label>
+<input class="synth-rotary-input" id="synthDecay" max="2" min=".01" step=".01" type="range" value=".18"/>
+</div>
+<div class="knob-card">
+<label>Sustain <output id="synthSustainOut">58%</output></label>
+<input class="synth-rotary-input" id="synthSustain" max="1" min=".01" step=".01" type="range" value=".58"/>
+</div>
+<div class="knob-card">
+<label>Release <output id="synthReleaseOut">0.42 s</output></label>
+<input class="synth-rotary-input" id="synthRelease" max="3" min=".03" step=".01" type="range" value=".42"/>
+</div>
+<div class="knob-card">
+<label>Delay Send <output id="synthDelayOut">22%</output></label>
+<input class="synth-rotary-input" id="synthDelay" max=".8" min="0" step=".01" type="range" value=".22"/>
+</div>
+<div class="knob-card">
+<label>Delay Time <output id="synthDelayTimeOut">240 ms</output></label>
+<input class="synth-rotary-input" id="synthDelayTime" max=".75" min=".04" step=".01" type="range" value=".24"/>
+</div>
+<div class="knob-card">
+<label>Delay Feedback <output id="synthDelayFeedbackOut">28%</output></label>
+<input class="synth-rotary-input" id="synthDelayFeedback" max=".75" min="0" step=".01" type="range" value=".28"/>
+</div>
+<div class="knob-card">
+<label>Synth Level <output id="synthLevelOut">38%</output></label>
+<input class="synth-rotary-input" id="synthLevel" max=".8" min="0" step=".01" type="range" value=".38"/>
+</div>
+</div>
+</div>
+<div class="keyboard-scale-control">
+<label for="keyScale">
+<span>Keyboard Octave</span>
+<output id="keyScaleOut">C4–C5</output>
+</label>
+<input id="keyScale" max="6" min="2" step="1" type="range" value="4"/>
+</div>
+<div class="synth-keyboard" id="synthKeyboard"></div>
+</div>
+</div><div class="collapse-hint" data-collapse-hint="synth" hidden=""><span>Synth Workspace is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="synth" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
+</div>
+</section></main></div>
 
-    <div class="site-nav-links">
-      <a href="./index.html#work">Work</a>
-      <a href="./index.html#about">About</a>
-      <a href="./resume.html">Resume</a>
-      <a href="./index.html#contact">Contact</a>
-    </div>
-  </nav>
-
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true"></div>
-      <div>
-        <h1>Neon Groovebox</h1>
-        
-      </div>
-    </div>
-    <div class="transport">
-      <button class="btn primary" id="playBtn">Play</button>
-      <button class="btn" id="stopBtn">Stop</button>
-      <button class="btn" id="randomBtn">Randomize</button>
-      <button class="btn" id="clearBtn">Clear</button>
-      <label class="field">BPM <input id="bpm" type="number" min="60" max="180" value="124"></label>
-      <label class="field">Swing <input id="swing" type="range" min="0" max="0.45" value="0.08" step="0.01"></label>
-    </div>
-  </header>
-
-  <main class="grid">
-    <section class="card synth-workspace-card">
-      <div class="synth-background-layer" aria-hidden="true">
-        <div class="visual">
-        <div id="three"></div>
-        <div class="visual-overlay">
-          <div>
-            <div class="big-bpm"><span id="bpmReadout">124</span></div>
-            <div class="caption">beats per minute</div>
-          </div>
-          <div class="caption" id="status">ready</div>
-        </div>
-      </div>
-      </div>
-
-      <div class="synth-workspace-content">
-        <div class="card-head synth-workspace-head">
-          <h2>Synth Workspace</h2>
-          <span>dual oscillator synthesizer</span>
-        </div>
-
-        <div class="synth-panel">
-        
-        
-
-        <div class="synth-box">
-          <div class="synth-head">
-            <strong>Dual Oscillator Synthesizer</strong>
-            <span>two oscillators • filters • frequency modulation • ADSR • delay</span>
-          </div>
-
-          <div class="osc-grid">
-            <div class="osc-panel">
-              <div class="osc-title">
-                <strong>Oscillator 1</strong>
-                <span>primary</span>
-              </div>
-
-              <div class="synth-controls">
-                <div class="knob-card">
-                  <label>Waveform</label>
-                  <select id="osc1Wave">
-                    <option value="sawtooth">Saw</option>
-                    <option value="square">Square</option>
-                    <option value="triangle">Triangle</option>
-                    <option value="sine">Sine</option>
-                  </select>
-                </div>
-
-                <div class="knob-card">
-                  <label>Octave <output id="osc1OctaveOut">0</output></label>
-                  <input class="synth-rotary-input" id="osc1Octave" type="range" min="-2" max="2" value="0" step="1">
-                </div>
-
-                <div class="knob-card">
-                  <label>Pitch <output id="osc1PitchOut">0 st</output></label>
-                  <input class="synth-rotary-input" id="osc1Pitch" type="range" min="-12" max="12" value="0" step="1">
-                </div>
-
-                <div class="knob-card">
-                  <label>Detune <output id="osc1DetuneOut">-4 ct</output></label>
-                  <input class="synth-rotary-input" id="osc1Detune" type="range" min="-50" max="50" value="-4" step="1">
-                </div>
-
-                <div class="knob-card">
-                  <label>Level <output id="osc1LevelOut">70%</output></label>
-                  <input class="synth-rotary-input" id="osc1Level" type="range" min="0" max="1" value=".70" step=".01">
-                </div>
-
-                <div class="knob-card">
-                  <label>Filter <output id="osc1CutoffOut">3200 Hz</output></label>
-                  <input class="synth-rotary-input" id="osc1Cutoff" type="range" min="120" max="12000" value="3200">
-                </div>
-
-                <div class="knob-card">
-                  <label>Resonance <output id="osc1ResOut">5.0</output></label>
-                  <input class="synth-rotary-input" id="osc1Res" type="range" min="0" max="20" value="5" step=".1">
-                </div>
-              </div>
-            </div>
-
-            <div class="osc-visualizer-panel">
-              <div class="osc-title">
-                <strong>Wave Visualizer</strong>
-                <span>live synth waveform</span>
-              </div>
-              <canvas id="oscVisualizer" width="360" height="220" aria-label="Live synthesizer waveform visualizer"></canvas>
-            </div>
-
-            <div class="osc-panel">
-              <div class="osc-title">
-                <strong>Oscillator 2</strong>
-                <span>layer</span>
-              </div>
-
-              <div class="synth-controls">
-                <div class="knob-card">
-                  <label>Waveform</label>
-                  <select id="osc2Wave">
-                    <option value="square">Square</option>
-                    <option value="sawtooth">Saw</option>
-                    <option value="triangle">Triangle</option>
-                    <option value="sine">Sine</option>
-                  </select>
-                </div>
-
-                <div class="knob-card">
-                  <label>Octave <output id="osc2OctaveOut">0</output></label>
-                  <input class="synth-rotary-input" id="osc2Octave" type="range" min="-2" max="2" value="0" step="1">
-                </div>
-
-                <div class="knob-card">
-                  <label>Pitch <output id="osc2PitchOut">0 st</output></label>
-                  <input class="synth-rotary-input" id="osc2Pitch" type="range" min="-12" max="12" value="0" step="1">
-                </div>
-
-                <div class="knob-card">
-                  <label>Detune <output id="osc2DetuneOut">7 ct</output></label>
-                  <input class="synth-rotary-input" id="osc2Detune" type="range" min="-50" max="50" value="7" step="1">
-                </div>
-
-                <div class="knob-card">
-                  <label>Level <output id="osc2LevelOut">48%</output></label>
-                  <input class="synth-rotary-input" id="osc2Level" type="range" min="0" max="1" value=".48" step=".01">
-                </div>
-
-                <div class="knob-card">
-                  <label>Filter <output id="osc2CutoffOut">1800 Hz</output></label>
-                  <input class="synth-rotary-input" id="osc2Cutoff" type="range" min="120" max="12000" value="1800">
-                </div>
-
-                <div class="knob-card">
-                  <label>Resonance <output id="osc2ResOut">7.0</output></label>
-                  <input class="synth-rotary-input" id="osc2Res" type="range" min="0" max="20" value="7" step=".1">
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="synth-fm-filter-panel">
-            <div class="osc-title">
-              <strong>Frequency Mod Filter</strong>
-              <span>filter + dual low frequency oscillators</span>
-            </div>
-
-            <div class="fm-lfo-layout">
-              <div class="fm-module fm-filter-module">
-                <div class="fm-module-title">
-                  <strong>Filter</strong>
-                  <span>modulated cutoff</span>
-                </div>
-
-                <div class="synth-controls fm-filter-controls">
-                  <div class="knob-card">
-                    <label>Type</label>
-                    <select id="synthFmFilterType">
-                      <option value="lowpass">Low Pass</option>
-                      <option value="highpass">High Pass</option>
-                      <option value="bandpass">Band Pass</option>
-                      <option value="notch">Notch</option>
-                    </select>
-                  </div>
-
-                  <div class="knob-card">
-                    <label>Cutoff <output id="synthFmCutoffOut">2400 Hz</output></label>
-                    <input class="synth-rotary-input" id="synthFmCutoff" type="range" min="80" max="14000" value="2400">
-                  </div>
-
-                  <div class="knob-card">
-                    <label>Resonance <output id="synthFmResOut">5.0</output></label>
-                    <input class="synth-rotary-input" id="synthFmRes" type="range" min=".1" max="24" value="5" step=".1">
-                  </div>
-                </div>
-              </div>
-
-              <div class="fm-module lfo-module">
-                <div class="fm-module-title">
-                  <strong>LFO 1</strong>
-                  <span>frequency modulation</span>
-                </div>
-
-                <div class="synth-controls lfo-controls">
-                  <div class="knob-card">
-                    <label>Wave</label>
-                    <select id="synthFmWave1">
-                      <option value="sine">Sine</option>
-                      <option value="triangle">Triangle</option>
-                      <option value="square">Square</option>
-                      <option value="sawtooth">Saw</option>
-                    </select>
-                  </div>
-
-                  <div class="knob-card">
-                    <label>Rate <output id="synthFmRateOut">1.50 Hz</output></label>
-                    <input class="synth-rotary-input" id="synthFmRate" type="range" min=".05" max="20" value="1.5" step=".05">
-                  </div>
-
-                  <div class="knob-card">
-                    <label>Depth <output id="synthFmDepthOut">900 Hz</output></label>
-                    <input class="synth-rotary-input" id="synthFmDepth" type="range" min="0" max="6000" value="900" step="10">
-                  </div>
-                </div>
-              </div>
-
-              <div class="fm-module lfo-module">
-                <div class="fm-module-title">
-                  <strong>LFO 2</strong>
-                  <span>secondary modulation</span>
-                </div>
-
-                <div class="synth-controls lfo-controls">
-                  <div class="knob-card">
-                    <label>Wave</label>
-                    <select id="synthFmWave2">
-                      <option value="triangle">Triangle</option>
-                      <option value="sine">Sine</option>
-                      <option value="square">Square</option>
-                      <option value="sawtooth">Saw</option>
-                    </select>
-                  </div>
-
-                  <div class="knob-card">
-                    <label>Rate <output id="synthFmRate2Out">0.35 Hz</output></label>
-                    <input class="synth-rotary-input" id="synthFmRate2" type="range" min=".05" max="20" value=".35" step=".05">
-                  </div>
-
-                  <div class="knob-card">
-                    <label>Depth <output id="synthFmDepth2Out">450 Hz</output></label>
-                    <input class="synth-rotary-input" id="synthFmDepth2" type="range" min="0" max="6000" value="450" step="10">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="envelope-panel">
-            <div class="osc-title">
-              <strong>Amplitude Envelope</strong>
-              <span>ADSR + synth delay</span>
-            </div>
-
-            <div class="synth-controls envelope-controls">
-              <div class="knob-card">
-                <label>Attack <output id="synthAttackOut">0.02 s</output></label>
-                <input class="synth-rotary-input" id="synthAttack" type="range" min=".005" max="2" value=".02" step=".005">
-              </div>
-
-              <div class="knob-card">
-                <label>Decay <output id="synthDecayOut">0.18 s</output></label>
-                <input class="synth-rotary-input" id="synthDecay" type="range" min=".01" max="2" value=".18" step=".01">
-              </div>
-
-              <div class="knob-card">
-                <label>Sustain <output id="synthSustainOut">58%</output></label>
-                <input class="synth-rotary-input" id="synthSustain" type="range" min=".01" max="1" value=".58" step=".01">
-              </div>
-
-              <div class="knob-card">
-                <label>Release <output id="synthReleaseOut">0.42 s</output></label>
-                <input class="synth-rotary-input" id="synthRelease" type="range" min=".03" max="3" value=".42" step=".01">
-              </div>
-
-              <div class="knob-card">
-                <label>Delay Send <output id="synthDelayOut">22%</output></label>
-                <input class="synth-rotary-input" id="synthDelay" type="range" min="0" max=".8" value=".22" step=".01">
-              </div>
-
-              <div class="knob-card">
-                <label>Delay Time <output id="synthDelayTimeOut">240 ms</output></label>
-                <input class="synth-rotary-input" id="synthDelayTime" type="range" min=".04" max=".75" value=".24" step=".01">
-              </div>
-
-              <div class="knob-card">
-                <label>Delay Feedback <output id="synthDelayFeedbackOut">28%</output></label>
-                <input class="synth-rotary-input" id="synthDelayFeedback" type="range" min="0" max=".75" value=".28" step=".01">
-              </div>
-
-              <div class="knob-card">
-                <label>Synth Level <output id="synthLevelOut">38%</output></label>
-                <input class="synth-rotary-input" id="synthLevel" type="range" min="0" max=".8" value=".38" step=".01">
-              </div>
-            </div>
-          </div>
-
-          
-
-          <div class="keyboard-scale-control">
-            <label for="keyScale">
-              <span>Key Scale</span>
-              <output id="keyScaleOut">100%</output>
-            </label>
-            <input id="keyScale" type="range" min="70" max="140" value="100" step="5">
-          </div>
-
-          <div class="synth-keyboard" id="synthKeyboard"></div>
-        </div>
-      </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="card sequencer-card">
-      <div class="card-head">
-        <h2>4 × 16-Step Sequencer</h2>
-        <span>64 steps total • click pads to program</span>
-      </div>
-
-      <div class="sequence-switcher">
-        <div class="sequence-switcher-head">
-          <strong>Pattern Banks</strong>
-          <span>switch between 4 sequences</span>
-        </div>
-
-        <div class="sequence-buttons" id="sequenceButtons">
-          <button class="btn sequence-btn active" type="button" data-seq="0">Seq 1</button>
-          <button class="btn sequence-btn" type="button" data-seq="1">Seq 2</button>
-          <button class="btn sequence-btn" type="button" data-seq="2">Seq 3</button>
-          <button class="btn sequence-btn" type="button" data-seq="3">Seq 4</button>
-        </div>
-
-        <div class="sequence-status" id="sequenceStatus">
+<section class="card sequencer-card collapsible-section" data-collapse-section="sequencer">
+<div class="card-head">
+<h2>4 × 16-Step Sequencer</h2>
+<span>64 steps total • click pads to program</span>
+<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="sequencer" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="sequencer-collapse-body collapsible-body" data-collapse-id="sequencer"><div class="sequence-switcher">
+<div class="sequence-switcher-head">
+<strong>Pattern Banks</strong>
+<span>switch between 4 sequences</span>
+</div>
+<div class="sequence-buttons" id="sequenceButtons">
+<button class="btn sequence-btn active" data-seq="0" type="button">Seq 1</button>
+<button class="btn sequence-btn" data-seq="1" type="button">Seq 2</button>
+<button class="btn sequence-btn" data-seq="2" type="button">Seq 3</button>
+<button class="btn sequence-btn" data-seq="3" type="button">Seq 4</button>
+</div>
+<div class="sequence-status" id="sequenceStatus">
           Editing Sequence 1 · steps 1–16
         </div>
-      </div>
+</div><div class="seq-wrap" id="sequencer"></div></div><div class="collapse-hint" data-collapse-hint="sequencer" hidden=""><span>Sequencer is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="sequencer" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
 
-      <div class="seq-wrap" id="sequencer"></div>
 
-      <div class="audio-recorder">
-        <div class="recorder-head">
-          <div>
-            <strong>Audio Recorder</strong>
-            <span>record the groovebox output into timeline clips</span>
-          </div>
-
-          <div class="recorder-transport">
-            <button class="btn recorder-record" id="audioRecordBtn" type="button">Record</button>
-            <button class="btn" id="audioStopBtn" type="button">Stop</button>
-            <button class="btn" id="audioPlayBtn" type="button">Play All</button>
-            <button class="btn" id="audioClearBtn" type="button">Clear</button>
-          </div>
-        </div>
-
-                <div class="audio-timeline-wrap">
-          <div class="timeline-ruler" id="timelineRuler"></div>
-          <div class="audio-timeline" id="audioTimeline"></div>
-        </div>
-
-        <div class="recording-status" id="recordingStatus">
+<div class="audio-recorder collapsible-section" data-collapse-section="audio-recorder">
+<div class="recorder-head">
+<div>
+<strong>Audio Recorder</strong>
+<span>record the groovebox output into timeline clips</span>
+</div>
+<div class="recorder-transport">
+<button class="btn recorder-record" id="audioRecordBtn" type="button">Record</button>
+<button class="btn" id="audioStopBtn" type="button">Stop</button>
+<button class="btn" id="audioPlayBtn" type="button">Play All</button>
+<button class="btn" id="audioClearBtn" type="button">Clear</button>
+</div>
+<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-timeline-wrap">
+<div class="timeline-ruler" id="timelineRuler"></div>
+<div class="audio-timeline" id="audioTimeline"></div>
+</div><div class="recording-status" id="recordingStatus">
           Select an audio channel and press Record
-        </div>
-      </div>
+        </div></div><div class="collapse-hint" data-collapse-hint="audio-recorder" hidden=""><span>Audio Recorder is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
 
-      <div class="embedded-mixer">
-        <div class="mixing-console-head">
-          <strong>Mixing Console</strong>
-          <span>instruments • recorded audio • master effects</span>
-        </div>
 
-        <div class="embedded-mixer-row">
-          <div class="console-column console-instruments">
+</div>
+<div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console">
+<div class="mixing-console-head">
+<strong>Mixing Console</strong>
+<span>instruments • recorded audio • master effects</span>
+<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console"><div class="embedded-mixer-row">
+<div class="console-column console-instruments">
 <div class="mixer-section">
-            <div class="embedded-mixer-head">
-              <strong>Instrument Mixer</strong>
-              <span>channel levels • mute • solo</span>
-            </div>
-            <div class="mixer" id="mixer"></div>
-
-            <div class="instrument-master-filter">
-              <div class="embedded-mixer-head instrument-filter-head">
-                <strong>Master Filter</strong>
-                <span>synth post-filter</span>
-              </div>
-
-              <div class="rotary-filter-grid">
-                <label class="rotary-control">
-                  <span>Type</span>
-                  <select id="synthFilterType">
-                    <option value="lowpass">Low Pass</option>
-                    <option value="highpass">High Pass</option>
-                    <option value="bandpass">Band Pass</option>
-                    <option value="notch">Notch</option>
-                  </select>
-                </label>
-
-                <div class="rotary-control">
-                  <span>Cutoff</span>
-                  <div class="rotary-knob-wrap">
-                    <input class="rotary-range" id="synthFilterCutoff" type="range" min="80" max="16000" value="4200">
-                    <div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
-                  </div>
-                  <output id="synthFilterCutoffOut">4200 Hz</output>
-                </div>
-
-                <div class="rotary-control">
-                  <span>Resonance</span>
-                  <div class="rotary-knob-wrap">
-                    <input class="rotary-range" id="synthFilterRes" type="range" min=".1" max="24" value="4" step=".1">
-                    <div class="rotary-knob" data-knob-for="synthFilterRes"></div>
-                  </div>
-                  <output id="synthFilterResOut">4.0</output>
-                </div>
-
-                <div class="rotary-control">
-                  <span>Drive</span>
-                  <div class="rotary-knob-wrap">
-                    <input class="rotary-range" id="synthFilterDrive" type="range" min="0" max="1" value="0" step=".01">
-                    <div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
-                  </div>
-                  <output id="synthFilterDriveOut">0%</output>
-                </div>
-              </div>
-            </div>
-
-
-            <div class="instrument-bass-filter">
-              <div class="embedded-mixer-head instrument-filter-head">
-                <strong>Bass Filter</strong>
-                <span>bass tone shaping</span>
-              </div>
-
-              <div class="rotary-filter-grid">
-                <label class="rotary-control">
-                  <span>Type</span>
-                  <select id="bassFilterType">
-                    <option value="lowpass">Low Pass</option>
-                    <option value="highpass">High Pass</option>
-                    <option value="bandpass">Band Pass</option>
-                    <option value="notch">Notch</option>
-                  </select>
-                </label>
-
-                <div class="rotary-control">
-                  <span>Cutoff</span>
-                  <div class="rotary-knob-wrap">
-                    <input class="rotary-range" id="bassFilterCutoff" type="range" min="50" max="8000" value="900">
-                    <div class="rotary-knob" data-knob-for="bassFilterCutoff"></div>
-                  </div>
-                  <output id="bassFilterCutoffOut">900 Hz</output>
-                </div>
-
-                <div class="rotary-control">
-                  <span>Resonance</span>
-                  <div class="rotary-knob-wrap">
-                    <input class="rotary-range" id="bassFilterRes" type="range" min=".1" max="24" value="6" step=".1">
-                    <div class="rotary-knob" data-knob-for="bassFilterRes"></div>
-                  </div>
-                  <output id="bassFilterResOut">6.0</output>
-                </div>
-
-                <div class="rotary-control">
-                  <span>Drive</span>
-                  <div class="rotary-knob-wrap">
-                    <input class="rotary-range" id="bassFilterDrive" type="range" min="0" max="1" value=".08" step=".01">
-                    <div class="rotary-knob" data-knob-for="bassFilterDrive"></div>
-                  </div>
-                  <output id="bassFilterDriveOut">8%</output>
-                </div>
-              </div>
-            </div>
-
-            <div class="mixer-midi">
-              <div class="embedded-mixer-head mixer-midi-head">
-                <strong>MIDI Controller</strong>
-                <span>input • target • channel</span>
-              </div>
-              <div class="midi-panel">
-          <div class="midi-grid">
-            <button class="btn" id="midiConnect" type="button">Connect MIDI</button>
-
-            <select id="midiTarget" aria-label="MIDI target instrument">
-              <option value="synth">Synth</option>
-              <option value="bass">Bass</option>
-            </select>
-
-            <select id="midiInput" aria-label="MIDI input">
-              <option value="">No MIDI input</option>
-            </select>
-
-            <select id="midiChannel" aria-label="MIDI channel">
-              <option value="all">All Channels</option>
-              <option value="1">Channel 1</option>
-              <option value="2">Channel 2</option>
-              <option value="3">Channel 3</option>
-              <option value="4">Channel 4</option>
-              <option value="5">Channel 5</option>
-              <option value="6">Channel 6</option>
-              <option value="7">Channel 7</option>
-              <option value="8">Channel 8</option>
-              <option value="9">Channel 9</option>
-              <option value="10">Channel 10</option>
-              <option value="11">Channel 11</option>
-              <option value="12">Channel 12</option>
-              <option value="13">Channel 13</option>
-              <option value="14">Channel 14</option>
-              <option value="15">Channel 15</option>
-              <option value="16">Channel 16</option>
-            </select>
-
-            <div class="midi-status" id="midiStatus">
+<div class="embedded-mixer-head">
+<strong>Instrument Mixer</strong>
+<span>channel levels • mute • solo</span>
+</div>
+<div class="mixer" id="mixer"></div>
+<div class="instrument-master-filter">
+<div class="embedded-mixer-head instrument-filter-head">
+<strong>Master Filter</strong>
+<span>synth post-filter</span>
+</div>
+<div class="rotary-filter-grid">
+<label class="rotary-control">
+<span>Type</span>
+<select id="synthFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</label>
+<div class="rotary-control">
+<span>Cutoff</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
+<div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
+</div>
+<output id="synthFilterCutoffOut">4200 Hz</output>
+</div>
+<div class="rotary-control">
+<span>Resonance</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
+<div class="rotary-knob" data-knob-for="synthFilterRes"></div>
+</div>
+<output id="synthFilterResOut">4.0</output>
+</div>
+<div class="rotary-control">
+<span>Drive</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
+<div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
+</div>
+<output id="synthFilterDriveOut">0%</output>
+</div>
+</div>
+</div>
+<div class="instrument-bass-filter">
+<div class="embedded-mixer-head instrument-filter-head">
+<strong>Bass Filter</strong>
+<span>bass tone shaping</span>
+</div>
+<div class="rotary-filter-grid">
+<label class="rotary-control">
+<span>Type</span>
+<select id="bassFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</label>
+<div class="rotary-control">
+<span>Cutoff</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterCutoff" max="8000" min="50" type="range" value="900"/>
+<div class="rotary-knob" data-knob-for="bassFilterCutoff"></div>
+</div>
+<output id="bassFilterCutoffOut">900 Hz</output>
+</div>
+<div class="rotary-control">
+<span>Resonance</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterRes" max="24" min=".1" step=".1" type="range" value="6"/>
+<div class="rotary-knob" data-knob-for="bassFilterRes"></div>
+</div>
+<output id="bassFilterResOut">6.0</output>
+</div>
+<div class="rotary-control">
+<span>Drive</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterDrive" max="1" min="0" step=".01" type="range" value=".08"/>
+<div class="rotary-knob" data-knob-for="bassFilterDrive"></div>
+</div>
+<output id="bassFilterDriveOut">8%</output>
+</div>
+</div>
+</div>
+<div class="mixer-midi">
+<div class="embedded-mixer-head mixer-midi-head">
+<strong>MIDI Controller</strong>
+<span>input • target • channel</span>
+</div>
+<div class="midi-panel">
+<div class="midi-grid">
+<button class="btn" id="midiConnect" type="button">Connect MIDI</button>
+<select aria-label="MIDI target instrument" id="midiTarget">
+<option value="synth">Synth</option>
+<option value="bass">Bass</option>
+</select>
+<select aria-label="MIDI input" id="midiInput">
+<option value="">No MIDI input</option>
+</select>
+<select aria-label="MIDI channel" id="midiChannel">
+<option value="all">All Channels</option>
+<option value="1">Channel 1</option>
+<option value="2">Channel 2</option>
+<option value="3">Channel 3</option>
+<option value="4">Channel 4</option>
+<option value="5">Channel 5</option>
+<option value="6">Channel 6</option>
+<option value="7">Channel 7</option>
+<option value="8">Channel 8</option>
+<option value="9">Channel 9</option>
+<option value="10">Channel 10</option>
+<option value="11">Channel 11</option>
+<option value="12">Channel 12</option>
+<option value="13">Channel 13</option>
+<option value="14">Channel 14</option>
+<option value="15">Channel 15</option>
+<option value="16">Channel 16</option>
+</select>
+<div class="midi-status" id="midiStatus">
               MIDI disconnected
             </div>
-          </div>
-        </div>
-            </div>
-          </div>
-          </div>
-
-          <div class="console-column console-audio">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="console-column console-audio">
 <div class="audio-fader-section">
-            <div class="embedded-mixer-head">
-              <strong>Audio Mixer</strong>
-              <span>recorded tracks</span>
-            </div>
-            <div class="audio-channel-mixer" id="audioChannelMixer"></div>
-
-            <div class="audio-settings">
-              <div class="embedded-mixer-head audio-settings-head">
-                <strong>Audio Settings</strong>
-                <span>engine • output • latency</span>
-              </div>
-
-              <div class="audio-settings-grid">
-                <label class="audio-setting">
-                  <span>Latency</span>
-                  <select id="audioLatency">
-                    <option value="interactive">Interactive</option>
-                    <option value="balanced">Balanced</option>
-                    <option value="playback">Playback</option>
-                  </select>
-                </label>
-
-                <label class="audio-setting">
-                  <span>Sample Rate</span>
-                  <select id="audioSampleRate">
-                    <option value="default">System Default</option>
-                    <option value="44100">44.1 kHz</option>
-                    <option value="48000">48 kHz</option>
-                    <option value="96000">96 kHz</option>
-                  </select>
-                </label>
-
-                <label class="audio-setting audio-output-setting">
-                  <span>Output Device</span>
-                  <select id="audioOutput">
-                    <option value="default">System Default</option>
-                  </select>
-                </label>
-                <label class="audio-setting audio-input-setting">
-                  <span>Audio Input</span>
-                  <select id="audioInput">
-                    <option value="default">System Default</option>
-                  </select>
-                </label>
-
-                <button class="btn audio-input-enable" id="audioInputEnable" type="button">
+<div class="embedded-mixer-head">
+<strong>Audio Mixer</strong>
+<span>recorded tracks</span>
+</div>
+<div class="audio-channel-mixer" id="audioChannelMixer"></div>
+<div class="audio-settings">
+<div class="embedded-mixer-head audio-settings-head">
+<strong>Audio Settings</strong>
+<span>engine • output • latency</span>
+</div>
+<div class="audio-settings-grid">
+<label class="audio-setting">
+<span>Latency</span>
+<select id="audioLatency">
+<option value="interactive">Interactive</option>
+<option value="balanced">Balanced</option>
+<option value="playback">Playback</option>
+</select>
+</label>
+<label class="audio-setting">
+<span>Sample Rate</span>
+<select id="audioSampleRate">
+<option value="default">System Default</option>
+<option value="44100">44.1 kHz</option>
+<option value="48000">48 kHz</option>
+<option value="96000">96 kHz</option>
+</select>
+</label>
+<label class="audio-setting audio-output-setting">
+<span>Output Device</span>
+<select id="audioOutput">
+<option value="default">System Default</option>
+</select>
+</label>
+<label class="audio-setting audio-input-setting">
+<span>Audio Input</span>
+<select id="audioInput">
+<option value="default">System Default</option>
+</select>
+</label>
+<button class="btn audio-input-enable" id="audioInputEnable" type="button">
                   Enable Audio Input
                 </button>
-
-                <label class="audio-setting audio-monitor-setting">
-                  <span>Input Monitor</span>
-                  <select id="audioInputMonitor">
-                    <option value="off">Off</option>
-                    <option value="on">On</option>
-                  </select>
-                </label>
-
-                <button class="btn audio-restart" id="audioRestart" type="button">
+<label class="audio-setting audio-monitor-setting">
+<span>Input Monitor</span>
+<select id="audioInputMonitor">
+<option value="off">Off</option>
+<option value="on">On</option>
+</select>
+</label>
+<button class="btn audio-restart" id="audioRestart" type="button">
                   Restart Audio Engine
                 </button>
-
-                <div class="audio-status" id="audioStatus">
+<div class="audio-status" id="audioStatus">
                   Audio engine not started
                 </div>
-                <div class="audio-status" id="audioInputStatus">
+<div class="audio-status" id="audioInputStatus">
                   Audio input disabled
                 </div>
-              </div>
-            </div>
-          </div>
-          </div>
-
-          <div class="console-column console-master">
+</div>
+</div>
+</div>
+</div>
+<div class="console-column console-master">
 <div class="master-fx-section">
-            <div class="embedded-mixer-head">
-              <strong>Master FX</strong>
-              <span>reverb • decay • drive • master</span>
-            </div>
-            <div class="fx">
-          <div class="fx-grid">
-            <div class="fx-strip">
-              <label>Reverb</label>
-              <input class="vertical-fader" id="reverb" type="range" min="0" max=".8" step=".01" value=".22">
-              <output id="reverbOut">22%</output>
-            </div>
-            <div class="fx-strip">
-              <label>Decay</label>
-              <input class="vertical-fader" id="reverbDecay" type="range" min=".3" max="6" step=".1" value="2.4">
-              <output id="reverbDecayOut">2.4 s</output>
-            </div>
-            <div class="fx-strip">
-              <label>Drive</label>
-              <input class="vertical-fader" id="drive" type="range" min="0" max=".6" step=".01" value=".08">
-              <output id="driveOut">8%</output>
-            </div>
-            <div class="fx-strip">
-              <label>Master</label>
-              <input class="vertical-fader" id="master" type="range" min="0" max="1" step=".01" value=".82">
-              <output id="masterOut">82%</output>
-            </div>
-          </div>
-        </div>
-
-            <div class="tape-recorder">
-              <div class="embedded-mixer-head tape-recorder-head">
-                <strong>Virtual Tape Recorder</strong>
-                <span>record the full master session</span>
-              </div>
-
-              <div class="tape-deck" id="tapeDeck">
-                <div class="tape-window" aria-hidden="true">
-                  <div class="tape-reel tape-reel-left">
-                    <span></span>
-                  </div>
-
-                  <div class="tape-path">
-                    <div class="tape-line"></div>
-                    <div class="tape-head"></div>
-                  </div>
-
-                  <div class="tape-reel tape-reel-right">
-                    <span></span>
-                  </div>
-                </div>
-
-                <div class="tape-counter">
-                  <span id="tapeStatus">Ready</span>
-                  <strong id="tapeTime">00:00</strong>
-                </div>
-
-                <div class="tape-transport">
-                  <button class="btn tape-record-button" id="tapeRecordBtn" type="button">
+<div class="embedded-mixer-head">
+<strong>Master FX</strong>
+<span>reverb • decay • drive • master</span>
+</div>
+<div class="fx">
+<div class="fx-grid">
+<div class="fx-strip">
+<label>Reverb</label>
+<input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/>
+<output id="reverbOut">22%</output>
+</div>
+<div class="fx-strip">
+<label>Decay</label>
+<input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/>
+<output id="reverbDecayOut">2.4 s</output>
+</div>
+<div class="fx-strip">
+<label>Drive</label>
+<input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/>
+<output id="driveOut">8%</output>
+</div>
+<div class="fx-strip">
+<label>Master</label>
+<input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/>
+<output id="masterOut">82%</output>
+</div>
+</div>
+</div>
+<div class="tape-recorder">
+<div class="embedded-mixer-head tape-recorder-head">
+<strong>Virtual Tape Recorder</strong>
+<span>record the full master session</span>
+</div>
+<div class="tape-deck" id="tapeDeck">
+<div aria-hidden="true" class="tape-window">
+<div class="tape-reel tape-reel-left">
+<span></span>
+</div>
+<div class="tape-path">
+<div class="tape-line"></div>
+<div class="tape-head"></div>
+</div>
+<div class="tape-reel tape-reel-right">
+<span></span>
+</div>
+</div>
+<div class="tape-counter">
+<span id="tapeStatus">Ready</span>
+<strong id="tapeTime">00:00</strong>
+</div>
+<div class="tape-transport">
+<button class="btn tape-record-button" id="tapeRecordBtn" type="button">
                     Record
                   </button>
-                  <button class="btn" id="tapeStopBtn" type="button">
+<button class="btn" id="tapeStopBtn" type="button">
                     Stop
                   </button>
-                  <button class="btn" id="tapePlayBtn" type="button" disabled>
+<button class="btn" disabled="" id="tapePlayBtn" type="button">
                     Play
                   </button>
-                  <button class="btn" id="tapeDownloadBtn" type="button" disabled>
+<button class="btn" disabled="" id="tapeDownloadBtn" type="button">
                     Save
                   </button>
-                  <button class="btn" id="tapeClearBtn" type="button" disabled>
+<button class="btn" disabled="" id="tapeClearBtn" type="button">
                     Clear
                   </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="sample-loader">
-              <div class="embedded-mixer-head sample-loader-head">
-                <strong>Samples</strong>
-                <span>load • preview • trigger</span>
-              </div>
-
-              <div class="sample-actions">
-                <label class="btn sample-add-button">
+</div>
+</div>
+</div>
+<div class="sample-loader">
+<div class="embedded-mixer-head sample-loader-head">
+<strong>Samples</strong>
+<span>load • preview • trigger</span>
+</div>
+<div class="sample-actions">
+<label class="btn sample-add-button">
                   Add Samples
-                  <input id="sampleFiles" type="file" accept="audio/*" multiple hidden>
-                </label>
-
-                <button class="btn" id="sampleStopAll" type="button">
+                  <input accept="audio/*" hidden="" id="sampleFiles" multiple="" type="file"/>
+</label>
+<button class="btn" id="sampleStopAll" type="button">
                   Stop Samples
                 </button>
-              </div>
-
-              <div class="sample-slots" id="sampleSlots"></div>
-            </div>
-
-            
-        </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 </div>
+<div class="sample-slots" id="sampleSlots"></div>
+</div>
+</div>
+</div>
+</div></div><div class="collapse-hint" data-collapse-hint="mixing-console" hidden=""><span>Mixing Console is collapsed.</span><button aria-expanded="false" class="btn collapse-toggle collapse-reopen" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">+</span><span class="collapse-label">Expand</span></button></div>
+
+</div>
+</section>
+
+<div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 
 <script type="importmap">
 {
@@ -5855,24 +5824,90 @@ $("midiInput").addEventListener(
   connectSelectedMidiInput
 );
 
-const synthKeyboardNotes=[60,62,64,65,67,69,71,72,74,76,77,79,81];
-synthKeyboardNotes.forEach((note,i)=>{
-  const b=document.createElement("button");
-  b.className="synth-key"+([1,3,6,8,10].includes(i)?" black":"");
-  b.textContent=noteName(note);
+const keyboardIntervals=[0,2,4,5,7,9,11,12,14,16,17,19,21];
+const keyboardBlackIndexes=new Set([1,3,6,8,10]);
 
-  const trigger=async()=>{
-    ensureAudio();
-    if(audio.state==="suspended")await audio.resume();
-    leadSynth(audio.currentTime,note,parseFloat($("synthLevel").value));
-    b.classList.add("on");
-    setTimeout(()=>b.classList.remove("on"),140);
-    pulseVisual();
-  };
+function buildSynthKeyboard(octave){
+  const host=$("synthKeyboard");
+  if(!host)return;
 
-  b.addEventListener("pointerdown",trigger);
-  $("synthKeyboard").appendChild(b);
-});
+  host.innerHTML="";
+
+  const baseMidi=(octave+1)*12;
+
+  keyboardIntervals.forEach((interval,i)=>{
+    const note=baseMidi+interval;
+    const b=document.createElement("button");
+
+    b.type="button";
+    b.className=
+      "synth-key"+
+      (keyboardBlackIndexes.has(i)?" black":"");
+
+    b.textContent=noteName(note);
+
+    const trigger=async()=>{
+      ensureAudio();
+
+      if(audio.state==="suspended"){
+        await audio.resume();
+      }
+
+      leadSynth(
+        audio.currentTime,
+        note,
+        parseFloat($("synthLevel").value)
+      );
+
+      b.classList.add("on");
+
+      setTimeout(
+        ()=>b.classList.remove("on"),
+        140
+      );
+
+      pulseVisual();
+    };
+
+    b.addEventListener(
+      "pointerdown",
+      trigger
+    );
+
+    host.appendChild(b);
+  });
+}
+
+function updateKeyScale(){
+  const slider=$("keyScale");
+  const output=$("keyScaleOut");
+
+  if(!slider||!output)return;
+
+  const octave=
+    Math.max(
+      2,
+      Math.min(
+        6,
+        parseInt(slider.value,10)||4
+      )
+    );
+
+  output.textContent=
+    "C"+
+    octave+
+    "–C"+
+    (octave+1);
+
+  buildSynthKeyboard(octave);
+}
+
+$("keyScale").addEventListener(
+  "input",
+  updateKeyScale
+);
+
+updateKeyScale();
 
 function bind(id,outId,format,fn){
   const el=$(id),outEl=$(outId);
@@ -6026,36 +6061,7 @@ bind("drive","driveOut",v=>Math.round(v*100)+"%");
 bind("master","masterOut",v=>Math.round(v*100)+"%",v=>{if(master)master.gain.setTargetAtTime(v,audio.currentTime,.02)});
 $("bpm").addEventListener("input",()=>{$("bpmReadout").textContent=$("bpm").value});
 
-function updateKeyScale(){
-  const slider=$("keyScale");
-  const output=$("keyScaleOut");
-  const synthBox=document.querySelector(".synth-box");
 
-  if(!slider||!output||!synthBox)return;
-
-  const percent=
-    Math.max(
-      70,
-      Math.min(
-        140,
-        parseInt(slider.value,10)||100
-      )
-    );
-
-  output.textContent=percent+"%";
-
-  synthBox.style.setProperty(
-    "--key-scale",
-    (percent/100).toFixed(2)
-  );
-}
-
-$("keyScale").addEventListener(
-  "input",
-  updateKeyScale
-);
-
-updateKeyScale();
 
 
 
@@ -6531,6 +6537,97 @@ function animate(){
   renderer.render(scene,camera);
 }
 animate();
+
+
+
+function setCollapsedState(collapseId,collapsed){
+  const body=
+    document.querySelector(
+      '[data-collapse-id="'+collapseId+'"]'
+    );
+
+  if(!body)return;
+
+  const container=
+    document.querySelector(
+      '[data-collapse-section="'+collapseId+'"]'
+    );
+
+  const hint=
+    document.querySelector(
+      '[data-collapse-hint="'+collapseId+'"]'
+    );
+
+  body.hidden=collapsed;
+
+  if(hint){
+    hint.hidden=!collapsed;
+  }
+
+  if(container){
+    container.classList.toggle(
+      "is-collapsed",
+      collapsed
+    );
+  }
+
+  document
+    .querySelectorAll(
+      '[data-collapse-target="'+collapseId+'"]'
+    )
+    .forEach(button=>{
+      button.setAttribute(
+        "aria-expanded",
+        collapsed ? "false" : "true"
+      );
+
+      const icon=
+        button.querySelector(".collapse-icon");
+      const label=
+        button.querySelector(".collapse-label");
+
+      if(icon){
+        icon.textContent=
+          collapsed ? "+" : "−";
+      }
+
+      if(label){
+        label.textContent=
+          collapsed ? "Expand" : "Collapse";
+      }
+    });
+}
+
+function toggleCollapsedSection(collapseId){
+  const body=
+    document.querySelector(
+      '[data-collapse-id="'+collapseId+'"]'
+    );
+
+  if(!body)return;
+
+  setCollapsedState(
+    collapseId,
+    !body.hidden
+  );
+}
+
+document
+  .querySelectorAll("[data-collapse-target]")
+  .forEach(button=>{
+    button.addEventListener(
+      "click",
+      ()=>toggleCollapsedSection(
+        button.getAttribute(
+          "data-collapse-target"
+        )
+      )
+    );
+  });
+
+["synth","sequencer","audio-recorder","mixing-console"]
+  .forEach(id=>setCollapsedState(id,false));
+
 </script>
 </body>
 </html>
