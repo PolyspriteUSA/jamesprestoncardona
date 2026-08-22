@@ -796,11 +796,11 @@ function buildSpider(type="jumper"){
       abdomenScale:[1.28,1.08,1.18],
       thoraxY:1.12,
       abdomenY:1.08,
-      abdomenZ:.42,
+      abdomenZ:-.42,
       eyeY:1.16,
-      eyeZ:.26,
+      eyeZ:.38,
       legRootX:.30,
-      legRootY:.96,
+      legRootY:1.00,
       legSpreadZ:.28,
       upperLen:.96,
       upperThickness:.09,
@@ -839,11 +839,11 @@ function buildSpider(type="jumper"){
       abdomenScale:[1.55,1.22,1.85],
       thoraxY:1.28,
       abdomenY:1.22,
-      abdomenZ:.56,
+      abdomenZ:-.56,
       eyeY:1.32,
-      eyeZ:.34,
+      eyeZ:.46,
       legRootX:.42,
-      legRootY:1.16,
+      legRootY:1.22,
       legSpreadZ:.38,
       upperLen:1.34,
       upperThickness:.075,
@@ -882,11 +882,11 @@ function buildSpider(type="jumper"){
       abdomenScale:[1.34,1.12,1.46],
       thoraxY:1.30,
       abdomenY:1.24,
-      abdomenZ:.48,
+      abdomenZ:-.48,
       eyeY:1.34,
-      eyeZ:.28,
+      eyeZ:.40,
       legRootX:.40,
-      legRootY:1.18,
+      legRootY:1.24,
       legSpreadZ:.44,
       upperLen:1.52,
       upperThickness:.055,
@@ -1010,7 +1010,7 @@ function buildSpider(type="jumper"){
       new THREE.SphereGeometry(.07,10,8),
       matMagenta
     );
-    redMarkA.position.set(-.10,preset.abdomenY+.06,preset.abdomenZ+.28);
+    redMarkA.position.set(-.10,preset.abdomenY+.08,preset.abdomenZ+.14);
     g.add(redMarkA);
 
     const redMarkB=redMarkA.clone();
@@ -1021,10 +1021,10 @@ function buildSpider(type="jumper"){
   const faceStrip=new THREE.Mesh(
     new THREE.BoxGeometry(
       preset.type==="widow"
-        ?.18
-        :.24,
-      .06,
-      .04
+        ?.22
+        :.30,
+      .07,
+      .06
     ),
     preset.type==="widow"
       ?matMagenta
@@ -1037,31 +1037,40 @@ function buildSpider(type="jumper"){
   );
   g.add(faceStrip);
 
-  for(let e=-1;e<=1;e+=2){
+  const eyeMaterial=
+    new THREE.MeshStandardMaterial({
+      color:preset.eyeColor,
+      emissive:preset.eyeColor,
+      emissiveIntensity:2.2,
+      metalness:.15,
+      roughness:.10
+    });
+
+  [
+    [-1,-1],
+    [1,-1],
+    [-.55,1],
+    [.55,1]
+  ].forEach(([sx,row])=>{
     const eye=new THREE.Mesh(
       new THREE.SphereGeometry(
         preset.type==="widow"
-          ?.03
-          :.04,
-        8,
-        8
+          ?.038
+          :.048,
+        10,
+        10
       ),
-      new THREE.MeshStandardMaterial({
-        color:preset.eyeColor,
-        emissive:preset.eyeColor,
-        emissiveIntensity:1.6,
-        metalness:.35,
-        roughness:.18
-      })
+      eyeMaterial
     );
 
     eye.position.set(
-      e*(preset.type==="widow"?.08:.07),
-      preset.eyeY,
-      preset.eyeZ+.03
+      sx*(preset.type==="widow"?.08:.09),
+      preset.eyeY+
+        (row>0?.03:-.01),
+      preset.eyeZ+.045
     );
     g.add(eye);
-  }
+  });
 
   const legPivots=[];
 
@@ -1074,6 +1083,23 @@ function buildSpider(type="jumper"){
         (i-1.5)*preset.legSpreadZ
       );
 
+      const shoulder=new THREE.Mesh(
+        new THREE.SphereGeometry(
+          preset.type==="widow"
+            ?.055
+            :.065,
+          10,
+          10
+        ),
+        thoraxMaterial
+      );
+      shoulder.position.set(
+        side*.02,
+        0,
+        0
+      );
+      pivot.add(shoulder);
+
       const upper=new THREE.Mesh(
         new THREE.BoxGeometry(
           preset.upperLen,
@@ -1083,7 +1109,7 @@ function buildSpider(type="jumper"){
         legMaterial
       );
       upper.position.x=
-        side*preset.upperX;
+        side*(preset.upperX*.92);
       upper.rotation.z=
         -side*preset.upperRot;
       pivot.add(upper);
