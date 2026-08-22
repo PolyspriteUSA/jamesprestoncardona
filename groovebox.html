@@ -2344,6 +2344,61 @@ body{
   }
 }
 
+
+/* Adjustable synth keyboard scale */
+.synth-box{
+  --key-scale:1;
+}
+.keyboard-scale-control{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:10px auto 8px;
+  padding:8px 10px;
+  width:min(420px,100%);
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(8,8,13,.58);
+}
+.keyboard-scale-control label{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-width:112px;
+  color:var(--muted);
+  font-size:10px;
+}
+.keyboard-scale-control output{
+  color:var(--text);
+  font-size:10px;
+}
+.keyboard-scale-control input[type=range]{
+  flex:1;
+  min-width:120px;
+}
+.synth-keyboard{
+  gap:calc(5px * var(--key-scale)) !important;
+}
+.synth-key{
+  min-height:calc(58px * var(--key-scale)) !important;
+  font-size:calc(10px * var(--key-scale));
+  padding:
+    calc(7px * var(--key-scale))
+    calc(2px * var(--key-scale)) !important;
+  border-radius:calc(8px * var(--key-scale));
+}
+@media(max-width:560px){
+  .keyboard-scale-control{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .keyboard-scale-control label{
+    width:100%;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2669,6 +2724,14 @@ body{
           </div>
 
           
+
+          <div class="keyboard-scale-control">
+            <label for="keyScale">
+              <span>Key Scale</span>
+              <output id="keyScaleOut">100%</output>
+            </label>
+            <input id="keyScale" type="range" min="70" max="140" value="100" step="5">
+          </div>
 
           <div class="synth-keyboard" id="synthKeyboard"></div>
         </div>
@@ -5220,6 +5283,38 @@ bind("reverbDecay","reverbDecayOut",v=>(+v).toFixed(1)+" s",()=>{
 bind("drive","driveOut",v=>Math.round(v*100)+"%");
 bind("master","masterOut",v=>Math.round(v*100)+"%",v=>{if(master)master.gain.setTargetAtTime(v,audio.currentTime,.02)});
 $("bpm").addEventListener("input",()=>{$("bpmReadout").textContent=$("bpm").value});
+
+function updateKeyScale(){
+  const slider=$("keyScale");
+  const output=$("keyScaleOut");
+  const synthBox=document.querySelector(".synth-box");
+
+  if(!slider||!output||!synthBox)return;
+
+  const percent=
+    Math.max(
+      70,
+      Math.min(
+        140,
+        parseInt(slider.value,10)||100
+      )
+    );
+
+  output.textContent=percent+"%";
+
+  synthBox.style.setProperty(
+    "--key-scale",
+    (percent/100).toFixed(2)
+  );
+}
+
+$("keyScale").addEventListener(
+  "input",
+  updateKeyScale
+);
+
+updateKeyScale();
+
 
 
 
