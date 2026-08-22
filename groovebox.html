@@ -27,6 +27,55 @@ button{color:inherit}
   margin:0 auto;
   padding:18px 0 28px;
 }
+
+.site-nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:0 4px 14px;
+}
+.site-nav-brand{
+  color:var(--text);
+  text-decoration:none;
+  font-size:12px;
+  font-weight:650;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.site-nav-links{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:6px 18px;
+}
+.site-nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  transition:.18s ease;
+}
+.site-nav-links a:hover,
+.site-nav-links a:focus-visible{
+  color:var(--text);
+}
+.site-nav-links a.active{
+  color:#fff;
+}
+@media(max-width:720px){
+  .site-nav{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .site-nav-links{
+    justify-content:flex-start;
+  }
+}
+
 .topbar{
   display:flex;
   justify-content:space-between;
@@ -1313,6 +1362,17 @@ body{
   <div class="page-reactive-pulse"></div>
 </div>
 <div class="app">
+  <nav class="site-nav" aria-label="Main website navigation">
+    <a class="site-nav-brand" href="./index.html">James Preston Cardona</a>
+
+    <div class="site-nav-links">
+      <a href="./index.html#work">Work</a>
+      <a href="./index.html#about">About</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./index.html#contact">Contact</a>
+    </div>
+  </nav>
+
   <header class="topbar">
     <div class="brand">
       <div class="brand-mark" aria-hidden="true"></div>
