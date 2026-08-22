@@ -13,336 +13,654 @@
 </head>
 <body>
 <header class="site-header"><a class="brand" href="./index.html">James Preston Cardona</a><nav class="site-nav" aria-label="Primary navigation"><a href="./index.html#work">Work</a><a href="./DigitalHuman.html">Digital Human</a><a href="./resume.html">Resume</a><a href="./index.html#contact">Contact</a></nav></header>
-<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Vector Run. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Vector Run</h1><p>A procedural browser tunnel shooter built entirely from geometric forms, particles and real-time lighting.</p><div class="controls-line">WASD / Arrow Keys — steer &nbsp; • &nbsp; Space — fire</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Procedural tunnel online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="fire" type="button">FIRE</button></div></div></section></main>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"}}</script>
+<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Vector Run. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Vector Run</h1><p>A procedural browser tunnel shooter built entirely from geometric forms, particles and real-time lighting.</p><div class="controls-line">WASD / Arrow Keys — steer &nbsp; • &nbsp; Space — fire</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Procedural tunnel online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="fire" type="button">FIRE</button></div></div></section></main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-const container=document.getElementById("game"),scoreValue=document.getElementById("scoreValue"),healthValue=document.getElementById("healthValue"),healthMeter=document.getElementById("healthMeter"),startPanel=document.getElementById("startPanel"),gameOverPanel=document.getElementById("gameOverPanel"),finalScore=document.getElementById("finalScore"),startButton=document.getElementById("startButton"),restartButton=document.getElementById("restartButton"),statusText=document.getElementById("statusText");
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x050507);scene.fog=new THREE.FogExp2(0x08070f,0.020);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.02;container.appendChild(renderer.domElement);
-scene.add(new THREE.AmbientLight(0x8d81ff,.42));const playerLight=new THREE.PointLight(0xff42d0,10,20,2);playerLight.position.set(0,0,3);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,12,32,2);tunnelLight.position.set(0,0,-9);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
+const container=document.getElementById("game"),scoreValue=document.getElementById("scoreValue"),healthValue=document.getElementById("healthValue"),healthMeter=document.getElementById("healthMeter"),targetsValue=document.getElementById("targetsValue"),startPanel=document.getElementById("startPanel"),gameOverPanel=document.getElementById("gameOverPanel"),finalScore=document.getElementById("finalScore"),startButton=document.getElementById("startButton"),restartButton=document.getElementById("restartButton"),statusText=document.getElementById("statusText");
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x05030a,0.010);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.88;container.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0x8d81ff,.24));const playerLight=new THREE.PointLight(0xff42d0,4.5,16,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,8,30,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
 const player=new THREE.Group();scene.add(player);
 
-const siteViolet=0x7149ff;
-const siteMagenta=0xff42d0;
-const siteSoftViolet=0xa66cff;
+const hullWhiteMat=new THREE.MeshStandardMaterial({
+  color:0xd9dde3,
+  emissive:0x11131a,
+  emissiveIntensity:.10,
+  roughness:.30,
+  metalness:.32
+});
 
-const playerRing=new THREE.Mesh(
-  new THREE.TorusGeometry(.78,.035,10,72),
+const hullGrayMat=new THREE.MeshStandardMaterial({
+  color:0xaeb3bc,
+  emissive:0x0d1016,
+  emissiveIntensity:.08,
+  roughness:.34,
+  metalness:.28
+});
+
+const noseMat=new THREE.MeshStandardMaterial({
+  color:0x16253d,
+  emissive:0x0d1625,
+  emissiveIntensity:.16,
+  roughness:.22,
+  metalness:.34
+});
+
+const accentRedMat=new THREE.MeshStandardMaterial({
+  color:0xff5d79,
+  emissive:0xa21d48,
+  emissiveIntensity:.85,
+  roughness:.18,
+  metalness:.18
+});
+
+const canopyMat=new THREE.MeshPhysicalMaterial({
+  color:0x6fa0ff,
+  emissive:0x163670,
+  emissiveIntensity:.35,
+  roughness:.10,
+  metalness:.12,
+  transparent:true,
+  opacity:.74
+});
+
+const engineGlowMat=new THREE.MeshBasicMaterial({
+  color:0x8db8ff,
+  transparent:true,
+  opacity:.58,
+  blending:THREE.AdditiveBlending,
+  depthWrite:false
+});
+
+const fuselage=new THREE.Mesh(
+  new THREE.BoxGeometry(.34,.22,1.14),
+  hullWhiteMat
+);
+fuselage.position.z=-.02;
+player.add(fuselage);
+
+const midBody=new THREE.Mesh(
+  new THREE.BoxGeometry(.46,.16,.58),
+  hullGrayMat
+);
+midBody.position.set(0,.10,-.05);
+player.add(midBody);
+
+const nose=new THREE.Mesh(
+  new THREE.ConeGeometry(.16,.78,10),
+  noseMat
+);
+nose.rotation.x=-Math.PI/2;
+nose.position.set(0,-.02,-.95);
+nose.scale.x=.78;
+player.add(nose);
+
+const canopy=new THREE.Mesh(
+  new THREE.SphereGeometry(.14,18,12),
+  canopyMat
+);
+canopy.scale.set(.78,.42,1.35);
+canopy.position.set(0,.11,-.45);
+player.add(canopy);
+
+function makeWing(side){
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      new Float32Array([
+        0.00, 0.02, -0.34,
+        side*1.08, 0.00, -0.08,
+        side*0.56, 0.00, 0.48,
+
+        0.00, 0.02, -0.34,
+        side*0.56, 0.00, 0.48,
+        0.16*side, 0.00, 0.26
+      ]),
+      3
+    )
+  );
+  geometry.computeVertexNormals();
+
+  const wing=new THREE.Mesh(
+    geometry,
+    hullWhiteMat
+  );
+  player.add(wing);
+
+  const wingTip=new THREE.Mesh(
+    new THREE.BoxGeometry(.16,.10,.24),
+    hullGrayMat
+  );
+  wingTip.position.set(side*1.02,.08,-.10);
+  wingTip.rotation.z=side*-.48;
+  wingTip.rotation.x=.06;
+  player.add(wingTip);
+
+  const wingAccent=new THREE.Mesh(
+    new THREE.BoxGeometry(.08,.02,.26),
+    accentRedMat
+  );
+  wingAccent.position.set(side*.74,-.01,.08);
+  wingAccent.rotation.y=side*.34;
+  player.add(wingAccent);
+}
+
+makeWing(-1);
+makeWing(1);
+
+const rearBlock=new THREE.Mesh(
+  new THREE.BoxGeometry(.22,.26,.28),
+  hullWhiteMat
+);
+rearBlock.position.set(0,.16,.38);
+player.add(rearBlock);
+
+const dorsalFin=new THREE.Mesh(
+  new THREE.BoxGeometry(.07,.24,.18),
+  hullGrayMat
+);
+dorsalFin.position.set(0,.34,.36);
+player.add(dorsalFin);
+
+const finAccent=new THREE.Mesh(
+  new THREE.BoxGeometry(.03,.12,.08),
+  accentRedMat
+);
+finAccent.position.set(0,.42,.36);
+player.add(finAccent);
+
+const leftEngine=new THREE.Mesh(
+  new THREE.CylinderGeometry(.08,.09,.22,12),
+  engineGlowMat
+);
+leftEngine.rotation.z=Math.PI/2;
+leftEngine.position.set(-.34,.06,.50);
+player.add(leftEngine);
+
+const rightEngine=leftEngine.clone();
+rightEngine.position.x=.34;
+player.add(rightEngine);
+
+const leftTrail=new THREE.Mesh(
+  new THREE.ConeGeometry(.10,.55,16,1,true),
   new THREE.MeshBasicMaterial({
-    color:siteMagenta,
+    color:0x7149ff,
     transparent:true,
-    opacity:.82,
+    opacity:.18,
     blending:THREE.AdditiveBlending,
     depthWrite:false
   })
 );
-player.add(playerRing);
+leftTrail.rotation.x=Math.PI/2;
+leftTrail.position.set(-.34,.06,.86);
+player.add(leftTrail);
 
-const playerRingOuter=new THREE.Mesh(
-  new THREE.TorusGeometry(.88,.018,8,72),
+const rightTrail=leftTrail.clone();
+rightTrail.position.x=.34;
+player.add(rightTrail);
+
+const leftTrailCore=new THREE.Mesh(
+  new THREE.ConeGeometry(.055,.78,16,1,true),
   new THREE.MeshBasicMaterial({
-    color:siteViolet,
+    color:0xff42d0,
     transparent:true,
-    opacity:.42,
+    opacity:.56,
     blending:THREE.AdditiveBlending,
     depthWrite:false
   })
 );
-player.add(playerRingOuter);
+leftTrailCore.rotation.x=Math.PI/2;
+leftTrailCore.position.set(-.34,.06,1.00);
+player.add(leftTrailCore);
 
-const logoPivot=new THREE.Group();
-player.add(logoPivot);
+const rightTrailCore=leftTrailCore.clone();
+rightTrailCore.position.x=.34;
+player.add(rightTrailCore);
 
-const logoBackGlow=new THREE.Mesh(
-  new THREE.CircleGeometry(.70,48),
+const thrustHalo=new THREE.Mesh(
+  new THREE.TorusGeometry(.34,.018,8,32),
   new THREE.MeshBasicMaterial({
-    color:siteViolet,
+    color:0xa66cff,
     transparent:true,
-    opacity:.07,
+    opacity:.20,
+    blending:THREE.AdditiveBlending,
+    depthWrite:false
+  })
+);
+thrustHalo.rotation.x=Math.PI/2;
+thrustHalo.position.set(0,.06,.72);
+player.add(thrustHalo);
+
+const rearGlow=new THREE.Mesh(
+  new THREE.CircleGeometry(.16,24),
+  new THREE.MeshBasicMaterial({
+    color:0x7149ff,
+    transparent:true,
+    opacity:.045,
     blending:THREE.AdditiveBlending,
     depthWrite:false,
     side:THREE.DoubleSide
   })
 );
-logoBackGlow.position.z=.06;
-player.add(logoBackGlow);
+rearGlow.position.set(0,.08,.54);
+player.add(rearGlow);
 
-let logoModel=null;
-const logoLoader=new GLTFLoader();
+const playerRing=leftEngine;
+const playerRingOuter=rightEngine;
+const cubePivot=dorsalFin;
+const coreGlow=rearGlow;
 
-logoLoader.load(
-  "./logo.glb",
-  function(gltf){
-    logoModel=gltf.scene;
-    logoPivot.add(logoModel);
-    logoModel.updateMatrixWorld(true);
-
-    const box=new THREE.Box3().setFromObject(logoModel);
-    const center=box.getCenter(new THREE.Vector3());
-    const size=box.getSize(new THREE.Vector3());
-    const largest=Math.max(size.x,size.y,size.z);
-
-    logoModel.position.sub(center);
-
-    if(Number.isFinite(largest)&&largest>0){
-      logoPivot.scale.setScalar(1.10/largest);
-    }
-
-    logoModel.traverse(function(object){
-      if(!object.isMesh)return;
-
-      object.frustumCulled=false;
-
-      const materials=Array.isArray(object.material)
-        ?object.material
-        :[object.material];
-
-      materials.forEach(function(material){
-        if(!material)return;
-
-        material.transparent=true;
-        material.opacity=.76;
-        material.depthWrite=false;
-        material.side=THREE.DoubleSide;
-
-        if("roughness" in material){
-          material.roughness=.34;
-        }
-
-        if("metalness" in material){
-          material.metalness=.08;
-        }
-
-        material.needsUpdate=true;
-      });
-    });
-
-    statusText.textContent="logo.glb loaded";
-  },
-  undefined,
-  function(error){
-    console.error("logo.glb load error:",error);
-    statusText.textContent="Could not load logo.glb";
-  }
-);
-
-const engineCore=logoPivot;
-
-player.scale.setScalar(.72);
+player.scale.setScalar(.56);
 player.position.z=2;
 
 
 
-const tunnelSegments=[];
-const tunnelRails=[];
-const archSpacing=2.55;
-const tunnelCount=58;
-const tunnelRadius=5.0;
 
-const neonPink=new THREE.MeshBasicMaterial({
+
+
+
+let tunnelCurveTime=0;
+const tunnelSlices=[];
+const archSpacing=2.15;
+const tunnelCount=58;
+const tunnelRadius=4.85;
+const shapeSegments=96;
+
+const neonPink=new THREE.LineBasicMaterial({
   color:0xff42d0,
   transparent:true,
-  opacity:.92,
+  opacity:.46,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
 
-const neonBlue=new THREE.MeshBasicMaterial({
+const neonViolet=new THREE.LineBasicMaterial({
   color:0x7149ff,
   transparent:true,
-  opacity:.88,
+  opacity:.38,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
 
-const neonWhite=new THREE.MeshBasicMaterial({
-  color:0xd8d0ff,
-  transparent:true,
-  opacity:.52,
-  blending:THREE.AdditiveBlending,
-  depthWrite:false
-});
-
-const neonViolet=new THREE.MeshBasicMaterial({
+const neonSoft=new THREE.LineBasicMaterial({
   color:0xa66cff,
   transparent:true,
-  opacity:.42,
+  opacity:.26,
   blending:THREE.AdditiveBlending,
   depthWrite:false
 });
 
-const darkShellMat=new THREE.MeshBasicMaterial({
-  color:0x12071f,
+const neonWhite=new THREE.LineBasicMaterial({
+  color:0xe7dcff,
   transparent:true,
-  opacity:.18,
-  side:THREE.BackSide,
+  opacity:.26,
+  blending:THREE.AdditiveBlending,
   depthWrite:false
 });
 
-const ringGeometry=new THREE.TorusGeometry(
-  tunnelRadius,
-  .045,
-  8,
-  72
-);
-
-const glowRingGeometry=new THREE.TorusGeometry(
-  tunnelRadius,
-  .13,
-  10,
-  72
-);
-
-const shellGeometry=new THREE.CylinderGeometry(
-  tunnelRadius+.32,
-  tunnelRadius+.32,
-  2.45,
-  48,
-  1,
-  true
-);
-shellGeometry.rotateX(Math.PI/2);
-
 function curvePoint(z){
-  const depth=Math.max(0,-z);
-  const influence=THREE.MathUtils.clamp(depth/42,0,1);
-  const x=
-    Math.sin(depth*.070)*2.55*influence+
-    Math.sin(depth*.024)*1.15*influence;
-  const y=
-    Math.cos(depth*.052)*1.45*influence+
-    Math.sin(depth*.019)*.65*influence;
+  const depth=
+    Math.max(
+      0,
+      -z
+    );
 
-  return new THREE.Vector3(x,y,z);
+  const influence=
+    THREE.MathUtils.clamp(
+      depth/48,
+      0,
+      1
+    );
+
+  const timeCurve=
+    1+
+    Math.sin(
+      tunnelCurveTime*.10
+    )*.34;
+
+  const x=
+    (
+      Math.sin(
+        depth*.048+
+        tunnelCurveTime*.055
+      )*
+      2.05
+      +
+      Math.sin(
+        depth*.019-
+        tunnelCurveTime*.032
+      )*
+      .82
+    )*
+    influence*
+    timeCurve;
+
+  const y=
+    (
+      Math.cos(
+        depth*.039+
+        tunnelCurveTime*.035
+      )*
+      .88
+      +
+      Math.sin(
+        depth*.016-
+        tunnelCurveTime*.020
+      )*
+      .36
+    )*
+    influence*
+    (
+      .80+
+      Math.sin(
+        tunnelCurveTime*.085
+      )*.20
+    );
+
+  return new THREE.Vector3(
+    x,
+    y,
+    z
+  );
 }
 
 function orientAlongCurve(object,z){
   const current=curvePoint(z);
-  const ahead=curvePoint(z-.35);
+  const ahead=curvePoint(z-.44);
   const tangent=ahead.clone().sub(current).normalize();
 
   object.position.copy(current);
+
   object.quaternion.setFromUnitVectors(
     new THREE.Vector3(0,0,-1),
     tangent
   );
 }
 
-function createTunnelRing(i){
-  const group=new THREE.Group();
-  const isPink=i%2===0;
+function circularTunnelPoint(theta,radius,time,sliceIndex,offset){
+  const breathing=
+    1+
+    Math.sin(
+      time*.22+
+      sliceIndex*.055
+    )*.018;
 
-  const glow=new THREE.Mesh(
-    glowRingGeometry,
-    (isPink?neonPink:neonBlue).clone()
-  );
-  glow.material.opacity=.12;
-  group.add(glow);
+  const softWave=
+    1+
+    Math.sin(
+      theta*2+
+      time*.18+
+      sliceIndex*.025
+    )*.012;
 
-  const ring=new THREE.Mesh(
-    ringGeometry,
-    (isPink?neonPink:neonBlue).clone()
-  );
-  group.add(ring);
+  return {
+    x:
+      Math.cos(theta)*
+      (radius+offset)*
+      breathing*
+      softWave,
 
-  if(i%4===0){
-    const inner=new THREE.Mesh(
-      new THREE.TorusGeometry(
-        tunnelRadius-.34,
-        .025,
-        6,
-        72
-      ),
-      neonWhite.clone()
+    y:
+      Math.sin(theta)*
+      (radius+offset)*
+      breathing
+  };
+}
+
+function makeRingMaterial(index,layer){
+  const mode=(index+layer)%6;
+
+  if(mode===0||mode===3)return neonPink.clone();
+  if(mode===1||mode===4)return neonViolet.clone();
+  if(mode===2)return neonSoft.clone();
+  return neonWhite.clone();
+}
+
+function createRingGeometry(){
+  const positions=
+    new Float32Array(
+      shapeSegments*3
     );
-    group.add(inner);
-  }
 
-  if(i%3===0){
-    const shell=new THREE.Mesh(
-      shellGeometry,
-      darkShellMat.clone()
-    );
-    group.add(shell);
-  }
+  const geometry=
+    new THREE.BufferGeometry();
+
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      positions,
+      3
+    )
+  );
+
+  return geometry;
+}
+
+function createTunnelSlice(i){
+  const group=
+    new THREE.Group();
 
   group.userData.baseIndex=i;
   group.userData.z=-i*archSpacing;
-  orientAlongCurve(group,group.userData.z);
+
+  const offsets=[
+    -.26,
+    0,
+    .26
+  ];
+
+  offsets.forEach((offset,layer)=>{
+    const material=
+      makeRingMaterial(
+        i,
+        layer
+      );
+
+    const ring=
+      new THREE.LineLoop(
+        createRingGeometry(),
+        material
+      );
+
+    ring.userData.offset=offset;
+    ring.userData.layer=layer;
+    ring.userData.baseOpacity=material.opacity;
+
+    group.add(ring);
+  });
+
+  orientAlongCurve(
+    group,
+    group.userData.z
+  );
+
   world.add(group);
-  tunnelSegments.push(group);
+  tunnelSlices.push(group);
 }
 
 for(let i=0;i<tunnelCount;i++){
-  createTunnelRing(i);
+  createTunnelSlice(i);
 }
 
-function createTunnelRail(i,angle){
-  const z=-i*archSpacing;
-  const material=
-    angle%2===0
-      ?neonPink.clone()
-      :neonBlue.clone();
+function updateRingGeometry(ring,sliceIndex,time){
+  const positions=
+    ring.geometry.attributes.position.array;
 
-  material.opacity=.46;
+  const slowRotation=
+    time*.035+
+    sliceIndex*.012;
 
-  const rail=new THREE.Mesh(
-    new THREE.BoxGeometry(
-      .055,
-      .055,
-      2.48
-    ),
-    material
-  );
+  for(let i=0;i<shapeSegments;i++){
+    const theta=
+      i/shapeSegments*
+      Math.PI*2+
+      slowRotation;
 
-  rail.userData.baseIndex=i;
-  rail.userData.angle=angle;
-  rail.userData.z=z;
-  rail.userData.baseOpacity=material.opacity;
-  world.add(rail);
-  tunnelRails.push(rail);
-}
+    const p2=
+      circularTunnelPoint(
+        theta,
+        tunnelRadius,
+        time,
+        sliceIndex,
+        ring.userData.offset
+      );
 
-for(let i=0;i<tunnelCount;i++){
-  for(let j=0;j<8;j++){
-    createTunnelRail(i,j);
+    const p=i*3;
+
+    positions[p]=p2.x;
+    positions[p+1]=p2.y;
+    positions[p+2]=0;
   }
+
+  ring.geometry.attributes.position.needsUpdate=true;
 }
 
-function positionRail(rail){
-  const z=rail.userData.z;
-  const center=curvePoint(z);
-  const ahead=curvePoint(z-.35);
-  const tangent=ahead.clone().sub(center).normalize();
+tunnelSlices.forEach(slice=>{
+  slice.children.forEach(ring=>{
+    updateRingGeometry(
+      ring,
+      slice.userData.baseIndex,
+      0
+    );
+  });
+});
+const pCount=window.innerWidth<720?120:300,pPos=new Float32Array(pCount*3),pSpeed=new Float32Array(pCount);for(let i=0;i<pCount;i++){const p=i*3,r=.6+Math.random()*5.6,a=Math.random()*Math.PI*2;pPos[p]=Math.cos(a)*r;pPos[p+1]=Math.sin(a)*r;pPos[p+2]=-Math.random()*90;pSpeed[i]=.65+Math.random()*1.8}const pGeo=new THREE.BufferGeometry();pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));const stars=new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xa66cff,size:.022,transparent:true,opacity:.08,depthWrite:false,blending:THREE.AdditiveBlending}));world.add(stars);
 
-  const angle=
-    rail.userData.angle/8*
-    Math.PI*2;
+const farStarCount=
+  window.innerWidth<720
+    ?220
+    :680;
 
-  const radial=new THREE.Vector3(
-    Math.cos(angle)*4.55,
-    Math.sin(angle)*4.55,
-    0
+const farStarPositions=
+  new Float32Array(
+    farStarCount*3
   );
 
-  rail.position.copy(center).add(radial);
+for(let i=0;i<farStarCount;i++){
+  const p=i*3;
 
-  rail.quaternion.setFromUnitVectors(
-    new THREE.Vector3(0,0,-1),
-    tangent
+  farStarPositions[p]=
+    THREE.MathUtils.randFloat(
+      -28,
+      28
+    );
+
+  farStarPositions[p+1]=
+    THREE.MathUtils.randFloat(
+      -18,
+      18
+    );
+
+  farStarPositions[p+2]=
+    THREE.MathUtils.randFloat(
+      -120,
+      8
+    );
+}
+
+const farStarGeometry=
+  new THREE.BufferGeometry();
+
+farStarGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(
+    farStarPositions,
+    3
+  )
+);
+
+const farStars=
+  new THREE.Points(
+    farStarGeometry,
+    new THREE.PointsMaterial({
+      color:0xd8d0ff,
+      size:.035,
+      transparent:true,
+      opacity:.32,
+      depthWrite:false
+    })
+  );
+
+scene.add(farStars);
+
+const nebulaGroup=
+  new THREE.Group();
+
+scene.add(nebulaGroup);
+
+function addNebula(
+  x,
+  y,
+  z,
+  scale,
+  color,
+  opacity
+){
+  const material=
+    new THREE.SpriteMaterial({
+      color:color,
+      transparent:true,
+      opacity:opacity,
+      blending:THREE.AdditiveBlending,
+      depthWrite:false
+    });
+
+  const sprite=
+    new THREE.Sprite(
+      material
+    );
+
+  sprite.position.set(
+    x,
+    y,
+    z
+  );
+
+  sprite.scale.set(
+    scale,
+    scale,
+    1
+  );
+
+  nebulaGroup.add(
+    sprite
   );
 }
 
-tunnelRails.forEach(positionRail);
-const pCount=window.innerWidth<720?420:1200,pPos=new Float32Array(pCount*3),pSpeed=new Float32Array(pCount);for(let i=0;i<pCount;i++){const p=i*3,r=.6+Math.random()*5.6,a=Math.random()*Math.PI*2;pPos[p]=Math.cos(a)*r;pPos[p+1]=Math.sin(a)*r;pPos[p+2]=-Math.random()*90;pSpeed[i]=.65+Math.random()*1.8}const pGeo=new THREE.BufferGeometry();pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));const stars=new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xa66cff,size:.022,transparent:true,opacity:.08,depthWrite:false,blending:THREE.AdditiveBlending}));world.add(stars);
-const enemyGeos=[new THREE.TetrahedronGeometry(.46),new THREE.IcosahedronGeometry(.42),new THREE.BoxGeometry(.62,.62,.62),new THREE.OctahedronGeometry(.46)],enemyMat=new THREE.MeshStandardMaterial({color:0xff42d0,emissive:0x6e164f,emissiveIntensity:1,roughness:.34,metalness:.18}),enemyMat2=new THREE.MeshStandardMaterial({color:0x7149ff,emissive:0x24105c,emissiveIntensity:1.1,roughness:.3,metalness:.22}),bulletGeo=new THREE.CylinderGeometry(.035,.035,.62,7),bulletMat=new THREE.MeshBasicMaterial({color:0xffffff});bulletGeo.rotateX(Math.PI/2);const enemies=[],bullets=[],explosions=[];let running=false,score=0,health=100,speed=15,elapsed=0,enemyTimer=0,nextEnemy=.58,fireCooldown=0;const input={left:false,right:false,up:false,down:false,fire:false},target=new THREE.Vector2();
+addNebula(
+  -9,
+  5,
+  -54,
+  14,
+  0x7149ff,
+  .055
+);
+
+addNebula(
+  11,
+  -5,
+  -74,
+  17,
+  0xff42d0,
+  .04
+);
+
+addNebula(
+  3,
+  7,
+  -96,
+  19,
+  0xa66cff,
+  .035
+);
+const enemyGeos=[new THREE.TetrahedronGeometry(.46),new THREE.IcosahedronGeometry(.42),new THREE.BoxGeometry(.62,.62,.62),new THREE.OctahedronGeometry(.46)],enemyMat=new THREE.MeshStandardMaterial({color:0xff42d0,emissive:0x6e164f,emissiveIntensity:1,roughness:.34,metalness:.18}),enemyMat2=new THREE.MeshStandardMaterial({color:0x7149ff,emissive:0x24105c,emissiveIntensity:1.1,roughness:.3,metalness:.22}),bulletGeo=new THREE.CylinderGeometry(.035,.035,.62,7),bulletMat=new THREE.MeshBasicMaterial({color:0xffffff});bulletGeo.rotateX(Math.PI/2);const enemies=[],bullets=[],explosions=[];let running=false,score=0,health=100,targetsDestroyed=0,speed=15,elapsed=0,enemyTimer=0,nextEnemy=.58,fireCooldown=0;const input={left:false,right:false,up:false,down:false,fire:false},target=new THREE.Vector2();
 function setKey(code,v){if(code==="KeyA"||code==="ArrowLeft")input.left=v;if(code==="KeyD"||code==="ArrowRight")input.right=v;if(code==="KeyW"||code==="ArrowUp")input.up=v;if(code==="KeyS"||code==="ArrowDown")input.down=v;if(code==="Space")input.fire=v}window.addEventListener("keydown",e=>{if(["KeyW","KeyA","KeyS","KeyD","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();setKey(e.code,true)});window.addEventListener("keyup",e=>setKey(e.code,false));document.querySelectorAll("[data-input]").forEach(b=>{const n=b.dataset.input;const on=e=>{e.preventDefault();input[n]=true},off=e=>{e.preventDefault();input[n]=false};b.addEventListener("pointerdown",on);b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off)});
 function spawnEnemy(){const m=new THREE.Mesh(enemyGeos[Math.floor(Math.random()*enemyGeos.length)],Math.random()>.45?enemyMat:enemyMat2);m.position.set(THREE.MathUtils.randFloat(-3.7,3.7),THREE.MathUtils.randFloat(-3.1,3.1),-46);m.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);m.userData.spin=new THREE.Vector3(THREE.MathUtils.randFloat(-1.4,1.4),THREE.MathUtils.randFloat(-1.6,1.6),THREE.MathUtils.randFloat(-1.2,1.2));world.add(m);enemies.push(m)}
 function fire(){if(fireCooldown>0)return;fireCooldown=.15;const b=new THREE.Mesh(bulletGeo,bulletMat);b.position.set(player.position.x,player.position.y,player.position.z-.7);scene.add(b);bullets.push(b)}
 function boom(pos,color){const g=new THREE.Group();for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.TetrahedronGeometry(.08),new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));m.position.copy(pos);m.userData.v=new THREE.Vector3(THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-1,3.2));g.add(m)}scene.add(g);explosions.push({g,life:.65})}
-function hud(){scoreValue.textContent=String(Math.floor(score)).padStart(6,"0");healthValue.textContent=Math.max(0,Math.round(health))+"%";healthMeter.style.transform="scaleX("+THREE.MathUtils.clamp(health/100,0,1)+")"}
-function reset(){enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>scene.remove(x.g));enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;speed=15;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){running=false;finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
+function hud(){scoreValue.textContent=String(Math.floor(score)).padStart(6,"0");healthValue.textContent=Math.max(0,Math.round(health))+"%";healthMeter.style.transform="scaleX("+THREE.MathUtils.clamp(health/100,0,1)+")";targetsValue.textContent=String(targetsDestroyed).padStart(3,"0")}
+function reset(){enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>scene.remove(x.g));enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;targetsDestroyed=0;speed=15;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){running=false;finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0")+"  •  Targets Destroyed "+String(targetsDestroyed).padStart(3,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
 function updatePlayer(dt){
 const s=6.2;
 
@@ -359,116 +677,163 @@ player.position.y=THREE.MathUtils.lerp(player.position.y,target.y,.18);
 
 player.rotation.z=THREE.MathUtils.lerp(
   player.rotation.z,
-  (target.x-player.position.x)*-.10,
+  (target.x-player.position.x)*-.18,
   .14
 );
 
 player.rotation.x=THREE.MathUtils.lerp(
   player.rotation.x,
-  (target.y-player.position.y)*-.06,
+  .04+(target.y-player.position.y)*-.10,
   .14
 );
 
-logoPivot.rotation.y+=dt*1.8;
-logoPivot.rotation.x=Math.sin(elapsed*.8)*.10;
-
-playerRing.rotation.z+=dt*.65;
-playerRingOuter.rotation.z-=dt*.42;
-
-logoBackGlow.scale.setScalar(
-  1+Math.sin(elapsed*2.4)*.05
+player.rotation.y=THREE.MathUtils.lerp(
+  player.rotation.y,
+  (target.x-player.position.x)*.06,
+  .12
 );
 
+cubePivot.rotation.z=Math.sin(elapsed*1.4)*.06;
+
+playerRing.scale.setScalar(1+Math.sin(elapsed*8.0)*.08);
+playerRingOuter.scale.setScalar(1+Math.sin(elapsed*8.0+.8)*.08);
+
+coreGlow.scale.setScalar(
+  1+Math.sin(elapsed*2.4)*.10
+);
+
+const thrustPulse=.92+Math.sin(elapsed*13.5)*.14;
+const thrustPulseCore=1.08+Math.sin(elapsed*13.5+.45)*.22;
+
+leftTrail.scale.set(1,1,thrustPulse);
+rightTrail.scale.set(1,1,thrustPulse);
+
+leftTrailCore.scale.set(1,1,thrustPulseCore);
+rightTrailCore.scale.set(1,1,thrustPulseCore);
+
+leftTrail.material.opacity=.18+Math.abs(Math.sin(elapsed*13.5))*.14;
+rightTrail.material.opacity=leftTrail.material.opacity;
+
+leftTrailCore.material.opacity=.38+Math.abs(Math.sin(elapsed*13.5+.45))*.24;
+rightTrailCore.material.opacity=leftTrailCore.material.opacity;
+
+thrustHalo.scale.setScalar(.94+Math.sin(elapsed*9.0)*.06);
+thrustHalo.material.opacity=.14+Math.abs(Math.sin(elapsed*9.0))*.10;
+
 playerLight.position.x=player.position.x;
-playerLight.position.y=player.position.y;
+playerLight.position.y=player.position.y+.55;
+playerLight.position.z=player.position.z-.85;
 
 if(input.fire)fire();
 }
 
+
+
+
+
 function updateTunnel(dt){
 const move=speed*dt;
 
-tunnelSegments.forEach(seg=>{
-  seg.userData.z+=move;
+tunnelCurveTime+=dt;
 
-  if(seg.userData.z>8){
-    seg.userData.z-=tunnelCount*archSpacing;
+tunnelSlices.forEach(slice=>{
+  slice.userData.z+=move;
+
+  if(slice.userData.z>6.5){
+    slice.userData.z-=tunnelCount*archSpacing;
   }
 
   orientAlongCurve(
-    seg,
-    seg.userData.z
+    slice,
+    slice.userData.z
   );
 
-  const depth=Math.max(0,-seg.userData.z);
-  const farFade=THREE.MathUtils.clamp((145-depth)/112,.08,1);
-  const nearFade=THREE.MathUtils.clamp((depth+2)/12,.16,1);
-  const pulse=.82+.18*Math.sin(
-    elapsed*1.15+
-    seg.userData.baseIndex*.55
-  );
+  const depth=
+    Math.max(
+      0,
+      -slice.userData.z
+    );
 
-  seg.children.forEach((child,index)=>{
-    if(!child.material)return;
+  const farFade=
+    THREE.MathUtils.clamp(
+      (132-depth)/108,
+      .05,
+      1
+    );
 
-    if(index===0){
-      child.material.opacity=.11*farFade*nearFade*pulse;
-    }else if(index===1){
-      child.material.opacity=.90*farFade*nearFade*pulse;
-    }else{
-      child.material.opacity=.34*farFade*nearFade;
-    }
+  const nearFade=
+    THREE.MathUtils.clamp(
+      (depth+.5)/9,
+      .08,
+      1
+    );
+
+  const pulse=
+    .95+
+    .05*
+    Math.sin(
+      elapsed*.42+
+      slice.userData.baseIndex*.13
+    );
+
+  slice.children.forEach((ring,layer)=>{
+    updateRingGeometry(
+      ring,
+      slice.userData.baseIndex,
+      elapsed
+    );
+
+    const layerWeight=
+      layer===1
+        ?1
+        :.52;
+
+    ring.material.opacity=
+      ring.userData.baseOpacity*
+      farFade*
+      nearFade*
+      pulse*
+      layerWeight;
   });
 });
 
-tunnelRails.forEach((rail,index)=>{
-  rail.userData.z+=move;
-
-  if(rail.userData.z>8){
-    rail.userData.z-=tunnelCount*archSpacing;
-  }
-
-  positionRail(rail);
-
-  const depth=Math.max(0,-rail.userData.z);
-  const farFade=THREE.MathUtils.clamp((145-depth)/112,.05,1);
-  const nearFade=THREE.MathUtils.clamp((depth+2)/12,.14,1);
-  const shimmer=.62+.38*Math.sin(
-    elapsed*1.6+
-    index*.17
+const pa=
+  pGeo.getAttribute(
+    "position"
   );
 
-  rail.material.opacity=
-    rail.userData.baseOpacity*
-    farFade*
-    nearFade*
-    shimmer;
-});
-
-const pa=pGeo.getAttribute("position");
 for(let i=0;i<pCount;i++){
   const zi=i*3+2;
-  pa.array[zi]+=move*pSpeed[i]*.72;
 
-  if(pa.array[zi]>8){
-    pa.array[zi]=-120;
+  pa.array[zi]+=
+    move*
+    pSpeed[i]*
+    .54;
+
+  if(pa.array[zi]>6.5){
+    pa.array[zi]=-112;
   }
 }
+
 pa.needsUpdate=true;
 
-const cameraCurve=curvePoint(-18);
+const cameraCurve=
+  curvePoint(-22);
+
 camera.lookAt(
-  player.position.x*.06+
-  cameraCurve.x*.20,
-  player.position.y*.04+
-  cameraCurve.y*.20,
-  -18
+  player.position.x*.035+
+  cameraCurve.x*.24,
+  player.position.y*.025+
+  cameraCurve.y*.18,
+  -22
 );
 }
 function updateEnemies(dt){enemyTimer+=dt;if(enemyTimer>=nextEnemy){enemyTimer=0;nextEnemy=Math.max(.2,.62-elapsed*.0045);spawnEnemy()}for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];e.position.z+=speed*dt;e.rotation.x+=e.userData.spin.x*dt;e.rotation.y+=e.userData.spin.y*dt;e.rotation.z+=e.userData.spin.z*dt;const dx=e.position.x-player.position.x,dy=e.position.y-player.position.y,dz=e.position.z-player.position.z;if(dx*dx+dy*dy+dz*dz<.52){health-=22;boom(e.position,0xff42d0);world.remove(e);enemies.splice(i,1);if(health<=0){health=0;hud();end();return}}else if(e.position.z>7){world.remove(e);enemies.splice(i,1)}}}
-function updateBullets(dt){for(let bi=bullets.length-1;bi>=0;bi--){const b=bullets[bi];b.position.z-=34*dt;let hit=false;for(let ei=enemies.length-1;ei>=0;ei--){const e=enemies[ei],dx=b.position.x-e.position.x,dy=b.position.y-e.position.y,dz=b.position.z-e.position.z;if(dx*dx+dy*dy+dz*dz<.42){boom(e.position,e.material===enemyMat?0xff42d0:0x7149ff);world.remove(e);enemies.splice(ei,1);scene.remove(b);bullets.splice(bi,1);score+=125;hit=true;break}}if(!hit&&b.position.z<-55){scene.remove(b);bullets.splice(bi,1)}}}
+function updateBullets(dt){for(let bi=bullets.length-1;bi>=0;bi--){const b=bullets[bi];b.position.z-=34*dt;let hit=false;for(let ei=enemies.length-1;ei>=0;ei--){const e=enemies[ei],dx=b.position.x-e.position.x,dy=b.position.y-e.position.y,dz=b.position.z-e.position.z;if(dx*dx+dy*dy+dz*dz<.42){boom(e.position,e.material===enemyMat?0xff42d0:0x7149ff);world.remove(e);enemies.splice(ei,1);scene.remove(b);bullets.splice(bi,1);score+=125;targetsDestroyed+=1;hit=true;break}}if(!hit&&b.position.z<-55){scene.remove(b);bullets.splice(bi,1)}}}
 function updateBooms(dt){for(let i=explosions.length-1;i>=0;i--){const ex=explosions[i];ex.life-=dt;const f=Math.max(ex.life/.65,0);ex.g.children.forEach(s=>{s.position.addScaledVector(s.userData.v,dt);s.rotation.x+=dt*5;s.rotation.y+=dt*4;s.material.opacity=f});if(ex.life<=0){scene.remove(ex.g);explosions.splice(i,1)}}}
-function resize(){const w=Math.max(container.clientWidth,1),h=Math.max(container.clientHeight,1);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(container);resize();hud();const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);fireCooldown=Math.max(0,fireCooldown-dt);if(running){elapsed+=dt;speed=Math.min(26,15+elapsed*.18);score+=dt*speed*4;updatePlayer(dt);updateTunnel(dt);updateEnemies(dt);updateBullets(dt);updateBooms(dt);hud();camera.position.x=THREE.MathUtils.lerp(camera.position.x,player.position.x*.1,.04);camera.position.y=THREE.MathUtils.lerp(camera.position.y,player.position.y*.08,.04);tunnelLight.position.x=Math.sin(elapsed*.7)*1.4;tunnelLight.position.y=Math.cos(elapsed*.55)*1.1}else{playerRing.rotation.z+=dt*.8;tunnelSegments.forEach(s=>s.rotation.z+=dt*.018);updateBooms(dt)}renderer.render(scene,camera)}animate();
+function resize(){const w=Math.max(container.clientWidth,1),h=Math.max(container.clientHeight,1);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(container);resize();hud();const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);fireCooldown=Math.max(0,fireCooldown-dt);if(running){elapsed+=dt;speed=Math.min(26,15+elapsed*.18);score+=dt*speed*4;updatePlayer(dt);updateTunnel(dt);
+farStars.rotation.z+=dt*.0025;
+nebulaGroup.rotation.z-=dt*.0015;updateEnemies(dt);updateBullets(dt);updateBooms(dt);hud();camera.position.x=THREE.MathUtils.lerp(camera.position.x,player.position.x*.1,.04);camera.position.y=THREE.MathUtils.lerp(camera.position.y,player.position.y*.08,.04);tunnelLight.position.x=Math.sin(elapsed*.7)*1.4;tunnelLight.position.y=Math.cos(elapsed*.55)*1.1}else{playerRing.rotation.z+=dt*.8;tunnelSegments.forEach(s=>s.rotation.z+=dt*.018);updateBooms(dt)}renderer.render(scene,camera)}animate();
 </script>
 </body>
 </html>
