@@ -2179,6 +2179,37 @@ body{
   }
 }
 
+
+/* Make oscillator controls two rows so the knobs don't feel squished */
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(4,minmax(72px,110px)) !important;
+  gap:8px !important;
+  justify-content:center !important;
+  align-content:start;
+}
+
+.osc-panel .synth-controls .knob-card{
+  min-height:0;
+}
+
+@media(max-width:1180px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(4,minmax(78px,110px)) !important;
+  }
+}
+
+@media(max-width:760px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(3,minmax(82px,1fr)) !important;
+  }
+}
+
+@media(max-width:520px){
+  .osc-panel .synth-controls{
+    grid-template-columns:repeat(2,minmax(82px,1fr)) !important;
+  }
+}
+
 </style>
 </head>
 <body>
