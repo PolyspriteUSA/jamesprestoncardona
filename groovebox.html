@@ -3305,6 +3305,29 @@ body{
   background:#050508!important;
 }
 
+
+/* Dedicated visible indicators for Master Filter and Bass Filter knobs */
+.instrument-master-filter .rotary-knob::after,
+.instrument-bass-filter .rotary-knob::after{
+  display:none!important;
+}
+.filter-knob-indicator{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:2px;
+  height:23px;
+  border-radius:2px;
+  background:linear-gradient(var(--magenta),var(--violet));
+  box-shadow:0 0 9px rgba(166,108,255,.48);
+  pointer-events:none;
+  transform-origin:50% 100%;
+  transform:
+    translate(-50%,-100%)
+    rotate(0deg);
+  transition:transform .04s linear;
+}
+
 </style>
 </head>
 <body>
@@ -9780,6 +9803,130 @@ animate();
   );
 
   drawVisualizer();
+})();
+</script>
+
+
+<script>
+(function(){
+  const ids=[
+    "synthFilterCutoff",
+    "synthFilterRes",
+    "synthFilterDrive",
+    "bassFilterCutoff",
+    "bassFilterRes",
+    "bassFilterDrive"
+  ];
+
+  function updateFilterKnob(input){
+    const knob=
+      document.querySelector(
+        '[data-knob-for="'+
+        input.id+
+        '"]'
+      );
+
+    if(!knob)return;
+
+    let indicator=
+      knob.querySelector(
+        ".filter-knob-indicator"
+      );
+
+    if(!indicator){
+      indicator=
+        document.createElement("span");
+
+      indicator.className=
+        "filter-knob-indicator";
+
+      knob.appendChild(indicator);
+    }
+
+    const min=
+      parseFloat(
+        input.min||0
+      );
+
+    const max=
+      parseFloat(
+        input.max||1
+      );
+
+    const value=
+      parseFloat(
+        input.value||0
+      );
+
+    const normalized=
+      max>min
+        ?(value-min)/(max-min)
+        :0;
+
+    const angle=
+      -135+
+      Math.max(
+        0,
+        Math.min(
+          1,
+          normalized
+        )
+      )*270;
+
+    indicator.style.transform=
+      "translate(-50%,-100%) rotate("+
+      angle+
+      "deg)";
+  }
+
+  function initFilterKnobs(){
+    ids.forEach(function(id){
+      const input=
+        document.getElementById(id);
+
+      if(!input)return;
+
+      updateFilterKnob(input);
+
+      if(
+        input.dataset.filterVisualBound===
+        "1"
+      ){
+        return;
+      }
+
+      input.dataset.filterVisualBound="1";
+
+      input.addEventListener(
+        "input",
+        function(){
+          updateFilterKnob(input);
+        }
+      );
+
+      input.addEventListener(
+        "change",
+        function(){
+          updateFilterKnob(input);
+        }
+      );
+    });
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      initFilterKnobs,
+      {once:true}
+    );
+  }else{
+    initFilterKnobs();
+  }
+
+  setTimeout(
+    initFilterKnobs,
+    500
+  );
 })();
 </script>
 
