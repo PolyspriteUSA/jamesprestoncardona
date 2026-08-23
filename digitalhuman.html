@@ -624,7 +624,7 @@
               aria-pressed="false"
             >
               <strong>Futuristic Robot</strong>
-              <span>Exposed combat endoskeleton</span>
+              <span>Silver armored combat android</span>
             </button>
 
             <button
@@ -644,7 +644,7 @@
               aria-pressed="false"
             >
               <strong>Backup Mateo</strong>
-              <span>Procedural human character</span>
+              <span>Burgundy hoodie procedural Mateo</span>
             </button>
           </div>
         </div>
@@ -3955,7 +3955,7 @@
 
       const skin =
         new THREE.MeshPhysicalMaterial({
-          color: 0xb87958,
+          color: 0xc58e77,
           roughness: 0.52,
           metalness: 0,
           clearcoat: 0.08,
@@ -3967,7 +3967,7 @@
         skin.clone();
 
       skinWarm.color.setHex(
-        0xa96548
+        0xaa6958
       );
 
       const hair =
@@ -3980,27 +3980,52 @@
 
       const shirt =
         new THREE.MeshPhysicalMaterial({
-          color: 0x24212d,
+          color: 0x5a1822,
           roughness: 0.74,
           sheen: 0.32,
           sheenColor: new THREE.Color(
-            0x594b74
+            0x8d3a46
           ),
           sheenRoughness: 0.82
         });
 
+      const hoodieDark =
+        shirt.clone();
+
+      hoodieDark.color.setHex(
+        0x3e0f17
+      );
+
       const trousers =
         new THREE.MeshStandardMaterial({
-          color: 0x15171c,
-          roughness: 0.82
+          color: 0x0b0c0f,
+          roughness: 0.88
         });
 
       const shoeUpper =
         new THREE.MeshPhysicalMaterial({
-          color: 0x08090c,
+          color: 0x5b111d,
           roughness: 0.50,
           clearcoat: 0.18,
           clearcoatRoughness: 0.5
+        });
+
+      const shoeWhite =
+        new THREE.MeshStandardMaterial({
+          color: 0xe6e3df,
+          roughness: 0.62
+        });
+
+      const outsole =
+        new THREE.MeshStandardMaterial({
+          color: 0x050506,
+          roughness: 0.76
+        });
+
+      const cordMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0xc5c3c1,
+          roughness: 0.78
         });
 
       const laceMaterial =
@@ -4053,6 +4078,96 @@
         shirt,
         [0, 1.16, 0],
         [1.08, 1, 0.72]
+      );
+
+      mesh(
+        new THREE.SphereGeometry(
+          0.23,
+          24,
+          16
+        ),
+        shirt,
+        [0, 1.48, -0.105],
+        [1.08, 0.62, 0.72]
+      );
+
+      const hoodOpening =
+        mesh(
+          new THREE.TorusGeometry(
+            0.155,
+            0.040,
+            10,
+            28
+          ),
+          hoodieDark,
+          [0, 1.49, 0.015],
+          [1.10, 0.78, 0.78]
+        );
+
+      hoodOpening.rotation.x =
+        0.12;
+
+      mesh(
+        new THREE.BoxGeometry(
+          0.43,
+          0.070,
+          0.29
+        ),
+        hoodieDark,
+        [0, 0.75, 0.005],
+        [1, 1, 1]
+      );
+
+      mesh(
+        new THREE.BoxGeometry(
+          0.31,
+          0.16,
+          0.030
+        ),
+        shirt,
+        [0, 1.03, 0.185],
+        [1, 1, 1]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          const pocketSeam =
+            mesh(
+              new THREE.BoxGeometry(
+                0.12,
+                0.012,
+                0.014
+              ),
+              hoodieDark,
+              [side * 0.105, 1.08, 0.204],
+              [1, 1, 1]
+            );
+
+          pocketSeam.rotation.z =
+            side * -0.48;
+
+          mesh(
+            new THREE.CylinderGeometry(
+              0.007,
+              0.007,
+              0.23,
+              8
+            ),
+            cordMaterial,
+            [side * 0.045, 1.36, 0.195]
+          );
+
+          mesh(
+            new THREE.CylinderGeometry(
+              0.011,
+              0.008,
+              0.028,
+              8
+            ),
+            cordMaterial,
+            [side * 0.045, 1.235, 0.195]
+          );
+        }
       );
 
       mesh(
@@ -4111,8 +4226,48 @@
           Math.PI * 0.54
         ),
         hair,
-        [0, 1.81, -0.008],
-        [0.82, 0.64, 0.87]
+        [0, 1.82, -0.008],
+        [0.82, 0.58, 0.87]
+      );
+
+      [
+        [-0.105, 1.860, 0.008, -0.24, 0.86],
+        [-0.058, 1.884, 0.022, -0.14, 1.02],
+        [0.000, 1.898, 0.032, 0.04, 1.14],
+        [0.058, 1.888, 0.020, 0.14, 1.04],
+        [0.108, 1.862, 0.002, 0.24, 0.86]
+      ].forEach(
+        function (tuft) {
+          const hairTuft =
+            mesh(
+              new THREE.SphereGeometry(
+                0.058,
+                16,
+                12
+              ),
+              hair,
+              [tuft[0], tuft[1], tuft[2]],
+              [0.88, tuft[4], 0.76]
+            );
+
+          hairTuft.rotation.z =
+            tuft[3];
+        }
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          mesh(
+            new THREE.SphereGeometry(
+              0.11,
+              16,
+              12
+            ),
+            hair,
+            [side * 0.13, 1.805, -0.018],
+            [0.24, 0.66, 0.70]
+          );
+        }
       );
 
       mesh(
@@ -4278,14 +4433,14 @@
 
           mesh(
             new THREE.CapsuleGeometry(
-              0.074,
+              0.080,
               0.24,
               10,
               16
             ),
             shirt,
             [0, -0.20, 0],
-            [1, 1, 0.88],
+            [1.04, 1, 0.94],
             armPivot
           );
 
@@ -4295,22 +4450,35 @@
               16,
               12
             ),
-            skin,
+            shirt,
             [0, -0.40, 0.004],
-            [0.94, 0.96, 0.88],
+            [1.06, 0.98, 0.96],
             armPivot
           );
 
           mesh(
             new THREE.CapsuleGeometry(
-              0.064,
+              0.072,
               0.22,
               10,
               16
             ),
-            skin,
+            shirt,
             [0, -0.54, 0.004],
-            [0.94, 1, 0.86],
+            [1, 1, 0.94],
+            armPivot
+          );
+
+          mesh(
+            new THREE.CylinderGeometry(
+              0.068,
+              0.073,
+              0.075,
+              14
+            ),
+            hoodieDark,
+            [0, -0.70, 0.005],
+            null,
             armPivot
           );
 
@@ -4321,10 +4489,44 @@
               14
             ),
             skin,
-            [0, -0.72, 0.008],
+            [0, -0.79, 0.008],
             [0.76, 1.12, 0.70],
             armPivot
           );
+
+          [-1, 0, 1].forEach(
+            function (finger) {
+              mesh(
+                new THREE.CapsuleGeometry(
+                  0.009,
+                  0.040,
+                  6,
+                  10
+                ),
+                skin,
+                [finger * 0.019, -0.885, 0.025],
+                [1, 1, 0.86],
+                armPivot
+              );
+            }
+          );
+
+          const thumb =
+            mesh(
+              new THREE.CapsuleGeometry(
+                0.010,
+                0.032,
+                6,
+                10
+              ),
+              skin,
+              [-side * 0.050, -0.825, 0.020],
+              [1, 1, 0.88],
+              armPivot
+            );
+
+          thumb.rotation.z =
+            side * 0.72;
 
           const legPivot =
             new THREE.Group();
@@ -4390,6 +4592,46 @@
             shoeGroup
           );
 
+          const blackOutsole =
+            propMesh(
+              shoeGroup,
+              new THREE.CapsuleGeometry(
+                0.105,
+                0.17,
+                8,
+                16
+              ),
+              outsole,
+              [0, -0.032, 0.040],
+              [Math.PI / 2, 0, 0]
+            );
+
+          blackOutsole.scale.set(
+            1.07,
+            1.17,
+            0.20
+          );
+
+          const whiteMidsole =
+            propMesh(
+              shoeGroup,
+              new THREE.CapsuleGeometry(
+                0.102,
+                0.17,
+                8,
+                16
+              ),
+              shoeWhite,
+              [0, -0.006, 0.040],
+              [Math.PI / 2, 0, 0]
+            );
+
+          whiteMidsole.scale.set(
+            1.06,
+            1.16,
+            0.30
+          );
+
           const upper =
             propMesh(
               shoeGroup,
@@ -4417,12 +4659,53 @@
               18,
               12
             ),
-            shoeUpper,
+            shoeWhite,
             [0, 0.045, 0.19]
           ).scale.set(
             1.05,
             0.62,
             0.82
+          );
+
+          [-1, 1].forEach(
+            function (shoeSide) {
+              propMesh(
+                shoeGroup,
+                new THREE.BoxGeometry(
+                  0.018,
+                  0.070,
+                  0.17
+                ),
+                shoeWhite,
+                [shoeSide * 0.102, 0.060, 0.030]
+              );
+
+              const sideMark =
+                propMesh(
+                  shoeGroup,
+                  new THREE.BoxGeometry(
+                    0.020,
+                    0.020,
+                    0.105
+                  ),
+                  outsole,
+                  [shoeSide * 0.113, 0.075, 0.040]
+                );
+
+              sideMark.rotation.x =
+                -0.16;
+            }
+          );
+
+          propMesh(
+            shoeGroup,
+            new THREE.BoxGeometry(
+              0.17,
+              0.030,
+              0.055
+            ),
+            shoeUpper,
+            [0, 0.078, 0.235]
           );
 
           for (
@@ -4458,7 +4741,7 @@
       return person;
     }
 
-    function createFuturisticRobot() {
+    function createEndoskeletonRobot() {
       const robot =
         new THREE.Group();
 
@@ -5138,6 +5421,757 @@
       return robot;
     }
 
+    function createFuturisticRobot() {
+      const robot =
+        new THREE.Group();
+
+      robot.userData.limbs = {
+        arms: [],
+        legs: []
+      };
+
+      robot.userData.isProcedural =
+        true;
+
+      robot.userData.characterType =
+        "robot";
+
+      const inner =
+        new THREE.MeshStandardMaterial({
+          color: 0x06080c,
+          roughness: 0.36,
+          metalness: 0.88,
+          envMapIntensity: 0.74
+        });
+
+      const armor =
+        new THREE.MeshPhysicalMaterial({
+          color: 0x292e36,
+          roughness: 0.25,
+          metalness: 0.76,
+          clearcoat: 0.26,
+          clearcoatRoughness: 0.36,
+          envMapIntensity: 0.96
+        });
+
+      const steelPanel =
+        new THREE.MeshStandardMaterial({
+          color: 0x7b828a,
+          roughness: 0.29,
+          metalness: 0.82,
+          envMapIntensity: 1.06
+        });
+
+      const redDetail =
+        new THREE.MeshStandardMaterial({
+          color: 0x7d1028,
+          roughness: 0.38,
+          metalness: 0.52
+        });
+
+      const eyeGlow =
+        new THREE.MeshBasicMaterial({
+          color: 0xff209f,
+          toneMapped: false
+        });
+
+      function robotMesh(
+        geometry,
+        material,
+        position,
+        scale,
+        parent = robot
+      ) {
+        const part =
+          new THREE.Mesh(
+            geometry,
+            material
+          );
+
+        part.position.set(
+          ...position
+        );
+
+        if (scale) {
+          part.scale.set(
+            ...scale
+          );
+        }
+
+        part.castShadow =
+          true;
+
+        part.receiveShadow =
+          true;
+
+        parent.add(
+          part
+        );
+
+        return part;
+      }
+
+      function rodBetween(
+        start,
+        end,
+        radius,
+        material,
+        parent = robot
+      ) {
+        const startPoint =
+          new THREE.Vector3(
+            ...start
+          );
+
+        const endPoint =
+          new THREE.Vector3(
+            ...end
+          );
+
+        const direction =
+          new THREE.Vector3()
+            .subVectors(
+              endPoint,
+              startPoint
+            );
+
+        const rod =
+          robotMesh(
+            new THREE.CylinderGeometry(
+              radius,
+              radius,
+              direction.length(),
+              8
+            ),
+            material,
+            [0, 0, 0],
+            null,
+            parent
+          );
+
+        rod.position
+          .copy(
+            startPoint
+          )
+          .add(
+            endPoint
+          )
+          .multiplyScalar(
+            0.5
+          );
+
+        rod.quaternion.setFromUnitVectors(
+          new THREE.Vector3(
+            0,
+            1,
+            0
+          ),
+          direction.normalize()
+        );
+
+        return rod;
+      }
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.32,
+          0.16,
+          0.23
+        ),
+        inner,
+        [0, 0.96, 0]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          const hipGuard =
+            robotMesh(
+              new THREE.BoxGeometry(
+                0.19,
+                0.15,
+                0.24
+              ),
+              armor,
+              [side * 0.15, 0.97, 0]
+            );
+
+          hipGuard.rotation.z =
+            side * -0.10;
+        }
+      );
+
+      rodBetween(
+        [0, 1.00, 0],
+        [0, 1.49, 0],
+        0.040,
+        inner
+      );
+
+      for (
+        let segment = 0;
+        segment < 5;
+        segment++
+      ) {
+        const y =
+          1.06 +
+          segment * 0.072;
+
+        const width =
+          0.20 +
+          segment * 0.020;
+
+        const abdomenPlate =
+          robotMesh(
+            new THREE.BoxGeometry(
+              width,
+              0.045,
+              0.16
+            ),
+            segment % 2 === 0
+              ? redDetail
+              : inner,
+            [0, y, 0.055]
+          );
+
+        abdomenPlate.rotation.x =
+          -0.10;
+      }
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.30,
+          0.21,
+          0.37,
+          6
+        ),
+        armor,
+        [0, 1.38, 0],
+        [1, 1, 0.70]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          const chestPlate =
+            robotMesh(
+              new THREE.SphereGeometry(
+                0.18,
+                20,
+                14
+              ),
+              steelPanel,
+              [side * 0.135, 1.44, 0.135],
+              [1.08, 0.58, 0.50]
+            );
+
+          chestPlate.rotation.z =
+            side * 0.075;
+        }
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.20,
+          0.19,
+          0.060
+        ),
+        armor,
+        [0, 1.30, 0.208]
+      );
+
+      for (
+        let vent = 0;
+        vent < 4;
+        vent++
+      ) {
+        robotMesh(
+          new THREE.BoxGeometry(
+            0.12 -
+              vent * 0.010,
+            0.020,
+            0.035
+          ),
+          redDetail,
+          [
+            0,
+            1.335 +
+              vent * 0.027,
+            0.248
+          ]
+        );
+      }
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.068,
+          0.078,
+          0.15,
+          12
+        ),
+        inner,
+        [0, 1.61, 0]
+      );
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.145,
+          0.125,
+          0.25,
+          6
+        ),
+        armor,
+        [0, 1.80, 0],
+        [0.92, 1, 0.82]
+      );
+
+      robotMesh(
+        new THREE.DodecahedronGeometry(
+          0.135,
+          0
+        ),
+        steelPanel,
+        [0, 1.80, 0.070],
+        [0.84, 1, 0.62]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.032,
+          0.13,
+          0.032
+        ),
+        armor,
+        [0, 1.86, 0.145]
+      );
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.090,
+          0.072,
+          0.12,
+          5
+        ),
+        steelPanel,
+        [0, 1.69, 0.064],
+        [1, 1, 0.72]
+      );
+
+      [-0.030, 0, 0.030].forEach(
+        function (x) {
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.018,
+              0.045,
+              0.022
+            ),
+            inner,
+            [x, 1.675, 0.123]
+          );
+        }
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.19,
+          0.055,
+          0.035
+        ),
+        inner,
+        [0, 1.77, 0.148]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.023,
+              18,
+              12
+            ),
+            eyeGlow,
+            [side * 0.052, 1.795, 0.160],
+            [1.16, 0.78, 0.52]
+          );
+
+          const helmetSide =
+            robotMesh(
+              new THREE.BoxGeometry(
+                0.055,
+                0.18,
+                0.18
+              ),
+              inner,
+              [side * 0.135, 1.79, -0.005]
+            );
+
+          helmetSide.rotation.z =
+            side * -0.05;
+
+          const armPivot =
+            new THREE.Group();
+
+          armPivot.position.set(
+            side * 0.36,
+            1.49,
+            0
+          );
+
+          armPivot.rotation.z =
+            side * -0.045;
+
+          robot.add(
+            armPivot
+          );
+
+          const shoulderArmor =
+            robotMesh(
+              new THREE.SphereGeometry(
+                0.15,
+                20,
+                14
+              ),
+              armor,
+              [0, 0.005, 0],
+              [1.22, 0.74, 1.02],
+              armPivot
+            );
+
+          shoulderArmor.rotation.z =
+            side * -0.10;
+
+          const shoulderPanel =
+            robotMesh(
+              new THREE.SphereGeometry(
+                0.13,
+                18,
+                12
+              ),
+              steelPanel,
+              [side * 0.025, 0.045, 0.028],
+              [1.10, 0.55, 0.88],
+              armPivot
+            );
+
+          shoulderPanel.rotation.z =
+            side * -0.10;
+
+          robotMesh(
+            new THREE.TorusGeometry(
+              0.042,
+              0.009,
+              8,
+              18
+            ),
+            redDetail,
+            [0, 0.005, 0.148],
+            null,
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CapsuleGeometry(
+              0.068,
+              0.22,
+              8,
+              14
+            ),
+            inner,
+            [0, -0.22, 0],
+            [1, 1, 0.92],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.088,
+              0.070,
+              0.25,
+              6
+            ),
+            armor,
+            [0, -0.22, 0],
+            [1, 1, 0.92],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.078,
+              16,
+              12
+            ),
+            inner,
+            [0, -0.43, 0],
+            [1, 0.90, 0.92],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.TorusGeometry(
+              0.061,
+              0.012,
+              8,
+              18
+            ),
+            redDetail,
+            [0, -0.43, 0.071],
+            null,
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.092,
+              0.066,
+              0.29,
+              6
+            ),
+            armor,
+            [0, -0.61, 0],
+            [1, 1, 0.88],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.10,
+              0.21,
+              0.035
+            ),
+            steelPanel,
+            [0, -0.60, 0.085],
+            null,
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.052,
+              14,
+              10
+            ),
+            inner,
+            [0, -0.80, 0],
+            null,
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.115,
+              0.10,
+              0.12
+            ),
+            armor,
+            [0, -0.86, 0.015],
+            null,
+            armPivot
+          );
+
+          [-1, 0, 1].forEach(
+            function (finger) {
+              rodBetween(
+                [finger * 0.034, -0.89, 0.02],
+                [finger * 0.044, -0.99, 0.045],
+                0.009,
+                steelPanel,
+                armPivot
+              );
+            }
+          );
+
+          const legPivot =
+            new THREE.Group();
+
+          legPivot.position.set(
+            side * 0.14,
+            0.96,
+            0
+          );
+
+          robot.add(
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.105,
+              16,
+              12
+            ),
+            inner,
+            [0, 0, 0],
+            [1, 0.92, 0.94],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.TorusGeometry(
+              0.078,
+              0.014,
+              8,
+              20
+            ),
+            redDetail,
+            [0, 0, 0.093],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.132,
+              0.098,
+              0.36,
+              6
+            ),
+            armor,
+            [0, -0.24, 0],
+            [1, 1, 0.92],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.13,
+              0.25,
+              0.045
+            ),
+            steelPanel,
+            [0, -0.23, 0.117],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.10,
+              16,
+              12
+            ),
+            inner,
+            [0, -0.48, 0],
+            [1, 0.90, 0.94],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.TorusGeometry(
+              0.075,
+              0.014,
+              8,
+              20
+            ),
+            redDetail,
+            [0, -0.48, 0.089],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.DodecahedronGeometry(
+              0.092,
+              0
+            ),
+            steelPanel,
+            [0, -0.48, 0.083],
+            [0.88, 1.05, 0.48],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.050,
+              0.032,
+              0.018
+            ),
+            redDetail,
+            [0, -0.48, 0.133],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.115,
+              0.085,
+              0.34,
+              6
+            ),
+            armor,
+            [0, -0.68, 0.01],
+            [1, 1, 0.90],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.12,
+              0.25,
+              0.042
+            ),
+            steelPanel,
+            [0, -0.67, 0.118],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.19,
+              0.105,
+              0.18
+            ),
+            armor,
+            [0, -0.91, -0.015],
+            null,
+            legPivot
+          );
+
+          [-1, 1].forEach(
+            function (toe) {
+              const toeArmor =
+                robotMesh(
+                  new THREE.BoxGeometry(
+                    0.095,
+                    0.10,
+                    0.25
+                  ),
+                  armor,
+                  [toe * 0.055, -0.91, 0.16],
+                  null,
+                  legPivot
+                );
+
+              toeArmor.rotation.y =
+                toe * -0.055;
+
+              robotMesh(
+                new THREE.BoxGeometry(
+                  0.060,
+                  0.022,
+                  0.14
+                ),
+                steelPanel,
+                [toe * 0.055, -0.852, 0.19],
+                null,
+                legPivot
+              );
+            }
+          );
+
+          robot.userData.limbs.arms.push(
+            armPivot
+          );
+
+          robot.userData.limbs.legs.push(
+            legPivot
+          );
+        }
+      );
+
+      return robot;
+    }
+
     let fallbackCharacter =
       createFallbackMateo();
 
@@ -5288,7 +6322,7 @@
       ) {
         activateProceduralCharacter(
           fallbackCharacter,
-          1.93,
+          1.97,
           "Backup Mateo active — procedural walk and run ready"
         );
 
@@ -5297,7 +6331,7 @@
 
       activateProceduralCharacter(
         fallbackCharacter,
-        1.93,
+        1.97,
         "Backup Mateo visible — loading Mateo.fbx..."
       );
 
