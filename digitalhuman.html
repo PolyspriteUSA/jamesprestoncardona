@@ -526,7 +526,7 @@
 
           <div class="status" aria-live="polite">
             <span class="status-dot"></span>
-            <span id="statusText">Loading Mateo.glb...</span>
+            <span id="statusText">Loading Mateo.fbx from the portfolio release...</span>
           </div>
         </div>
 
@@ -597,7 +597,7 @@
 
   <script type="module">
     import * as THREE from "three";
-    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
     const container =
@@ -1175,7 +1175,10 @@
       1.8;
 
     const loader =
-      new GLTFLoader();
+      new FBXLoader();
+
+    const mateoUrl =
+      "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/Mateo.fbx";
 
     const maxAnisotropy =
       renderer.capabilities.getMaxAnisotropy();
@@ -1349,10 +1352,277 @@
         nextAction;
     }
 
-    loader.load(
-      "./Mateo.glb",
+    function createFallbackMateo() {
+      const person =
+        new THREE.Group();
 
-      function (gltf) {
+      const skin =
+        new THREE.MeshPhysicalMaterial({
+          color: 0xb87958,
+          roughness: 0.52,
+          metalness: 0,
+          clearcoat: 0.08,
+          clearcoatRoughness: 0.72,
+          envMapIntensity: 0.55
+        });
+
+      const skinWarm =
+        skin.clone();
+
+      skinWarm.color.setHex(
+        0xa96548
+      );
+
+      const hair =
+        new THREE.MeshStandardMaterial({
+          color: 0x17100e,
+          roughness: 0.78,
+          metalness: 0,
+          envMapIntensity: 0.28
+        });
+
+      const shirt =
+        new THREE.MeshPhysicalMaterial({
+          color: 0x24212d,
+          roughness: 0.74,
+          sheen: 0.32,
+          sheenColor: new THREE.Color(
+            0x594b74
+          ),
+          sheenRoughness: 0.82
+        });
+
+      const trousers =
+        new THREE.MeshStandardMaterial({
+          color: 0x15171c,
+          roughness: 0.82
+        });
+
+      const shoes =
+        new THREE.MeshPhysicalMaterial({
+          color: 0x09090b,
+          roughness: 0.32,
+          clearcoat: 0.28,
+          clearcoatRoughness: 0.38
+        });
+
+      function mesh(
+        geometry,
+        material,
+        position,
+        scale,
+        parent = person
+      ) {
+        const part =
+          new THREE.Mesh(
+            geometry,
+            material
+          );
+
+        part.position.set(
+          ...position
+        );
+
+        if (scale) {
+          part.scale.set(
+            ...scale
+          );
+        }
+
+        part.castShadow =
+          true;
+
+        part.receiveShadow =
+          true;
+
+        parent.add(part);
+
+        return part;
+      }
+
+      mesh(
+        new THREE.CapsuleGeometry(
+          0.25,
+          0.58,
+          12,
+          24
+        ),
+        shirt,
+        [0, 1.12, 0],
+        [1.12, 1, 0.72]
+      );
+
+      mesh(
+        new THREE.SphereGeometry(
+          0.205,
+          32,
+          24
+        ),
+        skin,
+        [0, 1.68, 0],
+        [0.88, 1.12, 0.92]
+      );
+
+      mesh(
+        new THREE.SphereGeometry(
+          0.21,
+          28,
+          18,
+          0,
+          Math.PI * 2,
+          0,
+          Math.PI * 0.54
+        ),
+        hair,
+        [0, 1.77, -0.008],
+        [0.93, 0.72, 0.97]
+      );
+
+      mesh(
+        new THREE.SphereGeometry(
+          0.028,
+          20,
+          14
+        ),
+        skinWarm,
+        [0, 1.67, 0.196],
+        [0.78, 1.05, 0.72]
+      );
+
+      const eyeWhite =
+        new THREE.MeshPhysicalMaterial({
+          color: 0xf3eee8,
+          roughness: 0.12,
+          clearcoat: 0.75
+        });
+
+      const iris =
+        new THREE.MeshPhysicalMaterial({
+          color: 0x241a14,
+          roughness: 0.05,
+          clearcoat: 1
+        });
+
+      [-0.067, 0.067].forEach(
+        function (x) {
+          mesh(
+            new THREE.SphereGeometry(
+              0.027,
+              18,
+              12
+            ),
+            eyeWhite,
+            [x, 1.705, 0.171],
+            [1.25, 0.72, 0.48]
+          );
+
+          mesh(
+            new THREE.SphereGeometry(
+              0.011,
+              16,
+              10
+            ),
+            iris,
+            [x, 1.705, 0.193],
+            [1, 1, 0.55]
+          );
+        }
+      );
+
+      const mouth =
+        mesh(
+          new THREE.TorusGeometry(
+            0.038,
+            0.006,
+            8,
+            24,
+            Math.PI
+          ),
+          new THREE.MeshStandardMaterial({
+            color: 0x6f302c,
+            roughness: 0.7
+          }),
+          [0, 1.605, 0.201],
+          [1, 0.46, 0.55]
+        );
+
+      mouth.rotation.z =
+        Math.PI;
+
+      [-1, 1].forEach(
+        function (side) {
+          const arm =
+            mesh(
+              new THREE.CapsuleGeometry(
+                0.085,
+                0.52,
+                10,
+                16
+              ),
+              shirt,
+              [side * 0.34, 1.10, 0],
+              [1, 1, 0.9]
+            );
+
+          arm.rotation.z =
+            side * -0.07;
+
+          mesh(
+            new THREE.SphereGeometry(
+              0.09,
+              18,
+              14
+            ),
+            skin,
+            [side * 0.38, 0.75, 0.005],
+            [0.8, 1.12, 0.72]
+          );
+
+          mesh(
+            new THREE.CapsuleGeometry(
+              0.105,
+              0.62,
+              10,
+              18
+            ),
+            trousers,
+            [side * 0.13, 0.46, 0],
+            [0.9, 1, 0.92]
+          );
+
+          const shoe =
+            mesh(
+              new THREE.CapsuleGeometry(
+                0.105,
+                0.17,
+                8,
+                16
+              ),
+              shoes,
+              [side * 0.13, 0.105, 0.055],
+              [1, 1.1, 1.45]
+            );
+
+          shoe.rotation.x =
+            Math.PI / 2;
+        }
+      );
+
+      person.rotation.y =
+        Math.PI;
+
+      return person;
+    }
+
+    loader.load(
+      mateoUrl,
+
+      function (model) {
+        const gltf = {
+          scene: model,
+          animations: model.animations || []
+        };
+
         character =
           gltf.scene;
 
@@ -1374,6 +1644,31 @@
           box.getSize(
             new THREE.Vector3()
           );
+
+        if (
+          size.y > 3 ||
+          size.y < 0.5
+        ) {
+          character.scale.multiplyScalar(
+            1.82 /
+            Math.max(
+              size.y,
+              0.001
+            )
+          );
+
+          character.updateMatrixWorld(
+            true
+          );
+
+          box.setFromObject(
+            character
+          );
+
+          box.getSize(
+            size
+          );
+        }
 
         const center =
           box.getCenter(
@@ -1542,12 +1837,24 @@
 
       function (error) {
         console.error(
-          "Mateo.glb load error:",
+          "Mateo.fbx load error:",
           error
         );
 
+        character =
+          createFallbackMateo();
+
+        characterRoot.add(
+          character
+        );
+
+        characterHeight =
+          1.9;
+
         statusText.textContent =
-          "Could not load Mateo.glb";
+          "Mateo fallback visible — release FBX could not be loaded";
+
+        updateCameraImmediately();
       }
     );
 
