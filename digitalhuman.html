@@ -6389,6 +6389,16 @@
           toneMapped: false
         });
 
+      const eyeHalo =
+        new THREE.MeshBasicMaterial({
+          color: 0xff163f,
+          transparent: true,
+          opacity: 0.30,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          toneMapped: false
+        });
+
       function robotMesh(
         geometry,
         material,
@@ -6423,6 +6433,61 @@
         );
 
         return part;
+      }
+
+      function createWedgeGeometry(
+        width,
+        height,
+        depth,
+        frontDrop
+      ) {
+        const halfWidth =
+          width * 0.5;
+
+        const halfHeight =
+          height * 0.5;
+
+        const halfDepth =
+          depth * 0.5;
+
+        const geometry =
+          new THREE.BufferGeometry();
+
+        geometry.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(
+            [
+              -halfWidth, -halfHeight, -halfDepth,
+              halfWidth, -halfHeight, -halfDepth,
+              halfWidth, halfHeight, -halfDepth,
+              -halfWidth, halfHeight, -halfDepth,
+              -halfWidth, -halfHeight, halfDepth,
+              halfWidth, -halfHeight, halfDepth,
+              halfWidth, halfHeight - frontDrop, halfDepth,
+              -halfWidth, halfHeight - frontDrop, halfDepth
+            ],
+            3
+          )
+        );
+
+        geometry.setIndex([
+          0, 3, 2,
+          0, 2, 1,
+          4, 5, 6,
+          4, 6, 7,
+          0, 1, 5,
+          0, 5, 4,
+          3, 7, 6,
+          3, 6, 2,
+          1, 2, 6,
+          1, 6, 5,
+          0, 4, 7,
+          0, 7, 3
+        ]);
+
+        geometry.computeVertexNormals();
+
+        return geometry;
       }
 
       function rodBetween(
@@ -6538,12 +6603,12 @@
             new THREE.BoxGeometry(
               width,
               0.045,
-              0.16
+              0.10
             ),
             segment % 2 === 0
               ? redDetail
               : inner,
-            [0, y, 0.055]
+            [0, y, 0.038]
           );
 
         abdomenPlate.rotation.x =
@@ -6568,10 +6633,10 @@
               new THREE.BoxGeometry(
                 0.28,
                 0.22,
-                0.075
+                0.035
               ),
               armor,
-              [side * 0.17, 1.45, 0.115],
+              [side * 0.17, 1.45, 0.094],
               null
             );
 
@@ -6583,10 +6648,10 @@
               new THREE.BoxGeometry(
                 0.25,
                 0.11,
-                0.065
+                0.030
               ),
               steelPanel,
-              [side * 0.145, 1.31, 0.135],
+              [side * 0.145, 1.31, 0.096],
               null
             );
 
@@ -6595,7 +6660,7 @@
 
           rodBetween(
             [side * 0.040, 1.08, 0.080],
-            [side * 0.225, 1.48, 0.145],
+            [side * 0.225, 1.48, 0.105],
             0.007,
             wireMaterial
           );
@@ -6620,10 +6685,10 @@
         new THREE.BoxGeometry(
           0.13,
           0.17,
-          0.045
+          0.028
         ),
         armor,
-        [0, 1.30, 0.208]
+        [0, 1.30, 0.101]
       );
 
       for (
@@ -6636,14 +6701,14 @@
             0.12 -
               vent * 0.010,
             0.020,
-            0.035
+            0.012
           ),
           redDetail,
           [
             0,
             1.335 +
               vent * 0.027,
-            0.248
+            0.118
           ]
         );
       }
@@ -6662,7 +6727,7 @@
         new THREE.BoxGeometry(
           0.24,
           0.27,
-          0.20
+          0.18
         ),
         armor,
         [0, 1.80, 0],
@@ -6673,10 +6738,10 @@
         new THREE.BoxGeometry(
           0.16,
           0.18,
-          0.065
+          0.025
         ),
         steelPanel,
-        [0, 1.80, 0.070],
+        [0, 1.80, 0.091],
         null
       );
 
@@ -6684,30 +6749,30 @@
         new THREE.BoxGeometry(
           0.032,
           0.11,
-          0.018
+          0.010
         ),
         inner,
-        [0, 1.86, 0.145]
+        [0, 1.86, 0.105]
       );
 
       robotMesh(
         new THREE.BoxGeometry(
           0.032,
           0.055,
-          0.020
+          0.012
         ),
         inner,
-        [0, 1.735, 0.145]
+        [0, 1.735, 0.105]
       );
 
       robotMesh(
         new THREE.BoxGeometry(
           0.14,
           0.12,
-          0.09
+          0.038
         ),
         steelPanel,
-        [0, 1.69, 0.064],
+        [0, 1.69, 0.081],
         null
       );
 
@@ -6717,10 +6782,10 @@
             new THREE.BoxGeometry(
               0.015,
               0.040,
-              0.020
+              0.012
             ),
             inner,
-            [x, 1.675, 0.123]
+            [x, 1.675, 0.103]
           );
         }
       );
@@ -6729,23 +6794,63 @@
         new THREE.BoxGeometry(
           0.19,
           0.055,
-          0.035
+          0.012
         ),
         inner,
-        [0, 1.77, 0.148]
+        [0, 1.77, 0.105]
       );
 
       [-1, 1].forEach(
         function (side) {
           robotMesh(
             new THREE.BoxGeometry(
-              0.040,
-              0.028,
-              0.020
+              0.066,
+              0.050,
+              0.012
+            ),
+            inner,
+            [side * 0.052, 1.795, 0.111],
+            null
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.052,
+              0.036,
+              0.004
+            ),
+            eyeHalo,
+            [side * 0.052, 1.795, 0.118],
+            null
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.026,
+              0.016,
+              0.006
             ),
             eyeGlow,
-            [side * 0.052, 1.795, 0.160],
+            [side * 0.052, 1.795, 0.122],
             null
+          );
+
+          const eyeLight =
+            new THREE.PointLight(
+              0xff163f,
+              0.42,
+              0.52,
+              2
+            );
+
+          eyeLight.position.set(
+            side * 0.052,
+            1.795,
+            0.135
+          );
+
+          robot.add(
+            eyeLight
           );
 
           const browPlate =
@@ -6753,10 +6858,10 @@
               new THREE.BoxGeometry(
                 0.090,
                 0.025,
-                0.030
+                0.018
               ),
               armor,
-              [side * 0.052, 1.828, 0.148]
+              [side * 0.052, 1.828, 0.108]
             );
 
           browPlate.rotation.z =
@@ -6767,10 +6872,10 @@
               new THREE.BoxGeometry(
                 0.060,
                 0.105,
-                0.038
+                0.024
               ),
               steelPanel,
-              [side * 0.085, 1.715, 0.130]
+              [side * 0.085, 1.715, 0.099]
             );
 
           cheekPlate.rotation.z =
@@ -7160,13 +7265,14 @@
           );
 
           robotMesh(
-            new THREE.BoxGeometry(
-              0.19,
+            createWedgeGeometry(
+              0.18,
               0.105,
-              0.18
+              0.28,
+              0.052
             ),
             armor,
-            [0, -0.91, -0.015],
+            [0, -0.91, 0.055],
             null,
             legPivot
           );
@@ -7175,13 +7281,14 @@
             function (toe) {
               const toeArmor =
                 robotMesh(
-                  new THREE.BoxGeometry(
-                    0.095,
-                    0.10,
-                    0.25
+                  createWedgeGeometry(
+                    0.076,
+                    0.075,
+                    0.18,
+                    0.040
                   ),
-                  armor,
-                  [toe * 0.055, -0.91, 0.16],
+                  steelPanel,
+                  [toe * 0.043, -0.918, 0.225],
                   null,
                   legPivot
                 );
@@ -7189,17 +7296,6 @@
               toeArmor.rotation.y =
                 toe * -0.055;
 
-              robotMesh(
-                new THREE.BoxGeometry(
-                  0.060,
-                  0.022,
-                  0.14
-                ),
-                steelPanel,
-                [toe * 0.055, -0.852, 0.19],
-                null,
-                legPivot
-              );
             }
           );
 
