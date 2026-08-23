@@ -3958,15 +3958,39 @@
         return;
       }
 
+      const facingX =
+        Math.sin(
+          characterRoot.rotation.y
+        );
+
+      const facingZ =
+        Math.cos(
+          characterRoot.rotation.y
+        );
+
+      const trailingDistance =
+        1.28;
+
+      const sideOffset =
+        0.52;
+
       companionTarget.set(
         THREE.MathUtils.clamp(
-          characterRoot.position.x + 1.05,
+          characterRoot.position.x -
+            facingX *
+            trailingDistance +
+            facingZ *
+            sideOffset,
           -3.15,
           3.15
         ),
         0,
         THREE.MathUtils.clamp(
-          characterRoot.position.z + 1.10,
+          characterRoot.position.z -
+            facingZ *
+            trailingDistance -
+            facingX *
+            sideOffset,
           -8.1,
           8.1
         )
@@ -4060,7 +4084,15 @@
       } else {
         [
           ...limbs.arms,
-          ...limbs.legs
+          ...limbs.legs,
+          ...(
+            limbs.elbows ||
+            []
+          ),
+          ...(
+            limbs.knees ||
+            []
+          )
         ].forEach(
           function (limb) {
             limb.rotation.x =
@@ -4815,7 +4847,9 @@
 
       person.userData.limbs = {
         arms: [],
-        legs: []
+        legs: [],
+        elbows: [],
+        knees: []
       };
 
       person.userData.isProcedural =
@@ -4872,6 +4906,13 @@
           color: 0x0b0c0f,
           roughness: 0.88
         });
+
+      const trouserJoint =
+        trousers.clone();
+
+      trouserJoint.color.setHex(
+        0x17181d
+      );
 
       const shoeUpper =
         new THREE.MeshStandardMaterial({
@@ -4996,16 +5037,20 @@
         [1.10, 0.82, 0.80]
       );
 
-      mesh(
+      const neck =
+        mesh(
         new THREE.CylinderGeometry(
-          0.088,
-          0.105,
-          0.18,
+          0.070,
+          0.082,
+          0.17,
           18
         ),
         skin,
-        [0, 1.51, 0]
+        [0, 1.555, 0.006]
       );
+
+      person.userData.neck =
+        neck;
 
       mesh(
         new THREE.SphereGeometry(
@@ -5208,14 +5253,52 @@
           mesh(
             new THREE.CapsuleGeometry(
               0.082,
-              0.55,
+              0.24,
               10,
               16
             ),
             shirt,
-            [0, -0.36, 0.002],
+            [0, -0.21, 0.002],
             [1.04, 1, 0.92],
             armPivot
+          );
+
+          const elbowPivot =
+            new THREE.Group();
+
+          elbowPivot.position.set(
+            0,
+            -0.42,
+            0.004
+          );
+
+          armPivot.add(
+            elbowPivot
+          );
+
+          mesh(
+            new THREE.SphereGeometry(
+              0.078,
+              18,
+              14
+            ),
+            hoodieDark,
+            [0, 0, 0],
+            [1, 0.92, 0.94],
+            elbowPivot
+          );
+
+          mesh(
+            new THREE.CapsuleGeometry(
+              0.076,
+              0.21,
+              10,
+              16
+            ),
+            shirt,
+            [0, -0.205, 0.006],
+            [1, 1, 0.92],
+            elbowPivot
           );
 
           mesh(
@@ -5225,9 +5308,9 @@
               14
             ),
             skin,
-            [0, -0.79, 0.008],
+            [0, -0.43, 0.008],
             [0.76, 1.12, 0.70],
-            armPivot
+            elbowPivot
           );
 
           [-1, 0, 1].forEach(
@@ -5240,9 +5323,9 @@
                   10
                 ),
                 skin,
-                [finger * 0.019, -0.885, 0.025],
+                [finger * 0.019, -0.525, 0.025],
                 [1, 1, 0.86],
-                armPivot
+                elbowPivot
               );
             }
           );
@@ -5256,9 +5339,9 @@
                 10
               ),
               skin,
-              [-side * 0.050, -0.825, 0.020],
+              [-side * 0.050, -0.465, 0.020],
               [1, 1, 0.88],
-              armPivot
+              elbowPivot
             );
 
           thumb.rotation.z =
@@ -5279,15 +5362,53 @@
 
           mesh(
             new THREE.CapsuleGeometry(
-              0.092,
-              0.58,
+              0.096,
+              0.25,
               10,
               18
             ),
             trousers,
-            [0, -0.39, 0.004],
+            [0, -0.245, 0.004],
             [0.96, 1, 0.90],
             legPivot
+          );
+
+          const kneePivot =
+            new THREE.Group();
+
+          kneePivot.position.set(
+            0,
+            -0.49,
+            0.014
+          );
+
+          legPivot.add(
+            kneePivot
+          );
+
+          mesh(
+            new THREE.SphereGeometry(
+              0.094,
+              18,
+              14
+            ),
+            trouserJoint,
+            [0, 0, 0],
+            [0.96, 0.86, 0.92],
+            kneePivot
+          );
+
+          mesh(
+            new THREE.CapsuleGeometry(
+              0.086,
+              0.24,
+              10,
+              18
+            ),
+            trousers,
+            [0, -0.225, 0.004],
+            [0.96, 1, 0.88],
+            kneePivot
           );
 
           const shoeGroup =
@@ -5295,11 +5416,11 @@
 
           shoeGroup.position.set(
             0,
-            -0.79,
+            -0.455,
             0.06
           );
 
-          legPivot.add(
+          kneePivot.add(
             shoeGroup
           );
 
@@ -5327,8 +5448,16 @@
             armPivot
           );
 
+          person.userData.limbs.elbows.push(
+            elbowPivot
+          );
+
           person.userData.limbs.legs.push(
             legPivot
+          );
+
+          person.userData.limbs.knees.push(
+            kneePivot
           );
         }
       );
@@ -6181,15 +6310,7 @@
         });
 
       const steelPanel =
-        new THREE.MeshStandardMaterial({
-          color: 0x7b828a,
-          roughness: 0.66,
-          metalness: 0.52,
-          roughnessMap: robotWearTexture,
-          bumpMap: robotWearTexture,
-          bumpScale: 0.012,
-          envMapIntensity: 0.58
-        });
+        armor;
 
       const redDetail =
         new THREE.MeshStandardMaterial({
@@ -7542,9 +7663,9 @@
     );
 
     companionRobot.position.set(
-      1.05,
+      0.52,
       0,
-      1.10
+      -1.28
     );
 
     scene.add(
@@ -8474,9 +8595,9 @@
       );
 
       right.set(
-        forward.z,
+        -forward.z,
         0,
-        -forward.x
+        forward.x
       );
 
       movement
@@ -8721,6 +8842,44 @@
           limbs.legs[1].rotation.x =
             swing;
 
+          if (
+            limbs.elbows &&
+            limbs.elbows.length === 2
+          ) {
+            limbs.elbows[0].rotation.x =
+              0.16 +
+              Math.max(
+                0,
+                -swing
+              ) * 0.52;
+
+            limbs.elbows[1].rotation.x =
+              0.16 +
+              Math.max(
+                0,
+                swing
+              ) * 0.52;
+          }
+
+          if (
+            limbs.knees &&
+            limbs.knees.length === 2
+          ) {
+            limbs.knees[0].rotation.x =
+              0.04 +
+              Math.max(
+                0,
+                swing
+              ) * 0.62;
+
+            limbs.knees[1].rotation.x =
+              0.04 +
+              Math.max(
+                0,
+                -swing
+              ) * 0.62;
+          }
+
           character.position.y =
             Math.abs(
               Math.sin(
@@ -8763,6 +8922,38 @@
                 );
             }
           );
+
+          if (limbs.elbows) {
+            limbs.elbows.forEach(
+              function (elbow) {
+                elbow.rotation.x =
+                  THREE.MathUtils.lerp(
+                    elbow.rotation.x,
+                    0.12,
+                    Math.min(
+                      1,
+                      delta * 8
+                    )
+                  );
+              }
+            );
+          }
+
+          if (limbs.knees) {
+            limbs.knees.forEach(
+              function (knee) {
+                knee.rotation.x =
+                  THREE.MathUtils.lerp(
+                    knee.rotation.x,
+                    0.035,
+                    Math.min(
+                      1,
+                      delta * 8
+                    )
+                  );
+              }
+            );
+          }
 
           character.position.y =
             0.006 +
