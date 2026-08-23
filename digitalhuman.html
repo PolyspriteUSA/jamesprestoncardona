@@ -142,11 +142,89 @@
       line-height: 1.7;
     }
 
+    .character-picker {
+      width: min(620px, 100%);
+      margin-top: 28px;
+      pointer-events: auto;
+    }
+
+    .character-picker-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #d4cfdf;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .character-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .character-option {
+      min-width: 0;
+      min-height: 88px;
+      padding: 13px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.026);
+      color: #fff;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .character-option:hover,
+    .character-option:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .character-option.is-selected {
+      border-color: rgba(255, 66, 208, 0.62);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(113, 73, 255, 0.23),
+          rgba(255, 66, 208, 0.11)
+        );
+      box-shadow:
+        0 0 0 1px rgba(113, 73, 255, 0.20) inset,
+        0 8px 30px rgba(80, 32, 160, 0.14);
+    }
+
+    .character-option strong,
+    .character-option span {
+      display: block;
+    }
+
+    .character-option strong {
+      overflow: hidden;
+      font-size: 0.84rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .character-option span {
+      margin-top: 6px;
+      color: #9f9aaa;
+      font-size: 0.69rem;
+      line-height: 1.35;
+    }
+
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 32px;
+      margin-top: 18px;
       pointer-events: auto;
     }
 
@@ -189,6 +267,19 @@
       min-width: 0;
       min-height: calc(100vh - var(--header-h));
       overflow: hidden;
+    }
+
+    body.experience-active .hero {
+      grid-template-columns: 1fr;
+    }
+
+    body.experience-active .hero-copy {
+      display: none;
+    }
+
+    body.experience-active .experience-column {
+      grid-column: 1 / -1;
+      min-height: calc(100vh - var(--header-h));
     }
 
     #experience {
@@ -235,6 +326,20 @@
       backdrop-filter: blur(16px);
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
       pointer-events: none;
+    }
+
+    .experience-exit {
+      position: absolute;
+      z-index: 16;
+      left: 24px;
+      bottom: 24px;
+      display: none;
+      background: rgba(7, 6, 13, 0.72);
+      backdrop-filter: blur(14px);
+    }
+
+    body.experience-active .experience-exit {
+      display: inline-flex;
     }
 
     .hud-title {
@@ -432,6 +537,14 @@
         padding: 118px 22px 30px;
       }
 
+      .character-options {
+        grid-template-columns: 1fr;
+      }
+
+      .character-option {
+        min-height: 66px;
+      }
+
       h1 {
         font-size: clamp(3rem, 15vw, 5rem);
       }
@@ -444,6 +557,11 @@
         right: 14px;
         bottom: 90px;
         width: min(280px, calc(100% - 28px));
+      }
+
+      .experience-exit {
+        left: 18px;
+        bottom: 154px;
       }
 
       .touch-controls {
@@ -487,22 +605,54 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">Interactive Digital Human</p>
-        <h1>Meet Mateo.</h1>
+        <h1>Choose your character.</h1>
 
         <p class="lede">
           Explore a real-time character experience directly in the browser.
-          Use the keyboard to move Mateo through a small interactive environment,
+          Choose a character, then use the keyboard to move through the neon district
           or drag the mouse to orbit the third-person camera.
         </p>
 
+        <div class="character-picker">
+          <span class="character-picker-label">Choose your character</span>
+
+          <div class="character-options" role="group" aria-label="Character selection">
+            <button
+              class="character-option"
+              type="button"
+              data-character="robot"
+              aria-pressed="false"
+            >
+              <strong>Futuristic Robot</strong>
+              <span>Procedural alloy explorer</span>
+            </button>
+
+            <button
+              class="character-option is-selected"
+              type="button"
+              data-character="mateo-fbx"
+              aria-pressed="true"
+            >
+              <strong>Mateo.fbx</strong>
+              <span>Detailed portfolio asset</span>
+            </button>
+
+            <button
+              class="character-option"
+              type="button"
+              data-character="backup-mateo"
+              aria-pressed="false"
+            >
+              <strong>Backup Mateo</strong>
+              <span>Procedural human character</span>
+            </button>
+          </div>
+        </div>
+
         <div class="hero-actions">
           <button class="button primary" id="focusExperience" type="button">
-            Enter Experience
+            <span id="enterExperienceLabel">Enter with Mateo.fbx</span>
           </button>
-
-          <a class="button" href="./index.html#work">
-            Back to Work
-          </a>
         </div>
       </div>
 
@@ -510,10 +660,14 @@
         <div
           id="experience"
           tabindex="0"
-          aria-label="Interactive 3D character experience. Use W A S D or arrow keys to move Mateo. Drag to rotate the camera."
+          aria-label="Interactive 3D character experience. Use W A S D or arrow keys to move the selected character. Drag to rotate the camera."
         ></div>
 
         <div class="scene-overlay"></div>
+
+        <a class="button experience-exit" href="./index.html#work">
+          Back to Work
+        </a>
 
         <div class="hud">
           <p class="hud-title">Controls</p>
@@ -612,6 +766,16 @@
 
     const focusExperience =
       document.getElementById("focusExperience");
+
+    const enterExperienceLabel =
+      document.getElementById("enterExperienceLabel");
+
+    const characterButtons =
+      Array.from(
+        document.querySelectorAll(
+          "[data-character]"
+        )
+      );
 
     window.addEventListener(
       "error",
@@ -859,6 +1023,162 @@
       4,
       3,
       3
+    );
+
+
+    function createMoonTexture() {
+      const canvas =
+        document.createElement("canvas");
+
+      canvas.width =
+        canvas.height =
+        256;
+
+      const context =
+        canvas.getContext("2d");
+
+      const glow =
+        context.createRadialGradient(
+          128,
+          128,
+          10,
+          128,
+          128,
+          126
+        );
+
+      glow.addColorStop(
+        0,
+        "rgba(244, 247, 255, 1)"
+      );
+
+      glow.addColorStop(
+        0.25,
+        "rgba(218, 228, 255, 0.95)"
+      );
+
+      glow.addColorStop(
+        0.43,
+        "rgba(151, 184, 255, 0.42)"
+      );
+
+      glow.addColorStop(
+        0.72,
+        "rgba(91, 126, 255, 0.10)"
+      );
+
+      glow.addColorStop(
+        1,
+        "rgba(64, 90, 255, 0)"
+      );
+
+      context.fillStyle =
+        glow;
+
+      context.fillRect(
+        0,
+        0,
+        256,
+        256
+      );
+
+      const texture =
+        new THREE.CanvasTexture(
+          canvas
+        );
+
+      texture.colorSpace =
+        THREE.SRGBColorSpace;
+
+      return texture;
+    }
+
+    const moonPosition =
+      new THREE.Vector3(
+        -1.15,
+        8.35,
+        9.7
+      );
+
+    const moonGlow =
+      new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: createMoonTexture(),
+          color: 0xb9c9ff,
+          transparent: true,
+          opacity: 0.78,
+          depthWrite: false,
+          toneMapped: false,
+          fog: false
+        })
+      );
+
+    moonGlow.position.copy(
+      moonPosition
+    );
+
+    moonGlow.scale.set(
+      3.2,
+      3.2,
+      1
+    );
+
+    scene.add(
+      moonGlow
+    );
+
+    const moonDisc =
+      new THREE.Mesh(
+        new THREE.SphereGeometry(
+          0.42,
+          32,
+          20
+        ),
+        new THREE.MeshBasicMaterial({
+          color: 0xe8edff,
+          toneMapped: false,
+          fog: false
+        })
+      );
+
+    moonDisc.position.copy(
+      moonPosition
+    );
+
+    scene.add(
+      moonDisc
+    );
+
+    const moonAmbient =
+      new THREE.HemisphereLight(
+        0x9fb7ff,
+        0x09040f,
+        0.14
+      );
+
+    scene.add(
+      moonAmbient
+    );
+
+    const moonDirectional =
+      new THREE.DirectionalLight(
+        0xa9beff,
+        0.62
+      );
+
+    moonDirectional.position.copy(
+      moonPosition
+    );
+
+    moonDirectional.target.position.set(
+      0,
+      0.8,
+      0
+    );
+
+    scene.add(
+      moonDirectional,
+      moonDirectional.target
     );
 
 
@@ -1691,6 +2011,15 @@
       if (
         index % 2 === 0
       ) {
+        const signClearance =
+          0.72;
+
+        const signY =
+          Math.min(
+            height - 1.7,
+            3.2 + cityRandom() * 1.2
+          );
+
         const sign =
           addCityMesh(
             new THREE.PlaneGeometry(
@@ -1700,11 +2029,8 @@
             signMaterials[
               index
             ],
-            facadeX - side * 0.18,
-            Math.min(
-              height - 1.7,
-              3.2 + cityRandom() * 1.2
-            ),
+            facadeX - side * signClearance,
+            signY,
             z + depth * 0.22,
             false
           );
@@ -1713,6 +2039,26 @@
           side > 0
             ? -Math.PI / 2
             : Math.PI / 2;
+
+        [-0.88, 0.88].forEach(
+          function (heightOffset) {
+            addCityMesh(
+              new THREE.BoxGeometry(
+                signClearance,
+                0.035,
+                0.035
+              ),
+              trimMaterial,
+              facadeX -
+                side *
+                signClearance *
+                0.5,
+              signY + heightOffset,
+              sign.position.z,
+              false
+            );
+          }
+        );
 
         const signLight =
           new THREE.PointLight(
@@ -1725,7 +2071,7 @@
           );
 
         signLight.position.set(
-          facadeX - side * 0.65,
+          sign.position.x - side * 0.42,
           sign.position.y,
           sign.position.z
         );
@@ -1929,12 +2275,25 @@
           -6.2 +
           index * 3.1;
 
+        const blockDepth =
+          3.4 +
+          cityRandom() * 1.4;
+
+        const blockZ =
+          z +
+          direction *
+          cityRandom() * 1.3;
+
+        const frontFacadeZ =
+          blockZ -
+          direction *
+          blockDepth * 0.5;
+
         addCityMesh(
           new THREE.BoxGeometry(
             width,
             height,
-            3.4 +
-              cityRandom() * 1.4
+            blockDepth
           ),
           buildingMaterials[
             index %
@@ -1942,9 +2301,7 @@
           ],
           x,
           height * 0.5,
-          z +
-            direction *
-            cityRandom() * 1.3
+          blockZ
         );
 
         const lineMaterial =
@@ -1965,7 +2322,8 @@
               lineMaterial,
               x + edge * width * 0.37,
               height * 0.55,
-              z - direction * 1.76,
+              frontFacadeZ -
+                direction * 0.03,
               false
             );
           }
@@ -1975,6 +2333,10 @@
           index === 1 ||
           index === 2
         ) {
+          const endSignZ =
+            frontFacadeZ -
+            direction * 0.38;
+
           const endSign =
             addCityMesh(
               new THREE.PlaneGeometry(
@@ -1995,7 +2357,7 @@
               x,
               5.3 +
                 index * 0.65,
-              z - direction * 1.79,
+              endSignZ,
               false
             );
 
@@ -2003,6 +2365,24 @@
             direction > 0
               ? Math.PI
               : 0;
+
+          [-0.28, 0.28].forEach(
+            function (xOffset) {
+              addCityMesh(
+                new THREE.BoxGeometry(
+                  0.035,
+                  0.035,
+                  0.38
+                ),
+                trimMaterial,
+                x + xOffset,
+                endSign.position.y,
+                frontFacadeZ -
+                  direction * 0.19,
+                false
+              );
+            }
+          );
 
           const endSignLight =
             new THREE.PointLight(
@@ -2017,7 +2397,8 @@
           endSignLight.position.set(
             x,
             endSign.position.y,
-            z - direction * 2.4
+            endSign.position.z -
+              direction * 0.65
           );
 
           environment.add(
@@ -3176,6 +3557,18 @@
     let proceduralWalkTime =
       0;
 
+    let selectedCharacter =
+      "mateo-fbx";
+
+    let characterLoadToken =
+      0;
+
+    const characterLabels = {
+      robot: "Futuristic Robot",
+      "mateo-fbx": "Mateo.fbx",
+      "backup-mateo": "Backup Mateo"
+    };
+
     const loader =
       new FBXLoader();
 
@@ -3413,10 +3806,14 @@
         );
     }
 
-    async function loadMateoAnimations() {
+    async function loadMateoAnimations(
+      expectedToken,
+      targetMixer,
+      targetCharacter
+    ) {
       if (
-        !mixer ||
-        !character
+        !targetMixer ||
+        !targetCharacter
       ) {
         return;
       }
@@ -3430,6 +3827,19 @@
             "MateoRun.fbx"
           )
         ]);
+
+      if (
+        expectedToken !==
+          characterLoadToken ||
+        selectedCharacter !==
+          "mateo-fbx" ||
+        mixer !==
+          targetMixer ||
+        character !==
+          targetCharacter
+      ) {
+        return;
+      }
 
       const idleAsset =
         results[0].status ===
@@ -3458,7 +3868,7 @@
           "idle";
 
         actions.idle =
-          mixer.clipAction(
+          targetMixer.clipAction(
             idleClip
           );
       }
@@ -3474,7 +3884,7 @@
           "walk";
 
         actions.walk =
-          mixer.clipAction(
+          targetMixer.clipAction(
             walkClip
           );
 
@@ -3482,7 +3892,7 @@
           0.62;
 
         actions.run =
-          mixer.clipAction(
+          targetMixer.clipAction(
             runClip
           );
       }
@@ -3537,6 +3947,12 @@
         legs: []
       };
 
+      person.userData.isProcedural =
+        true;
+
+      person.userData.characterType =
+        "backup-mateo";
+
       const skin =
         new THREE.MeshPhysicalMaterial({
           color: 0xb87958,
@@ -3579,12 +3995,31 @@
           roughness: 0.82
         });
 
-      const shoes =
+      const shoeUpper =
         new THREE.MeshPhysicalMaterial({
-          color: 0x09090b,
-          roughness: 0.32,
-          clearcoat: 0.28,
-          clearcoatRoughness: 0.38
+          color: 0x08090c,
+          roughness: 0.50,
+          clearcoat: 0.18,
+          clearcoatRoughness: 0.5
+        });
+
+      const shoeSole =
+        new THREE.MeshStandardMaterial({
+          color: 0x08090c,
+          roughness: 0.70
+        });
+
+      const shoeAccent =
+        new THREE.MeshStandardMaterial({
+          color: 0x4c8dff,
+          roughness: 0.42,
+          metalness: 0.08
+        });
+
+      const laceMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0x030304,
+          roughness: 0.84
         });
 
       function mesh(
@@ -3623,14 +4058,37 @@
 
       mesh(
         new THREE.CapsuleGeometry(
-          0.25,
-          0.58,
+          0.235,
+          0.56,
           12,
           24
         ),
         shirt,
-        [0, 1.12, 0],
-        [1.12, 1, 0.72]
+        [0, 1.16, 0],
+        [1.08, 1, 0.72]
+      );
+
+      mesh(
+        new THREE.CapsuleGeometry(
+          0.18,
+          0.24,
+          10,
+          20
+        ),
+        trousers,
+        [0, 0.82, 0],
+        [1.10, 0.82, 0.80]
+      );
+
+      mesh(
+        new THREE.CylinderGeometry(
+          0.088,
+          0.105,
+          0.18,
+          18
+        ),
+        skin,
+        [0, 1.51, 0]
       );
 
       mesh(
@@ -3640,8 +4098,19 @@
           24
         ),
         skin,
-        [0, 1.68, 0],
-        [0.88, 1.12, 0.92]
+        [0, 1.72, 0],
+        [0.76, 1.06, 0.83]
+      );
+
+      mesh(
+        new THREE.SphereGeometry(
+          0.15,
+          26,
+          18
+        ),
+        skin,
+        [0, 1.63, 0.012],
+        [0.74, 0.58, 0.80]
       );
 
       mesh(
@@ -3655,19 +4124,62 @@
           Math.PI * 0.54
         ),
         hair,
-        [0, 1.77, -0.008],
-        [0.93, 0.72, 0.97]
+        [0, 1.81, -0.008],
+        [0.82, 0.64, 0.87]
       );
 
       mesh(
         new THREE.SphereGeometry(
-          0.028,
+          0.021,
           20,
           14
         ),
         skinWarm,
-        [0, 1.67, 0.196],
-        [0.78, 1.05, 0.72]
+        [0, 1.705, 0.171],
+        [0.62, 1.18, 0.56]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          mesh(
+            new THREE.SphereGeometry(
+              0.045,
+              18,
+              12
+            ),
+            skin,
+            [side * 0.155, 1.72, -0.002],
+            [0.42, 0.92, 0.56]
+          );
+        }
+      );
+
+      const collarLeft =
+        mesh(
+          new THREE.BoxGeometry(
+            0.13,
+            0.12,
+            0.025
+          ),
+          shirt,
+          [-0.064, 1.47, 0.177],
+          [1, 1, 1]
+        );
+
+      collarLeft.rotation.z =
+        -0.38;
+
+      const collarRight =
+        collarLeft.clone();
+
+      collarRight.position.x =
+        0.064;
+
+      collarRight.rotation.z =
+        0.38;
+
+      person.add(
+        collarRight
       );
 
       const eyeWhite =
@@ -3688,33 +4200,50 @@
         function (x) {
           mesh(
             new THREE.SphereGeometry(
-              0.027,
+              0.022,
               18,
               12
             ),
             eyeWhite,
-            [x, 1.705, 0.171],
-            [1.25, 0.72, 0.48]
+            [x, 1.745, 0.158],
+            [1.14, 0.60, 0.42]
           );
 
           mesh(
             new THREE.SphereGeometry(
-              0.011,
+              0.0085,
               16,
               10
             ),
             iris,
-            [x, 1.705, 0.193],
-            [1, 1, 0.55]
+            [x, 1.745, 0.172],
+            [1, 1, 0.48]
           );
+
+          const brow =
+            mesh(
+              new THREE.BoxGeometry(
+                0.062,
+                0.010,
+                0.010
+              ),
+              hair,
+              [x, 1.775, 0.163],
+              [1, 1, 1]
+            );
+
+          brow.rotation.z =
+            x < 0
+              ? -0.10
+              : 0.10;
         }
       );
 
       const mouth =
         mesh(
           new THREE.TorusGeometry(
-            0.038,
-            0.006,
+            0.032,
+            0.004,
             8,
             24,
             Math.PI
@@ -3723,8 +4252,8 @@
             color: 0x6f302c,
             roughness: 0.7
           }),
-          [0, 1.605, 0.201],
-          [1, 0.46, 0.55]
+          [0, 1.645, 0.172],
+          [1, 0.38, 0.46]
         );
 
       mouth.rotation.z =
@@ -3736,8 +4265,8 @@
             new THREE.Group();
 
           armPivot.position.set(
-            side * 0.34,
-            1.38,
+            side * 0.30,
+            1.43,
             0
           );
 
@@ -3749,27 +4278,64 @@
           );
 
           mesh(
+            new THREE.SphereGeometry(
+              0.10,
+              18,
+              14
+            ),
+            shirt,
+            [0, -0.025, 0],
+            [0.92, 1.0, 0.82],
+            armPivot
+          );
+
+          mesh(
             new THREE.CapsuleGeometry(
-              0.085,
-              0.52,
+              0.074,
+              0.24,
               10,
               16
             ),
             shirt,
-            [0, -0.28, 0],
-            [1, 1, 0.9],
+            [0, -0.20, 0],
+            [1, 1, 0.88],
             armPivot
           );
 
           mesh(
             new THREE.SphereGeometry(
-              0.09,
+              0.072,
+              16,
+              12
+            ),
+            skin,
+            [0, -0.40, 0.004],
+            [0.94, 0.96, 0.88],
+            armPivot
+          );
+
+          mesh(
+            new THREE.CapsuleGeometry(
+              0.064,
+              0.22,
+              10,
+              16
+            ),
+            skin,
+            [0, -0.54, 0.004],
+            [0.94, 1, 0.86],
+            armPivot
+          );
+
+          mesh(
+            new THREE.SphereGeometry(
+              0.078,
               18,
               14
             ),
             skin,
-            [0, -0.63, 0.005],
-            [0.8, 1.12, 0.72],
+            [0, -0.72, 0.008],
+            [0.76, 1.12, 0.70],
             armPivot
           );
 
@@ -3777,8 +4343,8 @@
             new THREE.Group();
 
           legPivot.position.set(
-            side * 0.13,
-            0.80,
+            side * 0.12,
+            0.83,
             0
           );
 
@@ -3788,33 +4354,139 @@
 
           mesh(
             new THREE.CapsuleGeometry(
-              0.105,
-              0.62,
+              0.10,
+              0.28,
               10,
               18
             ),
             trousers,
-            [0, -0.34, 0],
-            [0.9, 1, 0.92],
+            [0, -0.20, 0],
+            [0.92, 1, 0.90],
             legPivot
           );
 
-          const shoe =
-            mesh(
+          mesh(
+            new THREE.SphereGeometry(
+              0.098,
+              18,
+              14
+            ),
+            trousers,
+            [0, -0.42, 0.008],
+            [0.94, 0.86, 0.90],
+            legPivot
+          );
+
+          mesh(
+            new THREE.CapsuleGeometry(
+              0.086,
+              0.32,
+              10,
+              18
+            ),
+            trousers,
+            [0, -0.59, 0.008],
+            [0.92, 1, 0.88],
+            legPivot
+          );
+
+          const shoeGroup =
+            new THREE.Group();
+
+          shoeGroup.position.set(
+            0,
+            -0.79,
+            0.06
+          );
+
+          legPivot.add(
+            shoeGroup
+          );
+
+          propMesh(
+            shoeGroup,
+            new THREE.BoxGeometry(
+              0.235,
+              0.065,
+              0.39
+            ),
+            shoeSole,
+            [0, -0.015, 0.035]
+          );
+
+          const upper =
+            propMesh(
+              shoeGroup,
               new THREE.CapsuleGeometry(
-                0.105,
-                0.17,
+                0.10,
+                0.15,
                 8,
                 16
               ),
-              shoes,
-              [0, -0.70, 0.055],
-              [1, 1.1, 1.45],
-              legPivot
+              shoeUpper,
+              [0, 0.055, 0.035],
+              [Math.PI / 2, 0, 0]
             );
 
-          shoe.rotation.x =
-            Math.PI / 2;
+          upper.scale.set(
+            1.04,
+            1.22,
+            0.92
+          );
+
+          propMesh(
+            shoeGroup,
+            new THREE.SphereGeometry(
+              0.105,
+              18,
+              12
+            ),
+            shoeUpper,
+            [0, 0.045, 0.19]
+          ).scale.set(
+            1.05,
+            0.62,
+            0.82
+          );
+
+          propMesh(
+            shoeGroup,
+            new THREE.BoxGeometry(
+              0.19,
+              0.095,
+              0.035
+            ),
+            shoeAccent,
+            [0, 0.055, -0.155]
+          );
+
+          propMesh(
+            shoeGroup,
+            new THREE.BoxGeometry(
+              0.205,
+              0.028,
+              0.28
+            ),
+            shoeAccent,
+            [0, 0.002, 0.04]
+          );
+
+          for (
+            let lace = 0;
+            lace < 4;
+            lace++
+          ) {
+            propMesh(
+              shoeGroup,
+              new THREE.BoxGeometry(
+                0.145,
+                0.012,
+                0.018
+              ),
+              laceMaterial,
+              [0, 0.145, -0.025 + lace * 0.045]
+            );
+          }
 
           person.userData.limbs.arms.push(
             armPivot
@@ -3832,25 +4504,539 @@
       return person;
     }
 
+    function createFuturisticRobot() {
+      const robot =
+        new THREE.Group();
+
+      robot.userData.limbs = {
+        arms: [],
+        legs: []
+      };
+
+      robot.userData.isProcedural =
+        true;
+
+      robot.userData.characterType =
+        "robot";
+
+      const frame =
+        new THREE.MeshStandardMaterial({
+          color: 0x090b11,
+          roughness: 0.30,
+          metalness: 0.88,
+          envMapIntensity: 0.90
+        });
+
+      const armor =
+        new THREE.MeshPhysicalMaterial({
+          color: 0x20283a,
+          roughness: 0.24,
+          metalness: 0.72,
+          clearcoat: 0.28,
+          clearcoatRoughness: 0.34
+        });
+
+      const joint =
+        new THREE.MeshStandardMaterial({
+          color: 0x050609,
+          roughness: 0.42,
+          metalness: 0.72
+        });
+
+      const cyanGlow =
+        new THREE.MeshBasicMaterial({
+          color: 0x2ce5ff,
+          toneMapped: false
+        });
+
+      const magentaGlow =
+        new THREE.MeshBasicMaterial({
+          color: 0xff3bd4,
+          toneMapped: false
+        });
+
+      function robotMesh(
+        geometry,
+        material,
+        position,
+        scale,
+        parent = robot
+      ) {
+        const part =
+          new THREE.Mesh(
+            geometry,
+            material
+          );
+
+        part.position.set(
+          ...position
+        );
+
+        if (scale) {
+          part.scale.set(
+            ...scale
+          );
+        }
+
+        part.castShadow =
+          true;
+
+        part.receiveShadow =
+          true;
+
+        parent.add(
+          part
+        );
+
+        return part;
+      }
+
+      robotMesh(
+        new THREE.CapsuleGeometry(
+          0.21,
+          0.48,
+          10,
+          18
+        ),
+        armor,
+        [0, 1.22, 0],
+        [1.16, 1, 0.72]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.34,
+          0.18,
+          0.24
+        ),
+        frame,
+        [0, 0.86, 0]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.23,
+          0.08,
+          0.025
+        ),
+        cyanGlow,
+        [0, 1.28, 0.158]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.08,
+          0.18,
+          0.026
+        ),
+        magentaGlow,
+        [0, 1.10, 0.151]
+      );
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.065,
+          0.075,
+          0.14,
+          12
+        ),
+        joint,
+        [0, 1.55, 0]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.29,
+          0.25,
+          0.25
+        ),
+        armor,
+        [0, 1.72, 0]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.22,
+          0.065,
+          0.018
+        ),
+        cyanGlow,
+        [0, 1.745, 0.134]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.035,
+              0.035,
+              0.02
+            ),
+            magentaGlow,
+            [side * 0.102, 1.745, 0.145]
+          );
+
+          const armPivot =
+            new THREE.Group();
+
+          armPivot.position.set(
+            side * 0.32,
+            1.43,
+            0
+          );
+
+          armPivot.rotation.z =
+            side * -0.06;
+
+          robot.add(
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.105,
+              16,
+              12
+            ),
+            armor,
+            [0, 0, 0],
+            [1, 0.86, 0.82],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CapsuleGeometry(
+              0.065,
+              0.25,
+              8,
+              14
+            ),
+            frame,
+            [0, -0.22, 0],
+            [1, 1, 0.88],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.074,
+              14,
+              10
+            ),
+            cyanGlow,
+            [0, -0.43, 0],
+            [1, 0.72, 1],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CapsuleGeometry(
+              0.06,
+              0.24,
+              8,
+              14
+            ),
+            armor,
+            [0, -0.58, 0],
+            [0.94, 1, 0.84],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.115,
+              0.13,
+              0.12
+            ),
+            frame,
+            [0, -0.77, 0.01],
+            null,
+            armPivot
+          );
+
+          const legPivot =
+            new THREE.Group();
+
+          legPivot.position.set(
+            side * 0.12,
+            0.87,
+            0
+          );
+
+          robot.add(
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.CapsuleGeometry(
+              0.092,
+              0.30,
+              8,
+              16
+            ),
+            armor,
+            [0, -0.22, 0],
+            [0.92, 1, 0.88],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.092,
+              16,
+              12
+            ),
+            joint,
+            [0, -0.46, 0.006],
+            [1, 0.82, 0.94],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.12,
+              0.025,
+              0.12
+            ),
+            cyanGlow,
+            [0, -0.46, 0.086],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.CapsuleGeometry(
+              0.078,
+              0.30,
+              8,
+              16
+            ),
+            frame,
+            [0, -0.64, 0.01],
+            [0.92, 1, 0.86],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.19,
+              0.11,
+              0.35
+            ),
+            armor,
+            [0, -0.84, 0.075],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.14,
+              0.018,
+              0.22
+            ),
+            cyanGlow,
+            [0, -0.892, 0.10],
+            null,
+            legPivot
+          );
+
+          robot.userData.limbs.arms.push(
+            armPivot
+          );
+
+          robot.userData.limbs.legs.push(
+            legPivot
+          );
+        }
+      );
+
+      return robot;
+    }
+
     let fallbackCharacter =
       createFallbackMateo();
 
-    character =
-      fallbackCharacter;
+    let robotCharacter =
+      createFuturisticRobot();
 
-    characterRoot.add(
-      fallbackCharacter
-    );
+    function resetCharacterAnimation() {
+      if (mixer) {
+        mixer.stopAllAction();
+      }
 
-    characterHeight =
-      1.9;
+      mixer =
+        null;
 
-    statusText.textContent =
-      "Mateo visible — loading the detailed FBX...";
+      currentAction =
+        null;
+
+      actions.idle =
+        null;
+
+      actions.walk =
+        null;
+
+      actions.run =
+        null;
+    }
+
+    function removeCurrentCharacter() {
+      if (
+        character &&
+        character.parent ===
+          characterRoot
+      ) {
+        characterRoot.remove(
+          character
+        );
+      }
+    }
+
+    function activateProceduralCharacter(
+      nextCharacter,
+      height,
+      message
+    ) {
+      resetCharacterAnimation();
+
+      removeCurrentCharacter();
+
+      character =
+        nextCharacter;
+
+      character.position.set(
+        0,
+        0,
+        0
+      );
+
+      const limbs =
+        character.userData.limbs;
+
+      if (limbs) {
+        [
+          ...limbs.arms,
+          ...limbs.legs
+        ].forEach(
+          function (limb) {
+            limb.rotation.x =
+              0;
+          }
+        );
+      }
+
+      characterRoot.add(
+        character
+      );
+
+      characterHeight =
+        height;
+
+      statusText.textContent =
+        message;
+
+      updateCameraImmediately();
+    }
+
+    function updateCharacterPicker() {
+      characterButtons.forEach(
+        function (button) {
+          const isSelected =
+            button.dataset.character ===
+            selectedCharacter;
+
+          button.classList.toggle(
+            "is-selected",
+            isSelected
+          );
+
+          button.setAttribute(
+            "aria-pressed",
+            String(isSelected)
+          );
+        }
+      );
+
+      enterExperienceLabel.textContent =
+        "Enter with " +
+        characterLabels[
+          selectedCharacter
+        ];
+    }
+
+    function chooseCharacter(
+      type
+    ) {
+      if (
+        !characterLabels[type]
+      ) {
+        return;
+      }
+
+      selectedCharacter =
+        type;
+
+      characterLoadToken +=
+        1;
+
+      const requestToken =
+        characterLoadToken;
+
+      updateCharacterPicker();
+
+      if (
+        type ===
+        "robot"
+      ) {
+        activateProceduralCharacter(
+          robotCharacter,
+          1.84,
+          "Futuristic Robot active — procedural walk and run ready"
+        );
+
+        return;
+      }
+
+      if (
+        type ===
+        "backup-mateo"
+      ) {
+        activateProceduralCharacter(
+          fallbackCharacter,
+          1.93,
+          "Backup Mateo active — procedural walk and run ready"
+        );
+
+        return;
+      }
+
+      activateProceduralCharacter(
+        fallbackCharacter,
+        1.93,
+        "Backup Mateo visible — loading Mateo.fbx..."
+      );
+
+      loadDetailedMateo(
+        0,
+        requestToken
+      );
+    }
 
     function loadDetailedMateo(
-      sourceIndex = 0
+      sourceIndex = 0,
+      requestToken =
+        characterLoadToken
     ) {
+      if (
+        requestToken !==
+          characterLoadToken ||
+        selectedCharacter !==
+          "mateo-fbx"
+      ) {
+        return;
+      }
+
       const mateoUrl =
         mateoSources[sourceIndex];
 
@@ -3858,21 +5044,23 @@
         mateoUrl,
 
       function (model) {
+        if (
+          requestToken !==
+            characterLoadToken ||
+          selectedCharacter !==
+            "mateo-fbx"
+        ) {
+          return;
+        }
+
         const gltf = {
           scene: model,
           animations: model.animations || []
         };
 
-        if (
-          fallbackCharacter
-        ) {
-          characterRoot.remove(
-            fallbackCharacter
-          );
+        resetCharacterAnimation();
 
-          fallbackCharacter =
-            null;
-        }
+        removeCurrentCharacter();
 
         character =
           gltf.scene;
@@ -4083,10 +5271,23 @@
 
         updateCameraImmediately();
 
-        loadMateoAnimations();
+        loadMateoAnimations(
+          requestToken,
+          mixer,
+          character
+        );
       },
 
       function (event) {
+        if (
+          requestToken !==
+            characterLoadToken ||
+          selectedCharacter !==
+            "mateo-fbx"
+        ) {
+          return;
+        }
+
         if (
           event.lengthComputable &&
           event.total > 0
@@ -4108,6 +5309,15 @@
       },
 
       function (error) {
+        if (
+          requestToken !==
+            characterLoadToken ||
+          selectedCharacter !==
+            "mateo-fbx"
+        ) {
+          return;
+        }
+
         console.error(
           "Mateo.fbx load error from " +
           mateoUrl +
@@ -4123,21 +5333,33 @@
             "Mateo visible — trying release asset...";
 
           loadDetailedMateo(
-            sourceIndex + 1
+            sourceIndex + 1,
+            requestToken
           );
 
           return;
         }
 
         statusText.textContent =
-          "Animated procedural Mateo active — place Mateo.fbx beside this page for the detailed model";
+          "Mateo.fbx unavailable — Backup Mateo is active";
 
         updateCameraImmediately();
       }
       );
     }
 
-    loadDetailedMateo();
+    characterButtons.forEach(
+      function (button) {
+        button.addEventListener(
+          "click",
+          function () {
+            chooseCharacter(
+              button.dataset.character
+            );
+          }
+        );
+      }
+    );
 
     const input = {
       forward: false,
@@ -4443,6 +5665,10 @@
     focusExperience.addEventListener(
       "click",
       function () {
+        document.body.classList.add(
+          "experience-active"
+        );
+
         container.scrollIntoView({
           behavior: reducedMotion.matches
             ? "auto"
@@ -4473,6 +5699,10 @@
 
     const lastCharacterPosition =
       new THREE.Vector3();
+
+    chooseCharacter(
+      selectedCharacter
+    );
 
     function getMovementDirection() {
       movement.set(
@@ -4689,8 +5919,8 @@
         0.0001;
 
       if (
-        character ===
-        fallbackCharacter
+        character.userData &&
+        character.userData.isProcedural
       ) {
         const limbs =
           character.userData.limbs;
