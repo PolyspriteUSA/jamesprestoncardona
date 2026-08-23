@@ -328,7 +328,7 @@
       pointer-events: none;
     }
 
-    .objective-panel {
+    .showroom-guide {
       position: absolute;
       z-index: 14;
       top: 22px;
@@ -346,12 +346,12 @@
       pointer-events: none;
     }
 
-    body.experience-active .objective-panel {
+    body.experience-active .showroom-guide {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .objective-kicker {
+    .showroom-kicker {
       margin: 0 0 7px;
       color: var(--magenta);
       font-size: 0.66rem;
@@ -360,42 +360,18 @@
       text-transform: uppercase;
     }
 
-    .objective-title {
+    .showroom-title {
       margin: 0;
       color: #fff;
       font-size: 1rem;
       letter-spacing: 0.01em;
     }
 
-    .objective-copy {
+    .showroom-copy {
       margin: 8px 0 0;
       color: #bdb7ca;
       font-size: 0.79rem;
       line-height: 1.5;
-    }
-
-    .objective-stats {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .objective-stat {
-      flex: 1;
-      padding: 8px 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.035);
-      color: #aaa4b8;
-      font-size: 0.64rem;
-      font-weight: 750;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    .objective-stat strong {
-      color: #fff;
-      font-size: 0.82rem;
     }
 
     .interaction-prompt {
@@ -427,56 +403,71 @@
       transform: translate(-50%, 0);
     }
 
-    .mission-complete {
+    .project-panel {
       position: absolute;
       z-index: 20;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: radial-gradient(circle, rgba(255, 31, 194, 0.18), rgba(4, 3, 12, 0.12) 44%, transparent 72%);
+      top: 22px;
+      right: 22px;
+      width: min(390px, calc(100% - 44px));
       opacity: 0;
-      transition: opacity 500ms ease;
+      transform: translateX(24px);
+      transition: opacity 260ms ease, transform 260ms ease;
       pointer-events: none;
     }
 
-    .mission-complete.is-visible {
+    .project-panel.is-visible {
       opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
     }
 
-    .mission-complete-card {
-      width: min(480px, 100%);
-      padding: 30px;
+    .project-panel-card {
+      position: relative;
+      padding: 28px;
       border: 1px solid rgba(255, 66, 208, 0.42);
       border-radius: 22px;
-      background: rgba(7, 5, 16, 0.88);
+      background:
+        linear-gradient(145deg, rgba(22, 12, 38, 0.94), rgba(7, 5, 16, 0.91));
       box-shadow: 0 0 80px rgba(255, 31, 194, 0.22);
       backdrop-filter: blur(20px);
-      text-align: center;
-      transform: scale(0.94);
-      transition: transform 500ms ease;
     }
 
-    .mission-complete.is-visible .mission-complete-card {
-      transform: scale(1);
+    .project-panel-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+      cursor: pointer;
     }
 
-    .mission-complete h2 {
-      margin: 0;
-      font-size: clamp(2rem, 6vw, 4.5rem);
-      line-height: 0.92;
-      letter-spacing: -0.05em;
+    .project-panel h2 {
+      margin: 0 42px 0 0;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
     }
 
-    .mission-complete p {
-      margin: 16px auto 0;
+    .project-panel-copy {
+      margin: 16px 0 0;
       color: #c2bdcc;
       line-height: 1.6;
     }
 
-    .mission-complete .button {
-      margin-top: 20px;
-      pointer-events: auto;
+    .project-panel-details {
+      margin: 18px 0 0;
+      padding: 16px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      color: #8f89a0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.7;
+      text-transform: uppercase;
     }
 
     .experience-exit {
@@ -710,10 +701,17 @@
         width: min(280px, calc(100% - 28px));
       }
 
-      .objective-panel {
+      .showroom-guide {
         top: 14px;
         left: 14px;
         width: min(300px, calc(100% - 28px));
+      }
+
+      .project-panel {
+        top: auto;
+        right: 14px;
+        bottom: 188px;
+        width: min(340px, calc(100% - 28px));
       }
 
       .interaction-prompt {
@@ -770,8 +768,8 @@
 
         <p class="lede">
           Explore a real-time character experience directly in the browser.
-          Choose a character, restore three district terminals, recover their data
-          fragments and return the signal to the Polysprite building.
+          Choose a character and walk through a cinematic neon showroom where
+          illuminated signs reveal selected portfolio disciplines.
         </p>
 
         <div class="character-picker">
@@ -821,7 +819,7 @@
         <div
           id="experience"
           tabindex="0"
-          aria-label="Interactive 3D character mission. Use W A S D or arrow keys to move, E to interact and drag to rotate the camera."
+          aria-label="Interactive 3D portfolio showroom. Use W A S D or arrow keys to move, E to open nearby showcases and drag to rotate the camera."
         ></div>
 
         <div class="scene-overlay"></div>
@@ -835,7 +833,7 @@
           <p class="hud-copy">
             WASD / Arrow Keys — move<br>
             Shift — run<br>
-            E / ACT — interact<br>
+            E / ACT — open showcase<br>
             Drag mouse — orbit camera<br>
             Mouse wheel — camera distance
           </p>
@@ -846,29 +844,26 @@
           </div>
         </div>
 
-        <aside class="objective-panel" aria-live="polite">
-          <p class="objective-kicker">Current Objective</p>
-          <h2 class="objective-title">Neon Restoration</h2>
-          <p class="objective-copy" id="objectiveText">
-            Restore the three district terminals and recover their data fragments.
+        <aside class="showroom-guide" aria-live="polite">
+          <p class="showroom-kicker">Interactive Showroom</p>
+          <h2 class="showroom-title">Follow the Neon</h2>
+          <p class="showroom-copy">
+            Approach an illuminated portfolio beacon and press E or ACT to enter
+            a short cinematic showcase.
           </p>
-
-          <div class="objective-stats">
-            <span class="objective-stat"><strong id="terminalCount">0</strong>/3 Power</span>
-            <span class="objective-stat"><strong id="fragmentCount">0</strong>/3 Data</span>
-          </div>
         </aside>
 
         <div class="interaction-prompt" id="interactionPrompt" role="status"></div>
 
-        <div class="mission-complete" id="missionComplete" aria-live="assertive">
-          <div class="mission-complete-card">
-            <p class="objective-kicker">Signal Restored</p>
-            <h2>District Online</h2>
-            <p>The Polysprite network is transmitting across every restored block.</p>
-            <button class="button primary" id="restartMission" type="button">Run Mission Again</button>
+        <aside class="project-panel" id="projectPanel" aria-live="polite" aria-hidden="true">
+          <div class="project-panel-card">
+            <button class="project-panel-close" id="closeProjectPanel" type="button" aria-label="Close showcase">×</button>
+            <p class="showroom-kicker" id="projectKicker">Portfolio Showcase</p>
+            <h2 id="projectTitle">Polysprite</h2>
+            <p class="project-panel-copy" id="projectDescription"></p>
+            <p class="project-panel-details" id="projectDetails"></p>
           </div>
-        </div>
+        </aside>
 
         <div class="touch-controls" aria-label="Touch character controls">
           <div class="touch-pad">
@@ -956,23 +951,26 @@
     const enterExperienceLabel =
       document.getElementById("enterExperienceLabel");
 
-    const objectiveText =
-      document.getElementById("objectiveText");
-
-    const terminalCount =
-      document.getElementById("terminalCount");
-
-    const fragmentCount =
-      document.getElementById("fragmentCount");
-
     const interactionPrompt =
       document.getElementById("interactionPrompt");
 
-    const missionComplete =
-      document.getElementById("missionComplete");
+    const projectPanel =
+      document.getElementById("projectPanel");
 
-    const restartMission =
-      document.getElementById("restartMission");
+    const projectKicker =
+      document.getElementById("projectKicker");
+
+    const projectTitle =
+      document.getElementById("projectTitle");
+
+    const projectDescription =
+      document.getElementById("projectDescription");
+
+    const projectDetails =
+      document.getElementById("projectDetails");
+
+    const closeProjectPanel =
+      document.getElementById("closeProjectPanel");
 
     const touchInteract =
       document.getElementById("touchInteract");
@@ -1882,15 +1880,15 @@
       ["NOVA", "#9d65ff"],
       ["2049", "#3cd7ff"],
       ["NIGHTSHIFT", "#ff5ac8"],
-      ["ORBITAL", "#45cfff"],
+      ["ARCH VIZ", "#45cfff"],
       ["VECTOR", "#b35cff"],
       ["ECHO", "#ff3b8d"],
       ["LUMEN", "#32e0ff"],
-      ["MERIDIAN", "#df55ff"],
+      ["CHARACTERS", "#df55ff"],
       ["ARCADE", "#ff65ba"],
       ["VANTA", "#4ca9ff"],
       ["KINETIC", "#ad61ff"],
-      ["SIGNAL", "#ff498d"],
+      ["UNREAL", "#ff498d"],
       ["CHROMA", "#45d9e8"],
       ["PARALLAX", "#d556ff"],
       ["AURORA", "#ff4cb0"],
@@ -1929,7 +1927,7 @@
     let polyspriteSignLight =
       null;
 
-    const missionBlockSigns = [];
+    const portfolioFacadeSigns = [];
 
     function addBuilding(
       side,
@@ -2302,29 +2300,19 @@
           polyspriteSignLight =
             signLight;
 
-          polyspriteSign.material.opacity =
-            0.16;
-
-          polyspriteSignLight.intensity =
-            1.4;
         }
 
         if (
-          [8, 10, 12].includes(
+          [0, 4, 8, 12].includes(
             index
           )
         ) {
-          missionBlockSigns.push({
+          portfolioFacadeSigns.push({
+            index,
             sign,
             light: signLight,
             baseIntensity: 12
           });
-
-          sign.material.opacity =
-            0.14;
-
-          signLight.intensity =
-            0.8;
         }
       }
 
@@ -3472,337 +3460,207 @@
       );
     }
 
-    const missionState = {
-      terminalsPowered: 0,
-      fragmentsCollected: 0,
-      complete: false
+    const showroomState = {
+      activeProject: null,
+      focusObject: null,
+      cinematic: null
     };
 
-    const powerTerminals = [];
+    const portfolioHotspots = [];
 
     let activeInteraction =
       null;
 
-    const objectiveShellMaterial =
+    let companionRobot =
+      null;
+
+    let companionWalkTime =
+      0;
+
+    const companionTarget =
+      new THREE.Vector3();
+
+    const companionLookTarget =
+      new THREE.Vector3();
+
+    const showcaseShellMaterial =
       new THREE.MeshStandardMaterial({
         color: 0x111522,
-        roughness: 0.50,
-        metalness: 0.64
+        roughness: 0.72,
+        metalness: 0.42
       });
 
-    const objectiveTrimMaterial =
+    const showcaseTrimMaterial =
       new THREE.MeshStandardMaterial({
         color: 0x3f4658,
-        roughness: 0.38,
-        metalness: 0.78
+        roughness: 0.58,
+        metalness: 0.52
       });
 
-    function createPowerTerminal(
+    const showcaseDefinitions = [
+      {
+        signIndex: 0,
+        kicker: "Brand + Digital Worlds",
+        title: "Polysprite",
+        description:
+          "A visual identity built around stylized 3D design, interactive presentation and memorable real-time environments.",
+        details:
+          "Brand design · Three.js · Interactive experiences",
+        hex: 0xff38d1
+      },
+      {
+        signIndex: 4,
+        kicker: "Architectural Visualization",
+        title: "Designed Environments",
+        description:
+          "Atmospheric architectural scenes shaped through modeling, lighting, materials and cinematic composition.",
+        details:
+          "Unreal Engine · Twinmotion · Revit · Real-time lighting",
+        hex: 0x45cfff
+      },
+      {
+        signIndex: 8,
+        kicker: "Character Design",
+        title: "Digital Humans",
+        description:
+          "Realistic and stylized characters developed for interactive scenes, animation and visual storytelling.",
+        details:
+          "Character modeling · Materials · Rigging · Animation",
+        hex: 0xdf55ff
+      },
+      {
+        signIndex: 12,
+        kicker: "Real-time Production",
+        title: "Unreal Engine",
+        description:
+          "Cinematic worlds and technical workflows that combine environment art, procedural systems and real-time rendering.",
+        details:
+          "World building · Blueprints · Look development · Rendering",
+        hex: 0xff498d
+      }
+    ];
+
+    function createShowcaseBeacon(
       definition,
       index
     ) {
-      const terminal =
+      const facade =
+        portfolioFacadeSigns.find(
+          function (entry) {
+            return entry.index ===
+              definition.signIndex;
+          }
+        );
+
+      if (!facade) {
+        return;
+      }
+
+      const side =
+        Math.sign(
+          facade.sign.position.x
+        ) || 1;
+
+      const beacon =
         new THREE.Group();
 
-      terminal.position.set(
-        definition.x,
+      beacon.position.set(
+        side * 2.92,
         0,
-        definition.z
+        THREE.MathUtils.clamp(
+          facade.sign.position.z,
+          -7.85,
+          7.85
+        )
       );
-
-      terminal.rotation.y =
-        definition.x < 0
-          ? Math.PI / 2
-          : -Math.PI / 2;
 
       environment.add(
-        terminal
+        beacon
       );
 
       propMesh(
-        terminal,
-        new THREE.CylinderGeometry(
-          0.34,
+        beacon,
+        new THREE.BoxGeometry(
           0.42,
-          0.13,
-          8
+          0.08,
+          0.42
         ),
-        objectiveTrimMaterial,
-        [0, 0.065, 0]
+        showcaseTrimMaterial,
+        [0, 0.04, 0]
       );
 
       propMesh(
-        terminal,
+        beacon,
         new THREE.BoxGeometry(
-          0.56,
-          0.82,
-          0.38
+          0.10,
+          0.70,
+          0.10
         ),
-        objectiveShellMaterial,
-        [0, 0.52, 0]
+        showcaseShellMaterial,
+        [0, 0.41, 0]
       );
 
-      propMesh(
-        terminal,
-        new THREE.BoxGeometry(
-          0.66,
-          0.09,
-          0.47
-        ),
-        objectiveTrimMaterial,
-        [0, 0.96, 0]
-      );
-
-      const screenMaterial =
-        createHorizontalSign(
-          definition.label,
-          definition.color
-        );
-
-      screenMaterial.opacity =
-        0.22;
-
-      const screen =
-        propMesh(
-          terminal,
-          new THREE.PlaneGeometry(
-            0.43,
-            0.24
-          ),
-          screenMaterial,
-          [0, 0.62, 0.196]
-        );
-
-      screen.castShadow =
-        false;
-
-      const markerMaterial =
+      const indicatorMaterial =
         new THREE.MeshBasicMaterial({
           color: definition.hex,
           transparent: true,
-          opacity: 0.26,
+          opacity: 0.72,
           toneMapped: false
         });
 
-      const marker =
+      const indicator =
         propMesh(
-          terminal,
-          new THREE.TorusGeometry(
-            0.20,
-            0.018,
-            8,
-            28
+          beacon,
+          new THREE.BoxGeometry(
+            0.16,
+            0.34,
+            0.06
           ),
-          markerMaterial,
-          [0, 1.24, 0.06]
+          indicatorMaterial,
+          [0, 0.82, 0]
         );
 
-      marker.scale.set(
-        1,
-        1.20,
-        1
-      );
-
-      const fragmentMaterial =
-        new THREE.MeshBasicMaterial({
-          color: definition.hex,
-          transparent: true,
-          opacity: 0.94,
-          toneMapped: false
-        });
-
-      const fragment =
+      const cap =
         propMesh(
-          terminal,
-          new THREE.OctahedronGeometry(
-            0.14,
-            0
+          beacon,
+          new THREE.BoxGeometry(
+            0.28,
+            0.055,
+            0.18
           ),
-          fragmentMaterial,
-          [0, 1.25, 0.07]
+          showcaseTrimMaterial,
+          [0, 1.02, 0]
         );
 
-      fragment.visible =
-        false;
+      cap.rotation.y =
+        side * 0.18;
 
-      terminal.userData = {
+      beacon.userData = {
+        ...definition,
         index,
-        label: definition.label,
-        powered: false,
-        fragmentCollected: false,
-        screen,
-        screenMaterial,
-        marker,
-        markerMaterial,
-        fragment,
-        blockSign:
-          missionBlockSigns[index],
-        phase: index * 1.7,
-        activationPulse: 0
+        side,
+        facade,
+        indicator,
+        indicatorMaterial,
+        phase: index * 1.7
       };
 
       streetObstacles.push({
-        x: definition.x,
-        z: definition.z,
-        radius: 0.53
+        x: beacon.position.x,
+        z: beacon.position.z,
+        radius: 0.42
       });
 
-      powerTerminals.push(
-        terminal
+      portfolioHotspots.push(
+        beacon
       );
     }
 
-    [
-      {
-        label: "RELAY A",
-        color: "#ff38d1",
-        hex: 0xff38d1,
-        x: -2.92,
-        z: -5.55
-      },
-      {
-        label: "JUNCTION B",
-        color: "#42d9ff",
-        hex: 0x42d9ff,
-        x: 2.92,
-        z: 0.15
-      },
-      {
-        label: "NODE C",
-        color: "#a56cff",
-        hex: 0xa56cff,
-        x: -2.92,
-        z: 5.75
-      }
-    ].forEach(
-      createPowerTerminal
+    showcaseDefinitions.forEach(
+      createShowcaseBeacon
     );
 
-    const uploadStation =
-      new THREE.Group();
-
-    uploadStation.position.set(
-      -2.92,
-      0,
-      -7.72
-    );
-
-    uploadStation.rotation.y =
-      Math.PI / 2;
-
-    environment.add(
-      uploadStation
-    );
-
-    propMesh(
-      uploadStation,
-      new THREE.CylinderGeometry(
-        0.42,
-        0.50,
-        0.14,
-        8
-      ),
-      objectiveTrimMaterial,
-      [0, 0.07, 0]
-    );
-
-    propMesh(
-      uploadStation,
-      new THREE.BoxGeometry(
-        0.72,
-        1.12,
-        0.46
-      ),
-      objectiveShellMaterial,
-      [0, 0.63, 0]
-    );
-
-    const uploadScreenMaterial =
-      createHorizontalSign(
-        "POLYSPRITE",
-        "#ff38d1"
-      );
-
-    uploadScreenMaterial.opacity =
-      0.20;
-
-    const uploadScreen =
-      propMesh(
-        uploadStation,
-        new THREE.PlaneGeometry(
-          0.58,
-          0.30
-        ),
-        uploadScreenMaterial,
-        [0, 0.75, 0.236]
-      );
-
-    uploadScreen.castShadow =
-      false;
-
-    const uploadRingMaterial =
-      new THREE.MeshBasicMaterial({
-        color: 0xff38d1,
-        transparent: true,
-        opacity: 0.16,
-        toneMapped: false
-      });
-
-    const uploadRing =
-      propMesh(
-        uploadStation,
-        new THREE.TorusGeometry(
-          0.27,
-          0.022,
-          8,
-          32
-        ),
-        uploadRingMaterial,
-        [0, 1.45, 0.06]
-      );
-
-    uploadRing.scale.y =
-      1.18;
-
-    uploadStation.userData = {
-      screenMaterial: uploadScreenMaterial,
-      ring: uploadRing,
-      ringMaterial: uploadRingMaterial
-    };
-
-    streetObstacles.push({
-      x: uploadStation.position.x,
-      z: uploadStation.position.z,
-      radius: 0.60
-    });
-
-    function updateMissionHud() {
-      terminalCount.textContent =
-        String(
-          missionState.terminalsPowered
-        );
-
-      fragmentCount.textContent =
-        String(
-          missionState.fragmentsCollected
-        );
-
-      if (missionState.complete) {
-        objectiveText.textContent =
-          "District online. The Polysprite signal has been restored.";
-      } else if (
-        missionState.fragmentsCollected ===
-        powerTerminals.length
-      ) {
-        objectiveText.textContent =
-          "Deliver all three fragments to the Polysprite uplink.";
-      } else {
-        objectiveText.textContent =
-          "Restore each terminal and collect the data fragment it releases.";
-      }
-    }
-
-    function getMissionDistance(
+    function getShowroomDistance(
       object
     ) {
       return Math.hypot(
@@ -3813,29 +3671,19 @@
       );
     }
 
-    function findMissionInteraction() {
+    function findShowroomInteraction() {
       let nearest =
         null;
 
-      powerTerminals.forEach(
-        function (terminal) {
-          const data =
-            terminal.userData;
-
-          if (
-            data.powered &&
-            data.fragmentCollected
-          ) {
-            return;
-          }
-
+      portfolioHotspots.forEach(
+        function (hotspot) {
           const distance =
-            getMissionDistance(
-              terminal
+            getShowroomDistance(
+              hotspot
             );
 
           if (
-            distance > 1.28 ||
+            distance > 1.38 ||
             (
               nearest &&
               distance >= nearest.distance
@@ -3845,393 +3693,228 @@
           }
 
           nearest = {
-            kind: data.powered
-              ? "fragment"
-              : "terminal",
-            object: terminal,
+            kind: "showcase",
+            object: hotspot,
             distance,
-            prompt: data.powered
-              ? "Collect the " +
-                data.label +
-                " data fragment"
-              : "Restore power at " +
-                data.label
+            prompt:
+              "View " +
+              hotspot.userData.title
           };
         }
       );
 
-      const uploadDistance =
-        getMissionDistance(
-          uploadStation
-        );
-
-      if (
-        !missionState.complete &&
-        uploadDistance <= 1.30 &&
-        (
-          !nearest ||
-          uploadDistance < nearest.distance
-        )
-      ) {
-        const missing =
-          powerTerminals.length -
-          missionState.fragmentsCollected;
-
-        nearest = {
-          kind: missing === 0
-            ? "upload"
-            : "locked",
-          object: uploadStation,
-          distance: uploadDistance,
-          prompt: missing === 0
-            ? "Upload fragments to Polysprite"
-            : "Polysprite uplink locked — " +
-              missing +
-              " fragment" +
-              (
-                missing === 1
-                  ? ""
-                  : "s"
-              ) +
-              " missing"
-        };
-      }
-
       return nearest;
     }
 
-    function completeMission() {
-      if (missionState.complete) {
-        return;
-      }
+    function openProjectShowcase(
+      data
+    ) {
+      showroomState.activeProject =
+        data;
 
-      missionState.complete =
-        true;
+      showroomState.focusObject =
+        portfolioHotspots[
+          data.index
+        ];
 
-      uploadScreenMaterial.opacity =
+      projectKicker.textContent =
+        data.kicker;
+
+      projectTitle.textContent =
+        data.title;
+
+      projectDescription.textContent =
+        data.description;
+
+      projectDetails.textContent =
+        data.details;
+
+      projectPanel.classList.add(
+        "is-visible"
+      );
+
+      projectPanel.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      data.facade.sign.material.opacity =
         1;
 
-      uploadRingMaterial.opacity =
-        1;
+      data.facade.light.intensity =
+        20;
 
       lightPillars.visible =
         true;
 
-      if (polyspriteSign) {
-        polyspriteSign.material.opacity =
+      const approachDirection =
+        data.facade.sign.position.z <
+          characterRoot.position.z
+          ? 1
+          : -1;
+
+      const endPosition =
+        new THREE.Vector3(
+          -data.side * 0.48,
+          2.25,
+          data.facade.sign.position.z +
+            approachDirection * 2.45
+        );
+
+      const endTarget =
+        new THREE.Vector3(
+          data.facade.sign.position.x * 0.72,
+          Math.min(
+            data.facade.sign.position.y,
+            2.85
+          ),
+          data.facade.sign.position.z
+        );
+
+      showroomState.cinematic = {
+        elapsed: 0,
+        duration:
+          reducedMotion.matches
+            ? 0.01
+            : 1.65,
+        startPosition:
+          camera.position.clone(),
+        startTarget:
+          cameraTarget.clone(),
+        endPosition,
+        endTarget
+      };
+
+      statusText.textContent =
+        data.title +
+        " showcase — close the panel to continue exploring";
+
+      activeInteraction =
+        null;
+    }
+
+    function closeShowcase() {
+      const data =
+        showroomState.activeProject;
+
+      if (data) {
+        data.facade.light.intensity =
+          data.facade.baseIntensity;
+
+        data.facade.sign.material.opacity =
           1;
       }
 
-      if (polyspriteSignLight) {
-        polyspriteSignLight.intensity =
-          34;
-      }
+      showroomState.activeProject =
+        null;
 
-      missionComplete.classList.add(
+      showroomState.focusObject =
+        null;
+
+      showroomState.cinematic =
+        null;
+
+      projectPanel.classList.remove(
         "is-visible"
       );
 
-      statusText.textContent =
-        "Mission complete — Polysprite signal restored";
+      projectPanel.setAttribute(
+        "aria-hidden",
+        "true"
+      );
 
-      updateMissionHud();
+      lightPillars.visible =
+        false;
+
+      statusText.textContent =
+        "Showroom active — follow the illuminated portfolio beacons";
     }
 
     function performInteraction() {
       if (
-        !activeInteraction ||
-        missionState.complete
+        projectPanel.classList.contains(
+          "is-visible"
+        )
       ) {
+        closeShowcase();
         return;
       }
 
-      const target =
-        activeInteraction;
-
-      if (target.kind === "terminal") {
-        const data =
-          target.object.userData;
-
-        data.powered =
-          true;
-
-        data.screenMaterial.opacity =
-          1;
-
-        data.markerMaterial.opacity =
-          0.90;
-
-        data.fragment.visible =
-          true;
-
-        if (data.blockSign) {
-          data.blockSign.sign.material.opacity =
-            1;
-
-          data.blockSign.light.intensity =
-            18;
-        }
-
-        data.activationPulse =
-          1;
-
-        missionState.terminalsPowered +=
-          1;
-
-        statusText.textContent =
-          data.label +
-          " restored — collect its data fragment";
-      } else if (
-        target.kind === "fragment"
-      ) {
-        const data =
-          target.object.userData;
-
-        data.fragmentCollected =
-          true;
-
-        data.fragment.visible =
-          false;
-
-        missionState.fragmentsCollected +=
-          1;
-
-        statusText.textContent =
-          data.label +
-          " fragment secured";
-      } else if (
-        target.kind === "upload"
-      ) {
-        completeMission();
-      } else {
-        statusText.textContent =
-          target.prompt;
+      if (!activeInteraction) {
+        return;
       }
 
-      activeInteraction =
-        null;
-
-      updateMissionHud();
+      openProjectShowcase(
+        activeInteraction.object.userData
+      );
     }
 
-    function resetMission() {
-      missionState.terminalsPowered =
-        0;
-
-      missionState.fragmentsCollected =
-        0;
-
-      missionState.complete =
-        false;
-
-      powerTerminals.forEach(
-        function (terminal) {
-          const data =
-            terminal.userData;
-
-          data.powered =
-            false;
-
-          data.fragmentCollected =
-            false;
-
-          data.fragment.visible =
-            false;
-
-          data.screenMaterial.opacity =
-            0.22;
-
-          data.markerMaterial.opacity =
-            0.26;
-
-          data.activationPulse =
-            0;
-
-          if (data.blockSign) {
-            data.blockSign.sign.material.opacity =
-              0.14;
-
-            data.blockSign.light.intensity =
-              0.8;
-          }
-        }
-      );
-
-      uploadScreenMaterial.opacity =
-        0.20;
-
-      uploadRingMaterial.opacity =
-        0.16;
-
-      lightPillars.visible =
-        false;
-
-      if (polyspriteSign) {
-        polyspriteSign.material.opacity =
-          0.16;
-
-        polyspriteSign.scale.setScalar(
-          1
-        );
-      }
-
-      if (polyspriteSignLight) {
-        polyspriteSignLight.intensity =
-          1.4;
-      }
-
-      missionComplete.classList.remove(
-        "is-visible"
-      );
-
-      characterRoot.position.set(
-        0,
-        0,
-        0
-      );
-
-      characterRoot.rotation.y =
-        0;
-
-      statusText.textContent =
-        "Mission reset — locate the three power terminals";
-
-      updateMissionHud();
-      updateCameraImmediately();
-    }
-
-    function updateObjectiveWorld(
+    function updateShowroomWorld(
       delta
     ) {
       const elapsed =
         clock.elapsedTime;
 
-      powerTerminals.forEach(
-        function (terminal) {
-          const data =
-            terminal.userData;
+      const panelOpen =
+        projectPanel.classList.contains(
+          "is-visible"
+        );
 
-          data.marker.rotation.z +=
-            delta *
-            (
-              data.powered
-                ? 1.7
-                : 0.45
-            );
+      portfolioHotspots.forEach(
+        function (hotspot) {
+          const data =
+            hotspot.userData;
+
+          const focused =
+            showroomState.activeProject ===
+              data;
+
+          const nearby =
+            getShowroomDistance(
+              hotspot
+            ) < 1.65;
 
           const pulse =
+            0.68 +
             Math.sin(
-              elapsed * 2.4 +
+              elapsed * 2.5 +
               data.phase
-            ) * 0.045;
+            ) * 0.16;
 
-          const activation =
-            data.activationPulse *
-            0.34;
+          data.indicatorMaterial.opacity =
+            focused
+              ? 1
+              : nearby
+                ? 0.90
+                : pulse;
 
-          data.marker.scale.set(
-            1 + pulse + activation,
-            1.20 + pulse + activation,
-            1
-          );
+          data.indicator.scale.y =
+            1 +
+            Math.sin(
+              elapsed * 2.1 +
+              data.phase
+            ) * 0.06;
 
-          if (data.activationPulse > 0) {
-            data.activationPulse =
-              Math.max(
-                0,
-                data.activationPulse -
-                  delta * 1.8
-              );
-          }
-
-          if (
-            !data.powered
-          ) {
-            data.screenMaterial.opacity =
-              0.18 +
-              Math.max(
-                0,
-                Math.sin(
-                  elapsed * 5.2 +
-                  data.phase
-                )
-              ) * 0.08;
-          }
-
-          if (
-            data.fragment.visible
-          ) {
-            data.fragment.rotation.y +=
-              delta * 2.4;
-
-            data.fragment.rotation.x +=
-              delta * 0.8;
-
-            data.fragment.position.y =
-              1.25 +
-              Math.sin(
-                elapsed * 3.2 +
-                data.phase
-              ) * 0.08;
-          }
+          data.facade.light.intensity =
+            THREE.MathUtils.lerp(
+              data.facade.light.intensity,
+              focused
+                ? 20
+                : nearby
+                  ? 15
+                  : data.facade.baseIntensity,
+              Math.min(
+                1,
+                delta * 3
+              )
+            );
         }
       );
 
-      uploadRing.rotation.z +=
-        delta *
-        (
-          missionState.fragmentsCollected ===
-            powerTerminals.length
-            ? 1.8
-            : 0.35
-        );
-
-      if (
-        missionState.fragmentsCollected ===
-          powerTerminals.length &&
-        !missionState.complete
-      ) {
-        uploadScreenMaterial.opacity =
-          0.78 +
-          Math.sin(
-            elapsed * 3.6
-          ) * 0.18;
-
-        uploadRingMaterial.opacity =
-          0.68 +
-          Math.sin(
-            elapsed * 3.2
-          ) * 0.20;
-      }
-
-      if (
-        missionState.complete &&
-        polyspriteSign
-      ) {
-        polyspriteSign.scale.setScalar(
-          1 +
-          Math.sin(
-            elapsed * 3.4
-          ) * 0.018
-        );
-      }
-
-      bloomPass.strength =
-        THREE.MathUtils.lerp(
-          bloomPass.strength,
-          missionState.complete
-            ? 1.18
-            : 0.92,
-          Math.min(
-            1,
-            delta * 2.5
-          )
-        );
-
       activeInteraction =
-        missionState.complete
+        panelOpen
           ? null
-          : findMissionInteraction();
+          : findShowroomInteraction();
 
       const promptVisible =
         Boolean(
@@ -4251,11 +3934,152 @@
         "is-visible",
         promptVisible
       );
+
+      bloomPass.strength =
+        THREE.MathUtils.lerp(
+          bloomPass.strength,
+          panelOpen
+            ? 1.08
+            : 0.92,
+          Math.min(
+            1,
+            delta * 2.5
+          )
+        );
     }
 
-    restartMission.addEventListener(
+    function updateRobotCompanion(
+      delta
+    ) {
+      if (
+        !companionRobot ||
+        !companionRobot.visible
+      ) {
+        return;
+      }
+
+      companionTarget.set(
+        THREE.MathUtils.clamp(
+          characterRoot.position.x + 1.05,
+          -3.15,
+          3.15
+        ),
+        0,
+        THREE.MathUtils.clamp(
+          characterRoot.position.z + 1.10,
+          -8.1,
+          8.1
+        )
+      );
+
+      const distance =
+        companionRobot.position.distanceTo(
+          companionTarget
+        );
+
+      const moving =
+        distance > 0.08;
+
+      companionRobot.position.lerp(
+        companionTarget,
+        1 -
+          Math.pow(
+            0.002,
+            delta
+          )
+      );
+
+      const focus =
+        showroomState.focusObject ||
+        (
+          activeInteraction
+            ? activeInteraction.object
+            : null
+        );
+
+      if (focus) {
+        companionLookTarget.copy(
+          focus.position
+        );
+      } else {
+        companionLookTarget.copy(
+          characterRoot.position
+        );
+      }
+
+      const targetRotation =
+        Math.atan2(
+          companionLookTarget.x -
+            companionRobot.position.x,
+          companionLookTarget.z -
+            companionRobot.position.z
+        );
+
+      const rotationDifference =
+        Math.atan2(
+          Math.sin(
+            targetRotation -
+            companionRobot.rotation.y
+          ),
+          Math.cos(
+            targetRotation -
+            companionRobot.rotation.y
+          )
+        );
+
+      companionRobot.rotation.y +=
+        rotationDifference *
+        Math.min(
+          1,
+          delta * 4.5
+        );
+
+      const limbs =
+        companionRobot.userData.limbs;
+
+      if (moving) {
+        companionWalkTime +=
+          delta * 7.0;
+
+        const swing =
+          Math.sin(
+            companionWalkTime
+          ) * 0.34;
+
+        limbs.arms[0].rotation.x =
+          swing;
+
+        limbs.arms[1].rotation.x =
+          -swing;
+
+        limbs.legs[0].rotation.x =
+          -swing;
+
+        limbs.legs[1].rotation.x =
+          swing;
+      } else {
+        [
+          ...limbs.arms,
+          ...limbs.legs
+        ].forEach(
+          function (limb) {
+            limb.rotation.x =
+              THREE.MathUtils.lerp(
+                limb.rotation.x,
+                0,
+                Math.min(
+                  1,
+                  delta * 7
+                )
+              );
+          }
+        );
+      }
+    }
+
+    closeProjectPanel.addEventListener(
       "click",
-      resetMission
+      closeShowcase
     );
 
     touchInteract.addEventListener(
@@ -4266,7 +4090,6 @@
       }
     );
 
-    updateMissionHud();
 
     function createFogTexture() {
       const canvas =
@@ -6485,9 +6308,14 @@
           0, 7, 3
         ]);
 
-        geometry.computeVertexNormals();
+        const flatGeometry =
+          geometry.toNonIndexed();
 
-        return geometry;
+        flatGeometry.computeVertexNormals();
+
+        geometry.dispose();
+
+        return flatGeometry;
       }
 
       function rodBetween(
@@ -6921,9 +6749,9 @@
           const shoulderArmor =
             robotMesh(
               new THREE.BoxGeometry(
-                0.30,
-                0.19,
-                0.23
+                0.22,
+                0.155,
+                0.18
               ),
               armor,
               [0, 0.005, 0],
@@ -6937,12 +6765,12 @@
           const shoulderPanel =
             robotMesh(
               new THREE.BoxGeometry(
-                0.25,
-                0.10,
-                0.18
+                0.18,
+                0.075,
+                0.14
               ),
               steelPanel,
-              [side * 0.025, 0.045, 0.028],
+              [side * 0.020, 0.035, 0.024],
               null,
               armPivot
             );
@@ -6953,12 +6781,12 @@
           const shoulderBlade =
             robotMesh(
               new THREE.BoxGeometry(
-                0.19,
-                0.055,
-                0.22
+                0.14,
+                0.045,
+                0.17
               ),
               armor,
-              [side * 0.045, 0.115, -0.005],
+              [side * 0.035, 0.095, -0.005],
               null,
               armPivot
             );
@@ -7695,6 +7523,9 @@
     let robotCharacter =
       createFuturisticRobot();
 
+    companionRobot =
+      createFuturisticRobot();
+
     fallbackCharacter.scale.setScalar(
       targetCharacterHeight /
         1.97
@@ -7703,6 +7534,21 @@
     robotCharacter.scale.setScalar(
       targetCharacterHeight /
         1.94
+    );
+
+    companionRobot.scale.setScalar(
+      targetCharacterHeight * 0.92 /
+        1.94
+    );
+
+    companionRobot.position.set(
+      1.05,
+      0,
+      1.10
+    );
+
+    scene.add(
+      companionRobot
     );
 
     function resetCharacterAnimation() {
@@ -7821,6 +7667,9 @@
 
       selectedCharacter =
         type;
+
+      companionRobot.visible =
+        type !== "robot";
 
       characterLoadToken +=
         1;
@@ -8284,6 +8133,15 @@
         }
 
         if (
+          event.code === "Escape" &&
+          projectPanel.classList.contains(
+            "is-visible"
+          )
+        ) {
+          closeShowcase();
+        }
+
+        if (
           [
             "KeyW",
             "KeyA",
@@ -8564,6 +8422,14 @@
         0
       );
 
+      if (
+        projectPanel.classList.contains(
+          "is-visible"
+        )
+      ) {
+        return movement;
+      }
+
       let horizontal =
         0;
 
@@ -8689,6 +8555,52 @@
     function updateCamera(
       delta
     ) {
+      if (showroomState.cinematic) {
+        const cinematic =
+          showroomState.cinematic;
+
+        cinematic.elapsed =
+          Math.min(
+            cinematic.duration,
+            cinematic.elapsed +
+              delta
+          );
+
+        const progress =
+          THREE.MathUtils.clamp(
+            cinematic.elapsed /
+              cinematic.duration,
+            0,
+            1
+          );
+
+        const eased =
+          progress *
+          progress *
+          (
+            3 -
+            2 * progress
+          );
+
+        camera.position.lerpVectors(
+          cinematic.startPosition,
+          cinematic.endPosition,
+          eased
+        );
+
+        cameraTarget.lerpVectors(
+          cinematic.startTarget,
+          cinematic.endTarget,
+          eased
+        );
+
+        camera.lookAt(
+          cameraTarget
+        );
+
+        return;
+      }
+
       const targetY =
         Math.max(
           characterHeight *
@@ -9088,7 +9000,11 @@
         delta
       );
 
-      updateObjectiveWorld(
+      updateRobotCompanion(
+        delta
+      );
+
+      updateShowroomWorld(
         delta
       );
 
