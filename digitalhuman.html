@@ -624,7 +624,7 @@
               aria-pressed="false"
             >
               <strong>Futuristic Robot</strong>
-              <span>Silver armored combat android</span>
+              <span>Aggressive angular combat android</span>
             </button>
 
             <button
@@ -3997,35 +3997,15 @@
         });
 
       const shoeUpper =
-        new THREE.MeshPhysicalMaterial({
-          color: 0x5b111d,
-          roughness: 0.50,
-          clearcoat: 0.18,
-          clearcoatRoughness: 0.5
-        });
-
-      const shoeWhite =
         new THREE.MeshStandardMaterial({
-          color: 0xe6e3df,
-          roughness: 0.62
-        });
-
-      const outsole =
-        new THREE.MeshStandardMaterial({
-          color: 0x050506,
-          roughness: 0.76
+          color: 0x241218,
+          roughness: 0.70
         });
 
       const cordMaterial =
         new THREE.MeshStandardMaterial({
           color: 0xc5c3c1,
           roughness: 0.78
-        });
-
-      const laceMaterial =
-        new THREE.MeshStandardMaterial({
-          color: 0x030304,
-          roughness: 0.84
         });
 
       function mesh(
@@ -4101,45 +4081,8 @@
       hoodOpening.rotation.x =
         0.12;
 
-      mesh(
-        new THREE.BoxGeometry(
-          0.43,
-          0.070,
-          0.29
-        ),
-        hoodieDark,
-        [0, 0.75, 0.005],
-        [1, 1, 1]
-      );
-
-      mesh(
-        new THREE.BoxGeometry(
-          0.31,
-          0.16,
-          0.030
-        ),
-        shirt,
-        [0, 1.03, 0.185],
-        [1, 1, 1]
-      );
-
       [-1, 1].forEach(
         function (side) {
-          const pocketSeam =
-            mesh(
-              new THREE.BoxGeometry(
-                0.12,
-                0.012,
-                0.014
-              ),
-              hoodieDark,
-              [side * 0.105, 1.08, 0.204],
-              [1, 1, 1]
-            );
-
-          pocketSeam.rotation.z =
-            side * -0.48;
-
           mesh(
             new THREE.CylinderGeometry(
               0.007,
@@ -4290,34 +4233,6 @@
         }
       );
 
-      const collarLeft =
-        mesh(
-          new THREE.BoxGeometry(
-            0.13,
-            0.12,
-            0.025
-          ),
-          shirt,
-          [-0.064, 1.47, 0.177],
-          [1, 1, 1]
-        );
-
-      collarLeft.rotation.z =
-        -0.38;
-
-      const collarRight =
-        collarLeft.clone();
-
-      collarRight.position.x =
-        0.064;
-
-      collarRight.rotation.z =
-        0.38;
-
-      person.add(
-        collarRight
-      );
-
       const eyeWhite =
         new THREE.MeshPhysicalMaterial({
           color: 0xf3eee8,
@@ -4414,65 +4329,15 @@
           );
 
           mesh(
-            new THREE.SphereGeometry(
-              0.10,
-              18,
-              14
-            ),
-            shirt,
-            [0, -0.025, 0],
-            [0.92, 1.0, 0.82],
-            armPivot
-          );
-
-          mesh(
             new THREE.CapsuleGeometry(
-              0.080,
-              0.24,
+              0.082,
+              0.55,
               10,
               16
             ),
             shirt,
-            [0, -0.20, 0],
-            [1.04, 1, 0.94],
-            armPivot
-          );
-
-          mesh(
-            new THREE.SphereGeometry(
-              0.072,
-              16,
-              12
-            ),
-            shirt,
-            [0, -0.40, 0.004],
-            [1.06, 0.98, 0.96],
-            armPivot
-          );
-
-          mesh(
-            new THREE.CapsuleGeometry(
-              0.072,
-              0.22,
-              10,
-              16
-            ),
-            shirt,
-            [0, -0.54, 0.004],
-            [1, 1, 0.94],
-            armPivot
-          );
-
-          mesh(
-            new THREE.CylinderGeometry(
-              0.068,
-              0.073,
-              0.075,
-              14
-            ),
-            hoodieDark,
-            [0, -0.70, 0.005],
-            null,
+            [0, -0.36, 0.002],
+            [1.04, 1, 0.92],
             armPivot
           );
 
@@ -4537,39 +4402,14 @@
 
           mesh(
             new THREE.CapsuleGeometry(
-              0.10,
-              0.28,
+              0.092,
+              0.58,
               10,
               18
             ),
             trousers,
-            [0, -0.20, 0],
-            [0.92, 1, 0.90],
-            legPivot
-          );
-
-          mesh(
-            new THREE.SphereGeometry(
-              0.098,
-              18,
-              14
-            ),
-            trousers,
-            [0, -0.42, 0.008],
-            [0.94, 0.86, 0.90],
-            legPivot
-          );
-
-          mesh(
-            new THREE.CapsuleGeometry(
-              0.086,
-              0.32,
-              10,
-              18
-            ),
-            trousers,
-            [0, -0.59, 0.008],
-            [0.92, 1, 0.88],
+            [0, -0.39, 0.004],
+            [0.96, 1, 0.90],
             legPivot
           );
 
@@ -4586,138 +4426,25 @@
             shoeGroup
           );
 
-          const blackOutsole =
+          const shoe =
             propMesh(
               shoeGroup,
               new THREE.CapsuleGeometry(
                 0.105,
-                0.17,
-                8,
-                16
-              ),
-              outsole,
-              [0, -0.032, 0.040],
-              [Math.PI / 2, 0, 0]
-            );
-
-          blackOutsole.scale.set(
-            1.07,
-            1.17,
-            0.20
-          );
-
-          const whiteMidsole =
-            propMesh(
-              shoeGroup,
-              new THREE.CapsuleGeometry(
-                0.102,
-                0.17,
-                8,
-                16
-              ),
-              shoeWhite,
-              [0, -0.006, 0.040],
-              [Math.PI / 2, 0, 0]
-            );
-
-          whiteMidsole.scale.set(
-            1.06,
-            1.16,
-            0.30
-          );
-
-          const upper =
-            propMesh(
-              shoeGroup,
-              new THREE.CapsuleGeometry(
-                0.10,
-                0.15,
-                8,
-                16
+                0.19,
+                10,
+                20
               ),
               shoeUpper,
-              [0, 0.055, 0.035],
+              [0, 0.020, 0.075],
               [Math.PI / 2, 0, 0]
             );
 
-          upper.scale.set(
-            1.04,
-            1.22,
-            0.92
+          shoe.scale.set(
+            1.02,
+            1.24,
+            0.72
           );
-
-          propMesh(
-            shoeGroup,
-            new THREE.SphereGeometry(
-              0.105,
-              18,
-              12
-            ),
-            shoeWhite,
-            [0, 0.045, 0.19]
-          ).scale.set(
-            1.05,
-            0.62,
-            0.82
-          );
-
-          [-1, 1].forEach(
-            function (shoeSide) {
-              propMesh(
-                shoeGroup,
-                new THREE.BoxGeometry(
-                  0.018,
-                  0.070,
-                  0.17
-                ),
-                shoeWhite,
-                [shoeSide * 0.102, 0.060, 0.030]
-              );
-
-              const sideMark =
-                propMesh(
-                  shoeGroup,
-                  new THREE.BoxGeometry(
-                    0.020,
-                    0.020,
-                    0.105
-                  ),
-                  outsole,
-                  [shoeSide * 0.113, 0.075, 0.040]
-                );
-
-              sideMark.rotation.x =
-                -0.16;
-            }
-          );
-
-          propMesh(
-            shoeGroup,
-            new THREE.BoxGeometry(
-              0.17,
-              0.030,
-              0.055
-            ),
-            shoeUpper,
-            [0, 0.078, 0.235]
-          );
-
-          for (
-            let lace = 0;
-            lace < 4;
-            lace++
-          ) {
-            propMesh(
-              shoeGroup,
-              new THREE.BoxGeometry(
-                0.145,
-                0.012,
-                0.018
-              ),
-              laceMaterial,
-              [0, 0.145, -0.025 + lace * 0.045]
-            );
-          }
 
           person.userData.limbs.arms.push(
             armPivot
@@ -6151,6 +5878,383 @@
                 legPivot
               );
             }
+          );
+
+          robot.userData.limbs.arms.push(
+            armPivot
+          );
+
+          robot.userData.limbs.legs.push(
+            legPivot
+          );
+        }
+      );
+
+      return robot;
+    }
+
+    function createSimpleHumanoidRobot() {
+      const robot =
+        new THREE.Group();
+
+      robot.userData.limbs = {
+        arms: [],
+        legs: []
+      };
+
+      robot.userData.isProcedural =
+        true;
+
+      robot.userData.characterType =
+        "robot";
+
+      const shell =
+        new THREE.MeshPhysicalMaterial({
+          color: 0xb8bec5,
+          roughness: 0.38,
+          metalness: 0.48,
+          clearcoat: 0.18,
+          clearcoatRoughness: 0.48,
+          envMapIntensity: 0.82
+        });
+
+      const shellDark =
+        new THREE.MeshStandardMaterial({
+          color: 0x747b83,
+          roughness: 0.44,
+          metalness: 0.58,
+          envMapIntensity: 0.70
+        });
+
+      const joint =
+        new THREE.MeshStandardMaterial({
+          color: 0x07090c,
+          roughness: 0.50,
+          metalness: 0.72,
+          envMapIntensity: 0.52
+        });
+
+      const faceGlow =
+        new THREE.MeshBasicMaterial({
+          color: 0xff209f,
+          toneMapped: false
+        });
+
+      function robotMesh(
+        geometry,
+        material,
+        position,
+        scale,
+        parent = robot
+      ) {
+        const part =
+          new THREE.Mesh(
+            geometry,
+            material
+          );
+
+        part.position.set(
+          ...position
+        );
+
+        if (scale) {
+          part.scale.set(
+            ...scale
+          );
+        }
+
+        part.castShadow =
+          true;
+
+        part.receiveShadow =
+          true;
+
+        parent.add(part);
+
+        return part;
+      }
+
+      robotMesh(
+        new THREE.CapsuleGeometry(
+          0.225,
+          0.25,
+          12,
+          26
+        ),
+        shell,
+        [0, 1.34, 0],
+        [1.34, 0.80, 0.74]
+      );
+
+      robotMesh(
+        new THREE.CapsuleGeometry(
+          0.17,
+          0.08,
+          10,
+          22
+        ),
+        shell,
+        [0, 0.99, 0],
+        [1.15, 0.72, 0.82]
+      );
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.095,
+          0.12,
+          0.14,
+          18
+        ),
+        joint,
+        [0, 1.10, 0],
+        [1, 1, 0.82]
+      );
+
+      robotMesh(
+        new THREE.CylinderGeometry(
+          0.065,
+          0.072,
+          0.13,
+          18
+        ),
+        joint,
+        [0, 1.60, 0]
+      );
+
+      robotMesh(
+        new THREE.SphereGeometry(
+          0.18,
+          30,
+          22
+        ),
+        joint,
+        [0, 1.80, 0],
+        [0.84, 1.05, 0.78]
+      );
+
+      robotMesh(
+        new THREE.SphereGeometry(
+          0.154,
+          30,
+          22
+        ),
+        shellDark,
+        [0, 1.82, -0.020],
+        [0.90, 1.00, 0.82]
+      );
+
+      robotMesh(
+        new THREE.SphereGeometry(
+          0.125,
+          26,
+          20
+        ),
+        joint,
+        [0, 1.77, 0.105],
+        [0.78, 0.83, 0.32]
+      );
+
+      const faceRing =
+        robotMesh(
+          new THREE.TorusGeometry(
+            0.102,
+            0.010,
+            10,
+            36
+          ),
+          faceGlow,
+          [0, 1.78, 0.151],
+          [0.90, 1.15, 0.42]
+        );
+
+      faceRing.rotation.z =
+        0;
+
+      [-1, 1].forEach(
+        function (side) {
+          const armPivot =
+            new THREE.Group();
+
+          armPivot.position.set(
+            side * 0.34,
+            1.48,
+            0
+          );
+
+          armPivot.rotation.z =
+            side * -0.035;
+
+          robot.add(armPivot);
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.125,
+              22,
+              16
+            ),
+            shell,
+            [0, 0, 0],
+            [1.05, 0.90, 0.96],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.072,
+              18,
+              14
+            ),
+            joint,
+            [0, -0.075, 0],
+            null,
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.082,
+              0.070,
+              0.29,
+              18
+            ),
+            shell,
+            [0, -0.23, 0],
+            [1, 1, 0.90],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.070,
+              18,
+              14
+            ),
+            joint,
+            [0, -0.43, 0],
+            [1, 0.92, 0.95],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.078,
+              0.056,
+              0.29,
+              18
+            ),
+            shell,
+            [0, -0.61, 0],
+            [1, 1, 0.88],
+            armPivot
+          );
+
+          robotMesh(
+            new THREE.CapsuleGeometry(
+              0.052,
+              0.08,
+              8,
+              16
+            ),
+            joint,
+            [0, -0.82, 0.025],
+            [0.90, 1, 0.68],
+            armPivot
+          );
+
+          const legPivot =
+            new THREE.Group();
+
+          legPivot.position.set(
+            side * 0.135,
+            0.94,
+            0
+          );
+
+          robot.add(legPivot);
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.095,
+              18,
+              14
+            ),
+            joint,
+            [0, 0, 0],
+            [1, 0.92, 0.94],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.125,
+              0.095,
+              0.35,
+              18
+            ),
+            shell,
+            [0, -0.23, 0],
+            [1, 1, 0.90],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.090,
+              20,
+              14
+            ),
+            joint,
+            [0, -0.47, 0.005],
+            [1, 0.86, 0.94],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.CylinderGeometry(
+              0.105,
+              0.070,
+              0.34,
+              18
+            ),
+            shell,
+            [0, -0.68, 0.010],
+            [1, 1, 0.88],
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.SphereGeometry(
+              0.060,
+              16,
+              12
+            ),
+            joint,
+            [0, -0.88, 0.020],
+            null,
+            legPivot
+          );
+
+          const foot =
+            robotMesh(
+              new THREE.CapsuleGeometry(
+                0.085,
+                0.16,
+                8,
+                18
+              ),
+              joint,
+              [0, -0.94, 0.095],
+              null,
+              legPivot
+            );
+
+          foot.rotation.x =
+            Math.PI / 2;
+
+          foot.scale.set(
+            1.02,
+            1.25,
+            0.58
           );
 
           robot.userData.limbs.arms.push(
