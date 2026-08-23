@@ -491,12 +491,12 @@
       new THREE.Scene();
 
     scene.background =
-      new THREE.Color(0x02070b);
+      new THREE.Color(0x090316);
 
     scene.fog =
       new THREE.FogExp2(
-        0x02070b,
-        0.027
+        0x090316,
+        0.021
       );
 
     const camera =
@@ -527,7 +527,7 @@
       THREE.ACESFilmicToneMapping;
 
     renderer.toneMappingExposure =
-      0.78;
+      0.86;
 
     renderer.shadowMap.enabled =
       true;
@@ -552,9 +552,9 @@
     const bloomPass =
       new UnrealBloomPass(
         new THREE.Vector2(1, 1),
-        1.32,
-        0.78,
-        0.16
+        0.82,
+        0.55,
+        0.32
       );
 
     composer.addPass(
@@ -567,9 +567,9 @@
 
     const ambient =
       new THREE.HemisphereLight(
-        0x9eb9c8,
-        0x010204,
-        0.12
+        0xb59cff,
+        0x210728,
+        0.38
       );
 
     scene.add(ambient);
@@ -581,25 +581,25 @@
 
     const wallMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x060d12,
-        roughness: 0.94,
-        metalness: 0.08
+        color: 0x10091b,
+        roughness: 0.90,
+        metalness: 0.10
       });
 
     const panelMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x0a141b,
-        roughness: 0.82,
-        metalness: 0.20
+        color: 0x211138,
+        roughness: 0.78,
+        metalness: 0.22
       });
 
     const floorMaterial =
       new THREE.MeshPhysicalMaterial({
-        color: 0x071017,
-        roughness: 0.26,
-        metalness: 0.30,
-        clearcoat: 0.20,
-        clearcoatRoughness: 0.32,
+        color: 0x10091d,
+        roughness: 0.34,
+        metalness: 0.24,
+        clearcoat: 0.16,
+        clearcoatRoughness: 0.42,
         envMapIntensity: 0.42
       });
 
@@ -690,6 +690,53 @@
       }
     );
 
+    const magentaStripMaterial =
+      new THREE.MeshBasicMaterial({
+        color: 0xff42d0,
+        toneMapped: false
+      });
+
+    const violetStripMaterial =
+      new THREE.MeshBasicMaterial({
+        color: 0x7149ff,
+        toneMapped: false
+      });
+
+    [
+      [-5.12, -2.6, magentaStripMaterial],
+      [-5.12, 2.25, violetStripMaterial],
+      [5.12, -2.6, violetStripMaterial],
+      [5.12, 2.25, magentaStripMaterial]
+    ].forEach(
+      function (definition) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            0.035,
+            4.45,
+            0.035
+          ),
+          definition[2],
+          [definition[0], 3.12, definition[1]]
+        );
+      }
+    );
+
+    const roomAccentLights = [
+      new THREE.PointLight(0xff42d0, 13, 9.5, 2),
+      new THREE.PointLight(0x7149ff, 15, 10.5, 2),
+      new THREE.PointLight(0xb14cff, 9, 8.5, 2)
+    ];
+
+    roomAccentLights[0].position.set(-4.15, 2.65, -0.9);
+    roomAccentLights[1].position.set(4.15, 3.15, 0.65);
+    roomAccentLights[2].position.set(0, 5.45, 2.7);
+
+    roomAccentLights.forEach(
+      function (light) {
+        scene.add(light);
+      }
+    );
+
     [-3.45, -1.72, 0, 1.72, 3.45].forEach(
       function (x) {
         roomMesh(
@@ -722,8 +769,8 @@
       new THREE.GridHelper(
         10.4,
         22,
-        0x22343e,
-        0x15242c
+        0x4d2c78,
+        0x28173f
       );
 
     floorGrid.position.y =
@@ -736,7 +783,7 @@
       true;
 
     floorGrid.material.opacity =
-      0.17;
+      0.22;
 
     scene.add(floorGrid);
 
@@ -857,9 +904,9 @@
             float rimX = smoothstep(0.0, 0.055, vUv.x) * smoothstep(0.0, 0.055, 1.0 - vUv.x);
             float rimY = smoothstep(0.0, 0.055, vUv.y) * smoothstep(0.0, 0.055, 1.0 - vUv.y);
             float edge = rimX * rimY;
-            float pulse = 0.94 + sin(uTime * 0.72 + vRelief * 12.0) * 0.045;
-            vec3 coolWhite = mix(vec3(0.66, 0.80, 0.86), vec3(1.0), smoothstep(0.30, 0.82, vRelief));
-            gl_FragColor = vec4(coolWhite * (1.08 + vRelief * 0.56) * pulse * edge, 1.0);
+            float pulse = 0.90 + sin(uTime * 0.72 + vRelief * 12.0) * 0.035;
+            vec3 coolWhite = mix(vec3(0.48, 0.56, 0.66), vec3(0.88, 0.92, 0.98), smoothstep(0.30, 0.82, vRelief));
+            gl_FragColor = vec4(coolWhite * (0.56 + vRelief * 0.25) * pulse * edge, 1.0);
           }
         `
       });
@@ -887,9 +934,9 @@
     scene.add(artwork);
 
     const artworkLights = [
-      new THREE.PointLight(0xe8fbff, 42, 7.5, 2),
-      new THREE.PointLight(0xccefff, 22, 5.5, 2),
-      new THREE.PointLight(0xffffff, 18, 5.5, 2)
+      new THREE.PointLight(0xf0ebff, 14, 6.8, 2),
+      new THREE.PointLight(0xd8d2ff, 8, 5.2, 2),
+      new THREE.PointLight(0xffffff, 7, 5.2, 2)
     ];
 
     artworkLights[0].position.set(0, 3.0, -4.55);
@@ -904,8 +951,8 @@
 
     const artSpot =
       new THREE.SpotLight(
-        0xe8f8ff,
-        58,
+        0xeadfff,
+        20,
         12,
         Math.PI * 0.28,
         0.72,
