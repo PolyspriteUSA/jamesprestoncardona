@@ -328,6 +328,157 @@
       pointer-events: none;
     }
 
+    .objective-panel {
+      position: absolute;
+      z-index: 14;
+      top: 22px;
+      left: 22px;
+      width: min(360px, calc(100% - 44px));
+      padding: 16px 18px;
+      border: 1px solid rgba(255, 66, 208, 0.22);
+      border-radius: 16px;
+      background: rgba(7, 6, 15, 0.78);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.30);
+      backdrop-filter: blur(16px);
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 220ms ease, transform 220ms ease;
+      pointer-events: none;
+    }
+
+    body.experience-active .objective-panel {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .objective-kicker {
+      margin: 0 0 7px;
+      color: var(--magenta);
+      font-size: 0.66rem;
+      font-weight: 850;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .objective-title {
+      margin: 0;
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .objective-copy {
+      margin: 8px 0 0;
+      color: #bdb7ca;
+      font-size: 0.79rem;
+      line-height: 1.5;
+    }
+
+    .objective-stats {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .objective-stat {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.035);
+      color: #aaa4b8;
+      font-size: 0.64rem;
+      font-weight: 750;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .objective-stat strong {
+      color: #fff;
+      font-size: 0.82rem;
+    }
+
+    .interaction-prompt {
+      position: absolute;
+      z-index: 18;
+      left: 50%;
+      bottom: 28px;
+      min-width: 250px;
+      max-width: calc(100% - 40px);
+      padding: 12px 18px;
+      border: 1px solid rgba(255, 66, 208, 0.42);
+      border-radius: 999px;
+      background: rgba(8, 6, 16, 0.88);
+      color: #fff;
+      box-shadow: 0 0 30px rgba(255, 39, 196, 0.18);
+      backdrop-filter: blur(14px);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 0.04em;
+      text-align: center;
+      opacity: 0;
+      transform: translate(-50%, 10px);
+      transition: opacity 160ms ease, transform 160ms ease;
+      pointer-events: none;
+    }
+
+    .interaction-prompt.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .mission-complete {
+      position: absolute;
+      z-index: 20;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: radial-gradient(circle, rgba(255, 31, 194, 0.18), rgba(4, 3, 12, 0.12) 44%, transparent 72%);
+      opacity: 0;
+      transition: opacity 500ms ease;
+      pointer-events: none;
+    }
+
+    .mission-complete.is-visible {
+      opacity: 1;
+    }
+
+    .mission-complete-card {
+      width: min(480px, 100%);
+      padding: 30px;
+      border: 1px solid rgba(255, 66, 208, 0.42);
+      border-radius: 22px;
+      background: rgba(7, 5, 16, 0.88);
+      box-shadow: 0 0 80px rgba(255, 31, 194, 0.22);
+      backdrop-filter: blur(20px);
+      text-align: center;
+      transform: scale(0.94);
+      transition: transform 500ms ease;
+    }
+
+    .mission-complete.is-visible .mission-complete-card {
+      transform: scale(1);
+    }
+
+    .mission-complete h2 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+    }
+
+    .mission-complete p {
+      margin: 16px auto 0;
+      color: #c2bdcc;
+      line-height: 1.6;
+    }
+
+    .mission-complete .button {
+      margin-top: 20px;
+      pointer-events: auto;
+    }
+
     .experience-exit {
       position: absolute;
       z-index: 16;
@@ -559,6 +710,16 @@
         width: min(280px, calc(100% - 28px));
       }
 
+      .objective-panel {
+        top: 14px;
+        left: 14px;
+        width: min(300px, calc(100% - 28px));
+      }
+
+      .interaction-prompt {
+        bottom: 92px;
+      }
+
       .experience-exit {
         left: 18px;
         bottom: 154px;
@@ -609,8 +770,8 @@
 
         <p class="lede">
           Explore a real-time character experience directly in the browser.
-          Choose a character, then use the keyboard to move through the neon district
-          or drag the mouse to orbit the third-person camera.
+          Choose a character, restore three district terminals, recover their data
+          fragments and return the signal to the Polysprite building.
         </p>
 
         <div class="character-picker">
@@ -624,7 +785,7 @@
               aria-pressed="false"
             >
               <strong>Futuristic Robot</strong>
-              <span>Aggressive angular combat android</span>
+              <span>Exposed-wire combat endoskeleton</span>
             </button>
 
             <button
@@ -660,7 +821,7 @@
         <div
           id="experience"
           tabindex="0"
-          aria-label="Interactive 3D character experience. Use W A S D or arrow keys to move the selected character. Drag to rotate the camera."
+          aria-label="Interactive 3D character mission. Use W A S D or arrow keys to move, E to interact and drag to rotate the camera."
         ></div>
 
         <div class="scene-overlay"></div>
@@ -674,6 +835,7 @@
           <p class="hud-copy">
             WASD / Arrow Keys — move<br>
             Shift — run<br>
+            E / ACT — interact<br>
             Drag mouse — orbit camera<br>
             Mouse wheel — camera distance
           </p>
@@ -681,6 +843,30 @@
           <div class="status" aria-live="polite">
             <span class="status-dot"></span>
             <span id="statusText">Loading Mateo.fbx from this folder...</span>
+          </div>
+        </div>
+
+        <aside class="objective-panel" aria-live="polite">
+          <p class="objective-kicker">Current Objective</p>
+          <h2 class="objective-title">Neon Restoration</h2>
+          <p class="objective-copy" id="objectiveText">
+            Restore the three district terminals and recover their data fragments.
+          </p>
+
+          <div class="objective-stats">
+            <span class="objective-stat"><strong id="terminalCount">0</strong>/3 Power</span>
+            <span class="objective-stat"><strong id="fragmentCount">0</strong>/3 Data</span>
+          </div>
+        </aside>
+
+        <div class="interaction-prompt" id="interactionPrompt" role="status"></div>
+
+        <div class="mission-complete" id="missionComplete" aria-live="assertive">
+          <div class="mission-complete-card">
+            <p class="objective-kicker">Signal Restored</p>
+            <h2>District Online</h2>
+            <p>The Polysprite network is transmitting across every restored block.</p>
+            <button class="button primary" id="restartMission" type="button">Run Mission Again</button>
           </div>
         </div>
 
@@ -693,6 +879,7 @@
           </div>
 
           <div class="touch-look">
+            <button type="button" id="touchInteract" aria-label="Interact">ACT</button>
             <button type="button" data-look="-1" aria-label="Rotate camera left">↶</button>
             <button type="button" data-look="1" aria-label="Rotate camera right">↷</button>
           </div>
@@ -768,6 +955,27 @@
 
     const enterExperienceLabel =
       document.getElementById("enterExperienceLabel");
+
+    const objectiveText =
+      document.getElementById("objectiveText");
+
+    const terminalCount =
+      document.getElementById("terminalCount");
+
+    const fragmentCount =
+      document.getElementById("fragmentCount");
+
+    const interactionPrompt =
+      document.getElementById("interactionPrompt");
+
+    const missionComplete =
+      document.getElementById("missionComplete");
+
+    const restartMission =
+      document.getElementById("restartMission");
+
+    const touchInteract =
+      document.getElementById("touchInteract");
 
     const characterButtons =
       Array.from(
@@ -1715,6 +1923,14 @@
       })
     ];
 
+    let polyspriteSign =
+      null;
+
+    let polyspriteSignLight =
+      null;
+
+    const missionBlockSigns = [];
+
     function addBuilding(
       side,
       z,
@@ -2078,6 +2294,38 @@
         environment.add(
           signLight
         );
+
+        if (index === 0) {
+          polyspriteSign =
+            sign;
+
+          polyspriteSignLight =
+            signLight;
+
+          polyspriteSign.material.opacity =
+            0.16;
+
+          polyspriteSignLight.intensity =
+            1.4;
+        }
+
+        if (
+          [8, 10, 12].includes(
+            index
+          )
+        ) {
+          missionBlockSigns.push({
+            sign,
+            light: signLight,
+            baseIntensity: 12
+          });
+
+          sign.material.opacity =
+            0.14;
+
+          signLight.intensity =
+            0.8;
+        }
       }
 
       const roofUnit =
@@ -2540,6 +2788,13 @@
         pillar
       );
     }
+
+    lightPillars.visible =
+      false;
+
+    scene.add(
+      lightPillars
+    );
 
     const cableMaterial =
       new THREE.MeshStandardMaterial({
@@ -3217,6 +3472,802 @@
       );
     }
 
+    const missionState = {
+      terminalsPowered: 0,
+      fragmentsCollected: 0,
+      complete: false
+    };
+
+    const powerTerminals = [];
+
+    let activeInteraction =
+      null;
+
+    const objectiveShellMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x111522,
+        roughness: 0.50,
+        metalness: 0.64
+      });
+
+    const objectiveTrimMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x3f4658,
+        roughness: 0.38,
+        metalness: 0.78
+      });
+
+    function createPowerTerminal(
+      definition,
+      index
+    ) {
+      const terminal =
+        new THREE.Group();
+
+      terminal.position.set(
+        definition.x,
+        0,
+        definition.z
+      );
+
+      terminal.rotation.y =
+        definition.x < 0
+          ? Math.PI / 2
+          : -Math.PI / 2;
+
+      environment.add(
+        terminal
+      );
+
+      propMesh(
+        terminal,
+        new THREE.CylinderGeometry(
+          0.34,
+          0.42,
+          0.13,
+          8
+        ),
+        objectiveTrimMaterial,
+        [0, 0.065, 0]
+      );
+
+      propMesh(
+        terminal,
+        new THREE.BoxGeometry(
+          0.56,
+          0.82,
+          0.38
+        ),
+        objectiveShellMaterial,
+        [0, 0.52, 0]
+      );
+
+      propMesh(
+        terminal,
+        new THREE.BoxGeometry(
+          0.66,
+          0.09,
+          0.47
+        ),
+        objectiveTrimMaterial,
+        [0, 0.96, 0]
+      );
+
+      const screenMaterial =
+        createHorizontalSign(
+          definition.label,
+          definition.color
+        );
+
+      screenMaterial.opacity =
+        0.22;
+
+      const screen =
+        propMesh(
+          terminal,
+          new THREE.PlaneGeometry(
+            0.43,
+            0.24
+          ),
+          screenMaterial,
+          [0, 0.62, 0.196]
+        );
+
+      screen.castShadow =
+        false;
+
+      const markerMaterial =
+        new THREE.MeshBasicMaterial({
+          color: definition.hex,
+          transparent: true,
+          opacity: 0.26,
+          toneMapped: false
+        });
+
+      const marker =
+        propMesh(
+          terminal,
+          new THREE.TorusGeometry(
+            0.20,
+            0.018,
+            8,
+            28
+          ),
+          markerMaterial,
+          [0, 1.24, 0.06]
+        );
+
+      marker.scale.set(
+        1,
+        1.20,
+        1
+      );
+
+      const fragmentMaterial =
+        new THREE.MeshBasicMaterial({
+          color: definition.hex,
+          transparent: true,
+          opacity: 0.94,
+          toneMapped: false
+        });
+
+      const fragment =
+        propMesh(
+          terminal,
+          new THREE.OctahedronGeometry(
+            0.14,
+            0
+          ),
+          fragmentMaterial,
+          [0, 1.25, 0.07]
+        );
+
+      fragment.visible =
+        false;
+
+      terminal.userData = {
+        index,
+        label: definition.label,
+        powered: false,
+        fragmentCollected: false,
+        screen,
+        screenMaterial,
+        marker,
+        markerMaterial,
+        fragment,
+        blockSign:
+          missionBlockSigns[index],
+        phase: index * 1.7,
+        activationPulse: 0
+      };
+
+      streetObstacles.push({
+        x: definition.x,
+        z: definition.z,
+        radius: 0.53
+      });
+
+      powerTerminals.push(
+        terminal
+      );
+    }
+
+    [
+      {
+        label: "RELAY A",
+        color: "#ff38d1",
+        hex: 0xff38d1,
+        x: -2.92,
+        z: -5.55
+      },
+      {
+        label: "JUNCTION B",
+        color: "#42d9ff",
+        hex: 0x42d9ff,
+        x: 2.92,
+        z: 0.15
+      },
+      {
+        label: "NODE C",
+        color: "#a56cff",
+        hex: 0xa56cff,
+        x: -2.92,
+        z: 5.75
+      }
+    ].forEach(
+      createPowerTerminal
+    );
+
+    const uploadStation =
+      new THREE.Group();
+
+    uploadStation.position.set(
+      -2.92,
+      0,
+      -7.72
+    );
+
+    uploadStation.rotation.y =
+      Math.PI / 2;
+
+    environment.add(
+      uploadStation
+    );
+
+    propMesh(
+      uploadStation,
+      new THREE.CylinderGeometry(
+        0.42,
+        0.50,
+        0.14,
+        8
+      ),
+      objectiveTrimMaterial,
+      [0, 0.07, 0]
+    );
+
+    propMesh(
+      uploadStation,
+      new THREE.BoxGeometry(
+        0.72,
+        1.12,
+        0.46
+      ),
+      objectiveShellMaterial,
+      [0, 0.63, 0]
+    );
+
+    const uploadScreenMaterial =
+      createHorizontalSign(
+        "POLYSPRITE",
+        "#ff38d1"
+      );
+
+    uploadScreenMaterial.opacity =
+      0.20;
+
+    const uploadScreen =
+      propMesh(
+        uploadStation,
+        new THREE.PlaneGeometry(
+          0.58,
+          0.30
+        ),
+        uploadScreenMaterial,
+        [0, 0.75, 0.236]
+      );
+
+    uploadScreen.castShadow =
+      false;
+
+    const uploadRingMaterial =
+      new THREE.MeshBasicMaterial({
+        color: 0xff38d1,
+        transparent: true,
+        opacity: 0.16,
+        toneMapped: false
+      });
+
+    const uploadRing =
+      propMesh(
+        uploadStation,
+        new THREE.TorusGeometry(
+          0.27,
+          0.022,
+          8,
+          32
+        ),
+        uploadRingMaterial,
+        [0, 1.45, 0.06]
+      );
+
+    uploadRing.scale.y =
+      1.18;
+
+    uploadStation.userData = {
+      screenMaterial: uploadScreenMaterial,
+      ring: uploadRing,
+      ringMaterial: uploadRingMaterial
+    };
+
+    streetObstacles.push({
+      x: uploadStation.position.x,
+      z: uploadStation.position.z,
+      radius: 0.60
+    });
+
+    function updateMissionHud() {
+      terminalCount.textContent =
+        String(
+          missionState.terminalsPowered
+        );
+
+      fragmentCount.textContent =
+        String(
+          missionState.fragmentsCollected
+        );
+
+      if (missionState.complete) {
+        objectiveText.textContent =
+          "District online. The Polysprite signal has been restored.";
+      } else if (
+        missionState.fragmentsCollected ===
+        powerTerminals.length
+      ) {
+        objectiveText.textContent =
+          "Deliver all three fragments to the Polysprite uplink.";
+      } else {
+        objectiveText.textContent =
+          "Restore each terminal and collect the data fragment it releases.";
+      }
+    }
+
+    function getMissionDistance(
+      object
+    ) {
+      return Math.hypot(
+        characterRoot.position.x -
+          object.position.x,
+        characterRoot.position.z -
+          object.position.z
+      );
+    }
+
+    function findMissionInteraction() {
+      let nearest =
+        null;
+
+      powerTerminals.forEach(
+        function (terminal) {
+          const data =
+            terminal.userData;
+
+          if (
+            data.powered &&
+            data.fragmentCollected
+          ) {
+            return;
+          }
+
+          const distance =
+            getMissionDistance(
+              terminal
+            );
+
+          if (
+            distance > 1.28 ||
+            (
+              nearest &&
+              distance >= nearest.distance
+            )
+          ) {
+            return;
+          }
+
+          nearest = {
+            kind: data.powered
+              ? "fragment"
+              : "terminal",
+            object: terminal,
+            distance,
+            prompt: data.powered
+              ? "Collect the " +
+                data.label +
+                " data fragment"
+              : "Restore power at " +
+                data.label
+          };
+        }
+      );
+
+      const uploadDistance =
+        getMissionDistance(
+          uploadStation
+        );
+
+      if (
+        !missionState.complete &&
+        uploadDistance <= 1.30 &&
+        (
+          !nearest ||
+          uploadDistance < nearest.distance
+        )
+      ) {
+        const missing =
+          powerTerminals.length -
+          missionState.fragmentsCollected;
+
+        nearest = {
+          kind: missing === 0
+            ? "upload"
+            : "locked",
+          object: uploadStation,
+          distance: uploadDistance,
+          prompt: missing === 0
+            ? "Upload fragments to Polysprite"
+            : "Polysprite uplink locked — " +
+              missing +
+              " fragment" +
+              (
+                missing === 1
+                  ? ""
+                  : "s"
+              ) +
+              " missing"
+        };
+      }
+
+      return nearest;
+    }
+
+    function completeMission() {
+      if (missionState.complete) {
+        return;
+      }
+
+      missionState.complete =
+        true;
+
+      uploadScreenMaterial.opacity =
+        1;
+
+      uploadRingMaterial.opacity =
+        1;
+
+      lightPillars.visible =
+        true;
+
+      if (polyspriteSign) {
+        polyspriteSign.material.opacity =
+          1;
+      }
+
+      if (polyspriteSignLight) {
+        polyspriteSignLight.intensity =
+          34;
+      }
+
+      missionComplete.classList.add(
+        "is-visible"
+      );
+
+      statusText.textContent =
+        "Mission complete — Polysprite signal restored";
+
+      updateMissionHud();
+    }
+
+    function performInteraction() {
+      if (
+        !activeInteraction ||
+        missionState.complete
+      ) {
+        return;
+      }
+
+      const target =
+        activeInteraction;
+
+      if (target.kind === "terminal") {
+        const data =
+          target.object.userData;
+
+        data.powered =
+          true;
+
+        data.screenMaterial.opacity =
+          1;
+
+        data.markerMaterial.opacity =
+          0.90;
+
+        data.fragment.visible =
+          true;
+
+        if (data.blockSign) {
+          data.blockSign.sign.material.opacity =
+            1;
+
+          data.blockSign.light.intensity =
+            18;
+        }
+
+        data.activationPulse =
+          1;
+
+        missionState.terminalsPowered +=
+          1;
+
+        statusText.textContent =
+          data.label +
+          " restored — collect its data fragment";
+      } else if (
+        target.kind === "fragment"
+      ) {
+        const data =
+          target.object.userData;
+
+        data.fragmentCollected =
+          true;
+
+        data.fragment.visible =
+          false;
+
+        missionState.fragmentsCollected +=
+          1;
+
+        statusText.textContent =
+          data.label +
+          " fragment secured";
+      } else if (
+        target.kind === "upload"
+      ) {
+        completeMission();
+      } else {
+        statusText.textContent =
+          target.prompt;
+      }
+
+      activeInteraction =
+        null;
+
+      updateMissionHud();
+    }
+
+    function resetMission() {
+      missionState.terminalsPowered =
+        0;
+
+      missionState.fragmentsCollected =
+        0;
+
+      missionState.complete =
+        false;
+
+      powerTerminals.forEach(
+        function (terminal) {
+          const data =
+            terminal.userData;
+
+          data.powered =
+            false;
+
+          data.fragmentCollected =
+            false;
+
+          data.fragment.visible =
+            false;
+
+          data.screenMaterial.opacity =
+            0.22;
+
+          data.markerMaterial.opacity =
+            0.26;
+
+          data.activationPulse =
+            0;
+
+          if (data.blockSign) {
+            data.blockSign.sign.material.opacity =
+              0.14;
+
+            data.blockSign.light.intensity =
+              0.8;
+          }
+        }
+      );
+
+      uploadScreenMaterial.opacity =
+        0.20;
+
+      uploadRingMaterial.opacity =
+        0.16;
+
+      lightPillars.visible =
+        false;
+
+      if (polyspriteSign) {
+        polyspriteSign.material.opacity =
+          0.16;
+
+        polyspriteSign.scale.setScalar(
+          1
+        );
+      }
+
+      if (polyspriteSignLight) {
+        polyspriteSignLight.intensity =
+          1.4;
+      }
+
+      missionComplete.classList.remove(
+        "is-visible"
+      );
+
+      characterRoot.position.set(
+        0,
+        0,
+        0
+      );
+
+      characterRoot.rotation.y =
+        0;
+
+      statusText.textContent =
+        "Mission reset — locate the three power terminals";
+
+      updateMissionHud();
+      updateCameraImmediately();
+    }
+
+    function updateObjectiveWorld(
+      delta
+    ) {
+      const elapsed =
+        clock.elapsedTime;
+
+      powerTerminals.forEach(
+        function (terminal) {
+          const data =
+            terminal.userData;
+
+          data.marker.rotation.z +=
+            delta *
+            (
+              data.powered
+                ? 1.7
+                : 0.45
+            );
+
+          const pulse =
+            Math.sin(
+              elapsed * 2.4 +
+              data.phase
+            ) * 0.045;
+
+          const activation =
+            data.activationPulse *
+            0.34;
+
+          data.marker.scale.set(
+            1 + pulse + activation,
+            1.20 + pulse + activation,
+            1
+          );
+
+          if (data.activationPulse > 0) {
+            data.activationPulse =
+              Math.max(
+                0,
+                data.activationPulse -
+                  delta * 1.8
+              );
+          }
+
+          if (
+            !data.powered
+          ) {
+            data.screenMaterial.opacity =
+              0.18 +
+              Math.max(
+                0,
+                Math.sin(
+                  elapsed * 5.2 +
+                  data.phase
+                )
+              ) * 0.08;
+          }
+
+          if (
+            data.fragment.visible
+          ) {
+            data.fragment.rotation.y +=
+              delta * 2.4;
+
+            data.fragment.rotation.x +=
+              delta * 0.8;
+
+            data.fragment.position.y =
+              1.25 +
+              Math.sin(
+                elapsed * 3.2 +
+                data.phase
+              ) * 0.08;
+          }
+        }
+      );
+
+      uploadRing.rotation.z +=
+        delta *
+        (
+          missionState.fragmentsCollected ===
+            powerTerminals.length
+            ? 1.8
+            : 0.35
+        );
+
+      if (
+        missionState.fragmentsCollected ===
+          powerTerminals.length &&
+        !missionState.complete
+      ) {
+        uploadScreenMaterial.opacity =
+          0.78 +
+          Math.sin(
+            elapsed * 3.6
+          ) * 0.18;
+
+        uploadRingMaterial.opacity =
+          0.68 +
+          Math.sin(
+            elapsed * 3.2
+          ) * 0.20;
+      }
+
+      if (
+        missionState.complete &&
+        polyspriteSign
+      ) {
+        polyspriteSign.scale.setScalar(
+          1 +
+          Math.sin(
+            elapsed * 3.4
+          ) * 0.018
+        );
+      }
+
+      bloomPass.strength =
+        THREE.MathUtils.lerp(
+          bloomPass.strength,
+          missionState.complete
+            ? 1.18
+            : 0.92,
+          Math.min(
+            1,
+            delta * 2.5
+          )
+        );
+
+      activeInteraction =
+        missionState.complete
+          ? null
+          : findMissionInteraction();
+
+      const promptVisible =
+        Boolean(
+          activeInteraction
+        ) &&
+        document.body.classList.contains(
+          "experience-active"
+        );
+
+      interactionPrompt.textContent =
+        activeInteraction
+          ? "E / ACT — " +
+            activeInteraction.prompt
+          : "";
+
+      interactionPrompt.classList.toggle(
+        "is-visible",
+        promptVisible
+      );
+    }
+
+    restartMission.addEventListener(
+      "click",
+      resetMission
+    );
+
+    touchInteract.addEventListener(
+      "pointerdown",
+      function (event) {
+        event.preventDefault();
+        performInteraction();
+      }
+    );
+
+    updateMissionHud();
+
     function createFogTexture() {
       const canvas =
         document.createElement("canvas");
@@ -3507,8 +4558,8 @@
       const shadow =
         new THREE.Mesh(
           new THREE.PlaneGeometry(
-            1.25,
-            1.25
+            1.05,
+            1.05
           ),
           new THREE.MeshBasicMaterial({
             map: texture,
@@ -3550,8 +4601,11 @@
     let currentAction =
       null;
 
+    const targetCharacterHeight =
+      1.58;
+
     let characterHeight =
-      1.8;
+      targetCharacterHeight;
 
     let proceduralWalkTime =
       0;
@@ -5157,42 +6211,181 @@
       robot.userData.characterType =
         "robot";
 
+      function createRobotWearTexture() {
+        const canvas =
+          document.createElement("canvas");
+
+        canvas.width =
+          128;
+
+        canvas.height =
+          128;
+
+        const context =
+          canvas.getContext("2d");
+
+        const image =
+          context.createImageData(
+            128,
+            128
+          );
+
+        let wearSeed =
+          918273;
+
+        for (
+          let index = 0;
+          index < image.data.length;
+          index += 4
+        ) {
+          wearSeed =
+            (
+              wearSeed * 1664525 +
+              1013904223
+            ) >>> 0;
+
+          const value =
+            188 +
+            wearSeed % 67;
+
+          image.data[index] =
+            value;
+
+          image.data[index + 1] =
+            value;
+
+          image.data[index + 2] =
+            value;
+
+          image.data[index + 3] =
+            255;
+        }
+
+        context.putImageData(
+          image,
+          0,
+          0
+        );
+
+        context.strokeStyle =
+          "rgba(45, 45, 45, 0.45)";
+
+        context.lineWidth =
+          1;
+
+        for (
+          let scratch = 0;
+          scratch < 34;
+          scratch++
+        ) {
+          wearSeed =
+            (
+              wearSeed * 1664525 +
+              1013904223
+            ) >>> 0;
+
+          const x =
+            wearSeed % 128;
+
+          const y =
+            (
+              wearSeed >>> 8
+            ) % 128;
+
+          const length =
+            5 +
+            (
+              wearSeed >>> 16
+            ) % 26;
+
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(
+            Math.min(
+              127,
+              x + length
+            ),
+            Math.max(
+              0,
+              y - length * 0.22
+            )
+          );
+          context.stroke();
+        }
+
+        const texture =
+          new THREE.CanvasTexture(
+            canvas
+          );
+
+        texture.wrapS =
+          THREE.RepeatWrapping;
+
+        texture.wrapT =
+          THREE.RepeatWrapping;
+
+        texture.repeat.set(
+          3,
+          4
+        );
+
+        return texture;
+      }
+
+      const robotWearTexture =
+        createRobotWearTexture();
+
       const inner =
         new THREE.MeshStandardMaterial({
           color: 0x06080c,
-          roughness: 0.36,
-          metalness: 0.88,
-          envMapIntensity: 0.74
+          roughness: 0.76,
+          metalness: 0.54,
+          envMapIntensity: 0.42
         });
 
       const armor =
         new THREE.MeshPhysicalMaterial({
           color: 0x292e36,
-          roughness: 0.25,
-          metalness: 0.76,
-          clearcoat: 0.26,
-          clearcoatRoughness: 0.36,
-          envMapIntensity: 0.96
+          roughness: 0.70,
+          metalness: 0.46,
+          clearcoat: 0.03,
+          clearcoatRoughness: 0.88,
+          specularIntensity: 0.18,
+          roughnessMap: robotWearTexture,
+          bumpMap: robotWearTexture,
+          bumpScale: 0.018,
+          envMapIntensity: 0.50
         });
 
       const steelPanel =
         new THREE.MeshStandardMaterial({
           color: 0x7b828a,
-          roughness: 0.29,
-          metalness: 0.82,
-          envMapIntensity: 1.06
+          roughness: 0.66,
+          metalness: 0.52,
+          roughnessMap: robotWearTexture,
+          bumpMap: robotWearTexture,
+          bumpScale: 0.012,
+          envMapIntensity: 0.58
         });
 
       const redDetail =
         new THREE.MeshStandardMaterial({
           color: 0x7d1028,
-          roughness: 0.38,
-          metalness: 0.52
+          roughness: 0.74,
+          metalness: 0.34
+        });
+
+      const wireMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0x6e1b18,
+          roughness: 0.80,
+          metalness: 0.30,
+          envMapIntensity: 0.34
         });
 
       const eyeGlow =
         new THREE.MeshBasicMaterial({
-          color: 0xff209f,
+          color: 0xff163f,
           toneMapped: false
         });
 
@@ -5258,11 +6451,10 @@
 
         const rod =
           robotMesh(
-            new THREE.CylinderGeometry(
-              radius,
-              radius,
+            new THREE.BoxGeometry(
+              radius * 2,
               direction.length(),
-              8
+              radius * 2
             ),
             material,
             [0, 0, 0],
@@ -5359,41 +6551,76 @@
       }
 
       robotMesh(
-        new THREE.CylinderGeometry(
-          0.30,
-          0.21,
+        new THREE.BoxGeometry(
+          0.18,
           0.37,
-          6
+          0.15
         ),
-        armor,
+        inner,
         [0, 1.38, 0],
-        [1, 1, 0.70]
+        null
       );
 
       [-1, 1].forEach(
         function (side) {
           const chestPlate =
             robotMesh(
-              new THREE.SphereGeometry(
-                0.18,
-                20,
-                14
+              new THREE.BoxGeometry(
+                0.28,
+                0.22,
+                0.075
               ),
-              steelPanel,
-              [side * 0.135, 1.44, 0.135],
-              [1.08, 0.58, 0.50]
+              armor,
+              [side * 0.17, 1.45, 0.115],
+              null
             );
 
           chestPlate.rotation.z =
-            side * 0.075;
+            side * -0.14;
+
+          const lowerChestPlate =
+            robotMesh(
+              new THREE.BoxGeometry(
+                0.25,
+                0.11,
+                0.065
+              ),
+              steelPanel,
+              [side * 0.145, 1.31, 0.135],
+              null
+            );
+
+          lowerChestPlate.rotation.z =
+            side * 0.22;
+
+          rodBetween(
+            [side * 0.040, 1.08, 0.080],
+            [side * 0.225, 1.48, 0.145],
+            0.007,
+            wireMaterial
+          );
+
+          rodBetween(
+            [side * 0.070, 1.08, 0.030],
+            [side * 0.285, 1.50, 0.015],
+            0.006,
+            wireMaterial
+          );
+
+          rodBetween(
+            [side * 0.055, 1.52, 0],
+            [side * 0.32, 1.50, 0],
+            0.018,
+            inner
+          );
         }
       );
 
       robotMesh(
         new THREE.BoxGeometry(
-          0.20,
-          0.19,
-          0.060
+          0.13,
+          0.17,
+          0.045
         ),
         armor,
         [0, 1.30, 0.208]
@@ -5422,67 +6649,75 @@
       }
 
       robotMesh(
-        new THREE.CylinderGeometry(
-          0.068,
-          0.078,
+        new THREE.BoxGeometry(
+          0.13,
           0.15,
-          12
+          0.12
         ),
         inner,
         [0, 1.61, 0]
       );
 
       robotMesh(
-        new THREE.CylinderGeometry(
-          0.145,
-          0.125,
-          0.25,
-          6
+        new THREE.BoxGeometry(
+          0.24,
+          0.27,
+          0.20
         ),
         armor,
         [0, 1.80, 0],
-        [0.92, 1, 0.82]
+        null
       );
 
       robotMesh(
-        new THREE.DodecahedronGeometry(
-          0.135,
-          0
+        new THREE.BoxGeometry(
+          0.16,
+          0.18,
+          0.065
         ),
         steelPanel,
         [0, 1.80, 0.070],
-        [0.84, 1, 0.62]
+        null
       );
 
       robotMesh(
         new THREE.BoxGeometry(
           0.032,
-          0.13,
-          0.032
+          0.11,
+          0.018
         ),
-        armor,
+        inner,
         [0, 1.86, 0.145]
       );
 
       robotMesh(
-        new THREE.CylinderGeometry(
-          0.090,
-          0.072,
+        new THREE.BoxGeometry(
+          0.032,
+          0.055,
+          0.020
+        ),
+        inner,
+        [0, 1.735, 0.145]
+      );
+
+      robotMesh(
+        new THREE.BoxGeometry(
+          0.14,
           0.12,
-          5
+          0.09
         ),
         steelPanel,
         [0, 1.69, 0.064],
-        [1, 1, 0.72]
+        null
       );
 
-      [-0.030, 0, 0.030].forEach(
+      [-0.048, -0.024, 0, 0.024, 0.048].forEach(
         function (x) {
           robotMesh(
             new THREE.BoxGeometry(
-              0.018,
-              0.045,
-              0.022
+              0.015,
+              0.040,
+              0.020
             ),
             inner,
             [x, 1.675, 0.123]
@@ -5503,14 +6738,49 @@
       [-1, 1].forEach(
         function (side) {
           robotMesh(
-            new THREE.SphereGeometry(
-              0.023,
-              18,
-              12
+            new THREE.BoxGeometry(
+              0.040,
+              0.028,
+              0.020
             ),
             eyeGlow,
             [side * 0.052, 1.795, 0.160],
-            [1.16, 0.78, 0.52]
+            null
+          );
+
+          const browPlate =
+            robotMesh(
+              new THREE.BoxGeometry(
+                0.090,
+                0.025,
+                0.030
+              ),
+              armor,
+              [side * 0.052, 1.828, 0.148]
+            );
+
+          browPlate.rotation.z =
+            side * 0.18;
+
+          const cheekPlate =
+            robotMesh(
+              new THREE.BoxGeometry(
+                0.060,
+                0.105,
+                0.038
+              ),
+              steelPanel,
+              [side * 0.085, 1.715, 0.130]
+            );
+
+          cheekPlate.rotation.z =
+            side * -0.16;
+
+          rodBetween(
+            [side * 0.035, 1.54, 0.020],
+            [side * 0.095, 1.69, 0.055],
+            0.006,
+            wireMaterial
           );
 
           const helmetSide =
@@ -5545,14 +6815,14 @@
 
           const shoulderArmor =
             robotMesh(
-              new THREE.SphereGeometry(
-                0.15,
-                20,
-                14
+              new THREE.BoxGeometry(
+                0.30,
+                0.19,
+                0.23
               ),
               armor,
               [0, 0.005, 0],
-              [1.22, 0.74, 1.02],
+              null,
               armPivot
             );
 
@@ -5561,94 +6831,105 @@
 
           const shoulderPanel =
             robotMesh(
-              new THREE.SphereGeometry(
-                0.13,
-                18,
-                12
+              new THREE.BoxGeometry(
+                0.25,
+                0.10,
+                0.18
               ),
               steelPanel,
               [side * 0.025, 0.045, 0.028],
-              [1.10, 0.55, 0.88],
+              null,
               armPivot
             );
 
           shoulderPanel.rotation.z =
             side * -0.10;
 
+          const shoulderBlade =
+            robotMesh(
+              new THREE.BoxGeometry(
+                0.19,
+                0.055,
+                0.22
+              ),
+              armor,
+              [side * 0.045, 0.115, -0.005],
+              null,
+              armPivot
+            );
+
+          shoulderBlade.rotation.z =
+            side * -0.22;
+
           robotMesh(
-            new THREE.TorusGeometry(
-              0.042,
-              0.009,
-              8,
-              18
+            new THREE.BoxGeometry(
+              0.12,
+              0.27,
+              0.11
             ),
-            redDetail,
-            [0, 0.005, 0.148],
+            inner,
+            [0, -0.22, 0],
             null,
             armPivot
           );
 
           robotMesh(
-            new THREE.CapsuleGeometry(
-              0.068,
+            new THREE.BoxGeometry(
+              0.145,
               0.22,
-              8,
-              14
-            ),
-            inner,
-            [0, -0.22, 0],
-            [1, 1, 0.92],
-            armPivot
-          );
-
-          robotMesh(
-            new THREE.CylinderGeometry(
-              0.088,
-              0.070,
-              0.25,
-              6
+              0.055
             ),
             armor,
-            [0, -0.22, 0],
-            [1, 1, 0.92],
+            [0, -0.22, 0.070],
+            null,
             armPivot
           );
 
           robotMesh(
-            new THREE.SphereGeometry(
-              0.078,
-              16,
-              12
+            new THREE.BoxGeometry(
+              0.048,
+              0.23,
+              0.12
+            ),
+            steelPanel,
+            [side * 0.060, -0.22, 0],
+            null,
+            armPivot
+          );
+
+          [-1, 1].forEach(
+            function (wireSide) {
+              rodBetween(
+                [wireSide * 0.035, -0.075, -0.020],
+                [wireSide * 0.040, -0.365, 0.010],
+                0.005,
+                wireMaterial,
+                armPivot
+              );
+            }
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.135,
+              0.13,
+              0.13
             ),
             inner,
             [0, -0.43, 0],
-            [1, 0.90, 0.92],
-            armPivot
-          );
-
-          robotMesh(
-            new THREE.TorusGeometry(
-              0.061,
-              0.012,
-              8,
-              18
-            ),
-            redDetail,
-            [0, -0.43, 0.071],
             null,
             armPivot
           );
 
           robotMesh(
-            new THREE.CylinderGeometry(
-              0.092,
-              0.066,
-              0.29,
-              6
+            new THREE.BoxGeometry(
+              0.155,
+              0.27,
+              0.060
             ),
             armor,
-            [0, -0.61, 0],
-            [1, 1, 0.88],
+            [0, -0.61, 0.062],
+            null,
             armPivot
           );
 
@@ -5664,11 +6945,25 @@
             armPivot
           );
 
+          [-1, 1].forEach(
+            function (wireSide) {
+              rodBetween(
+                [wireSide * 0.034, -0.475, -0.020],
+                [wireSide * 0.032, -0.750, 0.005],
+                0.005,
+                wireSide < 0
+                  ? wireMaterial
+                  : inner,
+                armPivot
+              );
+            }
+          );
+
           robotMesh(
-            new THREE.SphereGeometry(
-              0.052,
-              14,
-              10
+            new THREE.BoxGeometry(
+              0.090,
+              0.085,
+              0.090
             ),
             inner,
             [0, -0.80, 0],
@@ -5676,27 +6971,30 @@
             armPivot
           );
 
-          robotMesh(
-            new THREE.BoxGeometry(
-              0.115,
-              0.10,
-              0.12
-            ),
-            armor,
-            [0, -0.86, 0.015],
-            null,
-            armPivot
-          );
-
           [-1, 0, 1].forEach(
-            function (finger) {
-              rodBetween(
-                [finger * 0.034, -0.89, 0.02],
-                [finger * 0.044, -0.99, 0.045],
-                0.009,
-                steelPanel,
-                armPivot
-              );
+            function (clawSide) {
+              const claw =
+                robotMesh(
+                  new THREE.BoxGeometry(
+                    0.023,
+                    0.13,
+                    0.030
+                  ),
+                  steelPanel,
+                  [
+                    clawSide * 0.030,
+                    -0.90,
+                    0.036
+                  ],
+                  null,
+                  armPivot
+                );
+
+              claw.rotation.z =
+                clawSide * -0.18;
+
+              claw.rotation.x =
+                -0.16;
             }
           );
 
@@ -5714,40 +7012,38 @@
           );
 
           robotMesh(
-            new THREE.SphereGeometry(
-              0.105,
-              16,
-              12
+            new THREE.BoxGeometry(
+              0.17,
+              0.15,
+              0.16
             ),
             inner,
             [0, 0, 0],
-            [1, 0.92, 0.94],
-            legPivot
-          );
-
-          robotMesh(
-            new THREE.TorusGeometry(
-              0.078,
-              0.014,
-              8,
-              20
-            ),
-            redDetail,
-            [0, 0, 0.093],
             null,
             legPivot
           );
 
           robotMesh(
-            new THREE.CylinderGeometry(
-              0.132,
-              0.098,
-              0.36,
-              6
+            new THREE.BoxGeometry(
+              0.105,
+              0.35,
+              0.10
+            ),
+            inner,
+            [0, -0.24, -0.010],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.19,
+              0.30,
+              0.065
             ),
             armor,
-            [0, -0.24, 0],
-            [1, 1, 0.92],
+            [0, -0.23, 0.075],
+            null,
             legPivot
           );
 
@@ -5763,39 +7059,41 @@
             legPivot
           );
 
-          robotMesh(
-            new THREE.SphereGeometry(
-              0.10,
-              16,
-              12
-            ),
-            inner,
-            [0, -0.48, 0],
-            [1, 0.90, 0.94],
-            legPivot
+          [-1, 1].forEach(
+            function (wireSide) {
+              rodBetween(
+                [wireSide * 0.040, -0.075, -0.020],
+                [wireSide * 0.035, -0.405, 0.010],
+                0.006,
+                wireSide < 0
+                  ? wireMaterial
+                  : inner,
+                legPivot
+              );
+            }
           );
 
           robotMesh(
-            new THREE.TorusGeometry(
-              0.075,
-              0.014,
-              8,
-              20
+            new THREE.BoxGeometry(
+              0.17,
+              0.15,
+              0.16
             ),
-            redDetail,
-            [0, -0.48, 0.089],
+            inner,
+            [0, -0.48, 0],
             null,
             legPivot
           );
 
           robotMesh(
-            new THREE.DodecahedronGeometry(
-              0.092,
-              0
+            new THREE.BoxGeometry(
+              0.13,
+              0.12,
+              0.055
             ),
             steelPanel,
             [0, -0.48, 0.083],
-            [0.88, 1.05, 0.48],
+            null,
             legPivot
           );
 
@@ -5812,15 +7110,26 @@
           );
 
           robotMesh(
-            new THREE.CylinderGeometry(
-              0.115,
-              0.085,
-              0.34,
-              6
+            new THREE.BoxGeometry(
+              0.090,
+              0.33,
+              0.090
+            ),
+            inner,
+            [0, -0.68, -0.005],
+            null,
+            legPivot
+          );
+
+          robotMesh(
+            new THREE.BoxGeometry(
+              0.16,
+              0.29,
+              0.060
             ),
             armor,
-            [0, -0.68, 0.01],
-            [1, 1, 0.90],
+            [0, -0.68, 0.070],
+            null,
             legPivot
           );
 
@@ -5834,6 +7143,20 @@
             [0, -0.67, 0.118],
             null,
             legPivot
+          );
+
+          [-1, 1].forEach(
+            function (wireSide) {
+              rodBetween(
+                [wireSide * 0.033, -0.535, -0.018],
+                [wireSide * 0.028, -0.835, 0.005],
+                0.005,
+                wireSide < 0
+                  ? wireMaterial
+                  : inner,
+                legPivot
+              );
+            }
           );
 
           robotMesh(
@@ -6276,6 +7599,16 @@
     let robotCharacter =
       createFuturisticRobot();
 
+    fallbackCharacter.scale.setScalar(
+      targetCharacterHeight /
+        1.97
+    );
+
+    robotCharacter.scale.setScalar(
+      targetCharacterHeight /
+        1.94
+    );
+
     function resetCharacterAnimation() {
       if (mixer) {
         mixer.stopAllAction();
@@ -6407,7 +7740,7 @@
       ) {
         activateProceduralCharacter(
           robotCharacter,
-          1.94,
+          targetCharacterHeight,
           "Futuristic Robot active — procedural walk and run ready"
         );
 
@@ -6420,7 +7753,7 @@
       ) {
         activateProceduralCharacter(
           fallbackCharacter,
-          1.97,
+          targetCharacterHeight,
           "Backup Mateo active — procedural walk and run ready"
         );
 
@@ -6429,7 +7762,7 @@
 
       activateProceduralCharacter(
         fallbackCharacter,
-        1.97,
+        targetCharacterHeight,
         "Backup Mateo visible — loading Mateo.fbx..."
       );
 
@@ -6505,30 +7838,25 @@
             new THREE.Vector3()
           );
 
-        if (
-          size.y > 3 ||
-          size.y < 0.5
-        ) {
-          character.scale.multiplyScalar(
-            1.82 /
-            Math.max(
-              size.y,
-              0.001
-            )
-          );
+        character.scale.multiplyScalar(
+          targetCharacterHeight /
+          Math.max(
+            size.y,
+            0.001
+          )
+        );
 
-          character.updateMatrixWorld(
-            true
-          );
+        character.updateMatrixWorld(
+          true
+        );
 
-          box.setFromObject(
-            character
-          );
+        box.setFromObject(
+          character
+        );
 
-          box.getSize(
-            size
-          );
-        }
+        box.getSize(
+          size
+        );
 
         const center =
           box.getCenter(
@@ -6853,6 +8181,13 @@
         );
 
         if (
+          event.code === "KeyE" &&
+          !event.repeat
+        ) {
+          performInteraction();
+        }
+
+        if (
           [
             "KeyW",
             "KeyA",
@@ -6863,7 +8198,8 @@
             "ArrowLeft",
             "ArrowRight",
             "ShiftLeft",
-            "ShiftRight"
+            "ShiftRight",
+            "KeyE"
           ].includes(
             event.code
           )
@@ -7653,6 +8989,10 @@
       }
 
       updateCharacter(
+        delta
+      );
+
+      updateObjectiveWorld(
         delta
       );
 
