@@ -1,1 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 | James Preston Cardona</title>
+  <meta name="description" content="Interactive 404 gallery by James Preston Cardona.">
 
+  <style>
+    :root {
+      --bg: #050507;
+      --panel: rgba(12, 10, 20, 0.72);
+      --panel-strong: rgba(12, 10, 20, 0.92);
+      --text: #f7f5ff;
+      --muted: #aaa6b8;
+      --border: rgba(255, 255, 255, 0.10);
+      --violet: #7149ff;
+      --magenta: #ff42d0;
+      --header-h: 74px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 40;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 0 5vw;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(5, 5, 7, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 24px;
+      color: #c9c5d6;
+      font-size: 0.9rem;
+    }
+
+    .site-nav a {
+      transition: color 180ms ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible {
+      color: #fff;
+    }
+
+    .error-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      padding-top: var(--header-h);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 22%, rgba(113, 73, 255, 0.10), transparent 34%),
+        #030609;
+    }
+
+    #gallery {
+      position: absolute;
+      inset: var(--header-h) 0 0;
+      outline: none;
+      touch-action: none;
+    }
+
+    #gallery canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .scene-vignette {
+      position: absolute;
+      z-index: 4;
+      inset: var(--header-h) 0 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 45%, transparent 30%, rgba(1, 4, 7, 0.18) 67%, rgba(1, 3, 6, 0.74) 100%),
+        linear-gradient(90deg, rgba(2, 5, 8, 0.42), transparent 24%, transparent 74%, rgba(2, 5, 8, 0.42));
+    }
+
+    .error-number {
+      position: absolute;
+      z-index: 5;
+      top: calc(var(--header-h) + 3vh);
+      left: 4vw;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.055);
+      font-size: clamp(8rem, 25vw, 24rem);
+      font-weight: 900;
+      line-height: 0.8;
+      letter-spacing: -0.09em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .art-caption {
+      position: absolute;
+      z-index: 8;
+      top: 48%;
+      right: 5vw;
+      width: min(380px, 30vw);
+      transform: translateY(-50%);
+      pointer-events: none;
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--magenta);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .art-caption h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4.2vw, 4.9rem);
+      line-height: 0.92;
+      letter-spacing: -0.055em;
+      text-wrap: balance;
+    }
+
+    .art-caption p:not(.eyebrow) {
+      margin: 18px 0 0;
+      color: #bbb7c6;
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      background: rgba(8, 7, 15, 0.72);
+      color: #fff;
+      font-weight: 750;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      pointer-events: auto;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(19, 15, 32, 0.88);
+    }
+
+    .home-link {
+      position: absolute;
+      z-index: 12;
+      left: 24px;
+      bottom: 24px;
+    }
+
+    .controls {
+      position: absolute;
+      z-index: 12;
+      right: 24px;
+      bottom: 24px;
+      width: min(315px, calc(100% - 48px));
+      padding: 15px 17px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(16px);
+      pointer-events: none;
+    }
+
+    .controls-title {
+      margin: 0 0 7px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .controls-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      color: #d7d2e4;
+      font-size: 0.72rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--magenta);
+      box-shadow: 0 0 15px rgba(255, 66, 208, 0.85);
+    }
+
+    .touch-controls {
+      position: absolute;
+      z-index: 18;
+      inset: auto 14px 14px 14px;
+      display: none;
+      align-items: flex-end;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .touch-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 48px);
+      grid-template-rows: repeat(2, 48px);
+      gap: 5px;
+      pointer-events: auto;
+    }
+
+    .touch-pad button,
+    .touch-look button {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 13px;
+      background: rgba(8, 7, 15, 0.74);
+      color: #fff;
+      backdrop-filter: blur(12px);
+    }
+
+    .touch-pad .up { grid-column: 2; }
+    .touch-pad .left { grid-column: 1; grid-row: 2; }
+    .touch-pad .down { grid-column: 2; grid-row: 2; }
+    .touch-pad .right { grid-column: 3; grid-row: 2; }
+
+    .touch-look {
+      display: flex;
+      gap: 6px;
+      pointer-events: auto;
+    }
+
+    .touch-look button {
+      width: 50px;
+      height: 50px;
+    }
+
+    @media (max-width: 900px) {
+      .art-caption {
+        top: calc(var(--header-h) + 22px);
+        right: 22px;
+        width: min(390px, calc(100% - 44px));
+        transform: none;
+      }
+
+      .art-caption h1 {
+        font-size: clamp(2rem, 8vw, 4rem);
+      }
+
+      .art-caption p:not(.eyebrow) {
+        max-width: 330px;
+        font-size: 0.78rem;
+      }
+    }
+
+    @media (max-width: 720px) {
+      :root {
+        --header-h: 66px;
+      }
+
+      .site-header {
+        padding: 0 18px;
+      }
+
+      .brand {
+        font-size: 0.76rem;
+      }
+
+      .site-nav {
+        gap: 13px;
+        font-size: 0.78rem;
+      }
+
+      .controls {
+        display: none;
+      }
+
+      .home-link {
+        left: 50%;
+        bottom: 80px;
+        transform: translateX(-50%);
+      }
+
+      .home-link:hover,
+      .home-link:focus-visible {
+        transform: translate(-50%, -2px);
+      }
+
+      .touch-controls {
+        display: flex;
+      }
+
+      .error-number {
+        top: calc(var(--header-h) + 11vh);
+        left: -2vw;
+      }
+
+      .art-caption p:not(.eyebrow) {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .button,
+      .site-nav a {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="/index.html">James Preston Cardona</a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/index.html#work">Work</a>
+      <a href="/index.html#about">About</a>
+      <a href="/resume.html">Resume</a>
+      <a href="/index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="error-stage">
+    <div
+      id="gallery"
+      tabindex="0"
+      aria-label="Interactive 404 gallery. Use W A S D or arrow keys to move Mateo, shift to run, drag to rotate the camera and scroll to zoom."
+    ></div>
+
+    <div class="scene-vignette"></div>
+    <p class="error-number" aria-hidden="true">404</p>
+
+    <section class="art-caption">
+      <p class="eyebrow">404 / Page Not Found</p>
+      <h1>Luminous Drift</h1>
+      <p>
+        This page wandered away, but the exhibit remained. Move Mateo through
+        the sealed gallery and watch the procedural relief continuously reshape itself.
+      </p>
+    </section>
+
+    <a class="button home-link" href="/index.html">Return Home</a>
+
+    <aside class="controls">
+      <p class="controls-title">Gallery Controls</p>
+      <p class="controls-copy">
+        WASD / Arrow Keys — move<br>
+        Shift — run<br>
+        Drag mouse — orbit camera<br>
+        Mouse wheel — camera distance
+      </p>
+
+      <div class="status" aria-live="polite">
+        <span class="status-dot"></span>
+        <span id="statusText">Loading Mateo.fbx from this folder...</span>
+      </div>
+    </aside>
+
+    <div class="touch-controls" aria-label="Touch controls">
+      <div class="touch-pad">
+        <button class="up" type="button" data-key="forward" aria-label="Move forward">↑</button>
+        <button class="left" type="button" data-key="left" aria-label="Move left">←</button>
+        <button class="down" type="button" data-key="backward" aria-label="Move backward">↓</button>
+        <button class="right" type="button" data-key="right" aria-label="Move right">→</button>
+      </div>
+
+      <div class="touch-look">
+        <button type="button" data-look="-1" aria-label="Rotate camera left">↶</button>
+        <button type="button" data-look="1" aria-label="Rotate camera right">↷</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+    import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+
+    const container =
+      document.getElementById("gallery");
+
+    const statusText =
+      document.getElementById("statusText");
+
+    const assetBase =
+      window.location.protocol === "file:"
+        ? new URL("./", window.location.href)
+        : new URL("/", window.location.origin);
+
+    function getAssetUrl(
+      fileName
+    ) {
+      return new URL(
+        fileName,
+        assetBase
+      ).href;
+    }
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+    window.addEventListener(
+      "error",
+      function (event) {
+        statusText.textContent =
+          "Scene error — " +
+          (
+            event.message ||
+            "unknown rendering problem"
+          );
+      }
+    );
+
+    const scene =
+      new THREE.Scene();
+
+    scene.background =
+      new THREE.Color(0x02070b);
+
+    scene.fog =
+      new THREE.FogExp2(
+        0x02070b,
+        0.027
+      );
+
+    const camera =
+      new THREE.PerspectiveCamera(
+        48,
+        1,
+        0.05,
+        60
+      );
+
+    const renderer =
+      new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: "high-performance"
+      });
+
+    renderer.setPixelRatio(
+      Math.min(
+        window.devicePixelRatio,
+        2
+      )
+    );
+
+    renderer.outputColorSpace =
+      THREE.SRGBColorSpace;
+
+    renderer.toneMapping =
+      THREE.ACESFilmicToneMapping;
+
+    renderer.toneMappingExposure =
+      0.78;
+
+    renderer.shadowMap.enabled =
+      true;
+
+    renderer.shadowMap.type =
+      THREE.PCFSoftShadowMap;
+
+    container.appendChild(
+      renderer.domElement
+    );
+
+    const composer =
+      new EffectComposer(renderer);
+
+    composer.addPass(
+      new RenderPass(
+        scene,
+        camera
+      )
+    );
+
+    const bloomPass =
+      new UnrealBloomPass(
+        new THREE.Vector2(1, 1),
+        1.32,
+        0.78,
+        0.16
+      );
+
+    composer.addPass(
+      bloomPass
+    );
+
+    composer.addPass(
+      new OutputPass()
+    );
+
+    const ambient =
+      new THREE.HemisphereLight(
+        0x9eb9c8,
+        0x010204,
+        0.12
+      );
+
+    scene.add(ambient);
+
+    const room =
+      new THREE.Group();
+
+    scene.add(room);
+
+    const wallMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x060d12,
+        roughness: 0.94,
+        metalness: 0.08
+      });
+
+    const panelMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x0a141b,
+        roughness: 0.82,
+        metalness: 0.20
+      });
+
+    const floorMaterial =
+      new THREE.MeshPhysicalMaterial({
+        color: 0x071017,
+        roughness: 0.26,
+        metalness: 0.30,
+        clearcoat: 0.20,
+        clearcoatRoughness: 0.32,
+        envMapIntensity: 0.42
+      });
+
+    function roomMesh(
+      geometry,
+      material,
+      position,
+      rotation = null
+    ) {
+      const object =
+        new THREE.Mesh(
+          geometry,
+          material
+        );
+
+      object.position.set(
+        ...position
+      );
+
+      if (rotation) {
+        object.rotation.set(
+          ...rotation
+        );
+      }
+
+      object.castShadow =
+        true;
+
+      object.receiveShadow =
+        true;
+
+      room.add(object);
+
+      return object;
+    }
+
+    roomMesh(
+      new THREE.PlaneGeometry(
+        10.5,
+        11.5
+      ),
+      floorMaterial,
+      [0, 0, -0.55],
+      [-Math.PI / 2, 0, 0]
+    );
+
+    roomMesh(
+      new THREE.PlaneGeometry(
+        10.5,
+        11.5
+      ),
+      wallMaterial,
+      [0, 6.25, -0.55],
+      [Math.PI / 2, 0, 0]
+    );
+
+    roomMesh(
+      new THREE.BoxGeometry(
+        10.8,
+        6.3,
+        0.24
+      ),
+      wallMaterial,
+      [0, 3.15, -6.18]
+    );
+
+    roomMesh(
+      new THREE.BoxGeometry(
+        10.8,
+        6.3,
+        0.24
+      ),
+      wallMaterial,
+      [0, 3.15, 5.05]
+    );
+
+    [-5.28, 5.28].forEach(
+      function (x) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            0.24,
+            6.3,
+            11.5
+          ),
+          wallMaterial,
+          [x, 3.15, -0.55]
+        );
+      }
+    );
+
+    [-3.45, -1.72, 0, 1.72, 3.45].forEach(
+      function (x) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            0.055,
+            5.6,
+            0.10
+          ),
+          panelMaterial,
+          [x, 3.05, -6.02]
+        );
+      }
+    );
+
+    [1.05, 2.55, 4.05, 5.55].forEach(
+      function (y) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            10.2,
+            0.055,
+            0.10
+          ),
+          panelMaterial,
+          [0, y, -6.02]
+        );
+      }
+    );
+
+    const floorGrid =
+      new THREE.GridHelper(
+        10.4,
+        22,
+        0x22343e,
+        0x15242c
+      );
+
+    floorGrid.position.y =
+      0.008;
+
+    floorGrid.position.z =
+      -0.55;
+
+    floorGrid.material.transparent =
+      true;
+
+    floorGrid.material.opacity =
+      0.17;
+
+    scene.add(floorGrid);
+
+    const frame =
+      roomMesh(
+        new THREE.BoxGeometry(
+          6.05,
+          4.95,
+          0.24
+        ),
+        new THREE.MeshStandardMaterial({
+          color: 0x020506,
+          roughness: 0.88,
+          metalness: 0.16
+        }),
+        [0, 3.18, -5.91]
+      );
+
+    frame.castShadow =
+      false;
+
+    const artworkUniforms = {
+      uTime: {
+        value: 0
+      }
+    };
+
+    const artworkMaterial =
+      new THREE.ShaderMaterial({
+        uniforms: artworkUniforms,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+        vertexShader: `
+          uniform float uTime;
+          varying vec2 vUv;
+          varying float vRelief;
+
+          float hash(vec3 p) {
+            p = fract(p * 0.3183099 + vec3(0.1, 0.2, 0.3));
+            p *= 17.0;
+            return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+          }
+
+          float noise(vec3 p) {
+            vec3 i = floor(p);
+            vec3 f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+
+            return mix(
+              mix(
+                mix(hash(i + vec3(0.0, 0.0, 0.0)), hash(i + vec3(1.0, 0.0, 0.0)), f.x),
+                mix(hash(i + vec3(0.0, 1.0, 0.0)), hash(i + vec3(1.0, 1.0, 0.0)), f.x),
+                f.y
+              ),
+              mix(
+                mix(hash(i + vec3(0.0, 0.0, 1.0)), hash(i + vec3(1.0, 0.0, 1.0)), f.x),
+                mix(hash(i + vec3(0.0, 1.0, 1.0)), hash(i + vec3(1.0, 1.0, 1.0)), f.x),
+                f.y
+              ),
+              f.z
+            );
+          }
+
+          float fbm(vec3 p) {
+            float value = 0.0;
+            float amplitude = 0.52;
+
+            for (int i = 0; i < 5; i++) {
+              value += amplitude * noise(p);
+              p = p * 2.02 + vec3(1.7, 2.3, 0.9);
+              amplitude *= 0.49;
+            }
+
+            return value;
+          }
+
+          void main() {
+            vUv = uv;
+
+            vec3 warped = vec3(
+              position.xy * 0.82,
+              uTime * 0.10
+            );
+
+            float firstWarp = fbm(warped);
+            float secondWarp = fbm(
+              vec3(
+                position.yx * 1.36 + firstWarp * 1.9,
+                uTime * 0.075 + 3.4
+              )
+            );
+
+            float fineRelief = fbm(
+              vec3(
+                position.xy * 2.55 + secondWarp,
+                uTime * 0.13 + 8.0
+              )
+            );
+
+            vRelief =
+              firstWarp * 0.48 +
+              secondWarp * 0.37 +
+              fineRelief * 0.15;
+
+            vec3 displaced = position;
+            displaced.z += (vRelief - 0.46) * 0.78;
+            displaced.x += sin(position.y * 2.2 + uTime * 0.45) * 0.025;
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          varying vec2 vUv;
+          varying float vRelief;
+
+          void main() {
+            float rimX = smoothstep(0.0, 0.055, vUv.x) * smoothstep(0.0, 0.055, 1.0 - vUv.x);
+            float rimY = smoothstep(0.0, 0.055, vUv.y) * smoothstep(0.0, 0.055, 1.0 - vUv.y);
+            float edge = rimX * rimY;
+            float pulse = 0.94 + sin(uTime * 0.72 + vRelief * 12.0) * 0.045;
+            vec3 coolWhite = mix(vec3(0.66, 0.80, 0.86), vec3(1.0), smoothstep(0.30, 0.82, vRelief));
+            gl_FragColor = vec4(coolWhite * (1.08 + vRelief * 0.56) * pulse * edge, 1.0);
+          }
+        `
+      });
+
+    const artwork =
+      new THREE.Mesh(
+        new THREE.PlaneGeometry(
+          5.45,
+          4.35,
+          112,
+          92
+        ),
+        artworkMaterial
+      );
+
+    artwork.position.set(
+      0,
+      3.18,
+      -5.72
+    );
+
+    artwork.castShadow =
+      false;
+
+    scene.add(artwork);
+
+    const artworkLights = [
+      new THREE.PointLight(0xe8fbff, 42, 7.5, 2),
+      new THREE.PointLight(0xccefff, 22, 5.5, 2),
+      new THREE.PointLight(0xffffff, 18, 5.5, 2)
+    ];
+
+    artworkLights[0].position.set(0, 3.0, -4.55);
+    artworkLights[1].position.set(-2.2, 2.1, -4.85);
+    artworkLights[2].position.set(2.2, 3.8, -4.85);
+
+    artworkLights.forEach(
+      function (light) {
+        scene.add(light);
+      }
+    );
+
+    const artSpot =
+      new THREE.SpotLight(
+        0xe8f8ff,
+        58,
+        12,
+        Math.PI * 0.28,
+        0.72,
+        1.4
+      );
+
+    artSpot.position.set(
+      0,
+      5.8,
+      -3.4
+    );
+
+    artSpot.target.position.set(
+      0,
+      2.6,
+      -5.7
+    );
+
+    artSpot.castShadow =
+      true;
+
+    scene.add(
+      artSpot,
+      artSpot.target
+    );
+
+    const particleGeometry =
+      new THREE.BufferGeometry();
+
+    const particlePositions =
+      new Float32Array(
+        280 * 3
+      );
+
+    let dustSeed =
+      42187;
+
+    function dustRandom() {
+      dustSeed =
+        (
+          dustSeed * 1664525 +
+          1013904223
+        ) >>> 0;
+
+      return dustSeed /
+        4294967296;
+    }
+
+    for (
+      let index = 0;
+      index < 280;
+      index++
+    ) {
+      particlePositions[index * 3] =
+        (dustRandom() - 0.5) * 9.4;
+
+      particlePositions[index * 3 + 1] =
+        0.15 + dustRandom() * 5.7;
+
+      particlePositions[index * 3 + 2] =
+        -5.5 + dustRandom() * 9.8;
+    }
+
+    particleGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        particlePositions,
+        3
+      )
+    );
+
+    const particles =
+      new THREE.Points(
+        particleGeometry,
+        new THREE.PointsMaterial({
+          color: 0xd8f5ff,
+          size: 0.018,
+          transparent: true,
+          opacity: 0.34,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
+        })
+      );
+
+    scene.add(particles);
+
+    const characterRoot =
+      new THREE.Group();
+
+    characterRoot.position.set(
+      0,
+      0,
+      1.65
+    );
+
+    characterRoot.rotation.y =
+      Math.PI;
+
+    scene.add(characterRoot);
+
+    const shadow =
+      new THREE.Mesh(
+        new THREE.CircleGeometry(
+          0.48,
+          32
+        ),
+        new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          transparent: true,
+          opacity: 0.42,
+          depthWrite: false
+        })
+      );
+
+    shadow.rotation.x =
+      -Math.PI / 2;
+
+    shadow.position.y =
+      0.012;
+
+    characterRoot.add(shadow);
+
+    function createFallbackMateo() {
+      const fallback =
+        new THREE.Group();
+
+      fallback.userData.isProcedural =
+        true;
+
+      fallback.userData.limbs = {
+        arms: [],
+        legs: []
+      };
+
+      const skin =
+        new THREE.MeshStandardMaterial({
+          color: 0xb97d68,
+          roughness: 0.72
+        });
+
+      const hoodie =
+        new THREE.MeshStandardMaterial({
+          color: 0x541923,
+          roughness: 0.82
+        });
+
+      const dark =
+        new THREE.MeshStandardMaterial({
+          color: 0x0b0c10,
+          roughness: 0.90
+        });
+
+      function part(
+        geometry,
+        material,
+        position,
+        parent = fallback
+      ) {
+        const object =
+          new THREE.Mesh(
+            geometry,
+            material
+          );
+
+        object.position.set(
+          ...position
+        );
+
+        object.castShadow =
+          true;
+
+        parent.add(object);
+
+        return object;
+      }
+
+      part(
+        new THREE.CapsuleGeometry(0.23, 0.54, 8, 16),
+        hoodie,
+        [0, 1.12, 0]
+      );
+
+      part(
+        new THREE.CylinderGeometry(0.075, 0.085, 0.16, 14),
+        skin,
+        [0, 1.52, 0]
+      );
+
+      part(
+        new THREE.SphereGeometry(0.19, 24, 18),
+        skin,
+        [0, 1.70, 0]
+      );
+
+      [-1, 1].forEach(
+        function (side) {
+          const arm =
+            new THREE.Group();
+
+          arm.position.set(
+            side * 0.30,
+            1.39,
+            0
+          );
+
+          fallback.add(arm);
+
+          part(
+            new THREE.CapsuleGeometry(0.07, 0.48, 8, 14),
+            hoodie,
+            [0, -0.32, 0],
+            arm
+          );
+
+          const leg =
+            new THREE.Group();
+
+          leg.position.set(
+            side * 0.11,
+            0.83,
+            0
+          );
+
+          fallback.add(leg);
+
+          part(
+            new THREE.CapsuleGeometry(0.085, 0.52, 8, 14),
+            dark,
+            [0, -0.37, 0],
+            leg
+          );
+
+          fallback.userData.limbs.arms.push(arm);
+          fallback.userData.limbs.legs.push(leg);
+        }
+      );
+
+      return fallback;
+    }
+
+    let character =
+      createFallbackMateo();
+
+    let mixer =
+      null;
+
+    let currentAction =
+      null;
+
+    const actions = {
+      idle: null,
+      walk: null,
+      run: null
+    };
+
+    let proceduralTime =
+      0;
+
+    const targetCharacterHeight =
+      1.60;
+
+    character.scale.setScalar(
+      targetCharacterHeight /
+        1.90
+    );
+
+    characterRoot.add(character);
+
+    const loader =
+      new FBXLoader();
+
+    const maxAnisotropy =
+      renderer.capabilities.getMaxAnisotropy();
+
+    function findClip(
+      clips,
+      labels
+    ) {
+      return clips.find(
+        function (clip) {
+          const name =
+            clip.name.toLowerCase();
+
+          return labels.some(
+            function (label) {
+              return name.includes(label);
+            }
+          );
+        }
+      ) || null;
+    }
+
+    function improveMaterial(
+      material
+    ) {
+      if (!material) {
+        return;
+      }
+
+      material.roughness =
+        material.roughness === undefined
+          ? 0.64
+          : Math.max(
+              material.roughness,
+              0.42
+            );
+
+      material.metalness =
+        material.metalness ||
+        0;
+
+      [
+        material.map,
+        material.normalMap,
+        material.roughnessMap,
+        material.metalnessMap
+      ].forEach(
+        function (texture) {
+          if (texture) {
+            texture.anisotropy =
+              maxAnisotropy;
+          }
+        }
+      );
+
+      material.needsUpdate =
+        true;
+    }
+
+    function setAction(
+      next,
+      timeScale = 1
+    ) {
+      if (!next) {
+        return;
+      }
+
+      next.timeScale =
+        timeScale;
+
+      if (currentAction === next) {
+        return;
+      }
+
+      next.reset().fadeIn(0.18).play();
+
+      if (currentAction) {
+        currentAction.fadeOut(0.18);
+      }
+
+      currentAction =
+        next;
+    }
+
+    function assignModelClip(
+      clips,
+      labels,
+      key
+    ) {
+      const clip =
+        findClip(
+          clips,
+          labels
+        );
+
+      if (clip) {
+        actions[key] =
+          mixer.clipAction(clip);
+      }
+    }
+
+    function loadAnimation(
+      fileName,
+      key
+    ) {
+      loader.load(
+        getAssetUrl(fileName),
+        function (animationModel) {
+          const clip =
+            animationModel.animations &&
+            animationModel.animations[0];
+
+          if (
+            !clip ||
+            !mixer
+          ) {
+            return;
+          }
+
+          actions[key] =
+            mixer.clipAction(clip);
+
+          if (
+            key === "idle" &&
+            !currentAction
+          ) {
+            setAction(actions.idle);
+          }
+
+          statusText.textContent =
+            "Mateo loaded — gallery movement ready";
+        },
+        undefined,
+        function () {
+          statusText.textContent =
+            "Mateo loaded — using embedded animation";
+        }
+      );
+    }
+
+    loader.load(
+      getAssetUrl("Mateo.fbx"),
+      function (model) {
+        characterRoot.remove(character);
+
+        character =
+          model;
+
+        characterRoot.add(character);
+
+        character.updateMatrixWorld(true);
+
+        const box =
+          new THREE.Box3()
+            .setFromObject(character);
+
+        const size =
+          box.getSize(
+            new THREE.Vector3()
+          );
+
+        character.scale.multiplyScalar(
+          targetCharacterHeight /
+          Math.max(
+            size.y,
+            0.001
+          )
+        );
+
+        character.updateMatrixWorld(true);
+        box.setFromObject(character);
+
+        const center =
+          box.getCenter(
+            new THREE.Vector3()
+          );
+
+        character.position.x -=
+          center.x;
+
+        character.position.z -=
+          center.z;
+
+        character.position.y -=
+          box.min.y;
+
+        character.traverse(
+          function (object) {
+            if (!object.isMesh) {
+              return;
+            }
+
+            object.castShadow =
+              true;
+
+            object.receiveShadow =
+              true;
+
+            object.frustumCulled =
+              false;
+
+            const materials =
+              Array.isArray(object.material)
+                ? object.material
+                : [object.material];
+
+            materials.forEach(
+              improveMaterial
+            );
+          }
+        );
+
+        mixer =
+          new THREE.AnimationMixer(character);
+
+        const clips =
+          model.animations ||
+          [];
+
+        assignModelClip(clips, ["idle", "stand"], "idle");
+        assignModelClip(clips, ["walk"], "walk");
+        assignModelClip(clips, ["run", "jog"], "run");
+
+        if (actions.idle) {
+          setAction(actions.idle);
+        } else if (clips[0]) {
+          actions.idle =
+            mixer.clipAction(clips[0]);
+
+          setAction(actions.idle);
+        }
+
+        loadAnimation("MateoIdle.fbx", "idle");
+        loadAnimation("MateoRun.fbx", "run");
+
+        statusText.textContent =
+          "Mateo loaded — facing the artwork";
+      },
+      function (event) {
+        if (
+          event.lengthComputable &&
+          event.total > 0
+        ) {
+          const percent =
+            Math.round(
+              event.loaded /
+              event.total *
+              100
+            );
+
+          statusText.textContent =
+            "Loading Mateo.fbx — " +
+            percent +
+            "%";
+        }
+      },
+      function (error) {
+        console.error(
+          "Mateo.fbx load error:",
+          error
+        );
+
+        statusText.textContent =
+          "Mateo.fbx not found — fallback Mateo is active";
+      }
+    );
+
+    const input = {
+      forward: false,
+      backward: false,
+      left: false,
+      right: false,
+      run: false
+    };
+
+    function setInput(
+      code,
+      pressed
+    ) {
+      if (
+        code === "KeyW" ||
+        code === "ArrowUp"
+      ) {
+        input.forward = pressed;
+      }
+
+      if (
+        code === "KeyS" ||
+        code === "ArrowDown"
+      ) {
+        input.backward = pressed;
+      }
+
+      if (
+        code === "KeyA" ||
+        code === "ArrowLeft"
+      ) {
+        input.left = pressed;
+      }
+
+      if (
+        code === "KeyD" ||
+        code === "ArrowRight"
+      ) {
+        input.right = pressed;
+      }
+
+      if (
+        code === "ShiftLeft" ||
+        code === "ShiftRight"
+      ) {
+        input.run = pressed;
+      }
+    }
+
+    window.addEventListener(
+      "keydown",
+      function (event) {
+        setInput(
+          event.code,
+          true
+        );
+
+        if (
+          [
+            "KeyW",
+            "KeyA",
+            "KeyS",
+            "KeyD",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "ShiftLeft",
+            "ShiftRight"
+          ].includes(event.code)
+        ) {
+          event.preventDefault();
+        }
+      }
+    );
+
+    window.addEventListener(
+      "keyup",
+      function (event) {
+        setInput(
+          event.code,
+          false
+        );
+      }
+    );
+
+    document
+      .querySelectorAll("[data-key]")
+      .forEach(
+        function (button) {
+          const key =
+            button.dataset.key;
+
+          const press =
+            function (event) {
+              event.preventDefault();
+              input[key] = true;
+            };
+
+          const release =
+            function (event) {
+              event.preventDefault();
+              input[key] = false;
+            };
+
+          button.addEventListener("pointerdown", press);
+          button.addEventListener("pointerup", release);
+          button.addEventListener("pointercancel", release);
+          button.addEventListener("pointerleave", release);
+        }
+      );
+
+    let cameraYaw =
+      0;
+
+    let cameraPitch =
+      0.20;
+
+    let cameraDistance =
+      4.4;
+
+    let dragging =
+      false;
+
+    let lastPointerX =
+      0;
+
+    let lastPointerY =
+      0;
+
+    container.addEventListener(
+      "pointerdown",
+      function (event) {
+        if (event.pointerType === "touch") {
+          return;
+        }
+
+        dragging = true;
+        lastPointerX = event.clientX;
+        lastPointerY = event.clientY;
+        container.setPointerCapture(event.pointerId);
+      }
+    );
+
+    container.addEventListener(
+      "pointermove",
+      function (event) {
+        if (!dragging) {
+          return;
+        }
+
+        const deltaX =
+          event.clientX -
+          lastPointerX;
+
+        const deltaY =
+          event.clientY -
+          lastPointerY;
+
+        lastPointerX = event.clientX;
+        lastPointerY = event.clientY;
+        cameraYaw -= deltaX * 0.006;
+        cameraPitch -= deltaY * 0.004;
+        cameraPitch = THREE.MathUtils.clamp(cameraPitch, -0.05, 0.64);
+      }
+    );
+
+    function endDrag(
+      event
+    ) {
+      dragging = false;
+
+      if (
+        event &&
+        container.hasPointerCapture(event.pointerId)
+      ) {
+        container.releasePointerCapture(event.pointerId);
+      }
+    }
+
+    container.addEventListener("pointerup", endDrag);
+    container.addEventListener("pointercancel", endDrag);
+
+    container.addEventListener(
+      "wheel",
+      function (event) {
+        event.preventDefault();
+        cameraDistance += event.deltaY * 0.0035;
+        cameraDistance = THREE.MathUtils.clamp(cameraDistance, 2.8, 5.6);
+      },
+      {
+        passive: false
+      }
+    );
+
+    document
+      .querySelectorAll("[data-look]")
+      .forEach(
+        function (button) {
+          const direction =
+            Number(button.dataset.look);
+
+          button.addEventListener(
+            "pointerdown",
+            function () {
+              cameraYaw += direction * 0.22;
+            }
+          );
+        }
+      );
+
+    const movement =
+      new THREE.Vector3();
+
+    const forward =
+      new THREE.Vector3();
+
+    const right =
+      new THREE.Vector3();
+
+    const desiredCamera =
+      new THREE.Vector3();
+
+    const cameraTarget =
+      new THREE.Vector3();
+
+    function getMovementDirection() {
+      movement.set(0, 0, 0);
+
+      const horizontal =
+        (
+          input.right
+            ? 1
+            : 0
+        ) -
+        (
+          input.left
+            ? 1
+            : 0
+        );
+
+      const vertical =
+        (
+          input.forward
+            ? 1
+            : 0
+        ) -
+        (
+          input.backward
+            ? 1
+            : 0
+        );
+
+      if (
+        horizontal === 0 &&
+        vertical === 0
+      ) {
+        return movement;
+      }
+
+      forward.set(
+        -Math.sin(cameraYaw),
+        0,
+        -Math.cos(cameraYaw)
+      );
+
+      right.set(
+        -forward.z,
+        0,
+        forward.x
+      );
+
+      return movement
+        .addScaledVector(forward, vertical)
+        .addScaledVector(right, horizontal)
+        .normalize();
+    }
+
+    function updateCharacter(
+      delta
+    ) {
+      const direction =
+        getMovementDirection();
+
+      const moving =
+        direction.lengthSq() >
+        0.0001;
+
+      if (moving) {
+        const speed =
+          input.run
+            ? 3.7
+            : 2.0;
+
+        characterRoot.position.addScaledVector(
+          direction,
+          speed * delta
+        );
+
+        characterRoot.position.x =
+          THREE.MathUtils.clamp(
+            characterRoot.position.x,
+            -4.38,
+            4.38
+          );
+
+        characterRoot.position.z =
+          THREE.MathUtils.clamp(
+            characterRoot.position.z,
+            -4.55,
+            3.95
+          );
+
+        const targetRotation =
+          Math.atan2(
+            direction.x,
+            direction.z
+          );
+
+        const rotationDifference =
+          Math.atan2(
+            Math.sin(targetRotation - characterRoot.rotation.y),
+            Math.cos(targetRotation - characterRoot.rotation.y)
+          );
+
+        characterRoot.rotation.y +=
+          rotationDifference *
+          Math.min(1, delta * 9);
+
+        if (mixer) {
+          if (
+            input.run &&
+            actions.run
+          ) {
+            setAction(actions.run, 1);
+          } else if (actions.walk) {
+            setAction(actions.walk, 1);
+          } else if (actions.run) {
+            setAction(actions.run, 0.58);
+          }
+        }
+      } else if (
+        mixer &&
+        actions.idle
+      ) {
+        setAction(actions.idle, 1);
+      }
+
+      if (
+        character.userData &&
+        character.userData.isProcedural
+      ) {
+        const limbs =
+          character.userData.limbs;
+
+        proceduralTime +=
+          delta *
+          (
+            moving
+              ? 7
+              : 1.5
+          );
+
+        const swing =
+          moving
+            ? Math.sin(proceduralTime) * 0.48
+            : 0;
+
+        limbs.arms[0].rotation.x = swing;
+        limbs.arms[1].rotation.x = -swing;
+        limbs.legs[0].rotation.x = -swing;
+        limbs.legs[1].rotation.x = swing;
+      }
+    }
+
+    function updateCamera(
+      delta,
+      immediate = false
+    ) {
+      cameraTarget.set(
+        characterRoot.position.x,
+        0.96,
+        characterRoot.position.z
+      );
+
+      desiredCamera.set(
+        Math.sin(cameraYaw) * Math.cos(cameraPitch) * cameraDistance,
+        Math.sin(cameraPitch) * cameraDistance + 0.96,
+        Math.cos(cameraYaw) * Math.cos(cameraPitch) * cameraDistance
+      );
+
+      desiredCamera.x += characterRoot.position.x;
+      desiredCamera.z += characterRoot.position.z;
+
+      desiredCamera.x = THREE.MathUtils.clamp(desiredCamera.x, -4.82, 4.82);
+      desiredCamera.y = THREE.MathUtils.clamp(desiredCamera.y, 0.48, 5.85);
+      desiredCamera.z = THREE.MathUtils.clamp(desiredCamera.z, -5.46, 4.55);
+
+      if (immediate) {
+        camera.position.copy(desiredCamera);
+      } else {
+        camera.position.lerp(
+          desiredCamera,
+          1 - Math.pow(0.001, delta)
+        );
+      }
+
+      camera.lookAt(cameraTarget);
+    }
+
+    const clock =
+      new THREE.Clock();
+
+    function resize() {
+      const width =
+        Math.max(container.clientWidth, 1);
+
+      const height =
+        Math.max(container.clientHeight, 1);
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+      composer.setSize(width, height);
+    }
+
+    const resizeObserver =
+      new ResizeObserver(resize);
+
+    resizeObserver.observe(container);
+    resize();
+    updateCamera(0, true);
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta =
+        Math.min(
+          clock.getDelta(),
+          0.05
+        );
+
+      artworkUniforms.uTime.value =
+        reducedMotion.matches
+          ? 0
+          : clock.elapsedTime;
+
+      if (!reducedMotion.matches) {
+        artwork.position.y =
+          3.18 +
+          Math.sin(clock.elapsedTime * 0.38) * 0.045;
+
+        artwork.rotation.z =
+          Math.sin(clock.elapsedTime * 0.24) * 0.008;
+
+        particles.rotation.y +=
+          delta * 0.009;
+      }
+
+      updateCharacter(delta);
+      updateCamera(delta);
+
+      if (mixer) {
+        mixer.update(delta);
+      }
+
+      composer.render();
+    }
+
+    animate();
+  </script>
+</body>
+</html>
