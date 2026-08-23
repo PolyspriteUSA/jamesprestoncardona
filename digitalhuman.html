@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mateo Neon Boulevard City</title>
+<style>
+:root{
+  --bg:#06051a;
+  --panel:rgba(9,8,20,.70);
+  --line:rgba(255,255,255,.10);
+  --text:#f6f2ff;
+  --muted:#bbb3d2;
+  --violet:#7149ff;
+  --magenta:#ff42d0;
+  --cyan:#45ddff;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+#app{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%}
+.hud{
+  position:fixed;
+  left:18px;
+  top:18px;
+  z-index:20;
+  width:min(360px,calc(100vw - 36px));
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  backdrop-filter:blur(18px);
+}
+.hud h1{
+  margin:0 0 5px;
+  font-size:14px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.hud p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+.status{
+  margin-top:9px;
+  padding:8px 9px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:#e0daf0;
+  font-size:10px;
+}
+.controls{
+  position:fixed;
+  right:18px;
+  top:18px;
+  z-index:20;
+  display:flex;
+  gap:8px;
+}
+button{
+  min-height:38px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(12,11,22,.82);
+  color:var(--text);
+  font:inherit;
+  font-size:10px;
+  cursor:pointer;
+}
+.help{
+  position:fixed;
+  left:18px;
+  bottom:14px;
+  z-index:20;
+  padding:7px 9px;
+  border-radius:9px;
+  background:rgba(5,4,14,.62);
+  color:#c3bdd6;
+  font-size:9px;
+}
+.vignette{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:8;
+  background:radial-gradient(circle at center,transparent 48%,rgba(1,0,8,.12) 72%,rgba(1,0,8,.46) 100%);
+}
+@media(max-width:720px){
+  .controls{
+    top:auto;
+    bottom:44px;
+    left:18px;
+    right:auto;
+  }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="hud">
+  <h1>Mateo · Neon Boulevard</h1>
+  <p>
+    A cleaner stylized cyber city: long central avenue, layered skyline, dark tower silhouettes,
+    magenta horizon glow, cyan/violet edge lighting, and fewer distracting street details.
+  </p>
+  <div class="status" id="status">Loading city and Mateo.fbx…</div>
+</div>
+
+<div class="controls">
+  <button id="resetCamera" type="button">Reset Camera</button>
+  <button id="rebuildCity" type="button">Rebuild City</button>
+</div>
+
+<div class="help">WASD / Arrows · Shift Run · Space Jump · Drag mouse to orbit</div>
+<div class="vignette"></div>
+
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+
+const app=document.getElementById("app");
+const statusEl=document.getElementById("status");
+
+const RELEASE_BASE=
+  "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/";
+
+const MATEO_URL=
+  RELEASE_BASE+"Mateo.fbx";
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x07051b);
+scene.fog=new THREE.Fog(0x1d0c38,80,720);
+
+const camera=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,.1,3000);
+camera.position.set(0,8.5,18);
+
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.05;
+app.appendChild(renderer.domElement);
+
+const composer=new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene,camera));
+
+const bloom=new UnrealBloomPass(
+  new THREE.Vector2(innerWidth,innerHeight),
+  .74,
+  .72,
+  .60
+);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.dampingFactor=.08;
+controls.enablePan=false;
+controls.minDistance=7;
+controls.maxDistance=28;
+controls.maxPolarAngle=Math.PI*.46;
+controls.target.set(0,3,0);
+
+const world=new THREE.Group();
+scene.add(world);
+
+const playerRoot=new THREE.Group();
+scene.add(playerRoot);
+
+const movingLights=[];
+const glowMaterials=[];
+
+scene.add(new THREE.HemisphereLight(0x9fb8ff,0x17051b,.9));
+
+const moon=new THREE.DirectionalLight(0xb8caff,1.3);
+moon.position.set(-80,160,50);
+moon.castShadow=true;
+moon.shadow.mapSize.set(2048,2048);
+moon.shadow.camera.left=-180;
+moon.shadow.camera.right=180;
+moon.shadow.camera.top=180;
+moon.shadow.camera.bottom=-180;
+scene.add(moon);
+
+[
+  [0xff42d0,0,22,-120,1600,260],
+  [0x7149ff,-80,24,-40,800,160],
+  [0x45ddff,80,26,-30,800,160]
+].forEach(item=>{
+  const light=new THREE.PointLight(item[0],item[4],item[5],2);
+  light.position.set(item[1],item[2],item[3]);
+  scene.add(light);
+});
+
+function rng(seed){
+  const x=Math.sin(seed*18.913+seed*.37)*43758.5453;
+  return x-Math.floor(x);
+}
+
+function pick(seed,items){
+  return items[Math.floor(rng(seed)*items.length)];
+}
+
+function clearWorld(){
+  movingLights.length=0;
+  glowMaterials.length=0;
+
+  while(world.children.length){
+    const obj=world.children.pop();
+    obj.traverse(child=>{
+      if(child.geometry)child.geometry.dispose();
+      if(child.material){
+        if(Array.isArray(child.material))child.material.forEach(m=>m.dispose());
+        else child.material.dispose();
+      }
+    });
+  }
+}
+
+function emissiveMat(color,intensity=.7,base=0x10101a){
+  const mat=new THREE.MeshStandardMaterial({
+    color:base,
+    emissive:color,
+    emissiveIntensity:intensity,
+    roughness:.28,
+    metalness:.12
+  });
+  glowMaterials.push(mat);
+  return mat;
+}
+
+function createSky(){
+  const skyGeo=new THREE.SphereGeometry(1200,32,16);
+  const skyMat=new THREE.ShaderMaterial({
+    side:THREE.BackSide,
+    depthWrite:false,
+    uniforms:{
+      topColor:{value:new THREE.Color(0x06051b)},
+      horizonColor:{value:new THREE.Color(0xff2bbf)},
+      bottomColor:{value:new THREE.Color(0x170724)}
+    },
+    vertexShader:
+      "varying vec3 vWorld;"+
+      "void main(){"+
+      "vec4 wp=modelMatrix*vec4(position,1.0);"+
+      "vWorld=wp.xyz;"+
+      "gl_Position=projectionMatrix*viewMatrix*wp;"+
+      "}",
+    fragmentShader:
+      "uniform vec3 topColor;"+
+      "uniform vec3 horizonColor;"+
+      "uniform vec3 bottomColor;"+
+      "varying vec3 vWorld;"+
+      "void main(){"+
+      "float h=normalize(vWorld).y;"+
+      "float horizon=exp(-abs(h)*7.0);"+
+      "vec3 base=mix(bottomColor,topColor,smoothstep(-0.2,0.75,h));"+
+      "vec3 col=mix(base,horizonColor,horizon*0.65);"+
+      "gl_FragColor=vec4(col,1.0);"+
+      "}"
+  });
+  world.add(new THREE.Mesh(skyGeo,skyMat));
+
+  const starCount=650;
+  const positions=new Float32Array(starCount*3);
+  for(let i=0;i<starCount;i++){
+    positions[i*3+0]=(rng(i+20)-.5)*1500;
+    positions[i*3+1]=80+rng(i+40)*600;
+    positions[i*3+2]=-200-rng(i+60)*900;
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute("position",new THREE.BufferAttribute(positions,3));
+  const mat=new THREE.PointsMaterial({
+    color:0xa9b5ff,
+    size:1.6,
+    transparent:true,
+    opacity:.72,
+    depthWrite:false
+  });
+  world.add(new THREE.Points(geo,mat));
+}
+
+function createBoulevard(){
+  const ground=new THREE.Mesh(
+    new THREE.PlaneGeometry(900,1100),
+    new THREE.MeshStandardMaterial({
+      color:0x070811,
+      roughness:.42,
+      metalness:.12
+    })
+  );
+  ground.rotation.x=-Math.PI/2;
+  ground.position.z=-240;
+  ground.receiveShadow=true;
+  world.add(ground);
+
+  const road=new THREE.Mesh(
+    new THREE.PlaneGeometry(34,1050),
+    new THREE.MeshPhysicalMaterial({
+      color:0x080912,
+      roughness:.23,
+      metalness:.26,
+      clearcoat:1,
+      clearcoatRoughness:.16
+    })
+  );
+  road.rotation.x=-Math.PI/2;
+  road.position.set(0,.025,-240);
+  world.add(road);
+
+  const sidewalkMat=new THREE.MeshStandardMaterial({
+    color:0x11111c,
+    roughness:.58,
+    metalness:.08
+  });
+
+  [-24,24].forEach(x=>{
+    const walk=new THREE.Mesh(
+      new THREE.PlaneGeometry(12,1050),
+      sidewalkMat
+    );
+    walk.rotation.x=-Math.PI/2;
+    walk.position.set(x,.035,-240);
+    world.add(walk);
+  });
+
+  const laneMat=emissiveMat(0xff42d0,.82,0x241124);
+  const cyanMat=emissiveMat(0x45ddff,.55,0x101824);
+
+  [-5.5,5.5].forEach(x=>{
+    const strip=new THREE.Mesh(new THREE.PlaneGeometry(.55,1000),laneMat);
+    strip.rotation.x=-Math.PI/2;
+    strip.position.set(x,.055,-240);
+    world.add(strip);
+  });
+
+  [-16.7,16.7].forEach(x=>{
+    const strip=new THREE.Mesh(new THREE.PlaneGeometry(.35,1000),cyanMat);
+    strip.rotation.x=-Math.PI/2;
+    strip.position.set(x,.057,-240);
+    world.add(strip);
+  });
+
+  for(let z=-30;z>-700;z-=34){
+    const dash=new THREE.Mesh(
+      new THREE.PlaneGeometry(.42,7),
+      new THREE.MeshBasicMaterial({color:0x7138a0,toneMapped:false})
+    );
+    dash.rotation.x=-Math.PI/2;
+    dash.position.set(0,.06,z);
+    world.add(dash);
+  }
+}
+
+function createTower(seed,x,z,layer){
+  const group=new THREE.Group();
+
+  const near=layer===0;
+  const mid=layer===1;
+
+  const height=
+    near
+      ?46+rng(seed+1)*90
+      :mid
+        ?75+rng(seed+1)*150
+        :120+rng(seed+1)*230;
+
+  const width=
+    near
+      ?18+rng(seed+2)*22
+      :22+rng(seed+2)*30;
+
+  const depth=18+rng(seed+3)*24;
+  const shapeType=rng(seed+4);
+
+  const bodyMat=new THREE.MeshStandardMaterial({
+    color:near?0x11121b:0x0d1020,
+    emissive:near?0x09091a:0x081027,
+    emissiveIntensity:.08,
+    roughness:.40,
+    metalness:.18
+  });
+
+  let body;
+
+  if(shapeType>.68){
+    body=new THREE.Mesh(
+      new THREE.CylinderGeometry(width*.46,width*.54,height,8),
+      bodyMat
+    );
+  }else if(shapeType>.38){
+    body=new THREE.Mesh(
+      new THREE.BoxGeometry(width,height,depth),
+      bodyMat
+    );
+  }else{
+    const geometry=new THREE.CylinderGeometry(width*.48,width*.58,height,5);
+    body=new THREE.Mesh(geometry,bodyMat);
+  }
+
+  body.position.y=height*.5;
+  body.castShadow=true;
+  body.receiveShadow=true;
+  group.add(body);
+
+  const accent=pick(seed+7,[0xff42d0,0x7149ff,0x45ddff]);
+  const edge=emissiveMat(accent,mid?.58:.78,0x12101c);
+
+  if(body.geometry.type==="BoxGeometry"){
+    const thickness=.7;
+    for(const sx of [-1,1]){
+      const strip=new THREE.Mesh(
+        new THREE.BoxGeometry(thickness,height*.97,thickness),
+        edge
+      );
+      strip.position.set(sx*width*.5,height*.5,depth*.5);
+      group.add(strip);
+
+      const strip2=strip.clone();
+      strip2.position.z=-depth*.5;
+      group.add(strip2);
+    }
+  }
+
+  const rows=Math.max(4,Math.floor(height/12));
+  const windowMat=new THREE.MeshBasicMaterial({
+    color:accent,
+    transparent:true,
+    opacity:near?.34:.48,
+    toneMapped:false
+  });
+
+  for(let r=0;r<rows;r++){
+    if(rng(seed+r+20)<.30)continue;
+
+    const band=new THREE.Mesh(
+      new THREE.BoxGeometry(width*.72,.45,.18),
+      windowMat
+    );
+    band.position.set(0,5+r*(height-10)/rows,depth*.5+.12);
+    group.add(band);
+  }
+
+  if(rng(seed+40)>.48){
+    const crownH=10+rng(seed+41)*26;
+    const crown=new THREE.Mesh(
+      shapeType>.55
+        ?new THREE.CylinderGeometry(width*.20,width*.34,crownH,6)
+        :new THREE.BoxGeometry(width*.40,crownH,depth*.40),
+      emissiveMat(accent,.75,0x12101c)
+    );
+    crown.position.y=height+crownH*.5;
+    group.add(crown);
+  }
+
+  group.position.set(x,0,z);
+  world.add(group);
+}
+
+function createSkyline(){
+  let seed=1;
+
+  for(let row=0;row<10;row++){
+    const z=-60-row*62;
+
+    [-1,1].forEach(side=>{
+      const count=row<3?2:3;
+
+      for(let i=0;i<count;i++){
+        const baseX=side*(42+i*36+row*1.5);
+        createTower(
+          1000+seed++,
+          baseX+(rng(seed+60)-.5)*10,
+          z+(rng(seed+80)-.5)*24,
+          row<3?0:row<7?1:2
+        );
+      }
+    });
+  }
+
+  for(let i=0;i<14;i++){
+    const x=(rng(i+200)-.5)*180;
+    const z=-420-rng(i+250)*260;
+    createTower(4000+i,x,z,2);
+  }
+}
+
+function createAtmosphere(){
+  for(let i=0;i<12;i++){
+    const mat=new THREE.MeshBasicMaterial({
+      color:i%2===0?0x681879:0x173b68,
+      transparent:true,
+      opacity:.018+rng(i+500)*.026,
+      depthWrite:false,
+      side:THREE.DoubleSide
+    });
+
+    const plane=new THREE.Mesh(
+      new THREE.PlaneGeometry(160+rng(i+520)*240,35+rng(i+540)*70),
+      mat
+    );
+
+    plane.position.set(
+      (rng(i+560)-.5)*260,
+      18+rng(i+580)*100,
+      -120-rng(i+600)*520
+    );
+
+    world.add(plane);
+  }
+}
+
+function createTraffic(){
+  for(let i=0;i<18;i++){
+    const light=new THREE.Mesh(
+      new THREE.BoxGeometry(1.7,.12,.12),
+      new THREE.MeshBasicMaterial({
+        color:i%2===0?0xff42d0:0x45ddff,
+        toneMapped:false
+      })
+    );
+
+    world.add(light);
+
+    movingLights.push({
+      mesh:light,
+      side:i%2===0?-1:1,
+      speed:12+rng(i+700)*16,
+      offset:rng(i+720)*600,
+      lane:i%3
+    });
+  }
+}
+
+function buildCity(){
+  clearWorld();
+  createSky();
+  createBoulevard();
+  createSkyline();
+  createAtmosphere();
+  createTraffic();
+
+  statusEl.textContent=
+    "Neon boulevard city ready. Loading Mateo.fbx from portfolio-assets-v1…";
+}
+
+const player={
+  model:null,
+  mixer:null,
+  velocityY:0,
+  onGround:true,
+  walkSpeed:7.5,
+  runSpeed:12.5,
+  jumpSpeed:8.2
+};
+
+const keys={
+  forward:false,
+  backward:false,
+  left:false,
+  right:false,
+  run:false,
+  jump:false
+};
+
+async function loadMateo(){
+  const loader=new FBXLoader();
+
+  try{
+    const model=await new Promise((resolve,reject)=>{
+      loader.load(
+        MATEO_URL,
+        resolve,
+        event=>{
+          if(event.total>0){
+            statusEl.textContent=
+              "Loading Mateo.fbx · "+
+              Math.round(event.loaded/event.total*100)+
+              "%";
+          }
+        },
+        reject
+      );
+    });
+
+    const box=new THREE.Box3().setFromObject(model);
+    const size=new THREE.Vector3();
+    box.getSize(size);
+
+    const targetHeight=1.78;
+    const scale=
+      size.y>0
+        ?targetHeight/size.y
+        :.01;
+
+    model.scale.setScalar(scale);
+
+    const afterBox=new THREE.Box3().setFromObject(model);
+    model.position.y=-afterBox.min.y;
+
+    model.traverse(obj=>{
+      if(obj.isMesh){
+        obj.castShadow=true;
+        obj.receiveShadow=true;
+      }
+    });
+
+    playerRoot.add(model);
+    player.model=model;
+
+    if(model.animations&&model.animations.length){
+      player.mixer=new THREE.AnimationMixer(model);
+      player.mixer.clipAction(model.animations[0]).play();
+    }
+
+    statusEl.textContent=
+      "Mateo loaded. Walk down the boulevard toward the skyline.";
+  }catch(error){
+    console.warn(error);
+
+    const placeholder=new THREE.Mesh(
+      new THREE.CapsuleGeometry(.45,1.2,8,12),
+      new THREE.MeshStandardMaterial({
+        color:0x2b2640,
+        emissive:0x140b27,
+        emissiveIntensity:.2,
+        roughness:.58
+      })
+    );
+    placeholder.position.y=1.05;
+    playerRoot.add(placeholder);
+
+    statusEl.textContent=
+      "Mateo.fbx could not be reached. Placeholder loaded.";
+  }
+}
+
+function updateInput(event,down){
+  switch(event.code){
+    case "KeyW":
+    case "ArrowUp":keys.forward=down;break;
+    case "KeyS":
+    case "ArrowDown":keys.backward=down;break;
+    case "KeyA":
+    case "ArrowLeft":keys.left=down;break;
+    case "KeyD":
+    case "ArrowRight":keys.right=down;break;
+    case "ShiftLeft":
+    case "ShiftRight":keys.run=down;break;
+    case "Space":keys.jump=down;break;
+  }
+}
+
+addEventListener("keydown",event=>updateInput(event,true));
+addEventListener("keyup",event=>updateInput(event,false));
+
+const up=new THREE.Vector3(0,1,0);
+const forward=new THREE.Vector3();
+const right=new THREE.Vector3();
+const move=new THREE.Vector3();
+
+function updatePlayer(dt){
+  const x=(keys.right?1:0)-(keys.left?1:0);
+  const z=(keys.backward?1:0)-(keys.forward?1:0);
+
+  camera.getWorldDirection(forward);
+  forward.y=0;
+  forward.normalize();
+
+  right.crossVectors(forward,up).normalize();
+
+  move.set(0,0,0);
+  move.addScaledVector(right,x);
+  move.addScaledVector(forward,-z);
+
+  if(move.lengthSq()>0){
+    move.normalize();
+
+    playerRoot.position.addScaledVector(
+      move,
+      (keys.run?player.runSpeed:player.walkSpeed)*dt
+    );
+
+    const angle=Math.atan2(move.x,move.z);
+
+    playerRoot.rotation.y=
+      THREE.MathUtils.lerp(
+        playerRoot.rotation.y,
+        angle,
+        Math.min(1,dt*9)
+      );
+  }
+
+  if(keys.jump&&player.onGround){
+    player.velocityY=player.jumpSpeed;
+    player.onGround=false;
+  }
+
+  player.velocityY-=20*dt;
+  playerRoot.position.y+=player.velocityY*dt;
+
+  if(playerRoot.position.y<=0){
+    playerRoot.position.y=0;
+    player.velocityY=0;
+    player.onGround=true;
+  }
+
+  playerRoot.position.x=THREE.MathUtils.clamp(playerRoot.position.x,-14,14);
+  playerRoot.position.z=THREE.MathUtils.clamp(playerRoot.position.z,-620,40);
+
+  if(player.mixer)player.mixer.update(dt);
+}
+
+const desiredCamera=new THREE.Vector3();
+const target=new THREE.Vector3();
+
+function updateCamera(dt){
+  const yaw=playerRoot.rotation.y;
+
+  const offset=
+    new THREE.Vector3(0,6.6,13)
+      .applyAxisAngle(up,yaw);
+
+  desiredCamera.copy(playerRoot.position).add(offset);
+
+  camera.position.lerp(
+    desiredCamera,
+    1-Math.pow(.001,dt)
+  );
+
+  target.copy(playerRoot.position);
+  target.y+=2.7;
+
+  controls.target.lerp(
+    target,
+    1-Math.pow(.001,dt)
+  );
+}
+
+function resetCamera(){
+  playerRoot.position.set(0,0,0);
+  playerRoot.rotation.y=Math.PI;
+  camera.position.set(0,8.5,18);
+  controls.target.set(0,3,0);
+  controls.update();
+}
+
+document.getElementById("resetCamera").addEventListener("click",resetCamera);
+document.getElementById("rebuildCity").addEventListener("click",()=>{
+  buildCity();
+  resetCamera();
+});
+
+addEventListener("resize",()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+  composer.setSize(innerWidth,innerHeight);
+});
+
+buildCity();
+resetCamera();
+await loadMateo();
+
+const clock=new THREE.Clock();
+
+function animate(){
+  requestAnimationFrame(animate);
+
+  const dt=Math.min(clock.getDelta(),.033);
+  const t=clock.elapsedTime;
+
+  movingLights.forEach((item,index)=>{
+    const z=
+      40-
+      ((t*item.speed+item.offset)%720);
+
+    item.mesh.position.set(
+      item.side*(7.5+item.lane*2.1),
+      .35,
+      z
+    );
+  });
+
+  glowMaterials.forEach((mat,index)=>{
+    mat.emissiveIntensity=
+      .48+
+      .18*Math.sin(t*.8+index*.31);
+  });
+
+  bloom.strength=
+    .70+
+    Math.sin(t*.28)*.04;
+
+  updatePlayer(dt);
+  updateCamera(dt);
+  controls.update();
+  composer.render();
+}
+
+animate();
+</script>
+</body>
+</html>
