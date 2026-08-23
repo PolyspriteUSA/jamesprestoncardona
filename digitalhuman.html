@@ -680,7 +680,7 @@
 
           <div class="status" aria-live="polite">
             <span class="status-dot"></span>
-            <span id="statusText">Loading Mateo.fbx from the portfolio release...</span>
+            <span id="statusText">Loading Mateo.fbx from this folder...</span>
           </div>
         </div>
 
@@ -739,8 +739,7 @@
       </div>
     </section>
   </main>
-
-  <script type="importmap">
+<script type="importmap">
     {
       "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
@@ -3572,17 +3571,16 @@
     const loader =
       new FBXLoader();
 
-    const releaseBase =
-      "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/";
-
-    const mateoSources = [
-      new URL(
-        "./Mateo.fbx",
-        window.location.href
-      ).href,
-      releaseBase +
-        "Mateo.fbx"
-    ];
+    function getFbxCandidates(
+      fileName
+    ) {
+      return [
+        new URL(
+          "./" + fileName,
+          window.location.href
+        ).href,
+      ];
+    }
 
     const maxAnisotropy =
       renderer.capabilities.getMaxAnisotropy();
@@ -3774,14 +3772,10 @@
     async function loadFirstAvailable(
       fileName
     ) {
-      const candidates = [
-        new URL(
-          "./" + fileName,
-          window.location.href
-        ).href,
-        releaseBase +
+      const candidates =
+        getFbxCandidates(
           fileName
-      ];
+        );
 
       let lastError =
         null;
@@ -6355,6 +6349,11 @@
         return;
       }
 
+      const mateoSources =
+        getFbxCandidates(
+          "Mateo.fbx"
+        );
+
       const mateoUrl =
         mateoSources[sourceIndex];
 
@@ -6648,7 +6647,7 @@
           mateoSources.length
         ) {
           statusText.textContent =
-            "Mateo visible — trying release asset...";
+            "Mateo visible — retrying local model...";
 
           loadDetailedMateo(
             sourceIndex + 1,
@@ -6659,7 +6658,7 @@
         }
 
         statusText.textContent =
-          "Mateo.fbx unavailable — Backup Mateo is active";
+          "Mateo.fbx was not found beside DigitalHuman.html — Backup Mateo is active";
 
         updateCameraImmediately();
       }
