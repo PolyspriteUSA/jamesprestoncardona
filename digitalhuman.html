@@ -599,6 +599,10 @@
     import * as THREE from "three";
     import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+    import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
     const container =
       document.getElementById("experience");
@@ -636,13 +640,13 @@
 
     scene.background =
       new THREE.Color(
-        0x030712
+        0x09031d
       );
 
     scene.fog =
       new THREE.FogExp2(
-        0x071633,
-        0.072
+        0x18073d,
+        0.060
       );
 
     const camera =
@@ -674,7 +678,7 @@
       THREE.ACESFilmicToneMapping;
 
     renderer.toneMappingExposure =
-      0.82;
+      0.92;
 
     renderer.shadowMap.enabled =
       true;
@@ -689,32 +693,62 @@
       renderer.domElement
     );
 
+    const composer =
+      new EffectComposer(
+        renderer
+      );
+
+    const renderPass =
+      new RenderPass(
+        scene,
+        camera
+      );
+
+    composer.addPass(
+      renderPass
+    );
+
+    const bloomPass =
+      new UnrealBloomPass(
+        new THREE.Vector2(
+          1,
+          1
+        ),
+        0.92,
+        0.58,
+        0.34
+      );
+
+    composer.addPass(
+      bloomPass
+    );
+
+    composer.addPass(
+      new OutputPass()
+    );
+
     const pmremGenerator =
       new THREE.PMREMGenerator(
         renderer
       );
 
     scene.environment =
-      pmremGenerator.fromScene(
-        new RoomEnvironment(),
-        0.04
-      ).texture;
+      null;
 
     pmremGenerator.dispose();
 
     const hemisphere =
       new THREE.HemisphereLight(
-        0xdde5ff,
-        0x241a1c,
-        0.24
+        0xa99cff,
+        0x26062f,
+        0.32
       );
 
-    scene.add(hemisphere);
 
     const key =
       new THREE.SpotLight(
-        0xfff4ea,
-        58,
+        0xc7d8ff,
+        48,
         18,
         Math.PI * 0.23,
         0.62,
@@ -753,15 +787,11 @@
     key.shadow.camera.far =
       18;
 
-    scene.add(
-      key,
-      key.target
-    );
 
     const fill =
       new THREE.RectAreaLight(
-        0xcbd8ff,
-        4.2,
+        0xff44df,
+        5.8,
         4.0,
         5.0
       );
@@ -778,12 +808,11 @@
       0
     );
 
-    scene.add(fill);
 
     const rim =
       new THREE.SpotLight(
-        0xa88cff,
-        48,
+        0x499bff,
+        58,
         14,
         Math.PI * 0.2,
         0.7,
@@ -802,10 +831,6 @@
       0
     );
 
-    scene.add(
-      rim,
-      rim.target
-    );
 
     const magenta =
       new THREE.PointLight(
@@ -821,7 +846,6 @@
       -3
     );
 
-    scene.add(magenta);
 
     const violet =
       new THREE.PointLight(
@@ -837,7 +861,6 @@
       3
     );
 
-    scene.add(violet);
 
     function createFloorTextures() {
       const size =
@@ -1072,15 +1095,15 @@
 
     const floorMaterial =
       new THREE.MeshPhysicalMaterial({
-        color: 0x09090c,
+        color: 0x07040d,
         map: floorTextures.colorTexture,
         bumpMap: floorTextures.bumpTexture,
-        bumpScale: 0.085,
-        roughness: 0.68,
-        metalness: 0.03,
-        clearcoat: 0.08,
-        clearcoatRoughness: 0.78,
-        envMapIntensity: 0.38
+        bumpScale: 0.075,
+        roughness: 0.82,
+        metalness: 0.015,
+        clearcoat: 0,
+        clearcoatRoughness: 1,
+        envMapIntensity: 0.22
       });
 
     const floor =
@@ -1149,6 +1172,13 @@
         color: 0x151521,
         roughness: 0.72,
         metalness: 0.34
+      });
+
+    const brassMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x32283a,
+        roughness: 0.5,
+        metalness: 0.62
       });
 
     const darkWindowMaterial =
@@ -1270,7 +1300,9 @@
         color;
 
       context.font =
-        "700 45px sans-serif";
+        label.length > 6
+          ? "700 31px sans-serif"
+          : "700 45px sans-serif";
 
       context.textAlign =
         "center";
@@ -1278,12 +1310,26 @@
       context.textBaseline =
         "middle";
 
-      [...label].forEach(
+      const letters =
+        [...label.toUpperCase()];
+
+      const letterStep =
+        letters.length > 1
+          ? Math.min(
+              76,
+              390 /
+              (
+                letters.length - 1
+              )
+            )
+          : 0;
+
+      letters.forEach(
         function (letter, index) {
           context.fillText(
             letter,
             64,
-            80 + index * 76
+            61 + index * letterStep
           );
         }
       );
@@ -1306,11 +1352,11 @@
 
     const signMaterials = [
       createNeonSign(
-        "NOVA",
+        "POLYSPRITE",
         "#ff38d1"
       ),
       createNeonSign(
-        "VOID",
+        "NOVA",
         "#9d65ff"
       ),
       createNeonSign(
@@ -1368,10 +1414,7 @@
         side * 4.135;
 
       const neonMaterial =
-        neonTrimMaterials[
-          index %
-          neonTrimMaterials.length
-        ];
+        trimMaterial;
 
       const edgeInset =
         depth * 0.40;
@@ -1415,12 +1458,7 @@
                   strip * 0.12
                 )
             ),
-            neonTrimMaterials[
-              (
-                index + strip
-              ) %
-              neonTrimMaterials.length
-            ],
+            trimMaterial,
             facadeX - side * 0.032,
             1.55 +
               strip * 1.35,
@@ -1478,7 +1516,7 @@
             );
 
           const lit =
-            cityRandom() > 0.72;
+            false;
 
           const window =
             addCityMesh(
@@ -1546,6 +1584,65 @@
         }
       }
 
+      addCityMesh(
+        new THREE.BoxGeometry(
+          0.28,
+          0.16,
+          depth * 1.04
+        ),
+        brassMaterial,
+        facadeX - side * 0.09,
+        height - 0.42,
+        z
+      );
+
+      [-0.30, 0, 0.30].forEach(
+        function (offset) {
+          addCityMesh(
+            new THREE.BoxGeometry(
+              0.16,
+              height * 0.72,
+              0.055
+            ),
+            brassMaterial,
+            facadeX - side * 0.045,
+            height * 0.51,
+            z + offset * depth,
+            false
+          );
+        }
+      );
+
+      const entry =
+        addCityMesh(
+          new THREE.PlaneGeometry(
+            0.72,
+            1.22
+          ),
+          darkWindowMaterial,
+          facadeX - side * 0.012,
+          0.65,
+          z,
+          false
+        );
+
+      entry.rotation.y =
+        side > 0
+          ? -Math.PI / 2
+          : Math.PI / 2;
+
+      addCityMesh(
+        new THREE.BoxGeometry(
+          0.7,
+          0.09,
+          1.12
+        ),
+        brassMaterial,
+        facadeX - side * 0.30,
+        1.27,
+        z
+      );
+
       if (
         index % 2 === 0
       ) {
@@ -1578,8 +1675,8 @@
             index % 3 === 2
               ? 0x26c9ff
               : 0xff32c9,
-            3.4,
-            3.6,
+            12,
+            6.5,
             2
           );
 
@@ -1612,26 +1709,52 @@
           cityRandom() -
           0.5
         ) * 0.12;
+
+      addCityMesh(
+        new THREE.BoxGeometry(
+          width * 0.72,
+          0.34,
+          depth * 0.78
+        ),
+        buildingMaterials[
+          (
+            index + 1
+          ) %
+          buildingMaterials.length
+        ],
+        centerX,
+        height + 0.72,
+        z - depth * 0.08
+      );
     }
+
+    const blockPositions = [
+      -9.7,
+      -7.2,
+      -3.0,
+      -0.5,
+      4.0,
+      6.55,
+      9.1
+    ];
 
     [-1, 1].forEach(
       function (side) {
         for (
           let index = 0;
-          index < 7;
+          index < blockPositions.length;
           index++
         ) {
           const z =
-            -9.6 +
-            index * 3.15 +
+            blockPositions[index] +
             (
               cityRandom() -
               0.5
-            ) * 0.45;
+            ) * 0.22;
 
           const depth =
-            3.0 +
-            cityRandom() * 0.7;
+            2.25 +
+            cityRandom() * 0.32;
 
           const width =
             2.5 +
@@ -1704,17 +1827,7 @@
         );
 
         const lineMaterial =
-          neonTrimMaterials[
-            (
-              index +
-              (
-                direction > 0
-                  ? 1
-                  : 0
-              )
-            ) %
-            neonTrimMaterials.length
-          ];
+          trimMaterial;
 
         [-1, 1].forEach(
           function (edge) {
@@ -1766,6 +1879,26 @@
             direction > 0
               ? Math.PI
               : 0;
+
+          const endSignLight =
+            new THREE.PointLight(
+              index === 1
+                ? 0xff32c9
+                : 0x26c9ff,
+              14,
+              7.5,
+              2
+            );
+
+          endSignLight.position.set(
+            x,
+            endSign.position.y,
+            z - direction * 2.4
+          );
+
+          environment.add(
+            endSignLight
+          );
         }
       }
 
@@ -1785,9 +1918,6 @@
         z - direction * 3.2
       );
 
-      environment.add(
-        blockerGlow
-      );
     }
 
     addHorizonBlocker(
@@ -1799,6 +1929,113 @@
       -12.8,
       -1
     );
+
+    const neonReflections =
+      new THREE.Group();
+
+    for (
+      let index = 0;
+      index < 30;
+      index++
+    ) {
+      const color =
+        [
+          0xff19c9,
+          0x1bcfff,
+          0x7746ff
+        ][index % 3];
+
+      const reflection =
+        new THREE.Mesh(
+          new THREE.PlaneGeometry(
+            0.10 +
+              cityRandom() * 0.38,
+            1.0 +
+              cityRandom() * 3.8
+          ),
+          new THREE.MeshBasicMaterial({
+            color,
+            transparent: true,
+            opacity: 0.07 +
+              cityRandom() * 0.13,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            toneMapped: false
+          })
+        );
+
+      reflection.rotation.x =
+        -Math.PI / 2;
+
+      reflection.position.set(
+        (
+          cityRandom() -
+          0.5
+        ) * 6.4,
+        0.025 +
+          index * 0.0001,
+        -8.8 +
+          cityRandom() * 17.6
+      );
+
+      reflection.rotation.z =
+        (
+          cityRandom() -
+          0.5
+        ) * 0.12;
+
+      neonReflections.add(
+        reflection
+      );
+    }
+
+    const lightPillars =
+      new THREE.Group();
+
+    for (
+      let index = 0;
+      index < 14;
+      index++
+    ) {
+      const side =
+        index % 2 === 0
+          ? -1
+          : 1;
+
+      const height =
+        4.5 +
+        cityRandom() * 7.5;
+
+      const pillar =
+        new THREE.Mesh(
+          new THREE.BoxGeometry(
+            0.035,
+            height,
+            0.035
+          ),
+          neonTrimMaterials[
+            index %
+            neonTrimMaterials.length
+          ]
+        );
+
+      pillar.position.set(
+        side *
+          (
+            3.9 +
+            cityRandom() * 0.35
+          ),
+        4.8 +
+          height * 0.5 +
+          cityRandom() * 2.8,
+        -9.5 +
+          cityRandom() * 19
+      );
+
+      lightPillars.add(
+        pillar
+      );
+    }
 
     const cableMaterial =
       new THREE.MeshStandardMaterial({
@@ -1856,10 +2093,6 @@
       0,
       2.4,
       10.5
-    );
-
-    scene.add(
-      distantGlow
     );
 
     function createFogTexture() {
@@ -3573,6 +3806,11 @@
         height,
         false
       );
+
+      composer.setSize(
+        width,
+        height
+      );
     }
 
     const resizeObserver =
@@ -3647,10 +3885,7 @@
         );
       }
 
-      renderer.render(
-        scene,
-        camera
-      );
+      composer.render();
     }
 
     animate();
