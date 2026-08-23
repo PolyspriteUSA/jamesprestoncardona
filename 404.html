@@ -567,9 +567,9 @@
 
     const ambient =
       new THREE.HemisphereLight(
-        0xb59cff,
-        0x210728,
-        0.38
+        0x7d6f91,
+        0x130f18,
+        0.30
       );
 
     scene.add(ambient);
@@ -579,28 +579,125 @@
 
     scene.add(room);
 
+    function createConcreteTexture() {
+      const canvas =
+        document.createElement("canvas");
+
+      canvas.width = 256;
+      canvas.height = 256;
+
+      const context =
+        canvas.getContext("2d");
+
+      const image =
+        context.createImageData(
+          canvas.width,
+          canvas.height
+        );
+
+      let concreteSeed =
+        918273;
+
+      function concreteRandom() {
+        concreteSeed =
+          (
+            concreteSeed * 1664525 +
+            1013904223
+          ) >>> 0;
+
+        return concreteSeed /
+          4294967296;
+      }
+
+      for (
+        let index = 0;
+        index < image.data.length;
+        index += 4
+      ) {
+        const fine =
+          concreteRandom() * 26;
+
+        const grain =
+          112 + fine;
+
+        image.data[index] = grain;
+        image.data[index + 1] = grain;
+        image.data[index + 2] = grain;
+        image.data[index + 3] = 255;
+      }
+
+      context.putImageData(
+        image,
+        0,
+        0
+      );
+
+      context.globalAlpha = 0.11;
+      context.strokeStyle = "#2e2e2e";
+      context.lineWidth = 1;
+
+      for (let line = 0; line < 18; line++) {
+        const y = concreteRandom() * 256;
+        context.beginPath();
+        context.moveTo(0, y);
+        context.bezierCurveTo(
+          64,
+          y + (concreteRandom() - 0.5) * 7,
+          192,
+          y + (concreteRandom() - 0.5) * 7,
+          256,
+          y + (concreteRandom() - 0.5) * 5
+        );
+        context.stroke();
+      }
+
+      const texture =
+        new THREE.CanvasTexture(canvas);
+
+      texture.wrapS =
+        THREE.RepeatWrapping;
+
+      texture.wrapT =
+        THREE.RepeatWrapping;
+
+      texture.repeat.set(3, 3);
+
+      return texture;
+    }
+
+    const concreteTexture =
+      createConcreteTexture();
+
     const wallMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x10091b,
-        roughness: 0.90,
-        metalness: 0.10
-      });
-
-    const panelMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x211138,
-        roughness: 0.78,
-        metalness: 0.22
+        color: 0x2a252e,
+        roughness: 0.94,
+        metalness: 0.015,
+        bumpMap: concreteTexture,
+        bumpScale: 0.032
       });
 
     const floorMaterial =
-      new THREE.MeshPhysicalMaterial({
-        color: 0x10091d,
-        roughness: 0.34,
-        metalness: 0.24,
-        clearcoat: 0.16,
-        clearcoatRoughness: 0.42,
-        envMapIntensity: 0.42
+      new THREE.MeshStandardMaterial({
+        color: 0x1c191f,
+        roughness: 0.80,
+        metalness: 0.025,
+        bumpMap: concreteTexture,
+        bumpScale: 0.022
+      });
+
+    const ceilingMaterial =
+      wallMaterial.clone();
+
+    ceilingMaterial.color.setHex(
+      0x211d25
+    );
+
+    const plenumMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x09070c,
+        roughness: 1,
+        metalness: 0
       });
 
     function roomMesh(
@@ -651,9 +748,19 @@
         10.5,
         11.5
       ),
-      wallMaterial,
-      [0, 6.25, -0.55],
+      plenumMaterial,
+      [0, 6.30, -0.55],
       [Math.PI / 2, 0, 0]
+    );
+
+    roomMesh(
+      new THREE.BoxGeometry(
+        9.72,
+        0.24,
+        10.70
+      ),
+      ceilingMaterial,
+      [0, 6.08, -0.55]
     );
 
     roomMesh(
@@ -690,102 +797,90 @@
       }
     );
 
-    const magentaStripMaterial =
-      new THREE.MeshBasicMaterial({
-        color: 0xff42d0,
-        toneMapped: false
-      });
-
-    const violetStripMaterial =
-      new THREE.MeshBasicMaterial({
-        color: 0x7149ff,
-        toneMapped: false
-      });
+    const coveLights = [];
 
     [
-      [-5.12, -2.6, magentaStripMaterial],
-      [-5.12, 2.25, violetStripMaterial],
-      [5.12, -2.6, violetStripMaterial],
-      [5.12, 2.25, magentaStripMaterial]
+      [-4.98, -3.7, 0xff3ec8],
+      [-4.98, -0.7, 0x8d54ff],
+      [-4.98, 2.4, 0xff3ec8],
+      [4.98, -3.7, 0x8d54ff],
+      [4.98, -0.7, 0xff3ec8],
+      [4.98, 2.4, 0x8d54ff],
+      [-2.55, -5.98, 0xb448ff],
+      [2.55, -5.98, 0xff3ec8]
     ].forEach(
       function (definition) {
-        roomMesh(
-          new THREE.BoxGeometry(
-            0.035,
-            4.45,
-            0.035
-          ),
-          definition[2],
-          [definition[0], 3.12, definition[1]]
+        const light =
+          new THREE.SpotLight(
+            definition[2],
+            12,
+            7.6,
+            Math.PI * 0.31,
+            0.90,
+            1.7
+          );
+
+        light.position.set(
+          definition[0],
+          5.98,
+          definition[1]
+        );
+
+        light.target.position.set(
+          definition[0] * 0.78,
+          0.15,
+          definition[1] +
+            (
+              definition[1] < -5
+                ? 0.80
+                : 0
+            )
+        );
+
+        light.castShadow =
+          false;
+
+        coveLights.push(light);
+
+        scene.add(
+          light,
+          light.target
         );
       }
     );
 
-    const roomAccentLights = [
-      new THREE.PointLight(0xff42d0, 13, 9.5, 2),
-      new THREE.PointLight(0x7149ff, 15, 10.5, 2),
-      new THREE.PointLight(0xb14cff, 9, 8.5, 2)
-    ];
+    const benchMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x111015,
+        roughness: 0.92,
+        metalness: 0.03,
+        bumpMap: concreteTexture,
+        bumpScale: 0.015
+      });
 
-    roomAccentLights[0].position.set(-4.15, 2.65, -0.9);
-    roomAccentLights[1].position.set(4.15, 3.15, 0.65);
-    roomAccentLights[2].position.set(0, 5.45, 2.7);
-
-    roomAccentLights.forEach(
-      function (light) {
-        scene.add(light);
-      }
+    roomMesh(
+      new THREE.BoxGeometry(
+        2.45,
+        0.18,
+        0.66
+      ),
+      benchMaterial,
+      [0, 0.62, -1.30]
     );
 
-    [-3.45, -1.72, 0, 1.72, 3.45].forEach(
+    [-0.82, 0.82].forEach(
       function (x) {
         roomMesh(
           new THREE.BoxGeometry(
-            0.055,
-            5.6,
-            0.10
+            0.22,
+            0.55,
+            0.52
           ),
-          panelMaterial,
-          [x, 3.05, -6.02]
+          benchMaterial,
+          [x, 0.29, -1.30]
         );
       }
     );
-
-    [1.05, 2.55, 4.05, 5.55].forEach(
-      function (y) {
-        roomMesh(
-          new THREE.BoxGeometry(
-            10.2,
-            0.055,
-            0.10
-          ),
-          panelMaterial,
-          [0, y, -6.02]
-        );
-      }
-    );
-
-    const floorGrid =
-      new THREE.GridHelper(
-        10.4,
-        22,
-        0x4d2c78,
-        0x28173f
-      );
-
-    floorGrid.position.y =
-      0.008;
-
-    floorGrid.position.z =
-      -0.55;
-
-    floorGrid.material.transparent =
-      true;
-
-    floorGrid.material.opacity =
-      0.22;
-
-    scene.add(floorGrid);
 
     const frame =
       roomMesh(
@@ -808,6 +903,12 @@
     const artworkUniforms = {
       uTime: {
         value: 0
+      },
+      uPointer: {
+        value: new THREE.Vector2(
+          0.5,
+          0.5
+        )
       }
     };
 
@@ -889,24 +990,168 @@
               fineRelief * 0.15;
 
             vec3 displaced = position;
-            displaced.z += (vRelief - 0.46) * 0.78;
-            displaced.x += sin(position.y * 2.2 + uTime * 0.45) * 0.025;
+            displaced.z += (vRelief - 0.46) * 0.48;
+            displaced.x += sin(position.y * 2.2 + uTime * 0.45) * 0.018;
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
           }
         `,
         fragmentShader: `
           uniform float uTime;
+          uniform vec2 uPointer;
           varying vec2 vUv;
           varying float vRelief;
 
           void main() {
-            float rimX = smoothstep(0.0, 0.055, vUv.x) * smoothstep(0.0, 0.055, 1.0 - vUv.x);
-            float rimY = smoothstep(0.0, 0.055, vUv.y) * smoothstep(0.0, 0.055, 1.0 - vUv.y);
-            float edge = rimX * rimY;
-            float pulse = 0.90 + sin(uTime * 0.72 + vRelief * 12.0) * 0.035;
-            vec3 coolWhite = mix(vec3(0.48, 0.56, 0.66), vec3(0.88, 0.92, 0.98), smoothstep(0.30, 0.82, vRelief));
-            gl_FragColor = vec4(coolWhite * (0.56 + vRelief * 0.25) * pulse * edge, 1.0);
+            vec2 uv = vUv - 0.5;
+            uv.x *= 1.22;
+            uv += (uPointer - 0.5) * 0.12;
+
+            float time = uTime * 0.32;
+            float radius = length(uv) + 0.035;
+            float angle = atan(uv.y, uv.x);
+            float tunnel =
+              0.5 +
+              0.5 * sin(
+                -log(radius) * 8.5 +
+                angle * 3.0 -
+                time * 2.2
+              );
+
+            vec2 fieldPosition =
+              uv *
+              (
+                1.3 +
+                0.18 * sin(time)
+              );
+
+            float filaments = 0.0;
+            float depth = 0.0;
+
+            for (int i = 0; i < 11; i++) {
+              float iteration = float(i);
+
+              fieldPosition =
+                abs(fieldPosition) /
+                max(
+                  dot(fieldPosition, fieldPosition),
+                  0.16
+                ) -
+                vec2(
+                  0.72 + 0.06 * sin(time + iteration * 0.7),
+                  0.64 + 0.06 * cos(time * 0.8 + iteration)
+                );
+
+              float band =
+                abs(
+                  sin(
+                    length(fieldPosition) * 2.8 -
+                    time * 1.4 +
+                    iteration * 0.52
+                  )
+                );
+
+              filaments +=
+                (
+                  1.0 -
+                  smoothstep(
+                    0.035,
+                    0.18,
+                    band
+                  )
+                ) *
+                (
+                  1.0 -
+                  iteration / 13.0
+                );
+
+              depth +=
+                exp(
+                  -5.5 *
+                  abs(
+                    length(fieldPosition) -
+                    (
+                      0.55 +
+                      0.06 * sin(time + iteration)
+                    )
+                  )
+                ) * 0.06;
+            }
+
+            filaments =
+              clamp(
+                filaments * 0.13,
+                0.0,
+                1.0
+              );
+
+            float field =
+              clamp(
+                filaments +
+                depth +
+                tunnel * 0.24 +
+                vRelief * 0.18,
+                0.0,
+                1.0
+              );
+
+            float veins =
+              pow(
+                max(
+                  0.0,
+                  sin(
+                    angle * 7.0 +
+                    time * 1.7 +
+                    vRelief * 9.0
+                  )
+                ),
+                8.0
+              );
+
+            vec3 shadowColor =
+              vec3(0.025, 0.012, 0.045);
+
+            vec3 violetColor =
+              vec3(0.29, 0.10, 0.55);
+
+            vec3 pearlColor =
+              vec3(0.82, 0.86, 0.93);
+
+            vec3 color =
+              mix(
+                shadowColor,
+                violetColor,
+                smoothstep(0.18, 0.58, field)
+              );
+
+            color =
+              mix(
+                color,
+                pearlColor,
+                smoothstep(0.56, 0.93, field)
+              );
+
+            color +=
+              vec3(0.30, 0.03, 0.30) *
+              veins *
+              0.35;
+
+            float rimX =
+              smoothstep(0.0, 0.055, vUv.x) *
+              smoothstep(0.0, 0.055, 1.0 - vUv.x);
+
+            float rimY =
+              smoothstep(0.0, 0.055, vUv.y) *
+              smoothstep(0.0, 0.055, 1.0 - vUv.y);
+
+            float edge =
+              rimX * rimY;
+
+            gl_FragColor =
+              vec4(
+                color * edge * 0.82,
+                1.0
+              );
           }
         `
       });
@@ -933,26 +1178,26 @@
 
     scene.add(artwork);
 
-    const artworkLights = [
-      new THREE.PointLight(0xf0ebff, 14, 6.8, 2),
-      new THREE.PointLight(0xd8d2ff, 8, 5.2, 2),
-      new THREE.PointLight(0xffffff, 7, 5.2, 2)
-    ];
+    const artworkGlow =
+      new THREE.PointLight(
+        0xe7d9ff,
+        5.2,
+        5.8,
+        2
+      );
 
-    artworkLights[0].position.set(0, 3.0, -4.55);
-    artworkLights[1].position.set(-2.2, 2.1, -4.85);
-    artworkLights[2].position.set(2.2, 3.8, -4.85);
-
-    artworkLights.forEach(
-      function (light) {
-        scene.add(light);
-      }
+    artworkGlow.position.set(
+      0,
+      2.9,
+      -4.62
     );
+
+    scene.add(artworkGlow);
 
     const artSpot =
       new THREE.SpotLight(
         0xeadfff,
-        20,
+        8,
         12,
         Math.PI * 0.28,
         0.72,
@@ -978,66 +1223,6 @@
       artSpot,
       artSpot.target
     );
-
-    const particleGeometry =
-      new THREE.BufferGeometry();
-
-    const particlePositions =
-      new Float32Array(
-        280 * 3
-      );
-
-    let dustSeed =
-      42187;
-
-    function dustRandom() {
-      dustSeed =
-        (
-          dustSeed * 1664525 +
-          1013904223
-        ) >>> 0;
-
-      return dustSeed /
-        4294967296;
-    }
-
-    for (
-      let index = 0;
-      index < 280;
-      index++
-    ) {
-      particlePositions[index * 3] =
-        (dustRandom() - 0.5) * 9.4;
-
-      particlePositions[index * 3 + 1] =
-        0.15 + dustRandom() * 5.7;
-
-      particlePositions[index * 3 + 2] =
-        -5.5 + dustRandom() * 9.8;
-    }
-
-    particleGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(
-        particlePositions,
-        3
-      )
-    );
-
-    const particles =
-      new THREE.Points(
-        particleGeometry,
-        new THREE.PointsMaterial({
-          color: 0xd8f5ff,
-          size: 0.018,
-          transparent: true,
-          opacity: 0.34,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending
-        })
-      );
-
-    scene.add(particles);
 
     const characterRoot =
       new THREE.Group();
@@ -1636,6 +1821,31 @@
     container.addEventListener(
       "pointermove",
       function (event) {
+        const bounds =
+          container.getBoundingClientRect();
+
+        artworkUniforms.uPointer.value.set(
+          THREE.MathUtils.clamp(
+            (
+              event.clientX -
+              bounds.left
+            ) /
+            Math.max(bounds.width, 1),
+            0,
+            1
+          ),
+          THREE.MathUtils.clamp(
+            1 -
+            (
+              event.clientY -
+              bounds.top
+            ) /
+            Math.max(bounds.height, 1),
+            0,
+            1
+          )
+        );
+
         if (!dragging) {
           return;
         }
@@ -1714,6 +1924,64 @@
 
     const cameraTarget =
       new THREE.Vector3();
+
+    const benchBounds = {
+      minX: -1.48,
+      maxX: 1.48,
+      minZ: -1.82,
+      maxZ: -0.78
+    };
+
+    function resolveBenchCollision() {
+      const x =
+        characterRoot.position.x;
+
+      const z =
+        characterRoot.position.z;
+
+      if (
+        x <= benchBounds.minX ||
+        x >= benchBounds.maxX ||
+        z <= benchBounds.minZ ||
+        z >= benchBounds.maxZ
+      ) {
+        return;
+      }
+
+      const distances = [
+        {
+          distance: x - benchBounds.minX,
+          axis: "x",
+          value: benchBounds.minX
+        },
+        {
+          distance: benchBounds.maxX - x,
+          axis: "x",
+          value: benchBounds.maxX
+        },
+        {
+          distance: z - benchBounds.minZ,
+          axis: "z",
+          value: benchBounds.minZ
+        },
+        {
+          distance: benchBounds.maxZ - z,
+          axis: "z",
+          value: benchBounds.maxZ
+        }
+      ];
+
+      distances.sort(
+        function (a, b) {
+          return a.distance -
+            b.distance;
+        }
+      );
+
+      characterRoot.position[
+        distances[0].axis
+      ] = distances[0].value;
+    }
 
     function getMovementDirection() {
       movement.set(0, 0, 0);
@@ -1801,6 +2069,8 @@
             -4.55,
             3.95
           );
+
+        resolveBenchCollision();
 
         const targetRotation =
           Math.atan2(
@@ -1944,8 +2214,6 @@
         artwork.rotation.z =
           Math.sin(clock.elapsedTime * 0.24) * 0.008;
 
-        particles.rotation.y +=
-          delta * 0.009;
       }
 
       updateCharacter(delta);
