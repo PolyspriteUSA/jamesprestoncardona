@@ -609,6 +609,23 @@
     const focusExperience =
       document.getElementById("focusExperience");
 
+    window.addEventListener(
+      "error",
+      function (event) {
+        if (
+          statusText
+        ) {
+          statusText.textContent =
+            "Scene error — "
+            +
+            (
+              event.message ||
+              "unknown rendering problem"
+            );
+        }
+      }
+    );
+
     const reducedMotion =
       window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -2636,8 +2653,6 @@
 
     statusText.textContent =
       "Mateo visible — loading the detailed FBX...";
-
-    updateCameraImmediately();
 
     loader.load(
       mateoUrl,
