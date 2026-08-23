@@ -2431,11 +2431,23 @@
     let characterHeight =
       1.8;
 
+    let proceduralWalkTime =
+      0;
+
     const loader =
       new FBXLoader();
 
-    const mateoUrl =
-      "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/Mateo.fbx";
+    const releaseBase =
+      "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/";
+
+    const mateoSources = [
+      new URL(
+        "./Mateo.fbx",
+        window.location.href
+      ).href,
+      releaseBase +
+        "Mateo.fbx"
+    ];
 
     const maxAnisotropy =
       renderer.capabilities.getMaxAnisotropy();
@@ -2609,9 +2621,179 @@
         nextAction;
     }
 
+    function loadFbxAsset(
+      url
+    ) {
+      return new Promise(
+        function (resolve, reject) {
+          loader.load(
+            url,
+            resolve,
+            undefined,
+            reject
+          );
+        }
+      );
+    }
+
+    async function loadFirstAvailable(
+      fileName
+    ) {
+      const candidates = [
+        new URL(
+          "./" + fileName,
+          window.location.href
+        ).href,
+        releaseBase +
+          fileName
+      ];
+
+      let lastError =
+        null;
+
+      for (
+        const candidate of candidates
+      ) {
+        try {
+          return await loadFbxAsset(
+            candidate
+          );
+        } catch (error) {
+          lastError =
+            error;
+        }
+      }
+
+      throw lastError ||
+        new Error(
+          "Could not load " +
+          fileName
+        );
+    }
+
+    async function loadMateoAnimations() {
+      if (
+        !mixer ||
+        !character
+      ) {
+        return;
+      }
+
+      const results =
+        await Promise.allSettled([
+          loadFirstAvailable(
+            "MateoIdle.fbx"
+          ),
+          loadFirstAvailable(
+            "MateoRun.fbx"
+          )
+        ]);
+
+      const idleAsset =
+        results[0].status ===
+        "fulfilled"
+          ? results[0].value
+          : null;
+
+      const runAsset =
+        results[1].status ===
+        "fulfilled"
+          ? results[1].value
+          : null;
+
+      const idleClip =
+        idleAsset &&
+        idleAsset.animations &&
+        idleAsset.animations[0];
+
+      const runClip =
+        runAsset &&
+        runAsset.animations &&
+        runAsset.animations[0];
+
+      if (idleClip) {
+        idleClip.name =
+          "idle";
+
+        actions.idle =
+          mixer.clipAction(
+            idleClip
+          );
+      }
+
+      if (runClip) {
+        runClip.name =
+          "run";
+
+        const walkClip =
+          runClip.clone();
+
+        walkClip.name =
+          "walk";
+
+        actions.walk =
+          mixer.clipAction(
+            walkClip
+          );
+
+        actions.walk.timeScale =
+          0.62;
+
+        actions.run =
+          mixer.clipAction(
+            runClip
+          );
+      }
+
+      if (actions.idle) {
+        if (currentAction) {
+          currentAction.stop();
+        }
+
+        currentAction =
+          null;
+
+        setAction(
+          actions.idle
+        );
+      }
+
+      const available = [];
+
+      if (actions.idle) {
+        available.push(
+          "idle"
+        );
+      }
+
+      if (actions.walk) {
+        available.push(
+          "walk"
+        );
+      }
+
+      if (actions.run) {
+        available.push(
+          "run"
+        );
+      }
+
+      statusText.textContent =
+        available.length
+          ? "Detailed Mateo loaded — " +
+            available.join(" / ") +
+            " active"
+          : "Detailed Mateo loaded — animation files unavailable";
+    }
+
     function createFallbackMateo() {
       const person =
         new THREE.Group();
+
+      person.userData.limbs = {
+        arms: [],
+        legs: []
+      };
 
       const skin =
         new THREE.MeshPhysicalMaterial({
@@ -2808,21 +2990,34 @@
 
       [-1, 1].forEach(
         function (side) {
-          const arm =
-            mesh(
-              new THREE.CapsuleGeometry(
-                0.085,
-                0.52,
-                10,
-                16
-              ),
-              shirt,
-              [side * 0.34, 1.10, 0],
-              [1, 1, 0.9]
-            );
+          const armPivot =
+            new THREE.Group();
 
-          arm.rotation.z =
+          armPivot.position.set(
+            side * 0.34,
+            1.38,
+            0
+          );
+
+          armPivot.rotation.z =
             side * -0.07;
+
+          person.add(
+            armPivot
+          );
+
+          mesh(
+            new THREE.CapsuleGeometry(
+              0.085,
+              0.52,
+              10,
+              16
+            ),
+            shirt,
+            [0, -0.28, 0],
+            [1, 1, 0.9],
+            armPivot
+          );
 
           mesh(
             new THREE.SphereGeometry(
@@ -2831,8 +3026,22 @@
               14
             ),
             skin,
-            [side * 0.38, 0.75, 0.005],
-            [0.8, 1.12, 0.72]
+            [0, -0.63, 0.005],
+            [0.8, 1.12, 0.72],
+            armPivot
+          );
+
+          const legPivot =
+            new THREE.Group();
+
+          legPivot.position.set(
+            side * 0.13,
+            0.80,
+            0
+          );
+
+          person.add(
+            legPivot
           );
 
           mesh(
@@ -2843,8 +3052,9 @@
               18
             ),
             trousers,
-            [side * 0.13, 0.46, 0],
-            [0.9, 1, 0.92]
+            [0, -0.34, 0],
+            [0.9, 1, 0.92],
+            legPivot
           );
 
           const shoe =
@@ -2856,17 +3066,26 @@
                 16
               ),
               shoes,
-              [side * 0.13, 0.105, 0.055],
-              [1, 1.1, 1.45]
+              [0, -0.70, 0.055],
+              [1, 1.1, 1.45],
+              legPivot
             );
 
           shoe.rotation.x =
             Math.PI / 2;
+
+          person.userData.limbs.arms.push(
+            armPivot
+          );
+
+          person.userData.limbs.legs.push(
+            legPivot
+          );
         }
       );
 
       person.rotation.y =
-        Math.PI;
+        0;
 
       return person;
     }
@@ -2887,8 +3106,14 @@
     statusText.textContent =
       "Mateo visible — loading the detailed FBX...";
 
-    loader.load(
-      mateoUrl,
+    function loadDetailedMateo(
+      sourceIndex = 0
+    ) {
+      const mateoUrl =
+        mateoSources[sourceIndex];
+
+      loader.load(
+        mateoUrl,
 
       function (model) {
         const gltf = {
@@ -3115,6 +3340,8 @@
         }
 
         updateCameraImmediately();
+
+        loadMateoAnimations();
       },
 
       function (event) {
@@ -3140,16 +3367,35 @@
 
       function (error) {
         console.error(
-          "Mateo.fbx load error:",
+          "Mateo.fbx load error from " +
+          mateoUrl +
+          ":",
           error
         );
 
+        if (
+          sourceIndex + 1 <
+          mateoSources.length
+        ) {
+          statusText.textContent =
+            "Mateo visible — trying release asset...";
+
+          loadDetailedMateo(
+            sourceIndex + 1
+          );
+
+          return;
+        }
+
         statusText.textContent =
-          "Mateo visible — detailed FBX could not be loaded";
+          "Animated procedural Mateo active — place Mateo.fbx beside this page for the detailed model";
 
         updateCameraImmediately();
       }
-    );
+      );
+    }
+
+    loadDetailedMateo();
 
     const input = {
       forward: false,
@@ -3527,11 +3773,11 @@
       }
 
       forward.set(
-        Math.sin(
+        -Math.sin(
           cameraYaw
         ),
         0,
-        Math.cos(
+        -Math.cos(
           cameraYaw
         )
       );
@@ -3699,6 +3945,95 @@
       const isMoving =
         direction.lengthSq() >
         0.0001;
+
+      if (
+        character ===
+        fallbackCharacter
+      ) {
+        const limbs =
+          character.userData.limbs;
+
+        if (isMoving) {
+          proceduralWalkTime +=
+            delta *
+            (
+              input.run
+                ? 11.5
+                : 7.2
+            );
+
+          const swing =
+            Math.sin(
+              proceduralWalkTime
+            ) *
+            (
+              input.run
+                ? 0.72
+                : 0.48
+            );
+
+          limbs.arms[0].rotation.x =
+            swing;
+
+          limbs.arms[1].rotation.x =
+            -swing;
+
+          limbs.legs[0].rotation.x =
+            -swing;
+
+          limbs.legs[1].rotation.x =
+            swing;
+
+          character.position.y =
+            Math.abs(
+              Math.sin(
+                proceduralWalkTime * 2
+              )
+            ) *
+            (
+              input.run
+                ? 0.055
+                : 0.032
+            );
+        } else {
+          proceduralWalkTime +=
+            delta * 1.5;
+
+          limbs.arms.forEach(
+            function (arm) {
+              arm.rotation.x =
+                THREE.MathUtils.lerp(
+                  arm.rotation.x,
+                  0,
+                  Math.min(
+                    1,
+                    delta * 8
+                  )
+                );
+            }
+          );
+
+          limbs.legs.forEach(
+            function (leg) {
+              leg.rotation.x =
+                THREE.MathUtils.lerp(
+                  leg.rotation.x,
+                  0,
+                  Math.min(
+                    1,
+                    delta * 8
+                  )
+                );
+            }
+          );
+
+          character.position.y =
+            0.006 +
+            Math.sin(
+              proceduralWalkTime
+            ) * 0.006;
+        }
+      }
 
       if (isMoving) {
         const speed =
