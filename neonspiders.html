@@ -337,7 +337,7 @@ canvas{display:block}
 }
 .robot-option{
   position:relative;
-  min-height:150px;
+  min-height:252px;
   padding:16px;
   border:1px solid rgba(255,255,255,.10);
   border-radius:16px;
@@ -364,6 +364,25 @@ canvas{display:block}
   box-shadow:
     inset 0 0 0 1px rgba(255,66,208,.16),
     0 0 28px rgba(255,66,208,.08);
+}
+.robot-preview{
+  display:block;
+  width:100%;
+  height:92px;
+  margin:0 0 12px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;
+  background:
+    radial-gradient(circle at 50% 58%,rgba(113,73,255,.12),rgba(5,5,7,.12) 48%,rgba(5,5,7,.42) 100%);
+  box-shadow:
+    inset 0 0 30px rgba(113,73,255,.035);
+  pointer-events:none;
+}
+.robot-option.selected .robot-preview{
+  border-color:rgba(255,66,208,.20);
+  box-shadow:
+    inset 0 0 32px rgba(113,73,255,.06),
+    0 0 18px rgba(255,66,208,.045);
 }
 .robot-option .robot-name{
   color:#fff;
@@ -417,6 +436,12 @@ canvas{display:block}
   }
   .robot-grid{
     grid-template-columns:1fr;
+  }
+  .robot-option{
+    min-height:228px;
+  }
+  .robot-preview{
+    height:82px;
   }
 }
 
@@ -543,6 +568,7 @@ canvas{display:block}
     <div class="robot-grid">
       <div class="robot-option selected" data-robot="dual" tabindex="0" role="button" aria-label="Select Twin Reaper">
         <div class="robot-mark"></div>
+        <canvas class="robot-preview" data-robot-preview="dual" width="320" height="180" aria-hidden="true"></canvas>
         <div class="robot-name">Twin Reaper</div>
         <div class="robot-role">Dual Shooter</div>
         <div class="robot-stats">
@@ -554,6 +580,7 @@ canvas{display:block}
 
       <div class="robot-option" data-robot="rapid" tabindex="0" role="button" aria-label="Select Razor">
         <div class="robot-mark"></div>
+        <canvas class="robot-preview" data-robot-preview="rapid" width="320" height="180" aria-hidden="true"></canvas>
         <div class="robot-name">Razor</div>
         <div class="robot-role">Rapid Single Shooter</div>
         <div class="robot-stats">
@@ -565,6 +592,7 @@ canvas{display:block}
 
       <div class="robot-option" data-robot="cannon" tabindex="0" role="button" aria-label="Select Juggernaut">
         <div class="robot-mark"></div>
+        <canvas class="robot-preview" data-robot-preview="cannon" width="320" height="180" aria-hidden="true"></canvas>
         <div class="robot-name">Juggernaut</div>
         <div class="robot-role">Heavy Cannon</div>
         <div class="robot-stats">
@@ -591,6 +619,7 @@ canvas{display:block}
     <div class="robot-grid restart-robot-grid">
       <div class="robot-option restart-robot-option selected" data-robot="dual" tabindex="0" role="button" aria-label="Select Twin Reaper">
         <div class="robot-mark"></div>
+        <canvas class="robot-preview" data-robot-preview="dual" width="320" height="180" aria-hidden="true"></canvas>
         <div class="robot-name">Twin Reaper</div>
         <div class="robot-role">Dual Shooter</div>
         <div class="robot-stats">
@@ -602,6 +631,7 @@ canvas{display:block}
 
       <div class="robot-option restart-robot-option" data-robot="rapid" tabindex="0" role="button" aria-label="Select Razor">
         <div class="robot-mark"></div>
+        <canvas class="robot-preview" data-robot-preview="rapid" width="320" height="180" aria-hidden="true"></canvas>
         <div class="robot-name">Razor</div>
         <div class="robot-role">Rapid Single Shooter</div>
         <div class="robot-stats">
@@ -613,6 +643,7 @@ canvas{display:block}
 
       <div class="robot-option restart-robot-option" data-robot="cannon" tabindex="0" role="button" aria-label="Select Juggernaut">
         <div class="robot-mark"></div>
+        <canvas class="robot-preview" data-robot-preview="cannon" width="320" height="180" aria-hidden="true"></canvas>
         <div class="robot-name">Juggernaut</div>
         <div class="robot-role">Heavy Cannon</div>
         <div class="robot-stats">
@@ -636,6 +667,624 @@ canvas{display:block}
 import * as THREE from "three";
 
 const $=id=>document.getElementById(id);
+
+function drawRobotPreview(
+  canvas,
+  type
+){
+  const rect=
+    canvas.getBoundingClientRect();
+
+  const dpr=
+    Math.min(
+      window.devicePixelRatio||
+      1,
+      2
+    );
+
+  const cssWidth=
+    Math.max(
+      rect.width,
+      120
+    );
+
+  const cssHeight=
+    Math.max(
+      rect.height,
+      70
+    );
+
+  canvas.width=
+    Math.round(
+      cssWidth*
+      dpr
+    );
+
+  canvas.height=
+    Math.round(
+      cssHeight*
+      dpr
+    );
+
+  const ctx=
+    canvas.getContext(
+      "2d"
+    );
+
+  if(!ctx){
+    return;
+  }
+
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+
+  ctx.clearRect(
+    0,
+    0,
+    cssWidth,
+    cssHeight
+  );
+
+  const cx=
+    cssWidth*.5;
+
+  const cy=
+    cssHeight*.59;
+
+  const scale=
+    Math.min(
+      cssWidth/210,
+      cssHeight/112
+    );
+
+  const graphite=
+    "#20232d";
+
+  const dark=
+    "#0b0d13";
+
+  const armor=
+    "#b9bec9";
+
+  const violet=
+    "#7149ff";
+
+  const magenta=
+    "#ff42d0";
+
+  function roundedRect(
+    x,
+    y,
+    w,
+    h,
+    r,
+    fill,
+    stroke=null
+  ){
+    ctx.beginPath();
+    ctx.roundRect(
+      cx+x*scale,
+      cy+y*scale,
+      w*scale,
+      h*scale,
+      r*scale
+    );
+
+    ctx.fillStyle=
+      fill;
+
+    ctx.fill();
+
+    if(stroke){
+      ctx.strokeStyle=
+        stroke;
+
+      ctx.lineWidth=
+        1;
+
+      ctx.stroke();
+    }
+  }
+
+  function polygon(
+    points,
+    fill,
+    stroke=null
+  ){
+    ctx.beginPath();
+
+    points.forEach(
+      (point,index)=>{
+        const px=
+          cx+
+          point[0]*
+          scale;
+
+        const py=
+          cy+
+          point[1]*
+          scale;
+
+        if(index===0){
+          ctx.moveTo(
+            px,
+            py
+          );
+        }else{
+          ctx.lineTo(
+            px,
+            py
+          );
+        }
+      }
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle=
+      fill;
+
+    ctx.fill();
+
+    if(stroke){
+      ctx.strokeStyle=
+        stroke;
+
+      ctx.lineWidth=
+        1;
+
+      ctx.stroke();
+    }
+  }
+
+  function glowLine(
+    x1,
+    y1,
+    x2,
+    y2,
+    color,
+    width=2
+  ){
+    ctx.save();
+
+    ctx.strokeStyle=
+      color;
+
+    ctx.lineWidth=
+      width*
+      scale;
+
+    ctx.lineCap=
+      "round";
+
+    ctx.shadowColor=
+      color;
+
+    ctx.shadowBlur=
+      8*
+      scale;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      cx+x1*scale,
+      cy+y1*scale
+    );
+
+    ctx.lineTo(
+      cx+x2*scale,
+      cy+y2*scale
+    );
+
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  /* Ground shadow */
+  ctx.save();
+
+  ctx.fillStyle=
+    "rgba(0,0,0,.46)";
+
+  ctx.filter=
+    "blur(7px)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    cx,
+    cy+35*scale,
+    62*scale,
+    10*scale,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+
+  /* Tank tracks */
+  roundedRect(
+    -69,
+    8,
+    26,
+    38,
+    5,
+    dark
+  );
+
+  roundedRect(
+    43,
+    8,
+    26,
+    38,
+    5,
+    dark
+  );
+
+  roundedRect(
+    -66,
+    11,
+    20,
+    32,
+    4,
+    graphite,
+    "rgba(255,255,255,.12)"
+  );
+
+  roundedRect(
+    46,
+    11,
+    20,
+    32,
+    4,
+    graphite,
+    "rgba(255,255,255,.12)"
+  );
+
+  for(
+    let i=0;
+    i<4;
+    i++
+  ){
+    const wheelY=
+      17+
+      i*7;
+
+    ctx.fillStyle=
+      armor;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      cx-56*scale,
+      cy+wheelY*scale,
+      3.4*scale,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.arc(
+      cx+56*scale,
+      cy+wheelY*scale,
+      3.4*scale,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+  }
+
+  /* Lower chassis */
+  polygon(
+    [
+      [-43,14],
+      [-35,4],
+      [35,4],
+      [43,14],
+      [35,29],
+      [-35,29]
+    ],
+    graphite,
+    "rgba(255,255,255,.13)"
+  );
+
+  /* Torso varies slightly by robot */
+  const torsoWidth=
+    type==="cannon"
+      ?78
+      :type==="rapid"
+        ?61
+        :70;
+
+  roundedRect(
+    -torsoWidth*.5,
+    -29,
+    torsoWidth,
+    37,
+    5,
+    graphite,
+    "rgba(255,255,255,.12)"
+  );
+
+  polygon(
+    [
+      [-torsoWidth*.38,-25],
+      [torsoWidth*.38,-25],
+      [torsoWidth*.44,-7],
+      [torsoWidth*.32,2],
+      [-torsoWidth*.32,2],
+      [-torsoWidth*.44,-7]
+    ],
+    armor
+  );
+
+  /* Head / sensor */
+  roundedRect(
+    -12,
+    -43,
+    24,
+    14,
+    4,
+    dark
+  );
+
+  glowLine(
+    -7,
+    -36,
+    7,
+    -36,
+    magenta,
+    1.7
+  );
+
+  /* Shoulder armor */
+  polygon(
+    [
+      [-torsoWidth*.5,-20],
+      [-torsoWidth*.5-13,-14],
+      [-torsoWidth*.5-8,-3],
+      [-torsoWidth*.5,-7]
+    ],
+    armor
+  );
+
+  polygon(
+    [
+      [torsoWidth*.5,-20],
+      [torsoWidth*.5+13,-14],
+      [torsoWidth*.5+8,-3],
+      [torsoWidth*.5,-7]
+    ],
+    armor
+  );
+
+  /* Weapon previews */
+  if(
+    type==="dual"
+  ){
+    [-1,1].forEach(
+      side=>{
+        roundedRect(
+          side<0
+            ?-64
+            :44,
+          -15,
+          20,
+          10,
+          3,
+          dark
+        );
+
+        roundedRect(
+          side<0
+            ?-78
+            :58,
+          -13,
+          22,
+          6,
+          2,
+          graphite
+        );
+
+        glowLine(
+          side<0
+            ?-77
+            :59,
+          -10,
+          side<0
+            ?-90
+            :90,
+          -10,
+          violet,
+          1.8
+        );
+      }
+    );
+
+    glowLine(
+      -25,
+      -2,
+      25,
+      -2,
+      magenta,
+      1.5
+    );
+  }
+
+  if(
+    type==="rapid"
+  ){
+    roundedRect(
+      -9,
+      -12,
+      18,
+      12,
+      3,
+      dark
+    );
+
+    roundedRect(
+      -4,
+      -35,
+      8,
+      35,
+      2,
+      graphite
+    );
+
+    glowLine(
+      0,
+      -34,
+      0,
+      -52,
+      magenta,
+      2
+    );
+
+    glowLine(
+      -23,
+      -3,
+      23,
+      -3,
+      violet,
+      1.4
+    );
+  }
+
+  if(
+    type==="cannon"
+  ){
+    roundedRect(
+      -17,
+      -18,
+      34,
+      16,
+      4,
+      dark
+    );
+
+    roundedRect(
+      -7,
+      -52,
+      14,
+      42,
+      3,
+      graphite
+    );
+
+    roundedRect(
+      -10,
+      -59,
+      20,
+      10,
+      3,
+      armor
+    );
+
+    glowLine(
+      0,
+      -58,
+      0,
+      -70,
+      magenta,
+      3
+    );
+
+    glowLine(
+      -29,
+      -3,
+      29,
+      -3,
+      violet,
+      1.7
+    );
+  }
+
+  /* Small base highlights */
+  glowLine(
+    -36,
+    24,
+    -22,
+    24,
+    violet,
+    1
+  );
+
+  glowLine(
+    22,
+    24,
+    36,
+    24,
+    magenta,
+    1
+  );
+}
+
+function refreshRobotPreviews(){
+  document
+    .querySelectorAll(
+      ".robot-preview"
+    )
+    .forEach(
+      canvas=>{
+        drawRobotPreview(
+          canvas,
+          canvas.dataset.robotPreview
+        );
+      }
+    );
+}
+
+function scheduleRobotPreviewRefresh(){
+  refreshRobotPreviews();
+
+  requestAnimationFrame(
+    ()=>{
+      refreshRobotPreviews();
+
+      requestAnimationFrame(
+        refreshRobotPreviews
+      );
+    }
+  );
+
+  setTimeout(
+    refreshRobotPreviews,
+    180
+  );
+}
+
+window.addEventListener(
+  "resize",
+  refreshRobotPreviews,
+  {
+    passive:true
+  }
+);
+
+window.addEventListener(
+  "orientationchange",
+  scheduleRobotPreviewRefresh,
+  {
+    passive:true
+  }
+);
+
+scheduleRobotPreviewRefresh();
 
 const host=$("game");
 const scene=new THREE.Scene();
