@@ -392,15 +392,6 @@
     <div class="scene-vignette"></div>
     <p class="error-number" aria-hidden="true">404</p>
 
-    <section class="art-caption">
-      <p class="eyebrow">404 / Page Not Found</p>
-      <h1>Living Volume</h1>
-      <p>
-        This page wandered away, but the exhibit remained. Move Mateo through
-        the sealed gallery and circle a volumetric sculpture that continuously reshapes itself in space.
-      </p>
-    </section>
-
     <a class="button home-link" href="/index.html">Return Home</a>
 
     <aside class="controls">
@@ -414,7 +405,7 @@
 
       <div class="status" aria-live="polite">
         <span class="status-dot"></span>
-        <span id="statusText">Loading Mateo.fbx from this folder...</span>
+        <span id="statusText">Connecting to the Mateo.fbx release asset...</span>
       </div>
     </aside>
 
@@ -456,18 +447,82 @@
     const statusText =
       document.getElementById("statusText");
 
-    const assetBase =
-      window.location.protocol === "file:"
-        ? new URL("./", window.location.href)
-        : new URL("/", window.location.origin);
+    const releaseAssetBase =
+      new URL(
+        "https://github.com/PolyspriteUSA/jamesprestoncardona/releases/download/portfolio-assets-v1/"
+      );
 
-    function getAssetUrl(
+    const pageAssetBase =
+      new URL(
+        "./",
+        window.location.href
+      );
+
+    const siteAssetBase =
+      window.location.protocol === "file:"
+        ? pageAssetBase
+        : new URL(
+            "/",
+            window.location.origin
+          );
+
+    function getAssetCandidates(
       fileName
     ) {
-      return new URL(
-        fileName,
-        assetBase
-      ).href;
+      const candidates = [];
+
+      function addCandidate(
+        base,
+        path = fileName
+      ) {
+        const url =
+          new URL(
+            path,
+            base
+          ).href;
+
+        if (!candidates.includes(url)) {
+          candidates.push(url);
+        }
+      }
+
+      if (
+        window.location.protocol ===
+        "file:"
+      ) {
+        addCandidate(releaseAssetBase);
+        addCandidate(pageAssetBase);
+      } else {
+        addCandidate(releaseAssetBase);
+        addCandidate(pageAssetBase);
+        addCandidate(siteAssetBase);
+
+        const pathSegments =
+          window.location.pathname
+            .split("/")
+            .filter(Boolean);
+
+        if (
+          window.location.hostname.endsWith(
+            ".github.io"
+          ) &&
+          pathSegments.length > 0
+        ) {
+          addCandidate(
+            siteAssetBase,
+            pathSegments[0] +
+              "/" +
+              fileName
+          );
+        }
+
+        addCandidate(
+          pageAssetBase,
+          "assets/" + fileName
+        );
+      }
+
+      return candidates;
     }
 
     const reducedMotion =
@@ -496,7 +551,7 @@
     scene.fog =
       new THREE.FogExp2(
         0x050507,
-        0.021
+        0.0095
       );
 
     const camera =
@@ -569,7 +624,7 @@
       new THREE.HemisphereLight(
         0xf7f5ff,
         0x050507,
-        0.24
+        0.38
       );
 
     scene.add(ambient);
@@ -668,34 +723,64 @@
     const concreteTexture =
       createConcreteTexture();
 
+    const galleryWidth =
+      22.0;
+
+    const galleryDepth =
+      30.0;
+
+    const galleryHeight =
+      10.0;
+
+    const galleryCenterZ =
+      -2.50;
+
     const wallMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x2a252e,
-        roughness: 0.94,
-        metalness: 0.015,
+        color: 0x5b595e,
+        roughness: 0.93,
+        metalness: 0.01,
         bumpMap: concreteTexture,
-        bumpScale: 0.032
+        bumpScale: 0.045
       });
 
     const floorMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x1c191f,
-        roughness: 0.80,
-        metalness: 0.025,
+        color: 0x29282c,
+        roughness: 0.79,
+        metalness: 0.02,
         bumpMap: concreteTexture,
-        bumpScale: 0.022
+        bumpScale: 0.027
       });
 
     const ceilingMaterial =
-      wallMaterial.clone();
+      new THREE.MeshStandardMaterial({
+        color: 0x49484d,
+        roughness: 0.91,
+        metalness: 0.015,
+        bumpMap: concreteTexture,
+        bumpScale: 0.034
+      });
 
-    ceilingMaterial.color.setHex(
-      0x211d25
-    );
+    const structuralMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x343338,
+        roughness: 0.88,
+        metalness: 0.04,
+        bumpMap: concreteTexture,
+        bumpScale: 0.020
+      });
+
+    const revealMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x232227,
+        roughness: 0.98,
+        metalness: 0
+      });
 
     const plenumMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x09070c,
+        color: 0x111115,
         roughness: 1,
         metalness: 0
       });
@@ -735,140 +820,277 @@
 
     roomMesh(
       new THREE.PlaneGeometry(
-        10.5,
-        11.5
+        galleryWidth,
+        galleryDepth
       ),
       floorMaterial,
-      [0, 0, -0.55],
+      [0, 0, galleryCenterZ],
       [-Math.PI / 2, 0, 0]
     );
 
     roomMesh(
       new THREE.PlaneGeometry(
-        10.5,
-        11.5
+        galleryWidth,
+        galleryDepth
       ),
       plenumMaterial,
-      [0, 6.30, -0.55],
+      [0, galleryHeight, galleryCenterZ],
       [Math.PI / 2, 0, 0]
     );
 
     roomMesh(
       new THREE.BoxGeometry(
-        9.72,
-        0.24,
-        10.70
+        galleryWidth - 1.0,
+        0.22,
+        galleryDepth - 1.0
       ),
       ceilingMaterial,
-      [0, 6.08, -0.55]
+      [0, 9.72, galleryCenterZ]
+    );
+
+    const backWallZ =
+      galleryCenterZ -
+      galleryDepth * 0.5 -
+      0.14;
+
+    const frontWallZ =
+      galleryCenterZ +
+      galleryDepth * 0.5 +
+      0.14;
+
+    roomMesh(
+      new THREE.BoxGeometry(
+        galleryWidth + 0.28,
+        galleryHeight,
+        0.28
+      ),
+      wallMaterial,
+      [0, galleryHeight * 0.5, backWallZ]
     );
 
     roomMesh(
       new THREE.BoxGeometry(
-        10.8,
-        6.3,
-        0.24
+        galleryWidth + 0.28,
+        galleryHeight,
+        0.28
       ),
       wallMaterial,
-      [0, 3.15, -6.18]
+      [0, galleryHeight * 0.5, frontWallZ]
     );
 
-    roomMesh(
-      new THREE.BoxGeometry(
-        10.8,
-        6.3,
-        0.24
-      ),
-      wallMaterial,
-      [0, 3.15, 5.05]
-    );
-
-    [-5.28, 5.28].forEach(
+    [
+      -galleryWidth * 0.5 - 0.14,
+      galleryWidth * 0.5 + 0.14
+    ].forEach(
       function (x) {
         roomMesh(
           new THREE.BoxGeometry(
-            0.24,
-            6.3,
-            11.5
+            0.28,
+            galleryHeight,
+            galleryDepth + 0.28
           ),
           wallMaterial,
-          [x, 3.15, -0.55]
+          [x, galleryHeight * 0.5, galleryCenterZ]
         );
       }
     );
 
-    const coveLights = [];
+    const backRevealZ =
+      backWallZ + 0.155;
 
     [
-      [-4.98, -2.75],
-      [-4.98, 2.10],
-      [4.98, -2.75],
-      [4.98, 2.10]
+      -8.25,
+      -5.50,
+      -2.75,
+      0,
+      2.75,
+      5.50,
+      8.25
     ].forEach(
-      function (definition) {
-        const light =
-          new THREE.SpotLight(
-            0xf7f5ff,
-            6.5,
-            7.2,
-            Math.PI * 0.24,
-            0.94,
-            1.85
-          );
+      function (x) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            0.026,
+            9.42,
+            0.035
+          ),
+          revealMaterial,
+          [x, 5.0, backRevealZ]
+        );
+      }
+    );
 
-        light.position.set(
-          definition[0],
-          5.98,
-          definition[1]
+    [2.50, 5.0, 7.50].forEach(
+      function (y) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            21.55,
+            0.028,
+            0.035
+          ),
+          revealMaterial,
+          [0, y, backRevealZ]
+        );
+      }
+    );
+
+    const sideRevealX =
+      galleryWidth * 0.5 -
+      0.015;
+
+    [-1, 1].forEach(
+      function (side) {
+        [
+          -14.0,
+          -10.5,
+          -7.0,
+          -3.5,
+          0,
+          3.5,
+          7.0,
+          10.5
+        ].forEach(
+          function (z) {
+            roomMesh(
+              new THREE.BoxGeometry(
+                0.035,
+                9.42,
+                0.026
+              ),
+              revealMaterial,
+              [side * sideRevealX, 5.0, z]
+            );
+          }
         );
 
-        light.target.position.set(
-          definition[0] * 0.58,
-          0.45,
-          definition[1]
+        [2.50, 5.0, 7.50].forEach(
+          function (y) {
+            roomMesh(
+              new THREE.BoxGeometry(
+                0.035,
+                0.028,
+                29.45
+              ),
+              revealMaterial,
+              [side * sideRevealX, y, galleryCenterZ]
+            );
+          }
         );
+      }
+    );
 
-        light.castShadow =
-          false;
+    [
+      -8.40,
+      -4.20,
+      0,
+      4.20,
+      8.40
+    ].forEach(
+      function (x) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            0.34,
+            0.54,
+            28.50
+          ),
+          structuralMaterial,
+          [x, 9.38, galleryCenterZ]
+        );
+      }
+    );
 
-        coveLights.push(light);
+    [
+      -14.0,
+      -9.50,
+      -5.0,
+      -0.50,
+      4.0,
+      8.50
+    ].forEach(
+      function (z) {
+        roomMesh(
+          new THREE.BoxGeometry(
+            20.55,
+            0.54,
+            0.34
+          ),
+          structuralMaterial,
+          [0, 9.38, z]
+        );
+      }
+    );
 
-        scene.add(
-          light,
-          light.target
+    const ceilingLights = [];
+
+    [-7.0, 0, 7.0].forEach(
+      function (x) {
+        [-12.0, -5.0, 2.0, 9.0].forEach(
+          function (z) {
+            const light =
+              new THREE.SpotLight(
+                0xf7f5ff,
+                7.5,
+                13.5,
+                Math.PI * 0.27,
+                0.92,
+                1.75
+              );
+
+            light.position.set(
+              x,
+              9.28,
+              z
+            );
+
+            light.target.position.set(
+              x * 0.82,
+              0.35,
+              z
+            );
+
+            light.castShadow =
+              false;
+
+            ceilingLights.push(light);
+
+            scene.add(
+              light,
+              light.target
+            );
+          }
         );
       }
     );
 
     const benchMaterial =
       new THREE.MeshStandardMaterial({
-        color: 0x111015,
+        color: 0x202024,
         roughness: 0.92,
-        metalness: 0.03,
+        metalness: 0.025,
         bumpMap: concreteTexture,
-        bumpScale: 0.015
+        bumpScale: 0.018
       });
 
     roomMesh(
       new THREE.BoxGeometry(
-        2.45,
-        0.18,
-        0.66
+        4.20,
+        0.22,
+        0.82
       ),
       benchMaterial,
-      [0, 0.62, -1.30]
+      [0, 0.66, -7.20]
     );
 
-    [-0.82, 0.82].forEach(
+    [-1.42, 1.42].forEach(
       function (x) {
         roomMesh(
           new THREE.BoxGeometry(
-            0.22,
-            0.55,
-            0.52
+            0.28,
+            0.58,
+            0.64
           ),
           benchMaterial,
-          [x, 0.29, -1.30]
+          [x, 0.32, -7.20]
         );
       }
     );
@@ -1203,14 +1425,14 @@
 
     artwork.position.set(
       0,
-      3.18,
-      -4.55
+      5.05,
+      -14.0
     );
 
     artwork.scale.set(
-      1.12,
-      1.0,
-      0.84
+      1.85,
+      1.65,
+      1.40
     );
 
     scene.add(artwork);
@@ -1322,8 +1544,8 @@
     const artworkGlow =
       new THREE.PointLight(
         0xf7f5ff,
-        3.8,
-        5.2,
+        4.5,
+        8.5,
         2
       );
 
@@ -1338,23 +1560,23 @@
     const artSpot =
       new THREE.SpotLight(
         0xf7f5ff,
-        9,
-        11,
+        12,
+        19,
         Math.PI * 0.27,
         0.78,
         1.5
       );
 
     artSpot.position.set(
-      1.8,
-      5.82,
-      -2.45
+      3.5,
+      9.15,
+      -9.20
     );
 
     artSpot.target.position.set(
       0,
-      3.10,
-      -4.55
+      4.85,
+      -14.0
     );
 
     artSpot.castShadow =
@@ -1371,7 +1593,7 @@
     characterRoot.position.set(
       0,
       0,
-      1.65
+      6.0
     );
 
     characterRoot.rotation.y =
@@ -1550,6 +1772,95 @@
     const loader =
       new FBXLoader();
 
+    loader.setCrossOrigin(
+      "anonymous"
+    );
+
+    function describeAssetSource(
+      url
+    ) {
+      if (
+        url.includes(
+          "/releases/download/"
+        )
+      ) {
+        return "GitHub release";
+      }
+
+      if (
+        url.startsWith("file:")
+      ) {
+        return "download bundle";
+      }
+
+      return "website files";
+    }
+
+    function loadFbxAsset(
+      fileName,
+      onLoad,
+      onProgress,
+      onFailure,
+      onAttempt = null
+    ) {
+      const candidates =
+        getAssetCandidates(fileName);
+
+      const failures = [];
+      let candidateIndex = 0;
+
+      function tryCandidate() {
+        const url =
+          candidates[candidateIndex];
+
+        if (onAttempt) {
+          onAttempt(
+            url,
+            candidateIndex,
+            candidates.length
+          );
+        }
+
+        loader.load(
+          url,
+          function (model) {
+            model.userData.assetUrl =
+              url;
+
+            onLoad(model, url);
+          },
+          onProgress,
+          function (error) {
+            failures.push({
+              url,
+              error
+            });
+
+            console.warn(
+              fileName +
+                " failed from " +
+                url,
+              error
+            );
+
+            candidateIndex++;
+
+            if (
+              candidateIndex <
+              candidates.length
+            ) {
+              tryCandidate();
+              return;
+            }
+
+            onFailure(failures);
+          }
+        );
+      }
+
+      tryCandidate();
+    }
+
     const maxAnisotropy =
       renderer.capabilities.getMaxAnisotropy();
 
@@ -1654,9 +1965,12 @@
       fileName,
       key
     ) {
-      loader.load(
-        getAssetUrl(fileName),
-        function (animationModel) {
+      loadFbxAsset(
+        fileName,
+        function (
+          animationModel,
+          loadedUrl
+        ) {
           const clip =
             animationModel.animations &&
             animationModel.animations[0];
@@ -1679,7 +1993,11 @@
           }
 
           statusText.textContent =
-            "Mateo loaded — gallery movement ready";
+            "Mateo loaded from " +
+            describeAssetSource(
+              loadedUrl
+            ) +
+            " — movement ready";
         },
         undefined,
         function () {
@@ -1689,15 +2007,22 @@
       );
     }
 
-    loader.load(
-      getAssetUrl("Mateo.fbx"),
-      function (model) {
+    loadFbxAsset(
+      "Mateo.fbx",
+      function (
+        model,
+        loadedUrl
+      ) {
         characterRoot.remove(character);
 
         character =
           model;
 
-        characterRoot.add(character);
+        character.position.set(
+          0,
+          0,
+          0
+        );
 
         character.updateMatrixWorld(true);
 
@@ -1734,6 +2059,10 @@
 
         character.position.y -=
           box.min.y;
+
+        characterRoot.add(character);
+
+        character.updateMatrixWorld(true);
 
         character.traverse(
           function (object) {
@@ -1785,7 +2114,11 @@
         loadAnimation("MateoRun.fbx", "run");
 
         statusText.textContent =
-          "Mateo loaded — facing the artwork";
+          "Mateo.fbx loaded from " +
+          describeAssetSource(
+            loadedUrl
+          ) +
+          " — facing the artwork";
       },
       function (event) {
         if (
@@ -1805,14 +2138,30 @@
             "%";
         }
       },
-      function (error) {
+      function (failures) {
         console.error(
-          "Mateo.fbx load error:",
-          error
+          "Mateo.fbx failed from every configured location:",
+          failures
         );
 
         statusText.textContent =
-          "Mateo.fbx not found — fallback Mateo is active";
+          "Mateo.fbx could not be downloaded — fallback Mateo is active";
+      },
+      function (
+        url,
+        candidateIndex,
+        candidateCount
+      ) {
+        statusText.textContent =
+          candidateIndex === 0
+            ? "Loading Mateo.fbx from the GitHub release..."
+            : "Trying Mateo.fbx fallback " +
+              (
+                candidateIndex + 1
+              ) +
+              " of " +
+              candidateCount +
+              "...";
       }
     );
 
@@ -1931,10 +2280,10 @@
       0;
 
     let cameraPitch =
-      0.20;
+      0.18;
 
     let cameraDistance =
-      4.4;
+      5.2;
 
     let dragging =
       false;
@@ -2003,7 +2352,7 @@
       function (event) {
         event.preventDefault();
         cameraDistance += event.deltaY * 0.0035;
-        cameraDistance = THREE.MathUtils.clamp(cameraDistance, 2.8, 5.6);
+        cameraDistance = THREE.MathUtils.clamp(cameraDistance, 2.8, 8.5);
       },
       {
         passive: false
@@ -2042,10 +2391,10 @@
       new THREE.Vector3();
 
     const benchBounds = {
-      minX: -1.48,
-      maxX: 1.48,
-      minZ: -1.82,
-      maxZ: -0.78
+      minX: -2.48,
+      maxX: 2.48,
+      minZ: -7.92,
+      maxZ: -6.48
     };
 
     function resolveBenchCollision() {
@@ -2101,8 +2450,8 @@
 
     function resolveArtworkCollision() {
       const centerX = 0;
-      const centerZ = -4.55;
-      const minimumDistance = 2.05;
+      const centerZ = -14.0;
+      const minimumDistance = 3.75;
 
       const offsetX =
         characterRoot.position.x -
@@ -2219,15 +2568,15 @@
         characterRoot.position.x =
           THREE.MathUtils.clamp(
             characterRoot.position.x,
-            -4.38,
-            4.38
+            -10.20,
+            10.20
           );
 
         characterRoot.position.z =
           THREE.MathUtils.clamp(
             characterRoot.position.z,
-            -4.55,
-            3.95
+            -15.85,
+            11.35
           );
 
         resolveBenchCollision();
@@ -2314,9 +2663,9 @@
       desiredCamera.x += characterRoot.position.x;
       desiredCamera.z += characterRoot.position.z;
 
-      desiredCamera.x = THREE.MathUtils.clamp(desiredCamera.x, -4.82, 4.82);
-      desiredCamera.y = THREE.MathUtils.clamp(desiredCamera.y, 0.48, 5.85);
-      desiredCamera.z = THREE.MathUtils.clamp(desiredCamera.z, -5.46, 4.55);
+      desiredCamera.x = THREE.MathUtils.clamp(desiredCamera.x, -10.72, 10.72);
+      desiredCamera.y = THREE.MathUtils.clamp(desiredCamera.y, 0.48, 9.18);
+      desiredCamera.z = THREE.MathUtils.clamp(desiredCamera.z, -17.08, 12.05);
 
       if (immediate) {
         camera.position.copy(desiredCamera);
@@ -2372,7 +2721,7 @@
 
       if (!reducedMotion.matches) {
         artwork.position.y =
-          3.18 +
+          5.05 +
           Math.sin(
             artworkTime * 0.42
           ) * 0.10;
