@@ -4528,7 +4528,7 @@ function createEnemyShip(){
     Math.PI*.5;
 
   nose.position.z=
-    .52;
+    .42;
 
   nose.scale.set(
     .86,
@@ -4540,24 +4540,47 @@ function createEnemyShip(){
     nose
   );
 
-  const noseTip=
+  const frontPlate=
     new THREE.Mesh(
-      new THREE.ConeGeometry(
-        .11,
-        .34,
-        6
+      new THREE.BoxGeometry(
+        .18,
+        .10,
+        .18
       ),
       darkMaterial
     );
 
-  noseTip.rotation.x=
-    -Math.PI*.5;
+  frontPlate.position.set(
+    0,
+    -.01,
+    1.03
+  );
 
-  noseTip.position.z=
-    1.10;
+  frontPlate.rotation.y=
+    Math.PI*.25;
 
   ship.add(
-    noseTip
+    frontPlate
+  );
+
+  const frontAccent=
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        .12,
+        .018,
+        .08
+      ),
+      accentMaterial.clone()
+    );
+
+  frontAccent.position.set(
+    0,
+    .03,
+    1.08
+  );
+
+  ship.add(
+    frontAccent
   );
 
   const canopy=
