@@ -596,18 +596,20 @@
 
     .experience-menu {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      grid-template-columns: 1fr;
     }
 
     .experience-option {
       position: relative;
-      min-height: 265px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 28px;
+      min-height: 198px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 190px;
+      align-items: stretch;
+      gap: 24px;
+      padding: 24px 28px;
       overflow: hidden;
-      border-right: 1px solid rgba(255,255,255,0.09);
+      border-bottom: 1px solid rgba(255,255,255,0.09);
       color: inherit;
       text-decoration: none;
       background:
@@ -622,48 +624,46 @@
     }
 
     .experience-option:last-child {
-      border-right: 0;
+      border-bottom: 0;
     }
 
     .experience-option::before {
       content: "";
       position: absolute;
-      width: 180px;
-      height: 180px;
-      right: -80px;
-      bottom: -105px;
-      border: 1px solid rgba(166,108,255,0.24);
-      border-radius: 50%;
-      box-shadow:
-        0 0 48px rgba(113,73,255,0.08),
-        inset 0 0 48px rgba(255,66,208,0.035);
+      inset: 0;
+      background:
+        radial-gradient(
+          circle at 88% 50%,
+          rgba(113,73,255,0.16),
+          transparent 33%
+        ),
+        radial-gradient(
+          circle at 84% 24%,
+          rgba(255,66,208,0.11),
+          transparent 22%
+        );
+      opacity: .65;
       transition:
-        transform 280ms ease,
-        border-color 280ms ease,
-        box-shadow 280ms ease;
+        opacity 240ms ease,
+        transform 280ms ease;
+      pointer-events: none;
     }
 
     .experience-option:hover,
     .experience-option:focus-visible {
       background:
-        radial-gradient(
-          circle at 72% 72%,
-          rgba(113,73,255,0.14),
-          transparent 45%
-        ),
-        rgba(255,255,255,0.04);
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.05),
+          rgba(255,255,255,0.015)
+        );
       outline: none;
     }
 
     .experience-option:hover::before,
     .experience-option:focus-visible::before {
-      transform:
-        scale(1.35)
-        translate(-10px,-12px);
-      border-color: rgba(255,66,208,0.46);
-      box-shadow:
-        0 0 72px rgba(113,73,255,0.18),
-        inset 0 0 60px rgba(255,66,208,0.08);
+      opacity: 1;
+      transform: scale(1.02);
     }
 
     .experience-index {
@@ -674,16 +674,21 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
     .experience-option-content {
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
     }
 
     .experience-option h3 {
       margin: 0 0 10px;
-      font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+      font-size: clamp(1.25rem, 2.2vw, 1.75rem);
       letter-spacing: -0.035em;
     }
 
@@ -692,6 +697,7 @@
       color: var(--muted);
       font-size: 0.78rem;
       line-height: 1.6;
+      max-width: 44ch;
     }
 
     .experience-launch {
@@ -713,6 +719,131 @@
       transform: translateX(5px);
     }
 
+    .experience-thumb {
+      position: relative;
+      z-index: 1;
+      align-self: center;
+      justify-self: end;
+      width: 100%;
+      max-width: 190px;
+      height: 118px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.06),
+          rgba(255,255,255,0.01)
+        );
+      box-shadow:
+        inset 0 0 26px rgba(255,255,255,0.02),
+        0 12px 30px rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+
+    .experience-thumb::before,
+    .experience-thumb::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .experience-thumb--tunnel {
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 30%),
+        linear-gradient(180deg, rgba(10,10,15,0.96), rgba(20,10,30,0.96));
+    }
+
+    .experience-thumb--tunnel::before {
+      inset: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,66,208,0.9);
+      box-shadow:
+        0 0 16px rgba(255,66,208,0.32),
+        inset 0 0 14px rgba(113,73,255,0.2);
+    }
+
+    .experience-thumb--tunnel::after {
+      left: 18px;
+      right: 18px;
+      top: 14px;
+      bottom: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(113,73,255,0.8);
+      transform: scale(0.72);
+      box-shadow:
+        0 0 18px rgba(113,73,255,0.28);
+    }
+
+    .experience-thumb--groove {
+      background:
+        linear-gradient(180deg, rgba(16,12,22,0.98), rgba(10,10,15,0.98));
+    }
+
+    .experience-thumb--groove::before {
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      height: 34px;
+      border-radius: 10px;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.88) 0 10px,
+          rgba(30,30,38,1) 10px 16px
+        );
+      box-shadow:
+        0 0 18px rgba(255,255,255,0.08);
+    }
+
+    .experience-thumb--groove::after {
+      left: 16px;
+      right: 16px;
+      top: 16px;
+      height: 44px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 16% 50%, rgba(255,66,208,0.92) 0 6px, transparent 7px),
+        radial-gradient(circle at 32% 50%, rgba(113,73,255,0.92) 0 6px, transparent 7px),
+        radial-gradient(circle at 48% 50%, rgba(255,66,208,0.92) 0 6px, transparent 7px),
+        radial-gradient(circle at 64% 50%, rgba(113,73,255,0.92) 0 6px, transparent 7px),
+        radial-gradient(circle at 80% 50%, rgba(255,66,208,0.92) 0 6px, transparent 7px),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      box-shadow:
+        inset 0 0 18px rgba(255,255,255,0.03);
+    }
+
+    .experience-thumb--spiders {
+      background:
+        radial-gradient(circle at 50% 68%, rgba(113,73,255,0.18), transparent 36%),
+        linear-gradient(180deg, rgba(14,12,18,0.98), rgba(8,8,12,0.98));
+    }
+
+    .experience-thumb--spiders::before {
+      width: 48px;
+      height: 30px;
+      left: 71px;
+      top: 42px;
+      border-radius: 50%;
+      background: rgba(36,20,52,1);
+      box-shadow:
+        0 0 18px rgba(113,73,255,0.24);
+    }
+
+    .experience-thumb--spiders::after {
+      left: 30px;
+      right: 30px;
+      top: 28px;
+      bottom: 18px;
+      background:
+        linear-gradient(45deg, transparent 47%, rgba(255,66,208,0.7) 48%, transparent 52%) 0 0/50% 50%,
+        linear-gradient(-45deg, transparent 47%, rgba(255,66,208,0.7) 48%, transparent 52%) 100% 0/50% 50%,
+        linear-gradient(20deg, transparent 47%, rgba(255,66,208,0.7) 48%, transparent 52%) 0 100%/50% 50%,
+        linear-gradient(-20deg, transparent 47%, rgba(255,66,208,0.7) 48%, transparent 52%) 100% 100%/50% 50%;
+      background-repeat: no-repeat;
+      opacity: .88;
+    }
+
     @media (max-width: 760px) {
       .experience-modal {
         padding: 14px;
@@ -728,19 +859,21 @@
         padding: 34px 24px 22px;
       }
 
-      .experience-menu {
-        grid-template-columns: 1fr;
-      }
-
       .experience-option {
-        min-height: 170px;
-        border-right: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.09);
-        padding: 23px 24px;
+        grid-template-columns: minmax(0, 1fr) 110px;
+        min-height: 150px;
+        gap: 16px;
+        padding: 20px 24px;
       }
 
-      .experience-option:last-child {
-        border-bottom: 0;
+      .experience-thumb {
+        max-width: 110px;
+        height: 84px;
+        border-radius: 12px;
+      }
+
+      .experience-option p {
+        margin-bottom: 14px;
       }
     }
 
@@ -1284,8 +1417,8 @@
 
       <div class="experience-menu">
         <a class="experience-option" href="./neontunnel.html">
-          <div class="experience-index">01 // Tunnel</div>
           <div class="experience-option-content">
+            <div class="experience-index">01 // Tunnel</div>
             <h3>Neon Tunnel</h3>
             <p>
               A procedural space-tunnel shooter with
@@ -1295,11 +1428,12 @@
               Launch Game <span>→</span>
             </div>
           </div>
+          <div class="experience-thumb experience-thumb--tunnel" aria-hidden="true"></div>
         </a>
 
         <a class="experience-option" href="./groovebox.html">
-          <div class="experience-index">02 // Audio</div>
           <div class="experience-option-content">
+            <div class="experience-index">02 // Audio</div>
             <h3>Neon Groovebox</h3>
             <p>
               An interactive browser synthesizer and
@@ -1309,11 +1443,12 @@
               Launch Neon Groovebox <span>→</span>
             </div>
           </div>
+          <div class="experience-thumb experience-thumb--groove" aria-hidden="true"></div>
         </a>
 
         <a class="experience-option" href="./neonspiders.html">
-          <div class="experience-index">03 // Arcade</div>
           <div class="experience-option-content">
+            <div class="experience-index">03 // Arcade</div>
             <h3>Neon Spiders</h3>
             <p>
               A low-poly third-person arena shooter with
@@ -1323,6 +1458,7 @@
               Launch Game <span>→</span>
             </div>
           </div>
+          <div class="experience-thumb experience-thumb--spiders" aria-hidden="true"></div>
         </a>
       </div>
     </div>
