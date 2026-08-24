@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neon Vector Run | James Preston Cardona</title>
-  <meta name="description" content="A browser-based geometric tunnel game by James Preston Cardona.">
+  <title>Neon Tunnel | James Preston Cardona</title>
+  <meta name="description" content="A browser-based morphing neon tunnel game by James Preston Cardona.">
   <style>
     :root{--bg:#050507;--panel:rgba(11,10,18,.72);--text:#f6f3ff;--muted:#aaa5ba;--line:rgba(255,255,255,.09);--violet:#7149ff;--magenta:#ff42d0;--header-h:72px}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}body{background:radial-gradient(circle at 78% 18%,rgba(113,73,255,.18),transparent 29%),radial-gradient(circle at 62% 28%,rgba(255,66,208,.08),transparent 23%),linear-gradient(180deg,#050507 0%,#07060d 100%)}a{color:inherit;text-decoration:none}button{font:inherit}.site-header{position:fixed;inset:0 0 auto 0;z-index:50;height:var(--header-h);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;gap:26px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(5,5,7,.68);backdrop-filter:blur(18px)}.brand{font-size:.92rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}.site-nav{display:flex;gap:24px;align-items:center;color:#c8c4d4;font-size:.9rem}.site-nav a:hover,.site-nav a:focus-visible{color:#fff}.game-page{padding-top:var(--header-h);min-height:100vh}.game-shell{position:relative;height:calc(100vh - var(--header-h));min-height:620px;overflow:hidden}.game{position:absolute;inset:0;background:#050507;touch-action:none;outline:none}.game canvas{width:100%;height:100%;display:block}.game-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(5,5,7,.34),rgba(5,5,7,.05) 22%,rgba(5,5,7,0) 52%,rgba(5,5,7,.1)),radial-gradient(circle at 50% 54%,rgba(255,66,208,.06),transparent 42%)}.hud{position:absolute;inset:0;z-index:15;pointer-events:none}.hud-top{position:absolute;top:24px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.hud-card{min-width:210px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(10,9,16,.58);backdrop-filter:blur(14px)}.hud-label{margin:0 0 5px;color:var(--muted);font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.hud-value{margin:0;font-size:clamp(1.3rem,2vw,2rem);font-weight:800;letter-spacing:-.03em}.meter{width:190px;height:6px;margin-top:10px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}.meter-fill{width:100%;height:100%;transform-origin:left center;background:linear-gradient(90deg,var(--violet),var(--magenta))}.center-message{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 40px));padding:26px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(18,14,30,.92),rgba(7,7,11,.88));backdrop-filter:blur(20px);text-align:center;pointer-events:auto;box-shadow:0 30px 80px rgba(0,0,0,.35)}.center-message[hidden]{display:none}.kicker{margin:0 0 12px;color:var(--magenta);font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.center-message h1,.center-message h2{margin:0;font-size:clamp(2.4rem,5.6vw,5.5rem);line-height:.91;letter-spacing:-.06em;text-wrap:balance}.center-message p{max-width:470px;margin:18px auto 0;color:#bbb6c7;font-size:.98rem;line-height:1.7}.controls-line{margin-top:18px;color:#d8d3e5;font-size:.85rem}.start-button{margin-top:22px;min-height:48px;padding:0 22px;border:1px solid rgba(255,66,208,.38);border-radius:999px;background:linear-gradient(135deg,rgba(113,73,255,.34),rgba(255,66,208,.22));color:#fff;cursor:pointer}.status-strip{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(8,8,13,.62);backdrop-filter:blur(14px);color:#cfc9db;font-size:.78rem;white-space:nowrap}.status-dot{width:7px;height:7px;border-radius:999px;background:var(--magenta);box-shadow:0 0 18px rgba(255,66,208,.75)}.touch-controls{position:absolute;inset:auto 0 18px 0;z-index:17;display:none;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none}.touch-pad,.touch-fire{pointer-events:auto}.touch-pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:7px}.touch-pad button,.touch-fire button{min-width:48px;min-height:48px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,13,.7);color:#fff;backdrop-filter:blur(14px)}.touch-pad .up{grid-column:2}.touch-pad .left{grid-column:1;grid-row:2}.touch-pad .down{grid-column:2;grid-row:2}.touch-pad .right{grid-column:3;grid-row:2}.touch-fire button{width:70px;height:70px;border-radius:999px;border-color:rgba(255,66,208,.42);background:radial-gradient(circle at 40% 35%,rgba(255,125,226,.35),rgba(113,73,255,.22) 48%,rgba(10,9,16,.76));font-weight:800;letter-spacing:.08em;font-size:.68rem}
@@ -12,14 +12,26 @@
   </style>
 </head>
 <body>
-<header class="site-header"><a class="brand" href="./index.html">James Preston Cardona</a><nav class="site-nav" aria-label="Primary navigation"><a href="./index.html#work">Work</a><a href="./DigitalHuman.html">Digital Human</a><a href="./resume.html">Resume</a><a href="./index.html#contact">Contact</a></nav></header>
-<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Vector Run. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Vector Run</h1><p>A procedural browser tunnel shooter built entirely from geometric forms, particles and real-time lighting.</p><div class="controls-line">WASD / Arrow Keys — steer &nbsp; • &nbsp; Space — fire</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Procedural tunnel online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="fire" type="button">FIRE</button></div></div></section></main>
+<header class="site-header"><a class="brand" href="./index.html">James Preston Cardona</a><nav class="site-nav" aria-label="Primary navigation"><a href="./index.html#work">Work</a><a href="./digitalhuman.html">Digital Human</a><a href="./resume.html">Resume</a><a href="./index.html#contact">Contact</a></nav></header>
+<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>A high-energy neon vortex shooter with white, pink, and purple energy beams, a twisting procedural wormhole, galaxy particles, and soft atmospheric fog.</p><div class="controls-line">WASD / Arrow Keys — steer &nbsp; • &nbsp; Space — fire</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Neon vortex online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="fire" type="button">FIRE</button></div></div></section></main>
+<script>
+window.__neonTunnelStartRequested=false;
+window.__neonTunnelRestartRequested=false;
+
+document.getElementById("startButton").addEventListener("click",function(){
+  window.__neonTunnelStartRequested=true;
+});
+
+document.getElementById("restartButton").addEventListener("click",function(){
+  window.__neonTunnelRestartRequested=true;
+});
+</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from "three";
 const container=document.getElementById("game"),scoreValue=document.getElementById("scoreValue"),healthValue=document.getElementById("healthValue"),healthMeter=document.getElementById("healthMeter"),targetsValue=document.getElementById("targetsValue"),startPanel=document.getElementById("startPanel"),gameOverPanel=document.getElementById("gameOverPanel"),finalScore=document.getElementById("finalScore"),startButton=document.getElementById("startButton"),restartButton=document.getElementById("restartButton"),statusText=document.getElementById("statusText");
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x05030a,0.008);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.88;container.appendChild(renderer.domElement);
-scene.add(new THREE.AmbientLight(0x8d81ff,.24));const playerLight=new THREE.PointLight(0xff42d0,4.5,16,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,8,30,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x080314,0.014);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.76;container.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0x8d76c7,.14));const playerLight=new THREE.PointLight(0xff42d0,2.6,14,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,4.8,30,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
 const player=new THREE.Group();scene.add(player);
 
 const graphiteMat=new THREE.MeshStandardMaterial({
@@ -281,41 +293,183 @@ player.position.z=2;
 let tunnelCurveTime=0;
 const tunnelSlices=[];
 const archSpacing=2.75;
-const tunnelCount=46;
-const tunnelRadius=5.05;
-const shapeSegments=96;
 
-const neonPink=new THREE.LineBasicMaterial({
-  color:0xff42d0,
-  transparent:true,
-  opacity:.58,
-  blending:THREE.AdditiveBlending,
-  depthWrite:false
-});
 
-const neonViolet=new THREE.LineBasicMaterial({
-  color:0x7149ff,
-  transparent:true,
-  opacity:.48,
-  blending:THREE.AdditiveBlending,
-  depthWrite:false
-});
+const tunnelCount=34;
+const tunnelSegmentsPerSlice=12;
+const tunnelRadiusX=5.10;
+const tunnelRadiusY=3.82;
+const thickBeamGeometry=new THREE.BoxGeometry(1,1,1);
 
-const neonSoft=new THREE.LineBasicMaterial({
-  color:0xa66cff,
-  transparent:true,
-  opacity:.34,
-  blending:THREE.AdditiveBlending,
-  depthWrite:false
-});
+const siteWhite=new THREE.Color(0xf6f3ff);
+const sitePink=new THREE.Color(0xff42d0);
+const sitePurple=new THREE.Color(0x7149ff);
 
-const neonWhite=new THREE.LineBasicMaterial({
-  color:0xe7dcff,
-  transparent:true,
-  opacity:.26,
-  blending:THREE.AdditiveBlending,
-  depthWrite:false
-});
+const neonPairs=[
+  [siteWhite,sitePink],
+  [sitePink,sitePurple],
+  [sitePurple,siteWhite]
+];
+
+const neonShaderMaterials=[];
+
+function createEnergyMaterial(colorA,colorB,opacity,halo){
+  const material=
+    new THREE.ShaderMaterial({
+      uniforms:{
+        uTime:{value:0},
+        uColorA:{value:colorA.clone()},
+        uColorB:{value:colorB.clone()},
+        uOpacity:{value:opacity},
+        uHalo:{value:halo}
+      },
+      vertexShader:
+        "varying vec2 vUv;"+
+        "void main(){"+
+        "vUv=uv;"+
+        "gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);"+
+        "}",
+      fragmentShader:
+        "uniform float uTime;"+
+        "uniform vec3 uColorA;"+
+        "uniform vec3 uColorB;"+
+        "uniform float uOpacity;"+
+        "uniform float uHalo;"+
+        "varying vec2 vUv;"+
+        "void main(){"+
+        "float wave=.5+.5*sin(vUv.y*6.28318+uTime*.55);"+
+        "float blend=clamp(vUv.y*.72+wave*.28,0.0,1.0);"+
+        "vec3 color=mix(uColorA,uColorB,blend);"+
+        "float center=1.0-abs(vUv.x-.5)*2.0;"+
+        "float energy=.78+.22*sin(uTime*1.2+vUv.y*12.0);"+
+        "float alpha=uOpacity*energy;"+
+        "if(uHalo>0.5){alpha*=.34+.34*center;}"+
+        "gl_FragColor=vec4(color,alpha);"+
+        "}",
+      transparent:true,
+      depthWrite:false,
+      blending:THREE.AdditiveBlending,
+      side:THREE.DoubleSide,
+      toneMapped:false
+    });
+
+  neonShaderMaterials.push(material);
+  return material;
+}
+
+const coreMaterials=
+  neonPairs.map(
+    pair=>
+      createEnergyMaterial(
+        pair[0],
+        pair[1],
+        .88,
+        0
+      )
+  );
+
+const haloMaterials=
+  neonPairs.map(
+    pair=>
+      createEnergyMaterial(
+        pair[0],
+        pair[1],
+        .26,
+        1
+      )
+  );
+
+function createNeonBeam(index){
+  const group=
+    new THREE.Group();
+
+  const materialIndex=
+    index%
+    neonPairs.length;
+
+  const halo=
+    new THREE.Mesh(
+      thickBeamGeometry,
+      haloMaterials[materialIndex]
+    );
+
+  const core=
+    new THREE.Mesh(
+      thickBeamGeometry,
+      coreMaterials[materialIndex]
+    );
+
+  halo.renderOrder=1;
+  core.renderOrder=2;
+
+  group.add(halo);
+  group.add(core);
+
+  group.userData.halo=halo;
+  group.userData.core=core;
+  group.userData.materialIndex=materialIndex;
+
+  return group;
+}
+
+function setBeamBetween3D(
+  beam,
+  a,
+  b,
+  thickness
+){
+  const delta=
+    b.clone()
+      .sub(a);
+
+  const length=
+    Math.max(
+      delta.length(),
+      .001
+    );
+
+  beam.position
+    .copy(a)
+    .add(b)
+    .multiplyScalar(.5);
+
+  beam.quaternion
+    .setFromUnitVectors(
+      new THREE.Vector3(
+        0,
+        1,
+        0
+      ),
+      delta.normalize()
+    );
+
+  beam.userData.core.scale.set(
+    thickness,
+    length,
+    thickness
+  );
+
+  beam.userData.halo.scale.set(
+    thickness*2.6,
+    length*1.025,
+    thickness*2.6
+  );
+}
+
+function curveEnvelope(time){
+  const raw=
+    .5+
+    .5*
+    Math.sin(
+      time*.15-.8
+    );
+
+  return THREE.MathUtils.smoothstep(
+    raw,
+    .48,
+    .92
+  );
+}
 
 function curvePoint(z){
   const depth=
@@ -326,55 +480,43 @@ function curvePoint(z){
 
   const influence=
     THREE.MathUtils.clamp(
-      depth/48,
+      depth/70,
       0,
       1
     );
 
-  const timeCurve=
-    1+
-    Math.sin(
-      tunnelCurveTime*.10
-    )*.34;
+  const bend=
+    curveEnvelope(
+      tunnelCurveTime
+    );
 
   const x=
     (
       Math.sin(
-        depth*.048+
-        tunnelCurveTime*.055
-      )*
-      2.05
-      +
-      Math.sin(
-        depth*.019-
+        depth*.020+
         tunnelCurveTime*.032
-      )*
-      .82
+      )*1.85+
+      Math.sin(
+        depth*.008-
+        tunnelCurveTime*.018
+      )*.62
     )*
     influence*
-    timeCurve;
+    bend;
 
   const y=
     (
       Math.cos(
-        depth*.039+
-        tunnelCurveTime*.035
-      )*
-      .88
-      +
+        depth*.016+
+        tunnelCurveTime*.024
+      )*.84+
       Math.sin(
-        depth*.016-
-        tunnelCurveTime*.020
-      )*
-      .36
+        depth*.006-
+        tunnelCurveTime*.013
+      )*.32
     )*
     influence*
-    (
-      .80+
-      Math.sin(
-        tunnelCurveTime*.085
-      )*.20
-    );
+    bend*.72;
 
   return new THREE.Vector3(
     x,
@@ -384,75 +526,62 @@ function curvePoint(z){
 }
 
 function orientAlongCurve(object,z){
-  const current=curvePoint(z);
-  const ahead=curvePoint(z-.44);
-  const tangent=ahead.clone().sub(current).normalize();
+  const current=
+    curvePoint(z);
 
-  object.position.copy(current);
+  const ahead=
+    curvePoint(z-.58);
 
-  object.quaternion.setFromUnitVectors(
-    new THREE.Vector3(0,0,-1),
-    tangent
+  const tangent=
+    ahead.clone()
+      .sub(current)
+      .normalize();
+
+  object.position.copy(
+    current
   );
-}
 
-function circularTunnelPoint(theta,radius,time,sliceIndex,offset){
-  const breathing=
-    1+
-    Math.sin(
-      time*.22+
-      sliceIndex*.055
-    )*.018;
-
-  const softWave=
-    1+
-    Math.sin(
-      theta*2+
-      time*.18+
-      sliceIndex*.025
-    )*.012;
-
-  return {
-    x:
-      Math.cos(theta)*
-      (radius+offset)*
-      breathing*
-      softWave,
-
-    y:
-      Math.sin(theta)*
-      (radius+offset)*
-      breathing
-  };
-}
-
-function makeRingMaterial(index,layer){
-  const mode=(index+layer)%6;
-
-  if(mode===0||mode===3)return neonPink.clone();
-  if(mode===1||mode===4)return neonViolet.clone();
-  if(mode===2)return neonSoft.clone();
-  return neonWhite.clone();
-}
-
-function createRingGeometry(){
-  const positions=
-    new Float32Array(
-      shapeSegments*3
+  object.quaternion
+    .setFromUnitVectors(
+      new THREE.Vector3(
+        0,
+        0,
+        -1
+      ),
+      tangent
     );
+}
 
-  const geometry=
-    new THREE.BufferGeometry();
+function polygonRadius(
+  theta,
+  sides,
+  rotation
+){
+  const sector=
+    Math.PI*2/sides;
 
-  geometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(
-      positions,
-      3
+  const local=
+    (
+      (
+        theta+
+        rotation+
+        sector*.5
+      )%
+      sector+
+      sector
+    )%
+    sector-
+    sector*.5;
+
+  return (
+    Math.cos(
+      Math.PI/sides
+    )/
+    Math.max(
+      .18,
+      Math.cos(local)
     )
   );
-
-  return geometry;
 }
 
 function createTunnelSlice(i){
@@ -460,33 +589,65 @@ function createTunnelSlice(i){
     new THREE.Group();
 
   group.userData.baseIndex=i;
-  group.userData.z=-i*archSpacing;
+  group.userData.z=
+    -i*archSpacing;
 
-  const offsets=[
-    -.48,
-    0,
-    .48
-  ];
+  group.userData.phase=
+    i*.42;
 
-  offsets.forEach((offset,layer)=>{
-    const material=
-      makeRingMaterial(
-        i,
-        layer
+  group.userData.sideA=
+    5+
+    (
+      i%3
+    );
+
+  group.userData.sideB=
+    8+
+    (
+      (
+        i+1
+      )%
+      4
+    );
+
+  group.userData.ringBeams=[];
+  group.userData.railBeams=[];
+
+  for(
+    let s=0;
+    s<tunnelSegmentsPerSlice;
+    s++
+  ){
+    const ringBeam=
+      createNeonBeam(
+        i+s
       );
 
-    const ring=
-      new THREE.LineLoop(
-        createRingGeometry(),
-        material
+    group.add(
+      ringBeam
+    );
+
+    group.userData.ringBeams.push(
+      ringBeam
+    );
+
+    if(
+      s%2===0
+    ){
+      const railBeam=
+        createNeonBeam(
+          i+s+1
+        );
+
+      group.add(
+        railBeam
       );
 
-    ring.userData.offset=offset;
-    ring.userData.layer=layer;
-    ring.userData.baseOpacity=material.opacity;
-
-    group.add(ring);
-  });
+      group.userData.railBeams.push(
+        railBeam
+      );
+    }
+  }
 
   orientAlongCurve(
     group,
@@ -497,131 +658,514 @@ function createTunnelSlice(i){
   tunnelSlices.push(group);
 }
 
-for(let i=0;i<tunnelCount;i++){
-  createTunnelSlice(i);
-}
-
-function updateRingGeometry(ring,sliceIndex,time){
-  const positions=
-    ring.geometry.attributes.position.array;
-
-  const slowRotation=
-    time*.035+
-    sliceIndex*.012;
-
-  for(let i=0;i<shapeSegments;i++){
-    const theta=
-      i/shapeSegments*
-      Math.PI*2+
-      slowRotation;
-
-    const p2=
-      circularTunnelPoint(
-        theta,
-        tunnelRadius,
-        time,
-        sliceIndex,
-        ring.userData.offset
-      );
-
-    const p=i*3;
-
-    positions[p]=p2.x;
-    positions[p+1]=p2.y;
-    positions[p+2]=0;
+try{
+  for(
+    let i=0;
+    i<tunnelCount;
+    i++
+  ){
+    createTunnelSlice(i);
   }
-
-  ring.geometry.attributes.position.needsUpdate=true;
-}
-
-tunnelSlices.forEach(slice=>{
-  slice.children.forEach(ring=>{
-    updateRingGeometry(
-      ring,
-      slice.userData.baseIndex,
-      0
-    );
-  });
-});
-const pCount=window.innerWidth<720?120:300,pPos=new Float32Array(pCount*3),pSpeed=new Float32Array(pCount);for(let i=0;i<pCount;i++){const p=i*3,r=.6+Math.random()*5.6,a=Math.random()*Math.PI*2;pPos[p]=Math.cos(a)*r;pPos[p+1]=Math.sin(a)*r;pPos[p+2]=-Math.random()*90;pSpeed[i]=.65+Math.random()*1.8}const pGeo=new THREE.BufferGeometry();pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));const stars=new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xa66cff,size:.022,transparent:true,opacity:.08,depthWrite:false,blending:THREE.AdditiveBlending}));world.add(stars);
-
-const farStarCount=
-  window.innerWidth<720
-    ?220
-    :680;
-
-const farStarPositions=
-  new Float32Array(
-    farStarCount*3
+}catch(error){
+  console.error(
+    "Tunnel geometry initialization failed:",
+    error
   );
 
-for(let i=0;i<farStarCount;i++){
-  const p=i*3;
+  statusText.textContent=
+    "Tunnel visual fallback active";
+}
 
-  farStarPositions[p]=
-    THREE.MathUtils.randFloat(
-      -28,
-      28
+function getRingPoints(
+  slice,
+  time,
+  zOffset,
+  twistOffset
+){
+  const phase=
+    slice.userData.phase;
+
+  const morph=
+    .5+
+    .5*
+    Math.sin(
+      time*.13+
+      phase
     );
 
-  farStarPositions[p+1]=
+  const morphEase=
+    morph*morph*
+    (
+      3-
+      2*morph
+    );
+
+  const twist=
+    time*.16+
+    phase*.22+
+    zOffset*.018+
+    twistOffset;
+
+  const breathing=
+    1+
+    Math.sin(
+      time*.22+
+      phase+
+      zOffset*.015
+    )*.075;
+
+  const squeeze=
+    .90+
+    .10*
+    (
+      .5+
+      .5*
+      Math.sin(
+        time*.15+
+        phase*.60
+      )
+    );
+
+  const points=[];
+
+  for(
+    let p=0;
+    p<tunnelSegmentsPerSlice;
+    p++
+  ){
+    const theta=
+      p/
+      tunnelSegmentsPerSlice*
+      Math.PI*2;
+
+    const radiusA=
+      polygonRadius(
+        theta,
+        slice.userData.sideA,
+        twist
+      );
+
+    const radiusB=
+      polygonRadius(
+        theta,
+        slice.userData.sideB,
+        -twist*.68+
+        Math.PI*.11
+      );
+
+    const radial=
+      THREE.MathUtils.lerp(
+        radiusA,
+        radiusB,
+        morphEase
+      );
+
+    const ripple=
+      1+
+      Math.sin(
+        theta*3+
+        time*.24+
+        phase
+      )*.040+
+      Math.cos(
+        theta*5-
+        time*.18+
+        phase*.5
+      )*.024;
+
+    points.push(
+      new THREE.Vector3(
+        Math.cos(theta)*
+        tunnelRadiusX*
+        radial*
+        breathing*
+        ripple,
+
+        Math.sin(theta)*
+        tunnelRadiusY*
+        radial*
+        breathing*
+        squeeze*
+        ripple,
+
+        zOffset
+      )
+    );
+  }
+
+  return points;
+}
+
+function updateTunnelSliceGeometry(
+  slice,
+  time
+){
+  const points=
+    getRingPoints(
+      slice,
+      time,
+      0,
+      0
+    );
+
+  const nextPoints=
+    getRingPoints(
+      slice,
+      time,
+      -archSpacing*.96,
+      .34
+    );
+
+  const thickness=
+    .085+
+    .032*
+    (
+      .5+
+      .5*
+      Math.sin(
+        time*.42+
+        slice.userData.phase
+      )
+    );
+
+  slice.userData.ringBeams.forEach(
+    (beam,index)=>{
+      setBeamBetween3D(
+        beam,
+        points[index],
+        points[
+          (
+            index+1
+          )%
+          points.length
+        ],
+        thickness
+      );
+    }
+  );
+
+  slice.userData.railBeams.forEach(
+    (beam,index)=>{
+      const pointIndex=
+        (
+          index*2
+        )%
+        points.length;
+
+      setBeamBetween3D(
+        beam,
+        points[pointIndex],
+        nextPoints[
+          (
+            pointIndex+1
+          )%
+          nextPoints.length
+        ],
+        thickness*.70
+      );
+    }
+  );
+}
+
+function makeSoftTexture(){
+  const canvas=
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width=128;
+  canvas.height=128;
+
+  const ctx=
+    canvas.getContext(
+      "2d"
+    );
+
+  const gradient=
+    ctx.createRadialGradient(
+      64,
+      64,
+      0,
+      64,
+      64,
+      64
+    );
+
+  gradient.addColorStop(
+    0,
+    "rgba(255,255,255,1)"
+  );
+
+  gradient.addColorStop(
+    .22,
+    "rgba(255,255,255,.72)"
+  );
+
+  gradient.addColorStop(
+    .56,
+    "rgba(255,255,255,.22)"
+  );
+
+  gradient.addColorStop(
+    1,
+    "rgba(255,255,255,0)"
+  );
+
+  ctx.fillStyle=gradient;
+  ctx.fillRect(
+    0,
+    0,
+    128,
+    128
+  );
+
+  const texture=
+    new THREE.CanvasTexture(
+      canvas
+    );
+
+  texture.colorSpace=
+    THREE.SRGBColorSpace;
+
+  return texture;
+}
+
+const softTexture=
+  makeSoftTexture();
+
+const galaxyGroup=
+  new THREE.Group();
+
+scene.add(
+  galaxyGroup
+);
+
+const galaxyCount=
+  window.innerWidth<720
+    ?700
+    :1500;
+
+const galaxyPositions=
+  new Float32Array(
+    galaxyCount*3
+  );
+
+const galaxyColors=
+  new Float32Array(
+    galaxyCount*3
+  );
+
+const galaxyColor=
+  new THREE.Color();
+
+for(
+  let i=0;
+  i<galaxyCount;
+  i++
+){
+  const p=i*3;
+
+  const z=
     THREE.MathUtils.randFloat(
-      -18,
+      -175,
       18
     );
 
-  farStarPositions[p+2]=
+  const bandX=
     THREE.MathUtils.randFloat(
-      -120,
-      8
+      -30,
+      30
+    );
+
+  const bandY=
+    Math.sin(
+      bandX*.13+
+      z*.035
+    )*
+    3.4+
+    THREE.MathUtils.randFloatSpread(
+      5.2
+    );
+
+  galaxyPositions[p]=
+    bandX;
+
+  galaxyPositions[p+1]=
+    bandY;
+
+  galaxyPositions[p+2]=
+    z;
+
+  const pick=
+    Math.random();
+
+  if(
+    pick<.28
+  ){
+    galaxyColor.copy(
+      sitePink
+    );
+  }else if(
+    pick<.72
+  ){
+    galaxyColor.copy(
+      sitePurple
+    );
+  }else{
+    galaxyColor.copy(
+      siteWhite
+    );
+  }
+
+  const dim=
+    THREE.MathUtils.randFloat(
+      .45,
+      1
+    );
+
+  galaxyColors[p]=
+    galaxyColor.r*
+    dim;
+
+  galaxyColors[p+1]=
+    galaxyColor.g*
+    dim;
+
+  galaxyColors[p+2]=
+    galaxyColor.b*
+    dim;
+}
+
+const galaxyGeometry=
+  new THREE.BufferGeometry();
+
+galaxyGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(
+    galaxyPositions,
+    3
+  )
+);
+
+galaxyGeometry.setAttribute(
+  "color",
+  new THREE.BufferAttribute(
+    galaxyColors,
+    3
+  )
+);
+
+const galaxyDust=
+  new THREE.Points(
+    galaxyGeometry,
+    new THREE.PointsMaterial({
+      size:.055,
+      vertexColors:true,
+      transparent:true,
+      opacity:.56,
+      depthWrite:false,
+      blending:
+        THREE.AdditiveBlending
+    })
+  );
+
+galaxyGroup.add(
+  galaxyDust
+);
+
+const starCount=
+  window.innerWidth<720
+    ?280
+    :620;
+
+const starPositions=
+  new Float32Array(
+    starCount*3
+  );
+
+for(
+  let i=0;
+  i<starCount;
+  i++
+){
+  const p=i*3;
+
+  starPositions[p]=
+    THREE.MathUtils.randFloat(
+      -36,
+      36
+    );
+
+  starPositions[p+1]=
+    THREE.MathUtils.randFloat(
+      -22,
+      22
+    );
+
+  starPositions[p+2]=
+    THREE.MathUtils.randFloat(
+      -180,
+      14
     );
 }
 
-const farStarGeometry=
+const starGeometry=
   new THREE.BufferGeometry();
 
-farStarGeometry.setAttribute(
+starGeometry.setAttribute(
   "position",
   new THREE.BufferAttribute(
-    farStarPositions,
+    starPositions,
     3
   )
 );
 
 const farStars=
   new THREE.Points(
-    farStarGeometry,
+    starGeometry,
     new THREE.PointsMaterial({
-      color:0xd8d0ff,
-      size:.035,
+      color:0xf6f3ff,
+      size:.042,
       transparent:true,
-      opacity:.32,
-      depthWrite:false
+      opacity:.38,
+      depthWrite:false,
+      blending:
+        THREE.AdditiveBlending
     })
   );
 
-scene.add(farStars);
+galaxyGroup.add(
+  farStars
+);
 
 const nebulaGroup=
   new THREE.Group();
 
-scene.add(nebulaGroup);
+scene.add(
+  nebulaGroup
+);
+
+const fogSprites=[];
 
 function addNebula(
   x,
   y,
   z,
-  scale,
+  sx,
+  sy,
   color,
-  opacity
+  opacity,
+  phase
 ){
   const material=
     new THREE.SpriteMaterial({
+      map:softTexture,
       color:color,
       transparent:true,
       opacity:opacity,
-      blending:THREE.AdditiveBlending,
-      depthWrite:false
+      depthWrite:false,
+      blending:
+        THREE.AdditiveBlending
     });
 
   const sprite=
@@ -636,49 +1180,216 @@ function addNebula(
   );
 
   sprite.scale.set(
-    scale,
-    scale,
+    sx,
+    sy,
     1
   );
+
+  sprite.userData.baseOpacity=
+    opacity;
+
+  sprite.userData.phase=
+    phase;
 
   nebulaGroup.add(
     sprite
   );
+
+  fogSprites.push(
+    sprite
+  );
 }
 
-addNebula(
-  -9,
-  5,
-  -54,
-  14,
-  0x7149ff,
-  .055
+[
+  [-12, 6,-24,26,14,0x7149ff,.070,.2],
+  [ 11,-5,-38,30,16,0xff42d0,.060,1.1],
+  [ -5, 7,-58,34,17,0xa66cff,.050,2.0],
+  [ 10, 4,-82,38,20,0xff42d0,.045,3.1],
+  [-12,-5,-106,42,22,0x7149ff,.045,4.2],
+  [  4, 7,-132,46,24,0xa66cff,.035,5.0]
+].forEach(
+  args=>
+    addNebula(
+      ...args
+    )
 );
 
-addNebula(
-  11,
-  -5,
-  -74,
-  17,
-  0xff42d0,
-  .04
+const vortexCore=
+  new THREE.Sprite(
+    new THREE.SpriteMaterial({
+      map:softTexture,
+      color:0xf6f3ff,
+      transparent:true,
+      opacity:.72,
+      depthWrite:false,
+      blending:
+        THREE.AdditiveBlending
+    })
+  );
+
+vortexCore.position.set(
+  0,
+  0,
+  -112
 );
 
-addNebula(
-  3,
-  7,
-  -96,
-  19,
-  0xa66cff,
-  .035
+vortexCore.scale.set(
+  5.5,
+  5.5,
+  1
 );
+
+scene.add(
+  vortexCore
+);
+
+const pCount=
+  window.innerWidth<720
+    ?180
+    :420;
+
+const pPos=
+  new Float32Array(
+    pCount*3
+  );
+
+const pSpeed=
+  new Float32Array(
+    pCount
+  );
+
+for(
+  let i=0;
+  i<pCount;
+  i++
+){
+  const p=i*3;
+
+  const radius=
+    THREE.MathUtils.randFloat(
+      .5,
+      5.1
+    );
+
+  const angle=
+    Math.random()*
+    Math.PI*2;
+
+  pPos[p]=
+    Math.cos(angle)*
+    radius;
+
+  pPos[p+1]=
+    Math.sin(angle)*
+    radius*.74;
+
+  pPos[p+2]=
+    -Math.random()*145;
+
+  pSpeed[i]=
+    .55+
+    Math.random()*1.35;
+}
+
+const pGeo=
+  new THREE.BufferGeometry();
+
+pGeo.setAttribute(
+  "position",
+  new THREE.BufferAttribute(
+    pPos,
+    3
+  )
+);
+
+const stars=
+  new THREE.Points(
+    pGeo,
+    new THREE.PointsMaterial({
+      color:0xf6f3ff,
+      size:.030,
+      transparent:true,
+      opacity:.15,
+      depthWrite:false,
+      blending:
+        THREE.AdditiveBlending
+    })
+  );
+
+world.add(stars);
+
 const enemyGeos=[new THREE.TetrahedronGeometry(.46),new THREE.IcosahedronGeometry(.42),new THREE.BoxGeometry(.62,.62,.62),new THREE.OctahedronGeometry(.46)],enemyMat=new THREE.MeshStandardMaterial({color:0xff42d0,emissive:0x6e164f,emissiveIntensity:1,roughness:.34,metalness:.18}),enemyMat2=new THREE.MeshStandardMaterial({color:0x7149ff,emissive:0x24105c,emissiveIntensity:1.1,roughness:.3,metalness:.22}),bulletGeo=new THREE.CylinderGeometry(.035,.035,.62,7),bulletMat=new THREE.MeshBasicMaterial({color:0xffffff});bulletGeo.rotateX(Math.PI/2);const enemies=[],bullets=[],explosions=[];let running=false,score=0,health=100,targetsDestroyed=0,speed=15,elapsed=0,enemyTimer=0,nextEnemy=.58,fireCooldown=0;const input={left:false,right:false,up:false,down:false,fire:false},target=new THREE.Vector2();
 function setKey(code,v){if(code==="KeyA"||code==="ArrowLeft")input.left=v;if(code==="KeyD"||code==="ArrowRight")input.right=v;if(code==="KeyW"||code==="ArrowUp")input.up=v;if(code==="KeyS"||code==="ArrowDown")input.down=v;if(code==="Space")input.fire=v}window.addEventListener("keydown",e=>{if(["KeyW","KeyA","KeyS","KeyD","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();setKey(e.code,true)});window.addEventListener("keyup",e=>setKey(e.code,false));document.querySelectorAll("[data-input]").forEach(b=>{const n=b.dataset.input;const on=e=>{e.preventDefault();input[n]=true},off=e=>{e.preventDefault();input[n]=false};b.addEventListener("pointerdown",on);b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off)});
 function spawnEnemy(){const m=new THREE.Mesh(enemyGeos[Math.floor(Math.random()*enemyGeos.length)],Math.random()>.45?enemyMat:enemyMat2);m.position.set(THREE.MathUtils.randFloat(-3.7,3.7),THREE.MathUtils.randFloat(-3.1,3.1),-46);m.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);m.userData.spin=new THREE.Vector3(THREE.MathUtils.randFloat(-1.4,1.4),THREE.MathUtils.randFloat(-1.6,1.6),THREE.MathUtils.randFloat(-1.2,1.2));world.add(m);enemies.push(m)}
 function fire(){if(fireCooldown>0)return;fireCooldown=.15;const b=new THREE.Mesh(bulletGeo,bulletMat);b.position.set(player.position.x,player.position.y,player.position.z-.7);scene.add(b);bullets.push(b)}
 function boom(pos,color){const g=new THREE.Group();for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.TetrahedronGeometry(.08),new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));m.position.copy(pos);m.userData.v=new THREE.Vector3(THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-1,3.2));g.add(m)}scene.add(g);explosions.push({g,life:.65})}
 function hud(){scoreValue.textContent=String(Math.floor(score)).padStart(6,"0");healthValue.textContent=Math.max(0,Math.round(health))+"%";healthMeter.style.transform="scaleX("+THREE.MathUtils.clamp(health/100,0,1)+")";targetsValue.textContent=String(targetsDestroyed).padStart(3,"0")}
-function reset(){enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>scene.remove(x.g));enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;targetsDestroyed=0;speed=15;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){running=false;finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0")+"  •  Targets Destroyed "+String(targetsDestroyed).padStart(3,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
+function reset(){
+  enemies.forEach(x=>world.remove(x));
+  bullets.forEach(x=>scene.remove(x));
+  explosions.forEach(x=>scene.remove(x.g));
+
+  enemies.length=0;
+  bullets.length=0;
+  explosions.length=0;
+
+  player.position.set(0,0,2);
+  target.set(0,0);
+
+  score=0;
+  health=100;
+  targetsDestroyed=0;
+  speed=15;
+  elapsed=0;
+  enemyTimer=0;
+  nextEnemy=.58;
+  fireCooldown=0;
+  running=true;
+
+  startPanel.hidden=true;
+  gameOverPanel.hidden=true;
+  statusText.textContent="Run active";
+
+  hud();
+
+  try{
+    container.focus({preventScroll:true});
+  }catch(error){
+    container.focus();
+  }
+}
+
+function end(){
+  running=false;
+
+  finalScore.textContent=
+    "Score "+
+    String(Math.floor(score)).padStart(6,"0")+
+    "  •  Targets Destroyed "+
+    String(targetsDestroyed).padStart(3,"0");
+
+  gameOverPanel.hidden=false;
+  statusText.textContent="Run complete";
+}
+
+window.__neonTunnelStart=reset;
+
+startButton.onclick=function(event){
+  event.preventDefault();
+  reset();
+};
+
+restartButton.onclick=function(event){
+  event.preventDefault();
+  reset();
+  window.__neonTunnelRestartRequested=false;
+};
+
+if(window.__neonTunnelStartRequested){
+  reset();
+  window.__neonTunnelStartRequested=false;
+}
+
 function updatePlayer(dt){
 const s=6.2;
 
@@ -758,109 +1469,213 @@ playerLight.position.z=player.position.z-.95;
 if(input.fire)fire();
 }
 
+
+
 function updateTunnel(dt){
-const move=speed*dt;
+const move=
+  speed*
+  dt;
 
-tunnelCurveTime+=dt;
+tunnelCurveTime+=
+  dt;
 
-tunnelSlices.forEach(slice=>{
-  slice.userData.z+=move;
-
-  if(slice.userData.z>6.5){
-    slice.userData.z-=tunnelCount*archSpacing;
+neonShaderMaterials.forEach(
+  material=>{
+    material.uniforms.uTime.value=
+      elapsed;
   }
+);
 
-  orientAlongCurve(
-    slice,
-    slice.userData.z
-  );
+tunnelSlices.forEach(
+  slice=>{
+    slice.userData.z+=
+      move;
 
-  const depth=
-    Math.max(
-      0,
-      -slice.userData.z
+    if(
+      slice.userData.z>7
+    ){
+      slice.userData.z-=
+        tunnelCount*
+        archSpacing;
+    }
+
+    orientAlongCurve(
+      slice,
+      slice.userData.z
     );
 
-  const farFade=
-    THREE.MathUtils.clamp(
-      (146-depth)/118,
-      .05,
-      1
-    );
-
-  const nearFade=
-    THREE.MathUtils.clamp(
-      (depth+.5)/9,
-      .08,
-      1
-    );
-
-  const pulse=
-    .98+
-    .08*
-    Math.sin(
-      elapsed*.42+
-      slice.userData.baseIndex*.13
-    );
-
-  slice.children.forEach((ring,layer)=>{
-    updateRingGeometry(
-      ring,
-      slice.userData.baseIndex,
+    updateTunnelSliceGeometry(
+      slice,
       elapsed
     );
 
-    const layerWeight=
-      layer===1
-        ?1
-        :.52;
+    const depth=
+      Math.max(
+        0,
+        -slice.userData.z
+      );
 
-    ring.material.opacity=
-      ring.userData.baseOpacity*
-      farFade*
-      nearFade*
-      pulse*
-      layerWeight;
-  });
-});
+    const fade=
+      THREE.MathUtils.clamp(
+        (
+          166-
+          depth
+        )/
+        138,
+        .18,
+        1
+      );
+
+    slice.userData.ringBeams.forEach(
+      beam=>{
+        beam.visible=
+          fade>.17;
+      }
+    );
+
+    slice.userData.railBeams.forEach(
+      beam=>{
+        beam.visible=
+          fade>.17;
+      }
+    );
+  }
+);
 
 const pa=
   pGeo.getAttribute(
     "position"
   );
 
-for(let i=0;i<pCount;i++){
-  const zi=i*3+2;
+for(
+  let i=0;
+  i<pCount;
+  i++
+){
+  const p=i*3;
 
-  pa.array[zi]+=
+  pa.array[p+2]+=
     move*
     pSpeed[i]*
-    .54;
+    .76;
 
-  if(pa.array[zi]>6.5){
-    pa.array[zi]=-112;
+  const spin=
+    dt*
+    (
+      .18+
+      pSpeed[i]*.05
+    );
+
+  const x=
+    pa.array[p];
+
+  const y=
+    pa.array[p+1];
+
+  pa.array[p]=
+    x*
+    Math.cos(spin)-
+    y*
+    Math.sin(spin);
+
+  pa.array[p+1]=
+    x*
+    Math.sin(spin)+
+    y*
+    Math.cos(spin);
+
+  if(
+    pa.array[p+2]>7
+  ){
+    const radius=
+      THREE.MathUtils.randFloat(
+        .5,
+        5.1
+      );
+
+    const angle=
+      Math.random()*
+      Math.PI*2;
+
+    pa.array[p]=
+      Math.cos(angle)*
+      radius;
+
+    pa.array[p+1]=
+      Math.sin(angle)*
+      radius*.74;
+
+    pa.array[p+2]=
+      -145;
   }
 }
 
 pa.needsUpdate=true;
 
+galaxyGroup.rotation.z+=
+  dt*.008;
+
+galaxyDust.rotation.z+=
+  dt*.004;
+
+farStars.rotation.z-=
+  dt*.002;
+
+nebulaGroup.rotation.z-=
+  dt*.0035;
+
+fogSprites.forEach(
+  sprite=>{
+    sprite.material.opacity=
+      sprite.userData.baseOpacity*
+      (
+        .76+
+        .24*
+        Math.sin(
+          elapsed*.28+
+          sprite.userData.phase
+        )
+      );
+  }
+);
+
+const coreCurve=
+  curvePoint(
+    -112
+  );
+
+vortexCore.position.x=
+  coreCurve.x;
+
+vortexCore.position.y=
+  coreCurve.y;
+
+vortexCore.scale.setScalar(
+  5.3+
+  Math.sin(
+    elapsed*.70
+  )*.45
+);
+
 const cameraCurve=
-  curvePoint(-22);
+  curvePoint(
+    -24
+  );
 
 camera.lookAt(
   player.position.x*.035+
-  cameraCurve.x*.24,
+  cameraCurve.x*.25,
   player.position.y*.025+
-  cameraCurve.y*.18,
-  -22
+  cameraCurve.y*.20,
+  -24
 );
 }
 function updateEnemies(dt){enemyTimer+=dt;if(enemyTimer>=nextEnemy){enemyTimer=0;nextEnemy=Math.max(.2,.62-elapsed*.0045);spawnEnemy()}for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];e.position.z+=speed*dt;e.rotation.x+=e.userData.spin.x*dt;e.rotation.y+=e.userData.spin.y*dt;e.rotation.z+=e.userData.spin.z*dt;const dx=e.position.x-player.position.x,dy=e.position.y-player.position.y,dz=e.position.z-player.position.z;if(dx*dx+dy*dy+dz*dz<.52){health-=22;boom(e.position,0xff42d0);world.remove(e);enemies.splice(i,1);if(health<=0){health=0;hud();end();return}}else if(e.position.z>7){world.remove(e);enemies.splice(i,1)}}}
 function updateBullets(dt){for(let bi=bullets.length-1;bi>=0;bi--){const b=bullets[bi];b.position.z-=34*dt;let hit=false;for(let ei=enemies.length-1;ei>=0;ei--){const e=enemies[ei],dx=b.position.x-e.position.x,dy=b.position.y-e.position.y,dz=b.position.z-e.position.z;if(dx*dx+dy*dy+dz*dz<.42){boom(e.position,e.material===enemyMat?0xff42d0:0x7149ff);world.remove(e);enemies.splice(ei,1);scene.remove(b);bullets.splice(bi,1);score+=125;targetsDestroyed+=1;hit=true;break}}if(!hit&&b.position.z<-55){scene.remove(b);bullets.splice(bi,1)}}}
 function updateBooms(dt){for(let i=explosions.length-1;i>=0;i--){const ex=explosions[i];ex.life-=dt;const f=Math.max(ex.life/.65,0);ex.g.children.forEach(s=>{s.position.addScaledVector(s.userData.v,dt);s.rotation.x+=dt*5;s.rotation.y+=dt*4;s.material.opacity=f});if(ex.life<=0){scene.remove(ex.g);explosions.splice(i,1)}}}
 function resize(){const w=Math.max(container.clientWidth,1),h=Math.max(container.clientHeight,1);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(container);resize();hud();const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);fireCooldown=Math.max(0,fireCooldown-dt);if(running){elapsed+=dt;speed=Math.min(26,15+elapsed*.18);score+=dt*speed*4;updatePlayer(dt);updateTunnel(dt);
-farStars.rotation.z+=dt*.0025;
-nebulaGroup.rotation.z-=dt*.0015;updateEnemies(dt);updateBullets(dt);updateBooms(dt);hud();camera.position.x=THREE.MathUtils.lerp(camera.position.x,player.position.x*.1,.04);camera.position.y=THREE.MathUtils.lerp(camera.position.y,player.position.y*.08,.04);tunnelLight.position.x=Math.sin(elapsed*.7)*1.4;tunnelLight.position.y=Math.cos(elapsed*.55)*1.1}else{playerRing.rotation.z+=dt*.8;tunnelSegments.forEach(s=>s.rotation.z+=dt*.018);updateBooms(dt)}renderer.render(scene,camera)}animate();
+
+updateEnemies(dt);updateBullets(dt);updateBooms(dt);hud();camera.position.x=THREE.MathUtils.lerp(camera.position.x,player.position.x*.1,.04);camera.position.y=THREE.MathUtils.lerp(camera.position.y,player.position.y*.08,.04);tunnelLight.position.x=Math.sin(elapsed*.7)*1.4;tunnelLight.position.y=Math.cos(elapsed*.55)*1.1}else{playerRing.rotation.z+=dt*.8;tunnelSlices.forEach(s=>s.rotation.z+=dt*.018);updateBooms(dt)}renderer.render(scene,camera)}animate();
 </script>
 </body>
 </html>
