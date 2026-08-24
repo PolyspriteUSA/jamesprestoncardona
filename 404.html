@@ -556,7 +556,7 @@
 
     const camera =
       new THREE.PerspectiveCamera(
-        48,
+        42,
         1,
         0.05,
         60
@@ -1225,25 +1225,62 @@
                 )
               );
 
-            float pulse =
-              sin(
-                time * 1.45 +
-                position.x * 1.90 +
-                position.y * 2.25 +
-                position.z * 1.55 +
-                foldedMotion * 5.80
+            float digitalBroad =
+              floor(
+                broadMotion * 8.0
+              ) / 8.0;
+
+            float digitalFolded =
+              floor(
+                foldedMotion * 12.0
+              ) / 12.0;
+
+            float sliceIndex =
+              floor(
+                (
+                  position.y + 2.2
+                ) * 6.0
               );
+
+            float glitchGate =
+              step(
+                0.76,
+                hash(
+                  vec3(
+                    sliceIndex,
+                    floor(time * 2.4),
+                    floor(position.z * 3.0)
+                  )
+                )
+              );
+
+            float pulse =
+              step(
+                0.0,
+                sin(
+                  time * 1.45 +
+                  position.x * 1.90 +
+                  position.y * 2.25 +
+                  position.z * 1.55 +
+                  digitalFolded * 5.80
+                )
+              ) * 2.0 - 1.0;
 
             float displacement =
               (
-                broadMotion - 0.50
-              ) * 0.64 +
+                digitalBroad - 0.50
+              ) * 0.58 +
               (
-                foldedMotion - 0.50
-              ) * 0.30 +
-              pulse * 0.075;
+                digitalFolded - 0.50
+              ) * 0.27 +
+              pulse * 0.055 +
+              glitchGate *
+              sin(
+                sliceIndex * 1.71 +
+                time * 3.2
+              ) * 0.12;
 
-            vec3 axisWarp =
+            vec3 axisSignal =
               vec3(
                 sin(
                   position.y * 1.75 +
@@ -1257,20 +1294,41 @@
                   position.x * 1.65 +
                   time * 0.71
                 )
-              ) * 0.055;
+              );
 
-            vec3 displaced =
+            vec3 axisWarp =
+              floor(
+                axisSignal * 5.0
+              ) / 5.0 * 0.075;
+
+            vec3 fluidPosition =
               position +
               direction * displacement +
               axisWarp;
 
-            vMotion =
-              clamp(
-                broadMotion * 0.58 +
-                foldedMotion * 0.42,
-                0.0,
-                1.0
+            vec3 voxelPosition =
+              floor(
+                fluidPosition * 18.0 +
+                0.5
+              ) / 18.0;
+
+            vec3 displaced =
+              mix(
+                fluidPosition,
+                voxelPosition,
+                0.34 +
+                glitchGate * 0.28
               );
+
+            vMotion =
+              floor(
+                clamp(
+                  digitalBroad * 0.58 +
+                  digitalFolded * 0.42,
+                  0.0,
+                  1.0
+                ) * 10.0
+              ) / 10.0;
 
             vNormalView =
               normalize(
@@ -1355,11 +1413,15 @@
               );
 
             float phase =
-              0.5 +
-              0.5 * sin(
-                vMotion * 8.40 +
-                uTime * 0.54
-              );
+              floor(
+                (
+                  0.5 +
+                  0.5 * sin(
+                    vMotion * 8.40 +
+                    uTime * 0.54
+                  )
+                ) * 5.0
+              ) / 5.0;
 
             vec3 surfaceColor =
               mix(
@@ -1372,17 +1434,17 @@
               mix(
                 siteBlack,
                 surfaceColor,
-                0.20 +
-                diffuse * 0.60 +
-                opposingLight * 0.12
+                0.14 +
+                diffuse * 0.42 +
+                opposingLight * 0.08
               );
 
             float highlight =
               clamp(
-                pow(diffuse, 9.0) * 0.72 +
-                rim * 0.34,
+                pow(diffuse, 9.0) * 0.42 +
+                rim * 0.18,
                 0.0,
-                0.80
+                0.46
               );
 
             color =
@@ -1408,12 +1470,28 @@
               mix(
                 color,
                 siteMagenta,
-                internalGlow * 0.42
+                internalGlow * 0.18
+              );
+
+            float dataBand =
+              step(
+                0.90,
+                fract(
+                  vMotion * 12.0 -
+                  uTime * 0.30
+                )
+              );
+
+            color =
+              mix(
+                color,
+                siteWhite,
+                dataBand * 0.055
               );
 
             gl_FragColor =
               vec4(
-                color * 0.84,
+                color * 0.50,
                 1.0
               );
           }
@@ -1530,9 +1608,9 @@
         haloGeometry,
         new THREE.PointsMaterial({
           color: 0xff42d0,
-          size: 0.020,
+          size: 0.016,
           transparent: true,
-          opacity: 0.34,
+          opacity: 0.18,
           depthWrite: false,
           blending: THREE.AdditiveBlending,
           toneMapped: false
@@ -1544,8 +1622,8 @@
     const artworkGlow =
       new THREE.PointLight(
         0xf7f5ff,
-        4.5,
-        8.5,
+        2.0,
+        7.0,
         2
       );
 
@@ -1560,7 +1638,7 @@
     const artSpot =
       new THREE.SpotLight(
         0xf7f5ff,
-        12,
+        9,
         19,
         Math.PI * 0.27,
         0.78,
@@ -2280,10 +2358,10 @@
       0;
 
     let cameraPitch =
-      0.18;
+      0.22;
 
     let cameraDistance =
-      5.2;
+      6.3;
 
     let dragging =
       false;
@@ -2325,9 +2403,9 @@
 
         lastPointerX = event.clientX;
         lastPointerY = event.clientY;
-        cameraYaw -= deltaX * 0.006;
-        cameraPitch -= deltaY * 0.004;
-        cameraPitch = THREE.MathUtils.clamp(cameraPitch, -0.05, 0.64);
+        cameraYaw -= deltaX * 0.0052;
+        cameraPitch -= deltaY * 0.0034;
+        cameraPitch = THREE.MathUtils.clamp(cameraPitch, 0.02, 0.52);
       }
     );
 
@@ -2352,7 +2430,7 @@
       function (event) {
         event.preventDefault();
         cameraDistance += event.deltaY * 0.0035;
-        cameraDistance = THREE.MathUtils.clamp(cameraDistance, 2.8, 8.5);
+        cameraDistance = THREE.MathUtils.clamp(cameraDistance, 3.6, 9.5);
       },
       {
         passive: false
@@ -2388,6 +2466,9 @@
       new THREE.Vector3();
 
     const cameraTarget =
+      new THREE.Vector3();
+
+    const desiredCameraTarget =
       new THREE.Vector3();
 
     const benchBounds = {
@@ -2648,15 +2729,38 @@
       delta,
       immediate = false
     ) {
-      cameraTarget.set(
-        characterRoot.position.x,
-        0.96,
-        characterRoot.position.z
+      const facingX =
+        Math.sin(
+          characterRoot.rotation.y
+        );
+
+      const facingZ =
+        Math.cos(
+          characterRoot.rotation.y
+        );
+
+      desiredCameraTarget.set(
+        characterRoot.position.x +
+          facingX * 0.72,
+        1.18,
+        characterRoot.position.z +
+          facingZ * 0.72
       );
+
+      if (immediate) {
+        cameraTarget.copy(
+          desiredCameraTarget
+        );
+      } else {
+        cameraTarget.lerp(
+          desiredCameraTarget,
+          1 - Math.pow(0.035, delta)
+        );
+      }
 
       desiredCamera.set(
         Math.sin(cameraYaw) * Math.cos(cameraPitch) * cameraDistance,
-        Math.sin(cameraPitch) * cameraDistance + 0.96,
+        Math.sin(cameraPitch) * cameraDistance + 1.20,
         Math.cos(cameraYaw) * Math.cos(cameraPitch) * cameraDistance
       );
 
@@ -2672,9 +2776,33 @@
       } else {
         camera.position.lerp(
           desiredCamera,
-          1 - Math.pow(0.001, delta)
+          1 - Math.pow(0.025, delta)
         );
       }
+
+      const hasMovementInput =
+        input.forward ||
+        input.backward ||
+        input.left ||
+        input.right;
+
+      const targetFov =
+        input.run && hasMovementInput
+          ? 44.5
+          : 42;
+
+      if (immediate) {
+        camera.fov = targetFov;
+      } else {
+        camera.fov =
+          THREE.MathUtils.lerp(
+            camera.fov,
+            targetFov,
+            1 - Math.pow(0.04, delta)
+          );
+      }
+
+      camera.updateProjectionMatrix();
 
       camera.lookAt(cameraTarget);
     }
