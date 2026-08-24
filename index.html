@@ -582,6 +582,18 @@
       line-height: 1.7;
     }
 
+    /* Keep the experience chooser lightweight: no live browser previews. */
+    #experience-modal iframe,
+    #experience-modal video,
+    #experience-modal canvas,
+    #experience-modal object,
+    #experience-modal embed,
+    #experience-modal [class*="preview"],
+    #experience-modal [class*="browser-frame"],
+    #experience-modal [class*="live-frame"] {
+      display: none !important;
+    }
+
     .experience-menu {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1264,8 +1276,8 @@
           <span class="gradient-text">experience.</span>
         </h2>
         <p>
-          A collection of browser-based experiments combining
-          real-time graphics, interaction, procedural systems,
+          A collection of interactive experiments combining
+          real-time graphics, procedural systems,
           audio, and game design.
         </p>
       </div>
@@ -1423,6 +1435,16 @@
         ) {
           return;
         }
+
+        experienceModal
+          .querySelectorAll(
+            "iframe, video, object, embed, canvas, [class*='preview'], [class*='browser-frame'], [class*='live-frame']"
+          )
+          .forEach(
+            function (element) {
+              element.remove();
+            }
+          );
 
         let experiencePreviousFocus =
           null;
