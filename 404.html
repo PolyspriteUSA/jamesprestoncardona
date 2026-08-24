@@ -394,10 +394,10 @@
 
     <section class="art-caption">
       <p class="eyebrow">404 / Page Not Found</p>
-      <h1>Luminous Drift</h1>
+      <h1>Living Volume</h1>
       <p>
         This page wandered away, but the exhibit remained. Move Mateo through
-        the sealed gallery and watch the procedural relief continuously reshape itself.
+        the sealed gallery and circle a volumetric sculpture that continuously reshapes itself in space.
       </p>
     </section>
 
@@ -491,11 +491,11 @@
       new THREE.Scene();
 
     scene.background =
-      new THREE.Color(0x090316);
+      new THREE.Color(0x050507);
 
     scene.fog =
       new THREE.FogExp2(
-        0x090316,
+        0x050507,
         0.021
       );
 
@@ -567,9 +567,9 @@
 
     const ambient =
       new THREE.HemisphereLight(
-        0x7d6f91,
-        0x130f18,
-        0.30
+        0xf7f5ff,
+        0x050507,
+        0.24
       );
 
     scene.add(ambient);
@@ -800,24 +800,20 @@
     const coveLights = [];
 
     [
-      [-4.98, -3.7, 0xff3ec8],
-      [-4.98, -0.7, 0x8d54ff],
-      [-4.98, 2.4, 0xff3ec8],
-      [4.98, -3.7, 0x8d54ff],
-      [4.98, -0.7, 0xff3ec8],
-      [4.98, 2.4, 0x8d54ff],
-      [-2.55, -5.98, 0xb448ff],
-      [2.55, -5.98, 0xff3ec8]
+      [-4.98, -2.75],
+      [-4.98, 2.10],
+      [4.98, -2.75],
+      [4.98, 2.10]
     ].forEach(
       function (definition) {
         const light =
           new THREE.SpotLight(
-            definition[2],
-            12,
-            7.6,
-            Math.PI * 0.31,
-            0.90,
-            1.7
+            0xf7f5ff,
+            6.5,
+            7.2,
+            Math.PI * 0.24,
+            0.94,
+            1.85
           );
 
         light.position.set(
@@ -827,14 +823,9 @@
         );
 
         light.target.position.set(
-          definition[0] * 0.78,
-          0.15,
-          definition[1] +
-            (
-              definition[1] < -5
-                ? 0.80
-                : 0
-            )
+          definition[0] * 0.58,
+          0.45,
+          definition[1]
         );
 
         light.castShadow =
@@ -882,33 +873,9 @@
       }
     );
 
-    const frame =
-      roomMesh(
-        new THREE.BoxGeometry(
-          6.05,
-          4.95,
-          0.24
-        ),
-        new THREE.MeshStandardMaterial({
-          color: 0x020506,
-          roughness: 0.88,
-          metalness: 0.16
-        }),
-        [0, 3.18, -5.91]
-      );
-
-    frame.castShadow =
-      false;
-
     const artworkUniforms = {
       uTime: {
         value: 0
-      },
-      uPointer: {
-        value: new THREE.Vector2(
-          0.5,
-          0.5
-        )
       }
     };
 
@@ -919,237 +886,312 @@
         toneMapped: false,
         vertexShader: `
           uniform float uTime;
-          varying vec2 vUv;
-          varying float vRelief;
+          varying vec3 vNormalView;
+          varying vec3 vViewPosition;
+          varying float vMotion;
 
-          float hash(vec3 p) {
-            p = fract(p * 0.3183099 + vec3(0.1, 0.2, 0.3));
-            p *= 17.0;
-            return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
-          }
+          float hash(vec3 point) {
+            point =
+              fract(
+                point * 0.3183099 +
+                vec3(0.13, 0.17, 0.19)
+              );
 
-          float noise(vec3 p) {
-            vec3 i = floor(p);
-            vec3 f = fract(p);
-            f = f * f * (3.0 - 2.0 * f);
+            point *= 17.0;
 
-            return mix(
-              mix(
-                mix(hash(i + vec3(0.0, 0.0, 0.0)), hash(i + vec3(1.0, 0.0, 0.0)), f.x),
-                mix(hash(i + vec3(0.0, 1.0, 0.0)), hash(i + vec3(1.0, 1.0, 0.0)), f.x),
-                f.y
-              ),
-              mix(
-                mix(hash(i + vec3(0.0, 0.0, 1.0)), hash(i + vec3(1.0, 0.0, 1.0)), f.x),
-                mix(hash(i + vec3(0.0, 1.0, 1.0)), hash(i + vec3(1.0, 1.0, 1.0)), f.x),
-                f.y
-              ),
-              f.z
+            return fract(
+              point.x *
+              point.y *
+              point.z *
+              (
+                point.x +
+                point.y +
+                point.z
+              )
             );
           }
 
-          float fbm(vec3 p) {
+          float noise(vec3 point) {
+            vec3 cell =
+              floor(point);
+
+            vec3 local =
+              fract(point);
+
+            local =
+              local *
+              local *
+              (
+                3.0 -
+                2.0 * local
+              );
+
+            return mix(
+              mix(
+                mix(
+                  hash(cell + vec3(0.0, 0.0, 0.0)),
+                  hash(cell + vec3(1.0, 0.0, 0.0)),
+                  local.x
+                ),
+                mix(
+                  hash(cell + vec3(0.0, 1.0, 0.0)),
+                  hash(cell + vec3(1.0, 1.0, 0.0)),
+                  local.x
+                ),
+                local.y
+              ),
+              mix(
+                mix(
+                  hash(cell + vec3(0.0, 0.0, 1.0)),
+                  hash(cell + vec3(1.0, 0.0, 1.0)),
+                  local.x
+                ),
+                mix(
+                  hash(cell + vec3(0.0, 1.0, 1.0)),
+                  hash(cell + vec3(1.0, 1.0, 1.0)),
+                  local.x
+                ),
+                local.y
+              ),
+              local.z
+            );
+          }
+
+          float fbm(vec3 point) {
             float value = 0.0;
             float amplitude = 0.52;
 
-            for (int i = 0; i < 5; i++) {
-              value += amplitude * noise(p);
-              p = p * 2.02 + vec3(1.7, 2.3, 0.9);
-              amplitude *= 0.49;
+            for (int octave = 0; octave < 5; octave++) {
+              value +=
+                noise(point) * amplitude;
+
+              point =
+                point * 2.03 +
+                vec3(1.7, 2.3, 0.9);
+
+              amplitude *= 0.48;
             }
 
             return value;
           }
 
           void main() {
-            vUv = uv;
+            float time =
+              uTime * 0.34;
 
-            vec3 warped = vec3(
-              position.xy * 0.82,
-              uTime * 0.10
-            );
+            vec3 direction =
+              normalize(position);
 
-            float firstWarp = fbm(warped);
-            float secondWarp = fbm(
+            float broadMotion =
+              fbm(
+                position * 1.16 +
+                vec3(
+                  time * 0.62,
+                  -time * 0.45,
+                  time * 0.31
+                )
+              );
+
+            float foldedMotion =
+              fbm(
+                position.zxy * 2.28 +
+                broadMotion * 1.72 +
+                vec3(
+                  -time * 0.38,
+                  time * 0.57,
+                  time * 0.43
+                )
+              );
+
+            float pulse =
+              sin(
+                time * 1.45 +
+                position.x * 1.90 +
+                position.y * 2.25 +
+                position.z * 1.55 +
+                foldedMotion * 5.80
+              );
+
+            float displacement =
+              (
+                broadMotion - 0.50
+              ) * 0.64 +
+              (
+                foldedMotion - 0.50
+              ) * 0.30 +
+              pulse * 0.075;
+
+            vec3 axisWarp =
               vec3(
-                position.yx * 1.36 + firstWarp * 1.9,
-                uTime * 0.075 + 3.4
-              )
-            );
+                sin(
+                  position.y * 1.75 +
+                  time
+                ),
+                cos(
+                  position.z * 1.55 -
+                  time * 0.82
+                ),
+                sin(
+                  position.x * 1.65 +
+                  time * 0.71
+                )
+              ) * 0.055;
 
-            float fineRelief = fbm(
-              vec3(
-                position.xy * 2.55 + secondWarp,
-                uTime * 0.13 + 8.0
-              )
-            );
+            vec3 displaced =
+              position +
+              direction * displacement +
+              axisWarp;
 
-            vRelief =
-              firstWarp * 0.48 +
-              secondWarp * 0.37 +
-              fineRelief * 0.15;
+            vMotion =
+              clamp(
+                broadMotion * 0.58 +
+                foldedMotion * 0.42,
+                0.0,
+                1.0
+              );
 
-            vec3 displaced = position;
-            displaced.z += (vRelief - 0.46) * 0.48;
-            displaced.x += sin(position.y * 2.2 + uTime * 0.45) * 0.018;
+            vNormalView =
+              normalize(
+                normalMatrix * normal
+              );
 
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+            vec4 viewPosition =
+              modelViewMatrix *
+              vec4(displaced, 1.0);
+
+            vViewPosition =
+              viewPosition.xyz;
+
+            gl_Position =
+              projectionMatrix *
+              viewPosition;
           }
         `,
         fragmentShader: `
           uniform float uTime;
-          uniform vec2 uPointer;
-          varying vec2 vUv;
-          varying float vRelief;
+          varying vec3 vNormalView;
+          varying vec3 vViewPosition;
+          varying float vMotion;
 
           void main() {
-            vec2 uv = vUv - 0.5;
-            uv.x *= 1.22;
-            uv += (uPointer - 0.5) * 0.12;
+            vec3 siteBlack =
+              vec3(0.0196, 0.0196, 0.0275);
 
-            float time = uTime * 0.32;
-            float radius = length(uv) + 0.035;
-            float angle = atan(uv.y, uv.x);
-            float tunnel =
-              0.5 +
-              0.5 * sin(
-                -log(radius) * 8.5 +
-                angle * 3.0 -
-                time * 2.2
-              );
+            vec3 siteWhite =
+              vec3(0.9686, 0.9608, 1.0);
 
-            vec2 fieldPosition =
-              uv *
-              (
-                1.3 +
-                0.18 * sin(time)
-              );
+            vec3 siteViolet =
+              vec3(0.4431, 0.2863, 1.0);
 
-            float filaments = 0.0;
-            float depth = 0.0;
+            vec3 siteMagenta =
+              vec3(1.0, 0.2588, 0.8157);
 
-            for (int i = 0; i < 11; i++) {
-              float iteration = float(i);
+            vec3 normal =
+              normalize(vNormalView);
 
-              fieldPosition =
-                abs(fieldPosition) /
-                max(
-                  dot(fieldPosition, fieldPosition),
-                  0.16
-                ) -
-                vec2(
-                  0.72 + 0.06 * sin(time + iteration * 0.7),
-                  0.64 + 0.06 * cos(time * 0.8 + iteration)
-                );
-
-              float band =
-                abs(
-                  sin(
-                    length(fieldPosition) * 2.8 -
-                    time * 1.4 +
-                    iteration * 0.52
-                  )
-                );
-
-              filaments +=
-                (
-                  1.0 -
-                  smoothstep(
-                    0.035,
-                    0.18,
-                    band
-                  )
-                ) *
-                (
-                  1.0 -
-                  iteration / 13.0
-                );
-
-              depth +=
-                exp(
-                  -5.5 *
-                  abs(
-                    length(fieldPosition) -
-                    (
-                      0.55 +
-                      0.06 * sin(time + iteration)
-                    )
-                  )
-                ) * 0.06;
+            if (!gl_FrontFacing) {
+              normal *= -1.0;
             }
 
-            filaments =
-              clamp(
-                filaments * 0.13,
-                0.0,
-                1.0
+            vec3 viewDirection =
+              normalize(-vViewPosition);
+
+            vec3 lightDirection =
+              normalize(
+                vec3(-0.46, 0.72, 0.56)
               );
 
-            float field =
-              clamp(
-                filaments +
-                depth +
-                tunnel * 0.24 +
-                vRelief * 0.18,
-                0.0,
-                1.0
-              );
-
-            float veins =
-              pow(
-                max(
-                  0.0,
-                  sin(
-                    angle * 7.0 +
-                    time * 1.7 +
-                    vRelief * 9.0
-                  )
+            float diffuse =
+              max(
+                dot(
+                  normal,
+                  lightDirection
                 ),
-                8.0
+                0.0
               );
 
-            vec3 shadowColor =
-              vec3(0.025, 0.012, 0.045);
+            float opposingLight =
+              max(
+                dot(
+                  normal,
+                  -lightDirection
+                ),
+                0.0
+              );
 
-            vec3 violetColor =
-              vec3(0.29, 0.10, 0.55);
+            float rim =
+              pow(
+                1.0 -
+                max(
+                  dot(
+                    normal,
+                    viewDirection
+                  ),
+                  0.0
+                ),
+                2.35
+              );
 
-            vec3 pearlColor =
-              vec3(0.82, 0.86, 0.93);
+            float phase =
+              0.5 +
+              0.5 * sin(
+                vMotion * 8.40 +
+                uTime * 0.54
+              );
+
+            vec3 surfaceColor =
+              mix(
+                siteViolet,
+                siteMagenta,
+                phase
+              );
 
             vec3 color =
               mix(
-                shadowColor,
-                violetColor,
-                smoothstep(0.18, 0.58, field)
+                siteBlack,
+                surfaceColor,
+                0.20 +
+                diffuse * 0.60 +
+                opposingLight * 0.12
+              );
+
+            float highlight =
+              clamp(
+                pow(diffuse, 9.0) * 0.72 +
+                rim * 0.34,
+                0.0,
+                0.80
               );
 
             color =
               mix(
                 color,
-                pearlColor,
-                smoothstep(0.56, 0.93, field)
+                siteWhite,
+                highlight
               );
 
-            color +=
-              vec3(0.30, 0.03, 0.30) *
-              veins *
-              0.35;
+            float internalGlow =
+              pow(
+                max(
+                  0.0,
+                  sin(
+                    vMotion * 15.0 -
+                    uTime * 0.68
+                  )
+                ),
+                10.0
+              );
 
-            float rimX =
-              smoothstep(0.0, 0.055, vUv.x) *
-              smoothstep(0.0, 0.055, 1.0 - vUv.x);
-
-            float rimY =
-              smoothstep(0.0, 0.055, vUv.y) *
-              smoothstep(0.0, 0.055, 1.0 - vUv.y);
-
-            float edge =
-              rimX * rimY;
+            color =
+              mix(
+                color,
+                siteMagenta,
+                internalGlow * 0.42
+              );
 
             gl_FragColor =
               vec4(
-                color * edge * 0.82,
+                color * 0.84,
                 1.0
               );
           }
@@ -1157,63 +1199,162 @@
       });
 
     const artwork =
-      new THREE.Mesh(
-        new THREE.PlaneGeometry(
-          5.45,
-          4.35,
-          112,
-          92
-        ),
-        artworkMaterial
-      );
+      new THREE.Group();
 
     artwork.position.set(
       0,
       3.18,
-      -5.72
+      -4.55
     );
 
-    artwork.castShadow =
-      false;
+    artwork.scale.set(
+      1.12,
+      1.0,
+      0.84
+    );
 
     scene.add(artwork);
 
+    const artworkShell =
+      new THREE.Mesh(
+        new THREE.IcosahedronGeometry(
+          1.68,
+          5
+        ),
+        artworkMaterial
+      );
+
+    artworkShell.castShadow =
+      true;
+
+    artworkShell.receiveShadow =
+      true;
+
+    artwork.add(artworkShell);
+
+    const haloGeometry =
+      new THREE.BufferGeometry();
+
+    const haloCount =
+      620;
+
+    const haloPositions =
+      new Float32Array(
+        haloCount * 3
+      );
+
+    let haloSeed =
+      762431;
+
+    function haloRandom() {
+      haloSeed =
+        (
+          haloSeed * 1664525 +
+          1013904223
+        ) >>> 0;
+
+      return haloSeed /
+        4294967296;
+    }
+
+    for (
+      let index = 0;
+      index < haloCount;
+      index++
+    ) {
+      const longitude =
+        haloRandom() *
+        Math.PI * 2;
+
+      const vertical =
+        haloRandom() * 2 - 1;
+
+      const latitudeRadius =
+        Math.sqrt(
+          Math.max(
+            0,
+            1 - vertical * vertical
+          )
+        );
+
+      const radius =
+        1.84 +
+        haloRandom() * 0.38;
+
+      haloPositions[index * 3] =
+        Math.cos(longitude) *
+        latitudeRadius *
+        radius;
+
+      haloPositions[index * 3 + 1] =
+        vertical * radius;
+
+      haloPositions[index * 3 + 2] =
+        Math.sin(longitude) *
+        latitudeRadius *
+        radius;
+    }
+
+    haloGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        haloPositions,
+        3
+      )
+    );
+
+    const artworkHalo =
+      new THREE.Points(
+        haloGeometry,
+        new THREE.PointsMaterial({
+          color: 0xff42d0,
+          size: 0.020,
+          transparent: true,
+          opacity: 0.34,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          toneMapped: false
+        })
+      );
+
+    artwork.add(artworkHalo);
+
     const artworkGlow =
       new THREE.PointLight(
-        0xe7d9ff,
+        0xf7f5ff,
+        3.8,
         5.2,
-        5.8,
         2
       );
 
     artworkGlow.position.set(
       0,
-      2.9,
-      -4.62
+      0,
+      1.35
     );
 
-    scene.add(artworkGlow);
+    artwork.add(artworkGlow);
 
     const artSpot =
       new THREE.SpotLight(
-        0xeadfff,
-        8,
-        12,
-        Math.PI * 0.28,
-        0.72,
-        1.4
+        0xf7f5ff,
+        9,
+        11,
+        Math.PI * 0.27,
+        0.78,
+        1.5
       );
 
     artSpot.position.set(
-      0,
-      5.8,
-      -3.4
+      1.8,
+      5.82,
+      -2.45
     );
 
     artSpot.target.position.set(
       0,
-      2.6,
-      -5.7
+      3.10,
+      -4.55
     );
 
     artSpot.castShadow =
@@ -1821,31 +1962,6 @@
     container.addEventListener(
       "pointermove",
       function (event) {
-        const bounds =
-          container.getBoundingClientRect();
-
-        artworkUniforms.uPointer.value.set(
-          THREE.MathUtils.clamp(
-            (
-              event.clientX -
-              bounds.left
-            ) /
-            Math.max(bounds.width, 1),
-            0,
-            1
-          ),
-          THREE.MathUtils.clamp(
-            1 -
-            (
-              event.clientY -
-              bounds.top
-            ) /
-            Math.max(bounds.height, 1),
-            0,
-            1
-          )
-        );
-
         if (!dragging) {
           return;
         }
@@ -1983,6 +2099,50 @@
       ] = distances[0].value;
     }
 
+    function resolveArtworkCollision() {
+      const centerX = 0;
+      const centerZ = -4.55;
+      const minimumDistance = 2.05;
+
+      const offsetX =
+        characterRoot.position.x -
+        centerX;
+
+      const offsetZ =
+        characterRoot.position.z -
+        centerZ;
+
+      const distance =
+        Math.hypot(
+          offsetX,
+          offsetZ
+        );
+
+      if (
+        distance >= minimumDistance
+      ) {
+        return;
+      }
+
+      const safeDistance =
+        Math.max(
+          distance,
+          0.001
+        );
+
+      characterRoot.position.x =
+        centerX +
+        offsetX /
+        safeDistance *
+        minimumDistance;
+
+      characterRoot.position.z =
+        centerZ +
+        offsetZ /
+        safeDistance *
+        minimumDistance;
+    }
+
     function getMovementDirection() {
       movement.set(0, 0, 0);
 
@@ -2071,6 +2231,7 @@
           );
 
         resolveBenchCollision();
+        resolveArtworkCollision();
 
         const targetRotation =
           Math.atan2(
@@ -2201,19 +2362,40 @@
           0.05
         );
 
-      artworkUniforms.uTime.value =
+      const artworkTime =
         reducedMotion.matches
           ? 0
           : clock.elapsedTime;
 
+      artworkUniforms.uTime.value =
+        artworkTime;
+
       if (!reducedMotion.matches) {
         artwork.position.y =
           3.18 +
-          Math.sin(clock.elapsedTime * 0.38) * 0.045;
+          Math.sin(
+            artworkTime * 0.42
+          ) * 0.10;
+
+        artwork.rotation.x =
+          0.08 +
+          Math.sin(
+            artworkTime * 0.23
+          ) * 0.14;
+
+        artwork.rotation.y =
+          artworkTime * 0.13;
 
         artwork.rotation.z =
-          Math.sin(clock.elapsedTime * 0.24) * 0.008;
+          Math.sin(
+            artworkTime * 0.17
+          ) * 0.065;
 
+        artworkHalo.rotation.x =
+          artworkTime * 0.075;
+
+        artworkHalo.rotation.y =
+          -artworkTime * 0.16;
       }
 
       updateCharacter(delta);
