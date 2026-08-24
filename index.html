@@ -720,6 +720,344 @@
       }
     }
 
+    /* Scalable interactive-experience browser. Add games in experienceGames. */
+    .experience-panel {
+      width: min(1180px, 100%);
+      max-height: calc(100svh - 48px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .experience-heading {
+      flex: 0 0 auto;
+      padding: 32px 38px 24px;
+    }
+
+    .experience-heading h2 {
+      font-size: clamp(1.85rem, 3.7vw, 3.6rem);
+    }
+
+    .experience-heading p {
+      max-width: 720px;
+      margin-top: 12px;
+      font-size: 0.86rem;
+    }
+
+    .experience-browser {
+      min-height: min(570px, 61svh);
+      display: grid;
+      grid-template-columns: minmax(0, 1.42fr) minmax(330px, 0.78fr);
+      overflow: hidden;
+    }
+
+    .experience-preview {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 32% 28%, rgba(113,73,255,0.24), transparent 38%),
+        radial-gradient(circle at 78% 72%, rgba(255,66,208,0.13), transparent 34%),
+        #07070c;
+    }
+
+    .experience-preview::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    .experience-preview-frame {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: #050507;
+      transform: scale(1.01);
+      transition: opacity 420ms ease;
+    }
+
+    .experience-preview-frame.ready {
+      opacity: 0.78;
+    }
+
+    .experience-preview-shade {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 50%, rgba(5,5,8,0.16)),
+        linear-gradient(180deg, rgba(5,5,7,0.10), transparent 42%, rgba(5,5,7,0.92));
+    }
+
+    .experience-preview-status {
+      position: absolute;
+      z-index: 3;
+      top: 24px;
+      left: 26px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: rgba(255,255,255,0.68);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .experience-preview-status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--preview-accent, #9a62ff);
+      box-shadow: 0 0 16px var(--preview-accent, #9a62ff);
+    }
+
+    .experience-preview-copy {
+      position: absolute;
+      z-index: 3;
+      left: 28px;
+      right: 28px;
+      bottom: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 22px;
+    }
+
+    .experience-preview-count {
+      display: block;
+      margin-bottom: 7px;
+      color: rgba(255,255,255,0.46);
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .experience-preview-title {
+      margin: 0;
+      font-size: clamp(1.65rem, 3.4vw, 3.2rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .experience-preview-launch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 0 17px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(8,8,14,0.68);
+      color: #fff;
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .experience-preview-launch:hover,
+    .experience-preview-launch:focus-visible {
+      border-color: var(--preview-accent, #9a62ff);
+      background: rgba(18,15,31,0.88);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .experience-catalog {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-left: 1px solid rgba(255,255,255,0.09);
+      background: rgba(8,8,12,0.88);
+    }
+
+    .experience-catalog-head {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 17px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.38);
+      font-size: 0.59rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .experience-menu {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(154,98,255,0.42) transparent;
+    }
+
+    .experience-option {
+      --option-accent: #9a62ff;
+      width: 100%;
+      min-height: 118px;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) 22px;
+      align-items: center;
+      gap: 14px;
+      padding: 20px;
+      border: 0;
+      border-right: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+      cursor: pointer;
+      background: transparent;
+      color: inherit;
+    }
+
+    .experience-option:last-child {
+      border-bottom: 0;
+    }
+
+    .experience-option::before {
+      content: none;
+    }
+
+    .experience-option:hover,
+    .experience-option:focus-visible,
+    .experience-option.active {
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--option-accent) 13%, transparent), transparent 82%),
+        rgba(255,255,255,0.025);
+    }
+
+    .experience-option.active {
+      box-shadow: inset 2px 0 0 var(--option-accent);
+    }
+
+    .experience-option .experience-index {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.52);
+      font-size: 0.61rem;
+      letter-spacing: 0.08em;
+    }
+
+    .experience-option.active .experience-index {
+      border-color: var(--option-accent);
+      color: #fff;
+      box-shadow: 0 0 22px color-mix(in srgb, var(--option-accent) 20%, transparent);
+    }
+
+    .experience-option h3 {
+      margin: 0 0 5px;
+      font-size: 1rem;
+      letter-spacing: -0.025em;
+    }
+
+    .experience-option p {
+      display: -webkit-box;
+      margin: 0;
+      overflow: hidden;
+      color: rgba(255,255,255,0.48);
+      font-size: 0.7rem;
+      line-height: 1.5;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .experience-option-arrow {
+      color: rgba(255,255,255,0.28);
+      font-size: 1rem;
+      transition: color 180ms ease, transform 180ms ease;
+    }
+
+    .experience-option.active .experience-option-arrow,
+    .experience-option:hover .experience-option-arrow {
+      color: var(--option-accent);
+      transform: translateX(3px);
+    }
+
+    @media (max-width: 880px) {
+      .experience-panel {
+        max-height: calc(100svh - 28px);
+        overflow: hidden;
+      }
+
+      .experience-heading {
+        padding: 28px 24px 20px;
+      }
+
+      .experience-heading p {
+        display: none;
+      }
+
+      .experience-browser {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(230px, 42svh) minmax(0, 1fr);
+      }
+
+      .experience-catalog {
+        border-top: 1px solid rgba(255,255,255,0.09);
+        border-left: 0;
+      }
+
+      .experience-option {
+        min-height: 92px;
+        padding: 15px 18px;
+      }
+
+      .experience-preview-copy {
+        left: 20px;
+        right: 20px;
+        bottom: 18px;
+      }
+
+      .experience-preview-launch {
+        min-height: 40px;
+        padding: 0 13px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .experience-preview-copy {
+        grid-template-columns: 1fr;
+      }
+
+      .experience-preview-launch {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 44px;
+        padding: 0;
+        justify-content: center;
+        font-size: 0;
+      }
+
+      .experience-preview-launch span {
+        font-size: 1rem;
+      }
+    }
+
     .contact-modal {
       position: fixed;
       inset: 0;
@@ -1113,7 +1451,7 @@
           </div>
         </a>
 
-        <a class="project-card" href="./digitalhuman.html" aria-label="View Digital Human project section">
+        <a class="project-card" href="./DigitalHuman.html" aria-label="View Digital Human project section">
           <div class="project-number">02 // DIGITAL HUMAN</div>
 
           <div class="project-content">
@@ -1257,48 +1595,57 @@
         </p>
       </div>
 
-      <div class="experience-menu">
-        <a class="experience-option" href="./neontunnel.html">
-          <div class="experience-index">01 // Tunnel</div>
-          <div class="experience-option-content">
-            <h3>Neon Tunnel</h3>
-            <p>
-              A procedural space-tunnel shooter with
-              reactive neon geometry and arcade movement.
-            </p>
-            <div class="experience-launch">
-              Launch Game <span>→</span>
-            </div>
-          </div>
-        </a>
+      <div class="experience-browser">
+        <section
+          id="experience-preview"
+          class="experience-preview"
+          aria-live="polite"
+        >
+          <iframe
+            id="experience-preview-frame"
+            class="experience-preview-frame"
+            title="Selected experience preview"
+            tabindex="-1"
+            aria-hidden="true"
+          ></iframe>
 
-        <a class="experience-option" href="./groovebox.html">
-          <div class="experience-index">02 // Audio</div>
-          <div class="experience-option-content">
-            <h3>Neon Groovebox</h3>
-            <p>
-              An interactive browser synthesizer and
-              drum machine built with Three.js and Web Audio.
-            </p>
-            <div class="experience-launch">
-              Launch Neon Groovebox <span>→</span>
-            </div>
-          </div>
-        </a>
+          <div class="experience-preview-shade" aria-hidden="true"></div>
+          <div class="experience-preview-status">Live browser preview</div>
 
-        <a class="experience-option" href="./neonspiders.html">
-          <div class="experience-index">03 // Arcade</div>
-          <div class="experience-option-content">
-            <h3>Neon Spiders</h3>
-            <p>
-              A low-poly third-person arena shooter with
-              procedural spider drones and neon sci-fi styling.
-            </p>
-            <div class="experience-launch">
-              Launch Game <span>→</span>
+          <div class="experience-preview-copy">
+            <div>
+              <span
+                id="experience-preview-count"
+                class="experience-preview-count"
+              >04 // 04</span>
+
+              <h3
+                id="experience-preview-title"
+                class="experience-preview-title"
+              >Procedural Pinball</h3>
             </div>
+
+            <a
+              id="experience-preview-launch"
+              class="experience-preview-launch"
+              href="./pinball-3d.html"
+            >Launch Experience <span>↗</span></a>
           </div>
-        </a>
+        </section>
+
+        <aside class="experience-catalog">
+          <div class="experience-catalog-head">
+            <span>Experience index</span>
+            <span id="experience-count">04 projects</span>
+          </div>
+
+          <div
+            id="experience-menu"
+            class="experience-menu"
+            role="listbox"
+            aria-label="Interactive experiences"
+          ></div>
+        </aside>
       </div>
     </div>
   </div>
@@ -1386,115 +1733,255 @@
   </script>
 
   <script>
-    const experienceModal =
-      document.getElementById(
-        "experience-modal"
+    /*
+      Add a new game by adding one object to this array.
+      The menu, project count, preview, and launch link update automatically.
+    */
+    const experienceGames = [
+      {
+        id: "neon-tunnel",
+        index: "01",
+        category: "Tunnel",
+        title: "Neon Tunnel",
+        description:
+          "A procedural space-tunnel shooter with reactive neon geometry and arcade movement.",
+        href: "./neontunnel.html",
+        preview: "./neontunnel.html",
+        accent: "#9a62ff"
+      },
+      {
+        id: "neon-groovebox",
+        index: "02",
+        category: "Audio",
+        title: "Neon Groovebox",
+        description:
+          "An interactive browser synthesizer and drum machine built with Three.js and Web Audio.",
+        href: "./groovebox.html",
+        preview: "./groovebox.html",
+        accent: "#ff38d1"
+      },
+      {
+        id: "neon-spiders",
+        index: "03",
+        category: "Arcade",
+        title: "Neon Spiders",
+        description:
+          "A low-poly third-person arena shooter with procedural spider drones and neon sci-fi styling.",
+        href: "./neonspiders.html",
+        preview: "./neonspiders.html",
+        accent: "#ff6b8f"
+      },
+      {
+        id: "procedural-pinball",
+        index: "04",
+        category: "3D Pinball",
+        title: "Procedural Pinball",
+        description:
+          "A dual-level Three.js pinball machine with procedural geometry, custom physics, ramps, and an elevated second playfield.",
+        href: "./pinball-3d.html",
+        preview: "./pinball-3d.html",
+        accent: "#51f6ff"
+      }
+    ];
+
+    const experienceModal = document.getElementById("experience-modal");
+    const experienceTrigger = document.getElementById("experience-trigger");
+    const experienceClose = document.getElementById("experience-close");
+    const experienceMenu = document.getElementById("experience-menu");
+    const experienceCount = document.getElementById("experience-count");
+    const experiencePreview = document.getElementById("experience-preview");
+    const experiencePreviewFrame = document.getElementById(
+      "experience-preview-frame"
+    );
+    const experiencePreviewCount = document.getElementById(
+      "experience-preview-count"
+    );
+    const experiencePreviewTitle = document.getElementById(
+      "experience-preview-title"
+    );
+    const experiencePreviewLaunch = document.getElementById(
+      "experience-preview-launch"
+    );
+
+    let selectedExperienceIndex = experienceGames.length - 1;
+    let experiencePreviousFocus = null;
+    let previewLoadToken = 0;
+
+    function renderExperienceMenu() {
+      experienceCount.textContent =
+        String(experienceGames.length).padStart(2, "0") + " projects";
+
+      experienceMenu.innerHTML = experienceGames
+        .map(function (game, index) {
+          return (
+            '<button class="experience-option" type="button" role="option"' +
+            ' aria-selected="' + (index === selectedExperienceIndex) + '"' +
+            ' data-experience-index="' + index + '"' +
+            ' style="--option-accent:' + game.accent + '">' +
+              '<span class="experience-index">' + game.index + '</span>' +
+              '<span class="experience-option-content">' +
+                '<h3>' + game.title + '</h3>' +
+                '<p>' + game.category + ' // ' + game.description + '</p>' +
+              '</span>' +
+              '<span class="experience-option-arrow" aria-hidden="true">→</span>' +
+            '</button>'
+          );
+        })
+        .join("");
+
+      experienceMenu
+        .querySelectorAll("[data-experience-index]")
+        .forEach(function (option) {
+          const index = Number(option.dataset.experienceIndex);
+
+          option.addEventListener("click", function () {
+            selectExperience(index);
+          });
+
+          option.addEventListener("mouseenter", function () {
+            selectExperience(index);
+          });
+
+          option.addEventListener("focus", function () {
+            selectExperience(index);
+          });
+        });
+    }
+
+    function loadExperiencePreview(game) {
+      const currentToken = ++previewLoadToken;
+
+      experiencePreviewFrame.classList.remove("ready");
+      experiencePreviewFrame.onload = function () {
+        if (currentToken === previewLoadToken) {
+          experiencePreviewFrame.classList.add("ready");
+        }
+      };
+
+      experiencePreviewFrame.src = game.preview;
+    }
+
+    function selectExperience(index, options) {
+      const settings = options || {};
+      const boundedIndex = Math.max(
+        0,
+        Math.min(index, experienceGames.length - 1)
+      );
+      const game = experienceGames[boundedIndex];
+      const total = String(experienceGames.length).padStart(2, "0");
+      const shouldReload =
+        settings.force || boundedIndex !== selectedExperienceIndex;
+
+      selectedExperienceIndex = boundedIndex;
+
+      experienceMenu
+        .querySelectorAll("[data-experience-index]")
+        .forEach(function (option, optionIndex) {
+          const isActive = optionIndex === boundedIndex;
+          option.classList.toggle("active", isActive);
+          option.setAttribute("aria-selected", String(isActive));
+          option.tabIndex = isActive ? 0 : -1;
+        });
+
+      experiencePreview.style.setProperty("--preview-accent", game.accent);
+      experiencePreviewCount.textContent = game.index + " // " + total;
+      experiencePreviewTitle.textContent = game.title;
+      experiencePreviewLaunch.href = game.href;
+      experiencePreviewLaunch.setAttribute(
+        "aria-label",
+        "Launch " + game.title
       );
 
-    const experienceTrigger =
-      document.getElementById(
-        "experience-trigger"
-      );
+      if (shouldReload && experienceModal.classList.contains("open")) {
+        loadExperiencePreview(game);
+      }
 
-    const experienceClose =
-      document.getElementById(
-        "experience-close"
-      );
+      if (settings.focus) {
+        const activeOption = experienceMenu.querySelector(
+          '[data-experience-index="' + boundedIndex + '"]'
+        );
 
-    let experiencePreviousFocus =
-      null;
+        if (activeOption) {
+          activeOption.focus();
+        }
+      }
+    }
+
+    function releaseExperiencePreview() {
+      previewLoadToken += 1;
+      experiencePreviewFrame.onload = null;
+      experiencePreviewFrame.classList.remove("ready");
+      experiencePreviewFrame.src = "about:blank";
+    }
 
     function openExperiencePanel() {
-      experiencePreviousFocus =
-        document.activeElement;
+      experiencePreviousFocus = document.activeElement;
+      experienceModal.classList.add("open");
+      experienceModal.setAttribute("aria-hidden", "false");
+      experienceTrigger.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
 
-      experienceModal.classList.add(
-        "open"
-      );
+      selectExperience(selectedExperienceIndex, { force: true });
 
-      experienceModal.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-      experienceTrigger.setAttribute(
-        "aria-expanded",
-        "true"
-      );
-
-      document.body.style.overflow =
-        "hidden";
-
-      window.setTimeout(
-        function () {
-          experienceClose.focus();
-        },
-        80
-      );
+      window.setTimeout(function () {
+        experienceClose.focus();
+      }, 80);
     }
 
     function closeExperiencePanel() {
-      experienceModal.classList.remove(
-        "open"
-      );
-
-      experienceModal.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-      experienceTrigger.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-
-      document.body.style.overflow =
-        "";
+      experienceModal.classList.remove("open");
+      experienceModal.setAttribute("aria-hidden", "true");
+      experienceTrigger.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      releaseExperiencePreview();
 
       if (experiencePreviousFocus) {
         experiencePreviousFocus.focus();
       }
     }
 
-    experienceTrigger.addEventListener(
-      "click",
-      function (event) {
-        event.preventDefault();
-        openExperiencePanel();
-      }
-    );
+    renderExperienceMenu();
+    selectExperience(selectedExperienceIndex, { force: true });
 
-    experienceClose.addEventListener(
-      "click",
-      closeExperiencePanel
-    );
+    experienceMenu.addEventListener("keydown", function (event) {
+      const navigationKeys = ["ArrowUp", "ArrowDown", "Home", "End"];
+
+      if (!navigationKeys.includes(event.key)) {
+        return;
+      }
+
+      event.preventDefault();
+
+      let nextIndex = selectedExperienceIndex;
+      if (event.key === "ArrowUp") nextIndex -= 1;
+      if (event.key === "ArrowDown") nextIndex += 1;
+      if (event.key === "Home") nextIndex = 0;
+      if (event.key === "End") nextIndex = experienceGames.length - 1;
+
+      selectExperience(nextIndex, { focus: true });
+    });
+
+    experienceTrigger.addEventListener("click", function (event) {
+      event.preventDefault();
+      openExperiencePanel();
+    });
+
+    experienceClose.addEventListener("click", closeExperiencePanel);
 
     experienceModal
-      .querySelectorAll(
-        "[data-experience-close]"
-      )
-      .forEach(
-        function (element) {
-          element.addEventListener(
-            "click",
-            closeExperiencePanel
-          );
-        }
-      );
+      .querySelectorAll("[data-experience-close]")
+      .forEach(function (element) {
+        element.addEventListener("click", closeExperiencePanel);
+      });
 
-    document.addEventListener(
-      "keydown",
-      function (event) {
-        if (
-          event.key === "Escape" &&
-          experienceModal.classList.contains(
-            "open"
-          )
-        ) {
-          closeExperiencePanel();
-        }
+    document.addEventListener("keydown", function (event) {
+      if (
+        event.key === "Escape" &&
+        experienceModal.classList.contains("open")
+      ) {
+        closeExperiencePanel();
       }
-    );
+    });
   </script>
 
   <script>
