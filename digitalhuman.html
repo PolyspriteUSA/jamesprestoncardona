@@ -1145,6 +1145,29 @@
     const loader =
       new FBXLoader();
 
+    const releaseAssetBase =
+      "https://github.com/PolyspriteUSA/jamesprestoncardona/releases/download/portfolio-assets-v1/";
+
+    const mateoSources = [
+      releaseAssetBase + "Mateo.fbx",
+      "./Mateo.fbx"
+    ];
+
+    const mateoAnimationSources = {
+      idle: [
+        releaseAssetBase + "MateoIdle.fbx",
+        "./MateoIdle.fbx"
+      ],
+      run: [
+        releaseAssetBase + "MateoRun.fbx",
+        "./MateoRun.fbx"
+      ],
+      jump: [
+        releaseAssetBase + "MateoJump.fbx",
+        "./MateoJump.fbx"
+      ]
+    };
+
     function setAction(nextAction) {
       if (
         !nextAction ||
@@ -1377,162 +1400,310 @@
       updateCameraImmediately();
     }
 
-    function loadMateo(requestToken) {
-      statusText.textContent =
-        "Loading Mateo.fbx...";
+    function loadAnimationFromSources(
+      sourceList,
+      onLoaded
+    ) {
+      let sourceIndex = 0;
 
-      loader.load(
-        "./Mateo.fbx",
+      function tryNext() {
+        if (sourceIndex >= sourceList.length) {
+          return;
+        }
 
-        function (model) {
-          if (
-            selectedCharacter !== "mateo-fbx" ||
-            requestToken !== characterLoadToken
-          ) {
-            return;
-          }
+        const source =
+          sourceList[sourceIndex];
 
-          resetCharacterAnimation();
-          removeCurrentCharacter();
+        loader.load(
+          source,
 
-          character = model;
+          function (asset) {
+            const clip =
+              asset.animations &&
+              asset.animations[0];
 
-          let box =
-            new THREE.Box3()
-              .setFromObject(character);
-
-          let size =
-            box.getSize(
-              new THREE.Vector3()
-            );
-
-          character.scale.multiplyScalar(
-            targetCharacterHeight /
-            Math.max(size.y, 0.001)
-          );
-
-          character.updateMatrixWorld(true);
-
-          box =
-            new THREE.Box3()
-              .setFromObject(character);
-
-          size =
-            box.getSize(
-              new THREE.Vector3()
-            );
-
-          const center =
-            box.getCenter(
-              new THREE.Vector3()
-            );
-
-          characterHeight =
-            Math.max(size.y, 0.01);
-
-          character.position.x -= center.x;
-          character.position.z -= center.z;
-          character.position.y -= box.min.y;
-
-          character.traverse(
-            function (object) {
-              if (!object.isMesh) {
-                return;
-              }
-
-              object.castShadow = true;
-              object.receiveShadow = true;
-              object.frustumCulled = false;
+            if (clip) {
+              onLoaded(clip);
             }
-          );
+          },
 
-          characterRoot.add(character);
+          undefined,
 
-          if (
-            model.animations &&
-            model.animations.length
-          ) {
-            mixer =
-              new THREE.AnimationMixer(
-                character
+          function () {
+            sourceIndex += 1;
+            tryNext();
+          }
+        );
+      }
+
+      tryNext();
+    }
+
+    function loadMateo(requestToken) {
+      let sourceIndex = 0;
+
+      function trySource() {
+        if (
+          selectedCharacter !== "mateo-fbx" ||
+          requestToken !== characterLoadToken
+        ) {
+          return;
+        }
+
+        const source =
+          mateoSources[sourceIndex];
+
+        statusText.textContent =
+          sourceIndex === 0
+            ? "Loading Mateo.fbx from portfolio assets..."
+            : "Trying local Mateo.fbx...";
+
+        loader.load(
+          source,
+
+          function (model) {
+            if (
+              selectedCharacter !== "mateo-fbx" ||
+              requestToken !== characterLoadToken
+            ) {
+              return;
+            }
+
+            resetCharacterAnimation();
+            removeCurrentCharacter();
+
+            character = model;
+
+            let box =
+              new THREE.Box3()
+                .setFromObject(character);
+
+            let size =
+              box.getSize(
+                new THREE.Vector3()
               );
 
-            const clips =
-              model.animations;
+            if (
+              !Number.isFinite(size.y) ||
+              size.y <= 0.0001
+            ) {
+              throw new Error(
+                "Mateo loaded but returned an invalid bounding box."
+              );
+            }
 
-            function findClip(words) {
-              return clips.find(
-                function (clip) {
-                  const name =
-                    (clip.name || "")
-                      .toLowerCase();
+            character.scale.multiplyScalar(
+              targetCharacterHeight /
+              size.y
+            );
 
-                  return words.some(
-                    function (word) {
-                      return name.includes(word);
+            character.updateMatrixWorld(true);
+
+            box =
+              new THREE.Box3()
+                .setFromObject(character);
+
+            size =
+              box.getSize(
+                new THREE.Vector3()
+              );
+
+            const center =
+              box.getCenter(
+                new THREE.Vector3()
+              );
+
+            characterHeight =
+              Math.max(size.y, 0.01);
+
+            character.position.x -= center.x;
+            character.position.z -= center.z;
+            character.position.y -= box.min.y;
+
+            character.rotation.y = 0;
+
+            character.traverse(
+              function (object) {
+                if (!object.isMesh) {
+                  return;
+                }
+
+                object.castShadow = true;
+                object.receiveShadow = true;
+                object.frustumCulled = false;
+
+                if (object.material) {
+                  const materials =
+                    Array.isArray(object.material)
+                      ? object.material
+                      : [object.material];
+
+                  materials.forEach(
+                    function (material) {
+                      if (
+                        material &&
+                        "side" in material
+                      ) {
+                        material.side =
+                          THREE.DoubleSide;
+                        material.needsUpdate =
+                          true;
+                      }
                     }
                   );
+                }
+              }
+            );
+
+            characterRoot.add(character);
+
+            if (
+              model.animations &&
+              model.animations.length
+            ) {
+              mixer =
+                new THREE.AnimationMixer(
+                  character
+                );
+
+              const clips =
+                model.animations;
+
+              function findClip(words) {
+                return clips.find(
+                  function (clip) {
+                    const name =
+                      (clip.name || "")
+                        .toLowerCase();
+
+                    return words.some(
+                      function (word) {
+                        return name.includes(word);
+                      }
+                    );
+                  }
+                );
+              }
+
+              const idleClip =
+                findClip(["idle", "stand"]);
+
+              const walkClip =
+                findClip(["walk"]);
+
+              const runClip =
+                findClip(["run", "jog"]);
+
+              if (idleClip) {
+                actions.idle =
+                  mixer.clipAction(idleClip);
+              }
+
+              if (walkClip) {
+                actions.walk =
+                  mixer.clipAction(walkClip);
+              }
+
+              if (runClip) {
+                actions.run =
+                  mixer.clipAction(runClip);
+              }
+
+              if (actions.idle) {
+                currentAction =
+                  actions.idle;
+                currentAction.play();
+              } else {
+                currentAction =
+                  mixer.clipAction(clips[0]);
+                currentAction.play();
+              }
+            }
+
+            if (mixer) {
+              loadAnimationFromSources(
+                mateoAnimationSources.idle,
+                function (clip) {
+                  clip.name = "idle";
+
+                  actions.idle =
+                    mixer.clipAction(clip);
+
+                  if (!currentAction) {
+                    setAction(actions.idle);
+                  }
+                }
+              );
+
+              loadAnimationFromSources(
+                mateoAnimationSources.run,
+                function (clip) {
+                  clip.name = "run";
+
+                  actions.run =
+                    mixer.clipAction(clip);
+
+                  const walkClip =
+                    clip.clone();
+
+                  walkClip.name = "walk";
+
+                  actions.walk =
+                    mixer.clipAction(walkClip);
+
+                  actions.walk.timeScale =
+                    0.62;
                 }
               );
             }
 
-            const idleClip =
-              findClip(["idle", "stand"]);
-
-            const walkClip =
-              findClip(["walk"]);
-
-            const runClip =
-              findClip(["run", "jog"]);
-
-            if (idleClip) {
-              actions.idle =
-                mixer.clipAction(idleClip);
-            }
-
-            if (walkClip) {
-              actions.walk =
-                mixer.clipAction(walkClip);
-            }
-
-            if (runClip) {
-              actions.run =
-                mixer.clipAction(runClip);
-            }
-
-            if (actions.idle) {
-              currentAction =
-                actions.idle;
-              currentAction.play();
-            } else {
-              currentAction =
-                mixer.clipAction(clips[0]);
-              currentAction.play();
-            }
-          }
-
-          statusText.textContent =
-            "Mateo loaded";
-
-          updateCameraImmediately();
-        },
-
-        undefined,
-
-        function (error) {
-          console.error(
-            "Mateo.fbx load error:",
-            error
-          );
-
-          if (
-            selectedCharacter === "mateo-fbx"
-          ) {
             statusText.textContent =
-              "Could not load Mateo.fbx";
+              "Mateo loaded from GitHub Release";
+
+            updateCameraImmediately();
+          },
+
+          function (event) {
+            if (
+              event.lengthComputable &&
+              event.total > 0
+            ) {
+              const pct =
+                Math.round(
+                  (event.loaded / event.total) * 100
+                );
+
+              statusText.textContent =
+                "Loading Mateo.fbx " +
+                pct +
+                "%";
+            }
+          },
+
+          function (error) {
+            console.error(
+              "Mateo.fbx load error from",
+              source,
+              error
+            );
+
+            sourceIndex += 1;
+
+            if (
+              sourceIndex <
+              mateoSources.length
+            ) {
+              trySource();
+              return;
+            }
+
+            statusText.textContent =
+              "Mateo.fbx could not be loaded";
           }
-        }
-      );
+        );
+      }
+
+      trySource();
     }
 
     function updateCharacterPicker() {
