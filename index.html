@@ -1215,6 +1215,7 @@
         font-size: 0.59rem;
       }
     }
+
 </style>
 </head>
 
@@ -2625,6 +2626,15 @@
       const ATLAS_LOCAL_URL =
         "./TheAtlas.mp3";
 
+      const TARGET_VOLUME =
+        0.34;
+
+      const FADE_IN_MS =
+        1800;
+
+      const FADE_OUT_MS =
+        900;
+
       const atlasMusic =
         new Audio();
 
@@ -2642,6 +2652,12 @@
       let atlasFallbackTried =
         false;
 
+      let fadeFrame =
+        0;
+
+      let navigationPending =
+        false;
+
       atlasMusic.preload =
         "auto";
 
@@ -2649,7 +2665,7 @@
         true;
 
       atlasMusic.volume =
-        0.34;
+        0;
 
       atlasMusic.src =
         ATLAS_RELEASE_URL;
@@ -2673,6 +2689,106 @@
         }
       );
 
+      function cancelFade() {
+        if (
+          fadeFrame
+        ) {
+          cancelAnimationFrame(
+            fadeFrame
+          );
+
+          fadeFrame =
+            0;
+        }
+      }
+
+      function fadeVolume(
+        from,
+        to,
+        duration,
+        onComplete
+      ) {
+        cancelFade();
+
+        const start =
+          performance.now();
+
+        atlasMusic.volume =
+          Math.max(
+            0,
+            Math.min(
+              1,
+              from
+            )
+          );
+
+        function step(
+          now
+        ) {
+          const progress =
+            duration <= 0
+              ? 1
+              : Math.min(
+                  1,
+                  (
+                    now -
+                    start
+                  ) /
+                  duration
+                );
+
+          const eased =
+            progress *
+            progress *
+            (
+              3 -
+              2 *
+              progress
+            );
+
+          atlasMusic.volume =
+            Math.max(
+              0,
+              Math.min(
+                1,
+                from +
+                (
+                  to -
+                  from
+                ) *
+                eased
+              )
+            );
+
+          if (
+            progress <
+            1
+          ) {
+            fadeFrame =
+              requestAnimationFrame(
+                step
+              );
+
+            return;
+          }
+
+          fadeFrame =
+            0;
+
+          if (
+            typeof onComplete ===
+            "function"
+          ) {
+            onComplete();
+          }
+        }
+
+        fadeFrame =
+          requestAnimationFrame(
+            step
+          );
+      }
+
       function updateMusicButton() {
         if (
           !musicToggle
@@ -2693,7 +2809,7 @@
         );
       }
 
-      function playAtlas() {
+      function playAtlasWithFade() {
         if (
           !musicEnabled
         ) {
@@ -2703,13 +2819,55 @@
         userActivatedAudio =
           true;
 
-        atlasMusic.play().catch(
+        cancelFade();
+
+        atlasMusic.volume =
+          0;
+
+        atlasMusic.play().then(
+          function () {
+            fadeVolume(
+              0,
+              TARGET_VOLUME,
+              FADE_IN_MS
+            );
+          }
+        ).catch(
           function () {}
         );
       }
 
-      function pauseAtlas() {
-        atlasMusic.pause();
+      function fadeOutAtlas(
+        onComplete
+      ) {
+        if (
+          atlasMusic.paused
+        ) {
+          if (
+            typeof onComplete ===
+            "function"
+          ) {
+            onComplete();
+          }
+
+          return;
+        }
+
+        fadeVolume(
+          atlasMusic.volume,
+          0,
+          FADE_OUT_MS,
+          function () {
+            atlasMusic.pause();
+
+            if (
+              typeof onComplete ===
+              "function"
+            ) {
+              onComplete();
+            }
+          }
+        );
       }
 
       function toggleAtlas(
@@ -2730,9 +2888,9 @@
         if (
           musicEnabled
         ) {
-          playAtlas();
+          playAtlasWithFade();
         } else {
-          pauseAtlas();
+          fadeOutAtlas();
         }
       }
 
@@ -2744,7 +2902,7 @@
           return;
         }
 
-        playAtlas();
+        playAtlasWithFade();
       }
 
       if (
@@ -2773,32 +2931,126 @@
         }
       );
 
-      const gameLinks =
-        document.querySelectorAll(
-          'a[href="./neontunnel.html"], a[href="./groovebox.html"], a[href="./neonspiders.html"]'
-        );
-
-      gameLinks.forEach(
+      document.addEventListener(
+        "click",
         function (
-          link
+          event
         ) {
-          link.addEventListener(
-            "click",
+          const link =
+            event.target.closest(
+              "a[href]"
+            );
+
+          if (
+            !link ||
+            navigationPending ||
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          ) {
+            return;
+          }
+
+          const href =
+            link.getAttribute(
+              "href"
+            );
+
+          if (
+            !href ||
+            href.startsWith(
+              "#"
+            ) ||
+            href.startsWith(
+              "javascript:"
+            ) ||
+            link.hasAttribute(
+              "download"
+            ) ||
+            link.target ===
+              "_blank"
+          ) {
+            return;
+          }
+
+          let destination;
+
+          try {
+            destination =
+              new URL(
+                link.href,
+                window.location.href
+              );
+          } catch (
+            error
+          ) {
+            return;
+          }
+
+          const current =
+            new URL(
+              window.location.href
+            );
+
+          const sameDocumentAnchor =
+            destination.origin ===
+              current.origin &&
+            destination.pathname ===
+              current.pathname &&
+            destination.search ===
+              current.search &&
+            destination.hash;
+
+          if (
+            sameDocumentAnchor
+          ) {
+            return;
+          }
+
+          event.preventDefault();
+
+          navigationPending =
+            true;
+
+          fadeOutAtlas(
             function () {
-              pauseAtlas();
+              window.location.href =
+                destination.href;
             }
+          );
+
+          window.setTimeout(
+            function () {
+              if (
+                navigationPending
+              ) {
+                window.location.href =
+                  destination.href;
+              }
+            },
+            FADE_OUT_MS +
+              220
           );
         }
       );
 
       window.addEventListener(
         "pageshow",
-        function () {
+        function (
+          event
+        ) {
+          navigationPending =
+            false;
+
           if (
+            event.persisted &&
             musicEnabled &&
             userActivatedAudio
           ) {
-            playAtlas();
+            playAtlasWithFade();
           }
         }
       );
@@ -2810,9 +3062,11 @@
             document.visibilityState ===
               "visible" &&
             musicEnabled &&
-            userActivatedAudio
+            userActivatedAudio &&
+            atlasMusic.paused &&
+            !navigationPending
           ) {
-            playAtlas();
+            playAtlasWithFade();
           }
         }
       );
@@ -2821,7 +3075,11 @@
 
       window.__atlasMusic =
         atlasMusic;
+
+      window.__fadeOutAtlas =
+        fadeOutAtlas;
     })();
   </script>
+
 </body>
 </html>
