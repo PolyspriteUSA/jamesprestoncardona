@@ -1183,7 +1183,39 @@
       outline: 2px solid var(--magenta);
       outline-offset: 3px;
     }
-  </style>
+  
+    .music-toggle {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.50);
+      font: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 160ms ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .music-toggle:hover,
+    .music-toggle:focus-visible {
+      color: white;
+      outline: none;
+    }
+
+    .music-toggle[aria-pressed="true"] {
+      color: rgba(255,255,255,0.34);
+    }
+
+    @media (max-width: 760px) {
+      .music-toggle {
+        font-size: 0.59rem;
+      }
+    }
+</style>
 </head>
 
 <body>
@@ -1196,6 +1228,15 @@
         <a href="#work">Work</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
+        <button
+          class="music-toggle"
+          id="music-toggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Toggle background music"
+        >
+          Music On
+        </button>
       </div>
     </nav>
   </header>
@@ -2575,5 +2616,212 @@
     );
   </script>
 
+
+  <script>
+    (function () {
+      const ATLAS_RELEASE_URL =
+        "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/TheAtlas.mp3";
+
+      const ATLAS_LOCAL_URL =
+        "./TheAtlas.mp3";
+
+      const atlasMusic =
+        new Audio();
+
+      const musicToggle =
+        document.getElementById(
+          "music-toggle"
+        );
+
+      let musicEnabled =
+        true;
+
+      let userActivatedAudio =
+        false;
+
+      let atlasFallbackTried =
+        false;
+
+      atlasMusic.preload =
+        "auto";
+
+      atlasMusic.loop =
+        true;
+
+      atlasMusic.volume =
+        0.34;
+
+      atlasMusic.src =
+        ATLAS_RELEASE_URL;
+
+      atlasMusic.addEventListener(
+        "error",
+        function () {
+          if (
+            atlasFallbackTried
+          ) {
+            return;
+          }
+
+          atlasFallbackTried =
+            true;
+
+          atlasMusic.src =
+            ATLAS_LOCAL_URL;
+
+          atlasMusic.load();
+        }
+      );
+
+      function updateMusicButton() {
+        if (
+          !musicToggle
+        ) {
+          return;
+        }
+
+        musicToggle.textContent =
+          musicEnabled
+            ? "Music On"
+            : "Music Off";
+
+        musicToggle.setAttribute(
+          "aria-pressed",
+          musicEnabled
+            ? "false"
+            : "true"
+        );
+      }
+
+      function playAtlas() {
+        if (
+          !musicEnabled
+        ) {
+          return;
+        }
+
+        userActivatedAudio =
+          true;
+
+        atlasMusic.play().catch(
+          function () {}
+        );
+      }
+
+      function pauseAtlas() {
+        atlasMusic.pause();
+      }
+
+      function toggleAtlas(
+        event
+      ) {
+        if (
+          event
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        musicEnabled =
+          !musicEnabled;
+
+        updateMusicButton();
+
+        if (
+          musicEnabled
+        ) {
+          playAtlas();
+        } else {
+          pauseAtlas();
+        }
+      }
+
+      function activateFromGesture() {
+        if (
+          userActivatedAudio ||
+          !musicEnabled
+        ) {
+          return;
+        }
+
+        playAtlas();
+      }
+
+      if (
+        musicToggle
+      ) {
+        musicToggle.addEventListener(
+          "click",
+          toggleAtlas
+        );
+      }
+
+      document.addEventListener(
+        "pointerdown",
+        activateFromGesture,
+        {
+          once: true,
+          passive: true
+        }
+      );
+
+      document.addEventListener(
+        "keydown",
+        activateFromGesture,
+        {
+          once: true
+        }
+      );
+
+      const gameLinks =
+        document.querySelectorAll(
+          'a[href="./neontunnel.html"], a[href="./groovebox.html"], a[href="./neonspiders.html"]'
+        );
+
+      gameLinks.forEach(
+        function (
+          link
+        ) {
+          link.addEventListener(
+            "click",
+            function () {
+              pauseAtlas();
+            }
+          );
+        }
+      );
+
+      window.addEventListener(
+        "pageshow",
+        function () {
+          if (
+            musicEnabled &&
+            userActivatedAudio
+          ) {
+            playAtlas();
+          }
+        }
+      );
+
+      document.addEventListener(
+        "visibilitychange",
+        function () {
+          if (
+            document.visibilityState ===
+              "visible" &&
+            musicEnabled &&
+            userActivatedAudio
+          ) {
+            playAtlas();
+          }
+        }
+      );
+
+      updateMusicButton();
+
+      window.__atlasMusic =
+        atlasMusic;
+    })();
+  </script>
 </body>
 </html>
