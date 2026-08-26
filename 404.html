@@ -1,54 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>404 | James Preston Cardona</title>
-  <meta
-    name="description"
-    content="Interactive 404 gallery by James Preston Cardona."
-  >
-
+  <meta name="description" content="Interactive 404 gallery by James Preston Cardona." />
   <style>
     :root {
       --bg: #050507;
+      --bg-soft: #0b0b12;
       --text: #f7f5ff;
-      --muted: #aaa6b8;
-      --violet: #7149ff;
-      --magenta: #ff42d0;
+      --muted: rgba(255,255,255,0.62);
+      --line: rgba(255,255,255,0.08);
+      --pink: #ff47d6;
+      --purple: #7f56ff;
+      --white: #faf9ff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
       width: 100%;
       height: 100%;
-      margin: 0;
       overflow: hidden;
       background: var(--bg);
       color: var(--text);
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
+    body {
+      background:
+        radial-gradient(circle at 50% 15%, rgba(127,86,255,0.12), transparent 30%),
+        radial-gradient(circle at 70% 70%, rgba(255,71,214,0.07), transparent 35%),
+        var(--bg);
     }
-
-    button {
-      font: inherit;
-    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
 
     .site-header {
       position: absolute;
@@ -56,3569 +44,1639 @@
       left: 0;
       right: 0;
       z-index: 30;
-      padding:
-        calc(18px + env(safe-area-inset-top))
-        24px
-        18px;
+      padding: calc(16px + env(safe-area-inset-top)) 20px 14px;
+      pointer-events: none;
     }
-
     .nav {
-      width: min(1240px, 100%);
+      width: min(1280px, 100%);
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
+      pointer-events: auto;
     }
-
     .brand {
-      color: rgba(255,255,255,0.90);
       font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
       white-space: nowrap;
     }
-
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 20px;
-      color: rgba(255,255,255,0.50);
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       font-size: 0.68rem;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.52);
     }
+    .nav-links a { transition: color 180ms ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: rgba(255,255,255,0.98); outline: none; }
 
-    .nav-links a {
-      transition: color 180ms ease;
-    }
-
-    @media (hover:hover) {
-      .nav-links a:hover {
-        color: white;
-      }
-    }
-
-    .error-stage {
+    .stage {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background:
-        radial-gradient(
-          circle at 70% 22%,
-          rgba(113,73,255,0.10),
-          transparent 34%
-        ),
-        #050507;
     }
-
-    #gallery {
+    #scene {
       position: absolute;
       inset: 0;
       outline: none;
       touch-action: none;
     }
-
-    #gallery canvas {
-      display: block;
+    #scene canvas {
       width: 100%;
       height: 100%;
+      display: block;
     }
-
-    .scene-vignette {
+    .vignette {
       position: absolute;
-      z-index: 4;
       inset: 0;
+      z-index: 5;
       pointer-events: none;
       background:
-        radial-gradient(
-          circle at 50% 46%,
-          rgba(255,255,255,0.01) 0%,
-          transparent 30%,
-          rgba(4,4,7,0.10) 62%,
-          rgba(4,4,7,0.42) 100%
-        );
+        radial-gradient(circle at 50% 48%, transparent 0%, transparent 35%, rgba(4,4,7,0.14) 66%, rgba(4,4,7,0.58) 100%);
     }
-
-    .error-number {
+    .error-code {
       position: absolute;
-      z-index: 5;
-      top: 12vh;
-      left: 4vw;
+      left: max(20px, 3vw);
+      top: max(72px, 11vh);
+      z-index: 8;
       margin: 0;
-      color: rgba(255,255,255,0.045);
-      font-size: clamp(8rem, 25vw, 24rem);
-      font-weight: 900;
-      line-height: 0.8;
+      font-size: clamp(7rem, 23vw, 22rem);
+      line-height: 0.82;
       letter-spacing: -0.09em;
-      pointer-events: none;
+      font-weight: 900;
+      color: rgba(255,255,255,0.045);
       user-select: none;
+      pointer-events: none;
     }
-
+    .info {
+      position: absolute;
+      right: 22px;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      z-index: 12;
+      width: min(360px, calc(100vw - 44px));
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(7,7,12,0.54);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.24);
+    }
+    .info-title {
+      margin: 0 0 8px;
+      font-size: 0.76rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+    }
+    .info p {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
     .home-link {
       position: absolute;
+      left: 22px;
+      bottom: calc(20px + env(safe-area-inset-bottom));
       z-index: 12;
-      left: 24px;
-      bottom:
-        calc(
-          24px +
-          env(safe-area-inset-bottom)
-        );
-      min-height: 44px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0 19px;
-      border:
-        1px solid
-        rgba(255,255,255,0.12);
+      min-height: 44px;
+      padding: 0 18px;
       border-radius: 999px;
-      background:
-        rgba(7,7,11,0.58);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      color: rgba(255,255,255,0.88);
-      font-size: 0.67rem;
-      font-weight: 700;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        background 180ms ease;
-    }
-
-    .home-link:hover,
-    .home-link:focus-visible {
-      transform: translateY(-2px);
-      border-color:
-        rgba(255,66,208,0.30);
-      background:
-        rgba(17,13,28,0.76);
-      outline: none;
-    }
-
-    .controls {
-      position: absolute;
-      z-index: 12;
-      right: 24px;
-      bottom:
-        calc(
-          24px +
-          env(safe-area-inset-bottom)
-        );
-      width:
-        min(
-          315px,
-          calc(100% - 48px)
-        );
-      padding: 14px 16px;
-      border:
-        1px solid
-        rgba(255,255,255,0.08);
-      border-radius: 16px;
-      background:
-        rgba(7,7,12,0.55);
-      box-shadow:
-        0 18px 50px
-        rgba(0,0,0,0.22);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      pointer-events: none;
-    }
-
-    .controls-title {
-      margin: 0 0 7px;
-      color: #fff;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .controls-copy {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.75rem;
-      line-height: 1.55;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
-      color: #d7d2e4;
-      font-size: 0.69rem;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--magenta);
-      box-shadow:
-        0 0 15px
-        rgba(255,66,208,0.75);
-    }
-
-    .touch-controls {
-      position: absolute;
-      z-index: 18;
-      inset:
-        auto 14px
-        calc(
-          14px +
-          env(safe-area-inset-bottom)
-        )
-        14px;
-      display: none;
-      align-items: flex-end;
-      justify-content: space-between;
-      pointer-events: none;
-    }
-
-    .touch-pad {
-      display: grid;
-      grid-template-columns:
-        repeat(3, 48px);
-      grid-template-rows:
-        repeat(2, 48px);
-      gap: 5px;
-      pointer-events: auto;
-    }
-
-    .touch-pad button,
-    .touch-look button {
-      border:
-        1px solid
-        rgba(255,255,255,0.14);
-      border-radius: 13px;
-      background:
-        rgba(8,7,15,0.74);
-      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(7,7,12,0.58);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      touch-action: manipulation;
+      color: rgba(255,255,255,0.94);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+    .home-link:hover, .home-link:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(14,10,22,0.82);
+      border-color: rgba(255,71,214,0.32);
+      outline: none;
+    }
+    .loading {
+      position: absolute;
+      inset: auto 50% 40px auto;
+      transform: translateX(50%);
+      z-index: 15;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(8,8,13,0.64);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      pointer-events: none;
     }
 
-    .touch-pad .up {
-      grid-column: 2;
-    }
-
-    .touch-pad .left {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    .touch-pad .down {
-      grid-column: 2;
-      grid-row: 2;
-    }
-
-    .touch-pad .right {
-      grid-column: 3;
-      grid-row: 2;
-    }
-
-    .touch-look {
-      display: flex;
-      gap: 6px;
-      pointer-events: auto;
-    }
-
-    .touch-look button {
-      width: 50px;
-      height: 50px;
-    }
-
-    @media (max-width: 767px) {
-      .site-header {
-        padding:
-          calc(
-            15px +
-            env(safe-area-inset-top)
-          )
-          15px
-          15px;
+    @media (max-width: 900px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
       }
-
-      .brand {
-        font-size: 0.62rem;
-        letter-spacing: 0.10em;
-      }
-
       .nav-links {
-        gap: 12px;
-        font-size: 0.59rem;
+        gap: 12px 14px;
+        justify-content: flex-start;
       }
-
-      .nav-links a:nth-child(2) {
-        display: none;
+      .info {
+        right: 14px;
+        width: min(320px, calc(100vw - 28px));
       }
-
-      .controls {
-        display: none;
-      }
-
       .home-link {
-        left: 50%;
-        bottom:
-          calc(
-            82px +
-            env(safe-area-inset-bottom)
-          );
-        transform:
-          translateX(-50%);
+        left: 14px;
       }
-
-      .home-link:hover,
-      .home-link:focus-visible {
-        transform:
-          translate(-50%, -2px);
-      }
-
-      .touch-controls {
-        display: flex;
-      }
-
-      .error-number {
-        top: 18vh;
-        left: -3vw;
+      .error-code {
+        top: max(88px, 13vh);
       }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .nav-links a,
+    @media (max-width: 640px) {
+      .site-header {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+      .brand { font-size: 0.68rem; }
+      .nav-links { font-size: 0.62rem; }
+      .info {
+        left: 14px;
+        right: 14px;
+        width: auto;
+        bottom: calc(76px + env(safe-area-inset-bottom));
+      }
       .home-link {
-        transition: none;
+        min-width: 150px;
+      }
+      .error-code {
+        left: 14px;
+        font-size: clamp(6rem, 28vw, 9rem);
       }
     }
   </style>
 </head>
-
 <body>
   <header class="site-header">
-    <nav class="nav">
-      <a
-        class="brand"
-        href="./index.html#hero"
-      >
-        James Preston Cardona
-      </a>
-
-      <div class="nav-links">
-        <a href="./index.html#work">
-          Work
-        </a>
-        <a href="./index.html#about">
-          About
-        </a>
-        <a href="./resume.html">
-          Resume
-        </a>
-        <a href="./index.html#contact">
-          Contact
-        </a>
-      </div>
-    </nav>
+    <div class="nav">
+      <a class="brand" href="index.html">James Preston Cardona</a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="archviz.html">Archviz</a>
+        <a href="digitalhuman.html">Digital Human</a>
+        <a href="resume.html">Resume</a>
+        <a href="index.html#interactive">Interactive</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="error-stage">
-    <div
-      id="gallery"
-      tabindex="0"
-      aria-label="Interactive 404 gallery. Use W A S D or arrow keys to move Mateo, shift to run, drag to rotate the camera and scroll to zoom."
-    ></div>
-
-    <div class="scene-vignette"></div>
-
-    <p
-      class="error-number"
-      aria-hidden="true"
-    >
-      404
-    </p>
-
-    <a
-      class="home-link"
-      href="./index.html"
-    >
-      Return Home
-    </a>
-
-    <aside class="controls">
-      <p class="controls-title">
-        Gallery Controls
+  <main class="stage">
+    <div id="scene" aria-label="3D gallery scene"></div>
+    <div class="vignette"></div>
+    <h1 class="error-code">404</h1>
+    <a class="home-link" href="index.html">Return Home</a>
+    <section class="info" aria-label="404 information">
+      <h2 class="info-title">Gallery not found</h2>
+      <p>
+        The page you were looking for drifted out of the archive. Step back to the main site,
+        or stay a moment and look at the installation.
       </p>
-
-      <p class="controls-copy">
-        WASD / Arrow Keys — move<br>
-        Shift — run<br>
-        Drag mouse — orbit camera<br>
-        Mouse wheel — camera distance
-      </p>
-
-      <div
-        class="status"
-        aria-live="polite"
-      >
-        <span class="status-dot"></span>
-        <span id="statusText">
-          Loading Mateo.fbx + liquid neural organ…
-        </span>
-      </div>
-    </aside>
-
-    <div
-      class="touch-controls"
-      aria-label="Touch controls"
-    >
-      <div class="touch-pad">
-        <button
-          class="up"
-          type="button"
-          data-key="forward"
-          aria-label="Move forward"
-        >
-          ↑
-        </button>
-
-        <button
-          class="left"
-          type="button"
-          data-key="left"
-          aria-label="Move left"
-        >
-          ←
-        </button>
-
-        <button
-          class="down"
-          type="button"
-          data-key="backward"
-          aria-label="Move backward"
-        >
-          ↓
-        </button>
-
-        <button
-          class="right"
-          type="button"
-          data-key="right"
-          aria-label="Move right"
-        >
-          →
-        </button>
-      </div>
-
-      <div class="touch-look">
-        <button
-          type="button"
-          data-look="-1"
-          aria-label="Rotate camera left"
-        >
-          ↶
-        </button>
-
-        <button
-          type="button"
-          data-look="1"
-          aria-label="Rotate camera right"
-        >
-          ↷
-        </button>
-      </div>
-    </div>
+    </section>
+    <div class="loading" id="loadingLabel">Loading gallery…</div>
   </main>
 
-  <script>
-    (function () {
-      const RELEASE_URL =
-        "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/TheAtlas.mp3";
+  <audio id="atlasMusic" preload="auto" loop playsinline></audio>
 
-      const LOCAL_URL =
-        "./TheAtlas.mp3";
-
-      const TARGET_VOLUME =
-        0.34;
-
-      const atlasMusic =
-        new Audio();
-
-      let fallbackTried =
-        false;
-
-      let activated =
-        false;
-
-      let fadeFrame =
-        0;
-
-      atlasMusic.preload =
-        "auto";
-
-      atlasMusic.loop =
-        true;
-
-      atlasMusic.volume =
-        0;
-
-      atlasMusic.src =
-        RELEASE_URL;
-
-      atlasMusic.addEventListener(
-        "error",
-        function () {
-          if (
-            fallbackTried
-          ) {
-            return;
-          }
-
-          fallbackTried =
-            true;
-
-          atlasMusic.src =
-            LOCAL_URL;
-
-          atlasMusic.load();
-        }
-      );
-
-      function fade(
-        from,
-        to,
-        duration,
-        done
-      ) {
-        if (
-          fadeFrame
-        ) {
-          cancelAnimationFrame(
-            fadeFrame
-          );
-        }
-
-        const start =
-          performance.now();
-
-        function step(
-          now
-        ) {
-          const t =
-            Math.min(
-              1,
-              (
-                now -
-                start
-              ) /
-              duration
-            );
-
-          const eased =
-            t *
-            t *
-            (
-              3 -
-              2 *
-              t
-            );
-
-          atlasMusic.volume =
-            Math.max(
-              0,
-              Math.min(
-                1,
-                from +
-                (
-                  to -
-                  from
-                ) *
-                eased
-              )
-            );
-
-          if (
-            t < 1
-          ) {
-            fadeFrame =
-              requestAnimationFrame(
-                step
-              );
-          } else if (
-            typeof done ===
-            "function"
-          ) {
-            done();
-          }
-        }
-
-        fadeFrame =
-          requestAnimationFrame(
-            step
-          );
-      }
-
-      function startMusic() {
-        if (
-          activated
-        ) {
-          return;
-        }
-
-        activated =
-          true;
-
-        atlasMusic.volume =
-          0;
-
-        atlasMusic.play().then(
-          function () {
-            fade(
-              0,
-              TARGET_VOLUME,
-              1800
-            );
-          }
-        ).catch(
-          function () {}
-        );
-      }
-
-      document.addEventListener(
-        "pointerdown",
-        startMusic,
-        {
-          once: true,
-          passive: true
-        }
-      );
-
-      document.addEventListener(
-        "keydown",
-        startMusic,
-        {
-          once: true
-        }
-      );
-
-      document.addEventListener(
-        "click",
-        function (
-          event
-        ) {
-          const link =
-            event.target.closest(
-              "a[href]"
-            );
-
-          if (
-            !link ||
-            event.defaultPrevented ||
-            event.metaKey ||
-            event.ctrlKey ||
-            event.shiftKey ||
-            event.altKey
-          ) {
-            return;
-          }
-
-          const href =
-            link.getAttribute(
-              "href"
-            );
-
-          if (
-            !href ||
-            href.startsWith("#")
-          ) {
-            return;
-          }
-
-          let destination;
-
-          try {
-            destination =
-              new URL(
-                link.href,
-                window.location.href
-              );
-          } catch (
-            error
-          ) {
-            return;
-          }
-
-          event.preventDefault();
-
-          if (
-            atlasMusic.paused
-          ) {
-            window.location.href =
-              destination.href;
-
-            return;
-          }
-
-          fade(
-            atlasMusic.volume,
-            0,
-            900,
-            function () {
-              atlasMusic.pause();
-
-              window.location.href =
-                destination.href;
-            }
-          );
-        }
-      );
-
-      window.__atlasMusic =
-        atlasMusic;
-    })();
-  </script>
 
   <script type="importmap">
     {
       "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
       }
     }
   </script>
 
   <script type="module">
-    import * as THREE from "three";
-    import {
-      FBXLoader
-    } from "three/addons/loaders/FBXLoader.js";
+    import * as THREE from 'three';
+    import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    const container =
-      document.getElementById(
-        "gallery"
-      );
+    const mount = document.getElementById('scene');
+    const loadingLabel = document.getElementById('loadingLabel');
+    const atlasMusic = document.getElementById('atlasMusic');
 
-    const statusText =
-      document.getElementById(
-        "statusText"
-      );
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050507);
+    scene.fog = new THREE.FogExp2(0x0a0911, 0.024);
 
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    mount.appendChild(renderer.domElement);
 
-    const scene =
-      new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 250);
+    camera.position.set(0, 4.35, 18.2);
 
-    scene.background =
-      new THREE.Color(
-        0x09090d
-      );
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.35, 0.72, 0.08);
+    composer.addPass(bloomPass);
 
-    scene.fog =
-      new THREE.FogExp2(
-        0x09090d,
-        0.0064
-      );
+    const clock = new THREE.Clock();
+    const targetLook = new THREE.Vector3(0, 4.6, -10.8);
+    const viewDrift = new THREE.Vector2();
+    const pointer = new THREE.Vector2();
+    const mobile = window.matchMedia('(max-width: 768px)').matches;
 
-    const camera =
-      new THREE.PerspectiveCamera(
-        37,
-        1,
-        0.05,
-        190
-      );
+    // ---------- LIGHTING ----------
+    const hemi = new THREE.HemisphereLight(0x6057ff, 0x121017, 0.45);
+    scene.add(hemi);
 
-    const renderer =
-      new THREE.WebGLRenderer({
-        antialias: true,
-        powerPreference:
-          "high-performance"
+    const ambient = new THREE.AmbientLight(0x8d79ff, 0.26);
+    scene.add(ambient);
+
+    const overhead = new THREE.SpotLight(0xffffff, 24, 100, Math.PI / 4.1, 0.48, 1.25);
+    overhead.position.set(0, 16, 10);
+    overhead.target.position.set(0, 0, -11);
+    overhead.castShadow = true;
+    overhead.shadow.mapSize.set(1024, 1024);
+    scene.add(overhead, overhead.target);
+
+    const artLight = new THREE.PointLight(0xff6fe4, 8, 20, 1.9);
+    artLight.position.set(0, 5.2, -10.7);
+    scene.add(artLight);
+
+    const artFillLight = new THREE.PointLight(0x7e63ff, 6.4, 18, 2.0);
+    artFillLight.position.set(0, 4.4, -9.6);
+    scene.add(artFillLight);
+
+    // ---------- ROOM ----------
+    const room = new THREE.Group();
+    scene.add(room);
+
+    const concreteTex = buildConcreteTexture();
+    concreteTex.wrapS = concreteTex.wrapT = THREE.RepeatWrapping;
+    concreteTex.repeat.set(10, 14);
+
+    const floorMat = new THREE.MeshStandardMaterial({
+      map: concreteTex,
+      color: 0x707070,
+      roughness: 0.8,
+      metalness: 0.02,
+      normalScale: new THREE.Vector2(0.45, 0.45),
+    });
+
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0x6a6a70, roughness: 0.92, metalness: 0.03 });
+    const wallDarkMat = new THREE.MeshStandardMaterial({ color: 0x57575d, roughness: 0.95, metalness: 0.02 });
+    const trussMat = new THREE.MeshStandardMaterial({ color: 0x4a4c56, roughness: 0.75, metalness: 0.15 });
+    const metalMat = new THREE.MeshStandardMaterial({ color: 0x2a2d36, roughness: 0.48, metalness: 0.42 });
+
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(36, 48), floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    room.add(floor);
+
+    const backWall = new THREE.Mesh(new THREE.PlaneGeometry(25, 13.8), wallMat);
+    backWall.position.set(0, 6.3, -13.4);
+    room.add(backWall);
+
+    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(48, 13.8), wallDarkMat);
+    leftWall.rotation.y = Math.PI / 2;
+    leftWall.position.set(-12.5, 6.3, 0.6);
+    room.add(leftWall);
+
+    const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(48, 13.8), wallDarkMat);
+    rightWall.rotation.y = -Math.PI / 2;
+    rightWall.position.set(12.5, 6.3, 0.6);
+    room.add(rightWall);
+
+    const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(25, 48), new THREE.MeshStandardMaterial({ color: 0x55575f, roughness: 0.9, metalness: 0.02 }));
+    ceiling.rotation.x = Math.PI / 2;
+    ceiling.position.set(0, 12.7, 0.6);
+    room.add(ceiling);
+
+    const frontLintel = new THREE.Mesh(new THREE.BoxGeometry(25.2, 0.6, 0.45), wallDarkMat);
+    frontLintel.position.set(0, 12.4, 10.7);
+    room.add(frontLintel);
+
+    for (let i = -2; i <= 2; i += 1) {
+      const truss = new THREE.Group();
+      const z = -8 + i * 7.8;
+      const topBeam = new THREE.Mesh(new THREE.BoxGeometry(22.6, 0.16, 0.16), trussMat);
+      topBeam.position.set(0, 11.95, z);
+      truss.add(topBeam);
+
+      const leftPost = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.05, 0.16), trussMat);
+      leftPost.position.set(-10.2, 11.43, z);
+      truss.add(leftPost);
+      const rightPost = leftPost.clone();
+      rightPost.position.x = 10.2;
+      truss.add(rightPost);
+
+      const braceA = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.10, 0.10), trussMat);
+      braceA.position.set(-7.8, 11.6, z);
+      braceA.rotation.z = Math.PI / 7;
+      truss.add(braceA);
+      const braceB = braceA.clone();
+      braceB.position.x = 7.8;
+      braceB.rotation.z = -Math.PI / 7;
+      truss.add(braceB);
+
+      room.add(truss);
+    }
+
+    // ---------- BENCH ----------
+    const bench = new THREE.Group();
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.16, 1.08), metalMat);
+    seat.position.set(0, 1.1, 0);
+    seat.castShadow = true;
+    bench.add(seat);
+
+    const back = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.78, 0.14), metalMat);
+    back.position.set(0, 1.52, -0.47);
+    back.castShadow = true;
+    bench.add(back);
+
+    [-1.5, 1.5].forEach((x) => {
+      [-0.35, 0.35].forEach((z) => {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.11, 1.0, 0.11), metalMat);
+        leg.position.set(x, 0.5, z);
+        leg.castShadow = true;
+        bench.add(leg);
       });
+    });
+    bench.position.set(0, 0, 7.9);
+    room.add(bench);
 
-    renderer.setPixelRatio(
-      Math.min(
-        window.devicePixelRatio,
-        2
-      )
+    // ---------- FRAME ----------
+    const frameGroup = new THREE.Group();
+    frameGroup.position.set(0, 5.3, -13.12);
+    scene.add(frameGroup);
+
+    const frameMat = new THREE.MeshStandardMaterial({
+      color: 0x171820,
+      roughness: 0.42,
+      metalness: 0.34
+    });
+
+    const frameWidth = 10.8;
+    const frameHeight = 7.1;
+    const frameThickness = 0.44;
+    const frameDepth = 0.46;
+
+    const frameTop = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        frameWidth,
+        frameThickness,
+        frameDepth
+      ),
+      frameMat
     );
+    frameTop.position.y =
+      frameHeight * 0.5 -
+      frameThickness * 0.5;
+    frameTop.castShadow = true;
+    frameGroup.add(frameTop);
 
-    renderer.outputColorSpace =
-      THREE.SRGBColorSpace;
+    const frameBottom =
+      frameTop.clone();
+    frameBottom.position.y =
+      -frameTop.position.y;
+    frameGroup.add(frameBottom);
 
-    renderer.toneMapping =
-      THREE.ACESFilmicToneMapping;
-
-    renderer.toneMappingExposure =
-      0.95;
-
-    renderer.shadowMap.enabled =
-      true;
-
-    renderer.shadowMap.type =
-      THREE.PCFSoftShadowMap;
-
-    container.appendChild(
-      renderer.domElement
+    const frameLeft = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        frameThickness,
+        frameHeight - frameThickness * 2,
+        frameDepth
+      ),
+      frameMat
     );
+    frameLeft.position.x =
+      -frameWidth * 0.5 +
+      frameThickness * 0.5;
+    frameLeft.castShadow = true;
+    frameGroup.add(frameLeft);
 
-    const room =
+    const frameRight =
+      frameLeft.clone();
+    frameRight.position.x =
+      -frameLeft.position.x;
+    frameGroup.add(frameRight);
+
+    const artPortal = new THREE.Group();
+    artPortal.position.set(0, 0, 0.32);
+    frameGroup.add(artPortal);
+
+    const portalBorder = new THREE.Mesh(
+      new THREE.PlaneGeometry(9.86, 6.14),
+      new THREE.MeshBasicMaterial({ color: 0x08080d })
+    );
+    portalBorder.position.z = -0.03;
+    artPortal.add(portalBorder);
+
+    // ---------- PROCEDURAL 3D ARTWORK ----------
+    const artGroup =
       new THREE.Group();
 
-    scene.add(
-      room
+    // Pull the whole sculpture well in front of the frame.
+    artGroup.position.set(
+      0,
+      0,
+      1.20
     );
 
-    let reactiveContext =
-      null;
-
-    let reactiveAnalyser =
-      null;
-
-    let reactiveData =
-      null;
-
-    let reactiveSource =
-      null;
-
-    let reactiveLevel =
-      0;
-
-    let bassLevel =
-      0;
-
-    function initAudioReactive() {
-      const atlasMusic =
-        window.__atlasMusic;
-
-      if (
-        !atlasMusic ||
-        reactiveAnalyser
-      ) {
-        return;
-      }
-
-      const AudioCtx =
-        window.AudioContext ||
-        window.webkitAudioContext;
-
-      if (
-        !AudioCtx
-      ) {
-        return;
-      }
-
-      reactiveContext =
-        window.__atlasReactiveContext ||
-        new AudioCtx();
-
-      window.__atlasReactiveContext =
-        reactiveContext;
-
-      if (
-        !window.__atlasReactiveSource
-      ) {
-        reactiveSource =
-          reactiveContext.createMediaElementSource(
-            atlasMusic
-          );
-
-        reactiveAnalyser =
-          reactiveContext.createAnalyser();
-
-        reactiveAnalyser.fftSize =
-          256;
-
-        reactiveAnalyser.smoothingTimeConstant =
-          0.84;
-
-        reactiveData =
-          new Uint8Array(
-            reactiveAnalyser.frequencyBinCount
-          );
-
-        reactiveSource.connect(
-          reactiveAnalyser
-        );
-
-        reactiveAnalyser.connect(
-          reactiveContext.destination
-        );
-
-        window.__atlasReactiveSource =
-          reactiveSource;
-
-        window.__atlasReactiveAnalyser =
-          reactiveAnalyser;
-
-        window.__atlasReactiveData =
-          reactiveData;
-      } else {
-        reactiveSource =
-          window.__atlasReactiveSource;
-
-        reactiveAnalyser =
-          window.__atlasReactiveAnalyser;
-
-        reactiveData =
-          window.__atlasReactiveData;
-      }
-
-      reactiveContext.resume().catch(
-        function () {}
-      );
-    }
-
-    window.addEventListener(
-      "pointerdown",
-      initAudioReactive,
-      {
-        passive: true
-      }
+    artGroup.scale.set(
+      1.16,
+      1.16,
+      1.16
     );
 
-    window.addEventListener(
-      "keydown",
-      initAudioReactive
+    artPortal.add(
+      artGroup
     );
 
-    function updateAudioReactive() {
-      const atlasMusic =
-        window.__atlasMusic;
+    const ribbonContainer =
+      new THREE.Group();
 
-      if (
-        !atlasMusic ||
-        atlasMusic.paused ||
-        !reactiveAnalyser
-      ) {
-        reactiveLevel +=
-          (0 - reactiveLevel) *
-          0.06;
+    artGroup.add(
+      ribbonContainer
+    );
 
-        bassLevel +=
-          (0 - bassLevel) *
-          0.08;
+    const ribbonPalette = [
+      0xff45d2,
+      0xff6add,
+      0x8b65ff,
+      0xb97cff,
+      0xfff4ff,
+      0xff8be8
+    ];
 
-        return;
-      }
+    const mainRibbons = [];
+    const filamentLoops = [];
 
-      reactiveAnalyser.getByteFrequencyData(
-        reactiveData
-      );
-
-      let bassSum =
-        0;
-
-      let lowMidSum =
-        0;
-
-      let highSum =
-        0;
-
-      let bassCount =
-        0;
-
-      let lowMidCount =
-        0;
-
-      let highCount =
-        0;
+    function buildRibbonCurve(
+      ribbon,
+      time
+    ) {
+      const points = [];
+      const pointCount = 28;
 
       for (
         let i=0;
-        i<reactiveData.length;
+        i<pointCount;
         i++
       ) {
-        const value =
-          reactiveData[i] / 255;
+        const t =
+          i /
+          pointCount;
 
-        if (
-          i < 10
-        ) {
-          bassSum += value;
-          bassCount++;
-        } else if (
-          i < 28
-        ) {
-          lowMidSum += value;
-          lowMidCount++;
-        } else {
-          highSum += value;
-          highCount++;
-        }
+        const a =
+          t *
+          Math.PI *
+          2;
+
+        const wobbleA =
+          Math.sin(
+            a *
+            ribbon.lobeA +
+            time *
+            ribbon.speed +
+            ribbon.phase
+          );
+
+        const wobbleB =
+          Math.cos(
+            a *
+            ribbon.lobeB -
+            time *
+            ribbon.speed *
+            0.72 +
+            ribbon.phase *
+            0.63
+          );
+
+        const radius =
+          ribbon.radius +
+          wobbleA *
+          ribbon.waveA +
+          wobbleB *
+          ribbon.waveB;
+
+        const x =
+          Math.cos(
+            a +
+            ribbon.twist *
+            wobbleB
+          ) *
+          radius *
+          ribbon.scaleX +
+          Math.sin(
+            a *
+            3.0 +
+            time *
+            0.18 +
+            ribbon.phase
+          ) *
+          0.36;
+
+        const y =
+          Math.sin(
+            a *
+            ribbon.yCycles +
+            ribbon.phase
+          ) *
+          ribbon.scaleY +
+          Math.cos(
+            a *
+            2.0 -
+            time *
+            0.24
+          ) *
+          0.56;
+
+        const z =
+          ribbon.depthOffset +
+          Math.sin(
+            a *
+            ribbon.zCycles -
+            time *
+            ribbon.speed *
+            0.55 +
+            ribbon.phase
+          ) *
+          ribbon.depth +
+          Math.cos(
+            a *
+            3.0 +
+            ribbon.phase
+          ) *
+          0.32;
+
+        points.push(
+          new THREE.Vector3(
+            x,
+            y,
+            z
+          )
+        );
       }
 
-      const bassInstant =
-        bassCount
-          ? bassSum / bassCount
-          : 0;
-
-      const lowMidInstant =
-        lowMidCount
-          ? lowMidSum / lowMidCount
-          : 0;
-
-      const highInstant =
-        highCount
-          ? highSum / highCount
-          : 0;
-
-      const overall =
-        bassInstant * 0.52 +
-        lowMidInstant * 0.32 +
-        highInstant * 0.16;
-
-      bassLevel +=
-        (bassInstant - bassLevel) *
-        0.16;
-
-      reactiveLevel +=
-        (overall - reactiveLevel) *
-        0.14;
+      return new THREE.CatmullRomCurve3(
+        points,
+        true,
+        "centripetal",
+        0.72
+      );
     }
 
-    const ambient =
-      new THREE.HemisphereLight(
-        0xf8f6ff,
-        0x121018,
-        0.56
-      );
-
-    scene.add(
-      ambient
-    );
-
-    const fill =
-      new THREE.DirectionalLight(
-        0xd9d2ff,
-        1.18
-      );
-
-    fill.position.set(
-      -10,
-      14,
-      7
-    );
-
-    scene.add(
-      fill
-    );
-
-    const galleryWidth =
-      56;
-
-    const galleryDepth =
-      78;
-
-    const galleryHeight =
-      18;
-
-    const galleryCenterZ =
-      -11;
-
-    function makeConcreteTexture() {
-      const canvas =
-        document.createElement(
-          "canvas"
-        );
-
-      canvas.width =
-        256;
-
-      canvas.height =
-        256;
-
-      const context =
-        canvas.getContext(
-          "2d"
-        );
-
-      const image =
-        context.createImageData(
-          256,
-          256
-        );
-
-      for (
-        let i=0;
-        i<image.data.length;
-        i+=4
-      ) {
-        const value =
-          118 +
-          Math.random() *
-          24;
-
-        image.data[i] =
-          value;
-
-        image.data[i+1] =
-          value;
-
-        image.data[i+2] =
-          value;
-
-        image.data[i+3] =
-          255;
-      }
-
-      context.putImageData(
-        image,
-        0,
-        0
-      );
-
-      const texture =
-        new THREE.CanvasTexture(
-          canvas
-        );
-
-      texture.wrapS =
-        THREE.RepeatWrapping;
-
-      texture.wrapT =
-        THREE.RepeatWrapping;
-
-      texture.repeat.set(
-        5,
-        5
-      );
-
-      return texture;
-    }
-
-    const concrete =
-      makeConcreteTexture();
-
-    const wallMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x727178,
-        roughness: 0.91,
-        metalness: 0.015,
-        bumpMap: concrete,
-        bumpScale: 0.028
-      });
-
-    const floorMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x39383e,
-        roughness: 0.76,
-        metalness: 0.025,
-        bumpMap: concrete,
-        bumpScale: 0.020
-      });
-
-    const ceilingMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x5f5e65,
-        roughness: 0.90,
-        metalness: 0.015,
-        bumpMap: concrete,
-        bumpScale: 0.026
-      });
-
-    const beamMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x3d3c42,
-        roughness: 0.84,
-        metalness: 0.04
-      });
-
-    function roomMesh(
-      geometry,
-      material,
-      position,
-      rotation=null
+    function createMainRibbon(
+      index
     ) {
+      const color =
+        new THREE.Color(
+          ribbonPalette[
+            index %
+            ribbonPalette.length
+          ]
+        );
+
+      const ribbon = {
+        phase:
+          index *
+          0.77 +
+          0.28,
+        radius:
+          1.65 +
+          (
+            index %
+            4
+          ) *
+          0.18,
+        scaleX:
+          1.20 +
+          (
+            index %
+            3
+          ) *
+          0.12,
+        scaleY:
+          1.55 +
+          (
+            index %
+            5
+          ) *
+          0.10,
+        depth:
+          1.0 +
+          (
+            index %
+            4
+          ) *
+          0.24,
+        depthOffset:
+          0.42 +
+          (
+            index %
+            3
+          ) *
+          0.16,
+        lobeA:
+          2 +
+          (
+            index %
+            4
+          ),
+        lobeB:
+          3 +
+          (
+            index %
+            3
+          ),
+        yCycles:
+          1.0 +
+          (
+            index %
+            3
+          ) *
+          0.5,
+        zCycles:
+          1.5 +
+          (
+            index %
+            4
+          ) *
+          0.5,
+        twist:
+          0.25 +
+          (
+            index %
+            3
+          ) *
+          0.12,
+        waveA:
+          0.26 +
+          (
+            index %
+            4
+          ) *
+          0.06,
+        waveB:
+          0.18 +
+          (
+            index %
+            3
+          ) *
+          0.05,
+        speed:
+          0.17 +
+          (
+            index %
+            5
+          ) *
+          0.018,
+        thickness:
+          0.10 +
+          (
+            index %
+            4
+          ) *
+          0.026,
+        color:
+          color,
+        mesh:
+          null,
+        coreLine:
+          null,
+        light:
+          null
+      };
+
+      const curve =
+        buildRibbonCurve(
+          ribbon,
+          0
+        );
+
+      const tubeGeometry =
+        new THREE.TubeGeometry(
+          curve,
+          112,
+          ribbon.thickness,
+          14,
+          true
+        );
+
+      const tubeMaterial =
+        new THREE.MeshPhysicalMaterial({
+          color:
+            color.clone()
+              .lerp(
+                new THREE.Color(
+                  0xffffff
+                ),
+                0.08
+              ),
+          emissive:
+            color,
+          emissiveIntensity:
+            index %
+            5 ===
+            4
+              ? 4.4
+              : 3.2,
+          roughness: 0.16,
+          metalness: 0.02,
+          clearcoat: 0.70,
+          clearcoatRoughness: 0.12,
+          transmission: 0.10,
+          thickness: 0.7,
+          transparent: true,
+          opacity: 0.96,
+          side:
+            THREE.DoubleSide
+        });
+
       const mesh =
         new THREE.Mesh(
-          geometry,
-          material
+          tubeGeometry,
+          tubeMaterial
         );
-
-      mesh.position.set(
-        ...position
-      );
-
-      if (
-        rotation
-      ) {
-        mesh.rotation.set(
-          ...rotation
-        );
-      }
 
       mesh.castShadow =
         true;
 
-      mesh.receiveShadow =
-        true;
+      mesh.frustumCulled =
+        false;
 
-      room.add(
+      ribbon.mesh =
+        mesh;
+
+      ribbonContainer.add(
         mesh
       );
 
-      return mesh;
-    }
-
-    roomMesh(
-      new THREE.PlaneGeometry(
-        galleryWidth,
-        galleryDepth
-      ),
-      floorMaterial,
-      [
-        0,
-        0,
-        galleryCenterZ
-      ],
-      [
-        -Math.PI/2,
-        0,
-        0
-      ]
-    );
-
-    roomMesh(
-      new THREE.BoxGeometry(
-        galleryWidth,
-        0.28,
-        galleryDepth
-      ),
-      ceilingMaterial,
-      [
-        0,
-        galleryHeight,
-        galleryCenterZ
-      ]
-    );
-
-    const backZ =
-      galleryCenterZ -
-      galleryDepth/2;
-
-    const frontZ =
-      galleryCenterZ +
-      galleryDepth/2;
-
-    roomMesh(
-      new THREE.BoxGeometry(
-        galleryWidth,
-        galleryHeight,
-        0.35
-      ),
-      wallMaterial,
-      [
-        0,
-        galleryHeight/2,
-        backZ
-      ]
-    );
-
-    roomMesh(
-      new THREE.BoxGeometry(
-        galleryWidth,
-        galleryHeight,
-        0.35
-      ),
-      wallMaterial,
-      [
-        0,
-        galleryHeight/2,
-        frontZ
-      ]
-    );
-
-    [
-      -galleryWidth/2,
-      galleryWidth/2
-    ].forEach(
-      function (
-        x
-      ) {
-        roomMesh(
-          new THREE.BoxGeometry(
-            0.35,
-            galleryHeight,
-            galleryDepth
-          ),
-          wallMaterial,
-          [
-            x,
-            galleryHeight/2,
-            galleryCenterZ
-          ]
+      const linePoints =
+        curve.getPoints(
+          180
         );
-      }
-    );
 
-    [
-      -22,
-      -11,
-      0,
-      11,
-      22
-    ].forEach(
-      function (
-        x
-      ) {
-        roomMesh(
-          new THREE.BoxGeometry(
-            0.42,
-            0.56,
-            galleryDepth-2
-          ),
-          beamMaterial,
-          [
-            x,
-            galleryHeight-0.44,
-            galleryCenterZ
-          ]
-        );
-      }
-    );
+      const lineGeometry =
+        new THREE.BufferGeometry()
+          .setFromPoints(
+            linePoints
+          );
 
-    for (
-      let z=-46;
-      z<=24;
-      z+=8.0
-    ) {
-      roomMesh(
-        new THREE.BoxGeometry(
-          galleryWidth-2,
-          0.56,
-          0.42
-        ),
-        beamMaterial,
-        [
-          0,
-          galleryHeight-0.44,
-          z
-        ]
-      );
-    }
-
-    const ceilingLightMaterial =
-      new THREE.MeshBasicMaterial({
-        color: 0xb7a7ff,
-        transparent: true,
-        opacity: 0.45,
-        toneMapped: false
-      });
-
-    [
-      -20,
-      -10,
-      0,
-      10,
-      20
-    ].forEach(
-      function (
-        x
-      ) {
-        [
-          -42,
-          -28,
-          -14,
-          0,
-          14,
-          24
-        ].forEach(
-          function (
-            z
-          ) {
-            roomMesh(
-              new THREE.BoxGeometry(
-                0.09,
-                0.03,
-                3.6
-              ),
-              ceilingLightMaterial,
-              [
-                x,
-                galleryHeight-0.76,
-                z
-              ]
-            );
-
-            const light =
-              new THREE.SpotLight(
-                0xcfc5ff,
-                12.5,
-                24,
-                Math.PI*0.31,
-                0.88,
-                1.35
-              );
-
-            light.position.set(
-              x,
-              galleryHeight-0.90,
-              z
-            );
-
-            light.target.position.set(
-              x*0.82,
-              0.2,
-              z
-            );
-
-            scene.add(
-              light,
-              light.target
-            );
-          }
-        );
-      }
-    );
-
-    const magentaLight =
-      new THREE.PointLight(
-        0xff42d0,
-        12,
-        19,
-        2
-      );
-
-    magentaLight.position.set(
-      -7.5,
-      8.4,
-      backZ+4.5
-    );
-
-    scene.add(
-      magentaLight
-    );
-
-    const violetLight =
-      new THREE.PointLight(
-        0x7149ff,
-        13,
-        21,
-        2
-      );
-
-    violetLight.position.set(
-      7.5,
-      7.8,
-      backZ+5.2
-    );
-
-    scene.add(
-      violetLight
-    );
-
-    const artworkSpot =
-      new THREE.SpotLight(
-        0xf5efff,
-        18,
-        34,
-        Math.PI*0.22,
-        0.55,
-        1.1
-      );
-
-    artworkSpot.position.set(
-      0,
-      15.8,
-      backZ+10
-    );
-
-    artworkSpot.target.position.set(
-      0,
-      8.0,
-      backZ+1.7
-    );
-
-    artworkSpot.castShadow =
-      false;
-
-    scene.add(
-      artworkSpot,
-      artworkSpot.target
-    );
-
-    const benchMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x25252a,
-        roughness: 0.90,
-        metalness: 0.03
-      });
-
-    roomMesh(
-      new THREE.BoxGeometry(
-        5.2,
-        0.22,
-        1.05
-      ),
-      benchMaterial,
-      [
-        0,
-        0.72,
-        -20.0
-      ]
-    );
-
-    [
-      -1.75,
-      1.75
-    ].forEach(
-      function (
-        x
-      ) {
-        roomMesh(
-          new THREE.BoxGeometry(
-            0.30,
-            0.66,
-            0.72
-          ),
-          benchMaterial,
-          [
-            x,
-            0.34,
-            -11.4
-          ]
-        );
-      }
-    );
-
-    const artworkUniforms = {
-      uTime: {
-        value: 0
-      },
-      uAudio: {
-        value: 0
-      },
-      uBass: {
-        value: 0
-      }
-    };
-
-    const artwork =
-      new THREE.Group();
-
-    const artworkBaseScale =
-      new THREE.Vector3(
-        1,
-        1,
-        1
-      );
-
-    artwork.scale.copy(
-      artworkBaseScale
-    );
-
-    artwork.position.set(
-      0,
-      8.0,
-      backZ+1.82
-    );
-
-    const organCoreMaterial =
-      new THREE.ShaderMaterial({
-        uniforms:
-          artworkUniforms,
-        side:
-          THREE.DoubleSide,
-        transparent:
-          false,
-        toneMapped:
-          false,
-        vertexShader:
-          [
-            "uniform float uTime;",
-            "uniform float uAudio;",
-            "uniform float uBass;",
-            "varying vec3 vNormal;",
-            "varying vec3 vPos;",
-            "varying float vPulse;",
-            "void main(){",
-            "vec3 p=position;",
-            "float t=uTime*0.42;",
-            "float n1=sin(p.y*4.0+t*1.2)+cos(p.x*3.4-t*0.9);",
-            "float n2=sin((p.x+p.z)*4.6+t*1.7)+cos(length(p.xy)*6.0-t*1.1);",
-            "float n3=sin(length(p)*5.8-t*2.1+uBass*8.0);",
-            "float groove=sin(atan(p.y,p.x)*5.0+t*0.8);",
-            "float disp=n1*0.20+n2*0.16+n3*0.14+groove*0.08;",
-            "float react=uAudio*0.10+uBass*0.08;",
-            "p+=normal*(disp*0.34+react);",
-            "p.xz*=1.0+sin(p.y*1.6+t)*0.03;",
-            "p.xy+=vec2(sin(p.z*2.4+t*1.3),cos(p.x*2.1-t))*0.05;",
-            "vPulse=0.5+0.5*sin(length(p)*4.5-t*2.2+uAudio*6.0);",
-            "vNormal=normalize(normalMatrix*normal);",
-            "vPos=p;",
-            "gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);",
-            "}"
-          ].join("\n"),
-        fragmentShader:
-          [
-            "uniform float uTime;",
-            "uniform float uAudio;",
-            "uniform float uBass;",
-            "varying vec3 vNormal;",
-            "varying vec3 vPos;",
-            "varying float vPulse;",
-            "void main(){",
-            "vec3 n=normalize(vNormal);",
-            "float t=uTime*0.35;",
-            "float fres=pow(1.0-abs(n.z),2.4);",
-            "float veins=0.5+0.5*sin(vPos.y*9.0+vPos.x*5.0+t*7.0);",
-            "float cavity=0.5+0.5*sin(length(vPos.xy)*8.5-t*5.5+uBass*7.0);",
-            "vec3 graphite=vec3(0.05,0.045,0.07);",
-            "vec3 violet=vec3(0.33,0.22,0.96);",
-            "vec3 magenta=vec3(1.0,0.22,0.78);",
-            "vec3 pink=vec3(1.0,0.54,0.92);",
-            "vec3 base=graphite;",
-            "base+=mix(violet,magenta,vPulse)*(0.26+0.38*cavity);",
-            "base+=pink*pow(veins,3.0)*(0.06+uAudio*0.14);",
-            "base+=vec3(0.95,0.94,1.0)*pow(fres,2.5)*(0.10+uAudio*0.28);",
-            "base*=0.86+fres*0.35;",
-            "gl_FragColor=vec4(base,1.0);",
-            "}"
-          ].join("\n")
-      });
-
-    const organCore =
-      new THREE.Mesh(
-        new THREE.IcosahedronGeometry(
-          2.18,
-          8
-        ),
-        organCoreMaterial
-      );
-
-    organCore.scale.set(
-      1.28,
-      1.76,
-      0.72
-    );
-
-    organCore.castShadow =
-      true;
-
-    organCore.receiveShadow =
-      true;
-
-    artwork.add(
-      organCore
-    );
-
-    const organInnerMembrane =
-      new THREE.Mesh(
-        new THREE.SphereGeometry(
-          2.55,
-          42,
-          42
-        ),
-        new THREE.MeshStandardMaterial({
-          color: 0xd5c7ff,
-          emissive: 0x321b65,
-          emissiveIntensity: 0.55,
-          roughness: 0.14,
-          metalness: 0.03,
-          transparent: true,
-          opacity: 0.11,
-          side: THREE.DoubleSide
-        })
-      );
-
-    organInnerMembrane.scale.set(
-      1.38,
-      1.92,
-      0.84
-    );
-
-    artwork.add(
-      organInnerMembrane
-    );
-
-    const organOuterMembrane =
-      new THREE.Mesh(
-        new THREE.SphereGeometry(
-          3.05,
-          46,
-          46
-        ),
-        new THREE.MeshStandardMaterial({
-          color: 0xf0d8ff,
-          emissive: 0x6d37ff,
-          emissiveIntensity: 0.38,
-          roughness: 0.10,
-          metalness: 0.02,
-          transparent: true,
-          opacity: 0.07,
-          side: THREE.DoubleSide
-        })
-      );
-
-    organOuterMembrane.scale.set(
-      1.56,
-      2.14,
-      0.93
-    );
-
-    artwork.add(
-      organOuterMembrane
-    );
-
-    const organCoreGlow =
-      new THREE.Mesh(
-        new THREE.SphereGeometry(
-          1.15,
-          32,
-          32
-        ),
-        new THREE.MeshBasicMaterial({
-          color: 0xff67d6,
-          transparent: true,
-          opacity: 0.18,
-          blending: THREE.AdditiveBlending
-        })
-      );
-
-    organCoreGlow.scale.set(
-      0.92,
-      1.24,
-      0.68
-    );
-
-    artwork.add(
-      organCoreGlow
-    );
-
-    const tendrilLines =
-      [];
-
-    const tendrilMaterials =
-      [
+      const lineMaterial =
         new THREE.LineBasicMaterial({
-          color: 0xff54d7,
+          color:
+            index %
+            4 ===
+            0
+              ? 0xffffff
+              : color,
           transparent: true,
-          opacity: 0.72
-        }),
-        new THREE.LineBasicMaterial({
-          color: 0x8356ff,
-          transparent: true,
-          opacity: 0.68
-        }),
-        new THREE.LineBasicMaterial({
-          color: 0xf8edff,
-          transparent: true,
-          opacity: 0.36
-        })
-      ];
+          opacity: 0.88,
+          blending:
+            THREE.AdditiveBlending,
+          depthWrite: false,
+          toneMapped: false
+        });
 
-    function sampleTendrilPoint(
-      data,
-      t,
-      elapsed,
-      audio,
-      bass
-    ) {
-      const envelope =
-        Math.sin(
-          Math.PI *
-          t
+      const coreLine =
+        new THREE.LineLoop(
+          lineGeometry,
+          lineMaterial
         );
 
-      const stem =
-        Math.pow(
-          t,
-          0.78
-        );
+      coreLine.frustumCulled =
+        false;
 
-      const angle =
-        data.phase +
-        data.sweep *
-        t +
-        elapsed *
-        0.22 *
-        data.spin +
-        Math.sin(
-          elapsed *
-          0.17 +
-          data.phase
-        ) *
-        0.22;
+      ribbon.coreLine =
+        coreLine;
 
-      const radial =
-        data.baseRadius +
-        stem *
-        data.reach +
-        Math.sin(
-          t *
-          data.curl +
-          elapsed *
-          0.72 +
-          data.phase
-        ) *
-        0.22 +
-        audio *
-        0.32 *
-        envelope;
-
-      const x =
-        Math.cos(
-          angle
-        ) *
-        radial *
-        data.ellipseX +
-        data.side *
-        0.18 *
-        Math.pow(
-          t,
-          1.45
-        );
-
-      const y =
-        -2.15 +
-        t *
-        data.height +
-        Math.sin(
-          t *
-          (
-            data.curl *
-            0.82
-          ) +
-          elapsed *
-          0.55 +
-          data.phase
-        ) *
-        0.55 *
-        envelope +
-        bass *
-        0.28 *
-        (
-          0.4 +
-          envelope
-        );
-
-      const z =
-        Math.sin(
-          angle
-        ) *
-        data.depth +
-        Math.cos(
-          t *
-          5.4 -
-          elapsed *
-          0.46 +
-          data.phase
-        ) *
-        0.32 *
-        envelope +
-        data.side *
-        0.12 *
-        Math.pow(
-          t,
-          1.2
-        );
-
-      return new THREE.Vector3(
-        x,
-        y,
-        z
+      ribbonContainer.add(
+        coreLine
       );
+
+      const light =
+        new THREE.PointLight(
+          color,
+          3.4,
+          8.5,
+          1.8
+        );
+
+      const lightPoint =
+        curve.getPoint(
+          0.48
+        );
+
+      light.position.copy(
+        lightPoint
+      );
+
+      ribbon.light =
+        light;
+
+      ribbonContainer.add(
+        light
+      );
+
+      return ribbon;
     }
 
     for (
       let i=0;
-      i<16;
+      i<13;
       i++
     ) {
-      const pointsCount =
-        52;
-
-      const positions =
-        new Float32Array(
-          pointsCount * 3
-        );
-
-      const geometry =
-        new THREE.BufferGeometry();
-
-      geometry.setAttribute(
-        "position",
-        new THREE.BufferAttribute(
-          positions,
-          3
+      mainRibbons.push(
+        createMainRibbon(
+          i
         )
       );
+    }
+
+    function createFilament(
+      index
+    ) {
+      const points = [];
+      const pointCount = 90;
+
+      for (
+        let i=0;
+        i<pointCount;
+        i++
+      ) {
+        const t =
+          i /
+          pointCount;
+
+        const a =
+          t *
+          Math.PI *
+          2;
+
+        const radius =
+          1.85 +
+          Math.sin(
+            a *
+            (
+              3 +
+              index %
+              4
+            ) +
+            index
+          ) *
+          0.48;
+
+        points.push(
+          new THREE.Vector3(
+            Math.cos(
+              a +
+              index *
+              0.37
+            ) *
+            radius *
+            (
+              1.28 +
+              (
+                index %
+                3
+              ) *
+              0.09
+            ),
+            Math.sin(
+              a *
+              (
+                1 +
+                (
+                  index %
+                  4
+                ) *
+                0.5
+              ) +
+              index *
+              0.23
+            ) *
+            (
+              1.45 +
+              (
+                index %
+                5
+              ) *
+              0.10
+            ),
+            0.55 +
+            Math.sin(
+              a *
+              (
+                2 +
+                (
+                  index %
+                  5
+                )
+              ) -
+              index *
+              0.42
+            ) *
+            (
+              0.95 +
+              (
+                index %
+                4
+              ) *
+              0.16
+            )
+          )
+        );
+      }
+
+      const geometry =
+        new THREE.BufferGeometry()
+          .setFromPoints(
+            points
+          );
+
+      const color =
+        ribbonPalette[
+          index %
+          ribbonPalette.length
+        ];
 
       const material =
-        tendrilMaterials[
-          i % tendrilMaterials.length
-        ].clone();
+        new THREE.LineBasicMaterial({
+          color:
+            index %
+            5 ===
+            0
+              ? 0xffffff
+              : color,
+          transparent: true,
+          opacity:
+            0.26 +
+            (
+              index %
+              4
+            ) *
+            0.08,
+          blending:
+            THREE.AdditiveBlending,
+          depthWrite: false,
+          toneMapped: false
+        });
 
       const line =
-        new THREE.Line(
+        new THREE.LineLoop(
           geometry,
           material
         );
 
       line.userData = {
-        phase:
-          (
-            i /
-            16
-          ) *
-          Math.PI *
-          2,
-        sweep:
-          1.9 +
-          (
-            i %
-            5
-          ) *
-          0.22,
-        curl:
-          7.0 +
-          (
-            i %
-            6
-          ) *
-          0.65,
-        reach:
-          2.25 +
-          (
-            i %
-            4
-          ) *
-          0.34,
-        height:
-          4.4 +
-          (
-            i %
-            3
-          ) *
-          0.42,
-        depth:
-          0.88 +
-          (
-            i %
-            4
-          ) *
-          0.12,
-        ellipseX:
-          0.98 +
-          (
-            i %
-            3
-          ) *
-          0.09,
-        side:
-          i % 2 === 0
-            ? -1
-            : 1,
-        spin:
-          i % 2 === 0
-            ? -1
-            : 1,
-        baseRadius:
-          0.46 +
-          (
-            i %
-            4
-          ) *
-          0.07,
-        pointsCount:
-          pointsCount
-      };
-
-      tendrilLines.push(
-        line
-      );
-
-      artwork.add(
-        line
-      );
-    }
-
-    const neuralNodes =
-      [];
-
-    const neuralNodeMaterialA =
-      new THREE.MeshStandardMaterial({
-        color: 0xff67d6,
-        emissive: 0xff41cf,
-        emissiveIntensity: 1.3,
-        roughness: 0.22,
-        metalness: 0.03,
-        transparent: true,
-        opacity: 0.92
-      });
-
-    const neuralNodeMaterialB =
-      new THREE.MeshStandardMaterial({
-        color: 0xcbbcff,
-        emissive: 0x724cff,
-        emissiveIntensity: 1.0,
-        roughness: 0.18,
-        metalness: 0.03,
-        transparent: true,
-        opacity: 0.85
-      });
-
-    for (
-      let i=0;
-      i<14;
-      i++
-    ) {
-      const node =
-        new THREE.Mesh(
-          new THREE.SphereGeometry(
-            0.11 +
-            (
-              i % 3
-            ) *
-            0.045,
-            18,
-            18
+        baseRotation:
+          new THREE.Euler(
+            index *
+            0.21,
+            index *
+            0.31,
+            index *
+            0.16
           ),
-          i % 2 === 0
-            ? neuralNodeMaterialA.clone()
-            : neuralNodeMaterialB.clone()
-        );
-
-      node.userData = {
-        tendrilIndex:
-          i %
-          tendrilLines.length,
-        t:
-          0.24 +
-          (
-            (
-              i * 13
-            ) %
-            56
-          ) /
-          100,
-        drift:
-          i *
-          0.6
-      };
-
-      neuralNodes.push(
-        node
-      );
-
-      artwork.add(
-        node
-      );
-    }
-
-    const floatingCells =
-      [];
-
-    for (
-      let i=0;
-      i<11;
-      i++
-    ) {
-      const cell =
-        new THREE.Mesh(
-          new THREE.SphereGeometry(
-            0.08 +
-            (
-              i % 4
-            ) *
-            0.02,
-            14,
-            14
-          ),
-          new THREE.MeshBasicMaterial({
-            color:
-              i % 2 === 0
-                ? 0xff8ce0
-                : 0x8c72ff,
-            transparent: true,
-            opacity: 0.28,
-            blending: THREE.AdditiveBlending
-          })
-        );
-
-      cell.userData = {
-        radius:
-          2.6 +
-          (
-            i %
-            5
-          ) *
-          0.34,
         speed:
-          0.16 +
-          i *
-          0.012,
-        lift:
-          -1.6 +
+          0.025 +
           (
-            i %
-            6
+            index %
+            7
           ) *
-          0.68,
-        angle:
-          (
-            i /
-            11
-          ) *
-          Math.PI *
-          2
+          0.005,
+        phase:
+          index *
+          0.48
       };
 
-      floatingCells.push(
-        cell
+      line.rotation.copy(
+        line.userData.baseRotation
       );
 
-      artwork.add(
-        cell
+      filamentLoops.push(
+        line
+      );
+
+      ribbonContainer.add(
+        line
       );
     }
 
-    room.add(
-      artwork
-    );
-
-    const frameMaterial =
-      new THREE.MeshStandardMaterial({
-        color: 0x15151a,
-        roughness: 0.62,
-        metalness: 0.18
-      });
-
-    const artworkFrameWidth =
-      18.5;
-
-    const artworkFrameHeight =
-      12.0;
-
-    const artworkFrameDepth =
-      0.70;
-
-    const artworkFrameThickness =
-      0.72;
-
-    const artworkFrameCenterY =
-      8.0;
-
-    const artworkFrameZ =
-      backZ+0.78;
-
-    roomMesh(
-      new THREE.BoxGeometry(
-        artworkFrameWidth+
-        artworkFrameThickness*2,
-        artworkFrameThickness,
-        artworkFrameDepth
-      ),
-      frameMaterial,
-      [
-        0,
-        artworkFrameCenterY+
-        artworkFrameHeight/2+
-        artworkFrameThickness/2,
-        artworkFrameZ
-      ]
-    );
-
-    roomMesh(
-      new THREE.BoxGeometry(
-        artworkFrameWidth+
-        artworkFrameThickness*2,
-        artworkFrameThickness,
-        artworkFrameDepth
-      ),
-      frameMaterial,
-      [
-        0,
-        artworkFrameCenterY-
-        artworkFrameHeight/2-
-        artworkFrameThickness/2,
-        artworkFrameZ
-      ]
-    );
-
-    [
-      -1,
-      1
-    ].forEach(
-      function (
-        side
-      ) {
-        roomMesh(
-          new THREE.BoxGeometry(
-            artworkFrameThickness,
-            artworkFrameHeight,
-            artworkFrameDepth
-          ),
-          frameMaterial,
-          [
-            side*
-            (
-              artworkFrameWidth/2+
-              artworkFrameThickness/2
-            ),
-            artworkFrameCenterY,
-            artworkFrameZ
-          ]
-        );
-      }
-    );
-
-    const artworkRecess =
-      roomMesh(
-        new THREE.BoxGeometry(
-          artworkFrameWidth,
-          artworkFrameHeight,
-          0.34
-        ),
-        new THREE.MeshStandardMaterial({
-          color: 0x101015,
-          roughness: 0.82,
-          metalness: 0.08
-        }),
-        [
-          0,
-          artworkFrameCenterY,
-          backZ+0.50
-        ]
-      );
-
-    artworkRecess.receiveShadow =
-      true;
-
-    const fogSheetMaterial =
-      new THREE.MeshBasicMaterial({
-        color: 0xb48cff,
-        transparent: true,
-        opacity: 0.05,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        side: THREE.DoubleSide
-      });
-
-    const fogSheetA =
-      new THREE.Mesh(
-        new THREE.PlaneGeometry(
-          18.8,
-          11.6
-        ),
-        fogSheetMaterial
-      );
-
-    fogSheetA.position.set(
-      0,
-      8.0,
-      backZ+1.58
-    );
-
-    room.add(
-      fogSheetA
-    );
-
-    const fogSheetB =
-      new THREE.Mesh(
-        new THREE.PlaneGeometry(
-          48,
-          9
-        ),
-        new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: 0.05,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending,
-          side: THREE.DoubleSide
-        })
-      );
-
-    fogSheetB.rotation.x =
-      -Math.PI/2;
-
-    fogSheetB.position.set(
-      0,
-      1.05,
-      -10
-    );
-
-    room.add(
-      fogSheetB
-    );
-
-    const fogAura =
-      new THREE.Mesh(
-        new THREE.PlaneGeometry(
-          22,
-          15
-        ),
-        new THREE.MeshBasicMaterial({
-          color: 0xdccfff,
-          transparent: true,
-          opacity: 0.045,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending,
-          side: THREE.DoubleSide
-        })
-      );
-
-    fogAura.position.set(
-      0,
-      8.2,
-      backZ+2.1
-    );
-
-    room.add(
-      fogAura
-    );
-
-    artwork.renderOrder =
-      2;
-
-    const characterRoot =
-      new THREE.Group();
-
-    characterRoot.position.set(
-      0,
-      0,
-      9.5
-    );
-
-    scene.add(
-      characterRoot
-    );
-
-    let character =
-      null;
-
-    let mixer =
-      null;
-
-    let currentAction =
-      null;
-
-    const actions = {
-      idle: null,
-      walk: null,
-      run: null
-    };
-
-    const loader =
-      new FBXLoader();
-
-    const mateoSources = [
-      "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/Mateo.fbx",
-      "./Mateo.fbx"
-    ];
-
-    function loadMateo(
-      sourceIndex=0
+    for (
+      let i=0;
+      i<34;
+      i++
     ) {
-      if (
-        sourceIndex >=
-        mateoSources.length
-      ) {
-        statusText.textContent =
-          "Mateo.fbx could not be loaded";
-
-        return;
-      }
-
-      statusText.textContent =
-        sourceIndex === 0
-          ? "Loading Mateo.fbx from portfolio assets…"
-          : "Trying local Mateo.fbx…";
-
-      loader.load(
-        mateoSources[
-          sourceIndex
-        ],
-
-        function (
-          model
-        ) {
-          character =
-            model;
-
-          let box =
-            new THREE.Box3()
-              .setFromObject(
-                character
-              );
-
-          const size =
-            box.getSize(
-              new THREE.Vector3()
-            );
-
-          const targetHeight =
-            1.78;
-
-          character.scale.multiplyScalar(
-            targetHeight /
-            Math.max(
-              size.y,
-              0.001
-            )
-          );
-
-          character.updateMatrixWorld(
-            true
-          );
-
-          box =
-            new THREE.Box3()
-              .setFromObject(
-                character
-              );
-
-          const center =
-            box.getCenter(
-              new THREE.Vector3()
-            );
-
-          character.position.x -=
-            center.x;
-
-          character.position.z -=
-            center.z;
-
-          character.position.y -=
-            box.min.y;
-
-          character.traverse(
-            function (
-              object
-            ) {
-              if (
-                !object.isMesh
-              ) {
-                return;
-              }
-
-              object.castShadow =
-                true;
-
-              object.receiveShadow =
-                true;
-
-              object.frustumCulled =
-                false;
-
-              if (
-                object.material
-              ) {
-                const materials =
-                  Array.isArray(
-                    object.material
-                  )
-                    ? object.material
-                    : [
-                        object.material
-                      ];
-
-                materials.forEach(
-                  function (
-                    material
-                  ) {
-                    if (
-                      material &&
-                      "side" in
-                      material
-                    ) {
-                      material.side =
-                        THREE.DoubleSide;
-
-                      material.needsUpdate =
-                        true;
-                    }
-                  }
-                );
-              }
-            }
-          );
-
-          characterRoot.add(
-            character
-          );
-
-          if (
-            model.animations &&
-            model.animations.length
-          ) {
-            mixer =
-              new THREE.AnimationMixer(
-                character
-              );
-
-            const clips =
-              model.animations;
-
-            function findClip(
-              words
-            ) {
-              return clips.find(
-                function (
-                  clip
-                ) {
-                  const name =
-                    (
-                      clip.name ||
-                      ""
-                    ).toLowerCase();
-
-                  return words.some(
-                    function (
-                      word
-                    ) {
-                      return name.includes(
-                        word
-                      );
-                    }
-                  );
-                }
-              );
-            }
-
-            const idle =
-              findClip([
-                "idle",
-                "stand"
-              ]);
-
-            const walk =
-              findClip([
-                "walk"
-              ]);
-
-            const run =
-              findClip([
-                "run",
-                "jog"
-              ]);
-
-            if (
-              idle
-            ) {
-              actions.idle =
-                mixer.clipAction(
-                  idle
-                );
-            }
-
-            if (
-              walk
-            ) {
-              actions.walk =
-                mixer.clipAction(
-                  walk
-                );
-            }
-
-            if (
-              run
-            ) {
-              actions.run =
-                mixer.clipAction(
-                  run
-                );
-            }
-
-            currentAction =
-              actions.idle ||
-              mixer.clipAction(
-                clips[0]
-              );
-
-            currentAction.play();
-          }
-
-          statusText.textContent =
-            "Mateo loaded";
-        },
-
-        function (
-          event
-        ) {
-          if (
-            event.lengthComputable &&
-            event.total > 0
-          ) {
-            statusText.textContent =
-              "Loading Mateo.fbx " +
-              Math.round(
-                event.loaded /
-                event.total *
-                100
-              ) +
-              "%";
-          }
-        },
-
-        function () {
-          loadMateo(
-            sourceIndex +
-            1
-          );
-        }
+      createFilament(
+        i
       );
     }
 
-    loadMateo();
-
-    const input = {
-      forward: false,
-      backward: false,
-      left: false,
-      right: false,
-      run: false
-    };
-
-    const keyMap = {
-      KeyW: "forward",
-      ArrowUp: "forward",
-      KeyS: "backward",
-      ArrowDown: "backward",
-      KeyA: "left",
-      ArrowLeft: "left",
-      KeyD: "right",
-      ArrowRight: "right",
-      ShiftLeft: "run",
-      ShiftRight: "run"
-    };
-
-    window.addEventListener(
-      "keydown",
-      function (
-        event
-      ) {
-        const action =
-          keyMap[
-            event.code
-          ];
-
-        if (
-          action
-        ) {
-          input[action] =
-            true;
-
-          event.preventDefault();
-        }
-      }
-    );
-
-    window.addEventListener(
-      "keyup",
-      function (
-        event
-      ) {
-        const action =
-          keyMap[
-            event.code
-          ];
-
-        if (
-          action
-        ) {
-          input[action] =
-            false;
-
-          event.preventDefault();
-        }
-      }
-    );
-
-    document.querySelectorAll(
-      "[data-key]"
-    ).forEach(
-      function (
-        button
-      ) {
-        const action =
-          button.dataset.key;
-
-        function down(
-          event
-        ) {
-          event.preventDefault();
-          input[action] =
-            true;
-        }
-
-        function up(
-          event
-        ) {
-          event.preventDefault();
-          input[action] =
-            false;
-        }
-
-        button.addEventListener(
-          "pointerdown",
-          down
-        );
-
-        button.addEventListener(
-          "pointerup",
-          up
-        );
-
-        button.addEventListener(
-          "pointercancel",
-          up
-        );
-      }
-    );
-
-    let cameraYaw =
-      0;
-
-    let cameraPitch =
-      THREE.MathUtils.degToRad(
-        14
+    const luminousCore =
+      new THREE.Mesh(
+        new THREE.SphereGeometry(
+          1,
+          32,
+          24
+        ),
+        new THREE.MeshBasicMaterial({
+          color: 0xff55d4,
+          transparent: true,
+          opacity: 0.10,
+          blending:
+            THREE.AdditiveBlending,
+          depthWrite: false,
+          toneMapped: false
+        })
       );
 
-    let cameraDistance =
-      15.2;
-
-    const minCameraDistance =
-      10.5;
-
-    const maxCameraDistance =
-      24.0;
-
-    let dragging =
-      false;
-
-    let lastPointerX =
-      0;
-
-    let lastPointerY =
-      0;
-
-    container.addEventListener(
-      "pointerdown",
-      function (
-        event
-      ) {
-        dragging =
-          true;
-
-        lastPointerX =
-          event.clientX;
-
-        lastPointerY =
-          event.clientY;
-
-        container.setPointerCapture(
-          event.pointerId
-        );
-      }
+    luminousCore.scale.set(
+      2.5,
+      1.75,
+      1.25
     );
 
-    container.addEventListener(
-      "pointermove",
-      function (
-        event
-      ) {
-        if (
-          !dragging
-        ) {
+    luminousCore.position.z =
+      0.55;
+
+    artGroup.add(
+      luminousCore
+    );
+
+    const coreLight =
+      new THREE.PointLight(
+        0xff59d6,
+        18,
+        18,
+        1.7
+      );
+
+    coreLight.position.set(
+      0,
+      0,
+      1.55
+    );
+
+    artGroup.add(
+      coreLight
+    );
+
+    const violetCoreLight =
+      new THREE.PointLight(
+        0x7858ff,
+        12,
+        16,
+        1.8
+      );
+
+    violetCoreLight.position.set(
+      -1.4,
+      0.8,
+      0.8
+    );
+
+    artGroup.add(
+      violetCoreLight
+    );
+
+    const whiteCoreLight =
+      new THREE.PointLight(
+        0xffeaff,
+        6,
+        12,
+        1.8
+      );
+
+    whiteCoreLight.position.set(
+      1.2,
+      -0.4,
+      1.9
+    );
+
+    artGroup.add(
+      whiteCoreLight
+    );
+
+    // ---------- MATTEO / fallback figure ----------
+    const characterGroup = new THREE.Group();
+    characterGroup.position.set(-4.8, 0, 4.6);
+    scene.add(characterGroup);
+
+    let mateoLoaded = false;
+    addFallbackFigure();
+    tryLoadMateo();
+
+    function addFallbackFigure() {
+      const fallback = new THREE.Group();
+      fallback.name = 'mateo-fallback';
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x2d3141, roughness: 0.72, metalness: 0.08 });
+      const accentMat = new THREE.MeshStandardMaterial({ color: 0x7f56ff, roughness: 0.45, metalness: 0.16, emissive: 0x3c1a78, emissiveIntensity: 0.5 });
+
+      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.72, 1.2, 0.34), bodyMat);
+      torso.position.y = 1.5;
+      torso.castShadow = true;
+      fallback.add(torso);
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.52, 0.46), bodyMat);
+      head.position.set(0, 2.42, 0);
+      head.castShadow = true;
+      fallback.add(head);
+      const hoodie = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.28, 0.38), accentMat);
+      hoodie.position.set(0, 1.5, -0.02);
+      fallback.add(hoodie);
+
+      [[-0.25,0.7],[0.25,0.7],[-0.18,-0.7],[0.18,-0.7]].forEach(([x,y], idx) => {
+        const limb = new THREE.Mesh(new THREE.BoxGeometry(idx < 2 ? 0.17 : 0.2, idx < 2 ? 0.92 : 1.0, 0.17), bodyMat);
+        limb.position.set(x, idx < 2 ? 1.55 : 0.55, y * 0.18);
+        if (idx < 2) limb.position.x = idx === 0 ? -0.58 : 0.58;
+        if (idx < 2) limb.position.y = 1.55;
+        if (idx < 2) limb.rotation.z = idx === 0 ? 0.14 : -0.14;
+        if (idx >= 2) limb.position.x = idx === 2 ? -0.18 : 0.18;
+        limb.castShadow = true;
+        fallback.add(limb);
+      });
+      fallback.rotation.y = Math.PI * 0.28;
+      characterGroup.add(fallback);
+    }
+
+    function tryLoadMateo() {
+      const loader = new FBXLoader();
+      const candidates = [
+        './portfolio-assets-v1/Mateo.fbx',
+        'portfolio-assets-v1/Mateo.fbx',
+        './Mateo.fbx',
+        'Mateo.fbx'
+      ];
+
+      let idx = 0;
+      const attempt = () => {
+        if (idx >= candidates.length) {
+          loadingLabel.textContent = 'Gallery loaded';
+          setTimeout(() => loadingLabel.style.display = 'none', 1200);
           return;
         }
-
-        const dx =
-          event.clientX -
-          lastPointerX;
-
-        const dy =
-          event.clientY -
-          lastPointerY;
-
-        lastPointerX =
-          event.clientX;
-
-        lastPointerY =
-          event.clientY;
-
-        cameraYaw -=
-          dx *
-          0.006;
-
-        cameraPitch =
-          THREE.MathUtils.clamp(
-            cameraPitch -
-            dy *
-            0.004,
-            THREE.MathUtils.degToRad(
-              -5
-            ),
-            THREE.MathUtils.degToRad(
-              34
-            )
-          );
-      }
-    );
-
-    container.addEventListener(
-      "pointerup",
-      function (
-        event
-      ) {
-        dragging =
-          false;
-
-        try {
-          container.releasePointerCapture(
-            event.pointerId
-          );
-        } catch (
-          error
-        ) {}
-      }
-    );
-
-    container.addEventListener(
-      "wheel",
-      function (
-        event
-      ) {
-        cameraDistance =
-          THREE.MathUtils.clamp(
-            cameraDistance +
-            event.deltaY *
-            0.008,
-            minCameraDistance,
-            maxCameraDistance
-          );
-
-        event.preventDefault();
-      },
-      {
-        passive: false
-      }
-    );
-
-    document.querySelectorAll(
-      "[data-look]"
-    ).forEach(
-      function (
-        button
-      ) {
-        button.addEventListener(
-          "pointerdown",
-          function (
-            event
-          ) {
-            event.preventDefault();
-
-            cameraYaw +=
-              Number(
-                button.dataset.look
-              ) *
-              0.22;
-          }
+        const url = candidates[idx++];
+        loader.load(
+          url,
+          (fbx) => {
+            mateoLoaded = true;
+            const fallback = characterGroup.getObjectByName('mateo-fallback');
+            if (fallback) characterGroup.remove(fallback);
+            fbx.scale.setScalar(0.01 * 100); // honor previous x100 request if source is tiny
+            const box = new THREE.Box3().setFromObject(fbx);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const maxDim = Math.max(size.x, size.y, size.z) || 1;
+            const desired = 2.1;
+            const adjust = desired / maxDim;
+            fbx.scale.multiplyScalar(adjust);
+            const newBox = new THREE.Box3().setFromObject(fbx);
+            const center = new THREE.Vector3();
+            newBox.getCenter(center);
+            const min = newBox.min.clone();
+            fbx.position.sub(center);
+            fbx.position.y -= min.y;
+            fbx.traverse((child) => {
+              if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+                if (child.material) {
+                  child.material.side = THREE.DoubleSide;
+                }
+              }
+            });
+            fbx.rotation.y = Math.PI * 0.28;
+            characterGroup.add(fbx);
+            loadingLabel.textContent = 'Gallery loaded';
+            setTimeout(() => loadingLabel.style.display = 'none', 1200);
+          },
+          undefined,
+          () => attempt()
         );
-      }
-    );
+      };
+      attempt();
+    }
 
-    function setAction(
-      action
+    // ---------- AUDIO ----------
+    const audioListener = new THREE.AudioListener();
+    camera.add(audioListener);
+    const analyserData = { value: 0 };
+    const musicCandidates = [
+      './portfolio-assets-v1/TheAtlas.mp3',
+      'portfolio-assets-v1/TheAtlas.mp3',
+      './TheAtlas.mp3',
+      'TheAtlas.mp3'
+    ];
+    let musicCandidateIndex = 0;
+    atlasMusic.volume = 0;
+    atlasMusic.src = musicCandidates[musicCandidateIndex];
+    let audioReady = false;
+    let audioStarted = false;
+    let targetVolume = 0.36;
+
+    atlasMusic.addEventListener('error', () => {
+      musicCandidateIndex += 1;
+      if (musicCandidateIndex < musicCandidates.length) {
+        atlasMusic.src = musicCandidates[musicCandidateIndex];
+        atlasMusic.load();
+      }
+    });
+
+    atlasMusic.addEventListener('canplay', () => { audioReady = true; });
+
+    async function startMusic() {
+      if (audioStarted) return;
+      audioStarted = true;
+      try {
+        if (!atlasMusic.src) atlasMusic.src = musicCandidates[0];
+        await atlasMusic.play();
+      } catch (err) {
+        audioStarted = false;
+      }
+    }
+
+    function triggerAudioStart() { startMusic(); }
+    window.addEventListener('pointerdown', triggerAudioStart, { passive: true, once: true });
+    window.addEventListener('touchstart', triggerAudioStart, { passive: true, once: true });
+    window.addEventListener('keydown', triggerAudioStart, { once: true });
+
+    // ---------- INPUT ----------
+    window.addEventListener('pointermove', (e) => {
+      pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
+    }, { passive: true });
+
+    // ---------- HELPERS ----------
+    function buildConcreteTexture() {
+      const size = 256;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#77777d';
+      ctx.fillRect(0, 0, size, size);
+      const img = ctx.getImageData(0, 0, size, size);
+      const data = img.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const n = 118 + Math.random() * 42;
+        data[i] = n;
+        data[i+1] = n - 2;
+        data[i+2] = n - 5;
+        data[i+3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      for (let i = 0; i < 900; i += 1) {
+        const x = Math.random() * size;
+        const y = Math.random() * size;
+        const r = 1 + Math.random() * 3;
+        ctx.fillStyle = `rgba(255,255,255,${0.02 + Math.random() * 0.035})`;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function updateArtwork(
+      time,
+      audioBoost
     ) {
-      if (
-        !action ||
-        currentAction ===
-        action
-      ) {
-        return;
-      }
+      const pulse =
+        1 +
+        audioBoost *
+        0.08;
 
-      action.reset();
-
-      action.play();
-
-      if (
-        currentAction
-      ) {
-        currentAction.fadeOut(
-          0.16
-        );
-      }
-
-      action.fadeIn(
-        0.16
-      );
-
-      currentAction =
-        action;
-    }
-
-    const moveDirection =
-      new THREE.Vector3();
-
-    const cameraForward =
-      new THREE.Vector3();
-
-    const cameraRight =
-      new THREE.Vector3();
-
-    function updateCharacter(
-      delta
-    ) {
-      let x =
-        0;
-
-      let z =
-        0;
-
-      if (
-        input.forward
-      ) {
-        z += 1;
-      }
-
-      if (
-        input.backward
-      ) {
-        z -= 1;
-      }
-
-      if (
-        input.left
-      ) {
-        x -= 1;
-      }
-
-      if (
-        input.right
-      ) {
-        x += 1;
-      }
-
-      const moving =
-        x !== 0 ||
-        z !== 0;
-
-      if (
-        !moving
-      ) {
-        if (
-          actions.idle
-        ) {
-          setAction(
-            actions.idle
-          );
-        }
-
-        return;
-      }
-
-      cameraForward.set(
-        -Math.sin(
-          cameraYaw
-        ),
-        0,
-        -Math.cos(
-          cameraYaw
-        )
-      );
-
-      cameraRight.set(
-        cameraForward.z,
-        0,
-        -cameraForward.x
-      );
-
-      moveDirection
-        .copy(
-          cameraForward
-        )
-        .multiplyScalar(
-          z
-        )
-        .addScaledVector(
-          cameraRight,
-          x
-        )
-        .normalize();
-
-      const speed =
-        input.run
-          ? 4.4
-          : 2.45;
-
-      characterRoot.position.addScaledVector(
-        moveDirection,
-        speed *
-        delta
-      );
-
-      characterRoot.position.x =
-        THREE.MathUtils.clamp(
-          characterRoot.position.x,
-          -galleryWidth/2+2.4,
-          galleryWidth/2-2.4
-        );
-
-      characterRoot.position.z =
-        THREE.MathUtils.clamp(
-          characterRoot.position.z,
-          backZ+3.0,
-          frontZ-3.0
-        );
-
-      const targetRotation =
-        Math.atan2(
-          moveDirection.x,
-          moveDirection.z
-        );
-
-      const difference =
-        Math.atan2(
-          Math.sin(
-            targetRotation -
-            characterRoot.rotation.y
-          ),
-          Math.cos(
-            targetRotation -
-            characterRoot.rotation.y
-          )
-        );
-
-      characterRoot.rotation.y +=
-        difference *
-        Math.min(
-          1,
-          delta *
-          8
-        );
-
-      if (
-        input.run &&
-        actions.run
-      ) {
-        setAction(
-          actions.run
-        );
-      } else if (
-        actions.walk
-      ) {
-        setAction(
-          actions.walk
-        );
-      }
-    }
-
-    const cameraTarget =
-      new THREE.Vector3();
-
-    const desiredCamera =
-      new THREE.Vector3();
-
-    function updateCamera(
-      delta
-    ) {
-      cameraTarget.set(
-        characterRoot.position.x,
-        1.35,
-        characterRoot.position.z
-      );
-
-      const horizontal =
-        Math.cos(
-          cameraPitch
-        ) *
-        cameraDistance;
-
-      desiredCamera.set(
-        cameraTarget.x +
-        Math.sin(
-          cameraYaw
-        ) *
-        horizontal,
-        cameraTarget.y +
-        Math.sin(
-          cameraPitch
-        ) *
-        cameraDistance +
-        1.35,
-        cameraTarget.z +
-        Math.cos(
-          cameraYaw
-        ) *
-        horizontal
-      );
-
-      camera.position.lerp(
-        desiredCamera,
-        1 -
-        Math.exp(
-          -delta *
-          5
-        )
-      );
-
-      camera.lookAt(
-        cameraTarget
-      );
-    }
-
-    function resize() {
-      const width =
-        Math.max(
-          container.clientWidth,
-          1
-        );
-
-      const height =
-        Math.max(
-          container.clientHeight,
-          1
-        );
-
-      camera.aspect =
-        width /
-        height;
-
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(
-        width,
-        height,
-        false
-      );
-    }
-
-    const resizeObserver =
-      new ResizeObserver(
-        resize
-      );
-
-    resizeObserver.observe(
-      container
-    );
-
-    resize();
-
-    camera.position.set(
-      0,
-      8.1,
-      27.8
-    );
-
-    camera.lookAt(
-      0,
-      7.4,
-      backZ+1.7
-    );
-
-    const clock =
-      new THREE.Clock();
-
-    function animate() {
-      requestAnimationFrame(
-        animate
-      );
-
-      const delta =
-        Math.min(
-          clock.getDelta(),
-          0.05
-        );
-
-      const elapsed =
-        clock.elapsedTime;
-
-      updateAudioReactive();
-
-      artworkUniforms.uTime.value =
-        elapsed;
-
-      artworkUniforms.uAudio.value =
-        reactiveLevel;
-
-      artworkUniforms.uBass.value =
-        bassLevel;
-
-      if (
-        !reducedMotion.matches
-      ) {
-        artwork.rotation.y =
-          Math.sin(
-            elapsed *
-            0.10
-          ) *
-          (
-            0.09 +
-            reactiveLevel *
-            0.05
-          );
-
-        artwork.rotation.x =
-          Math.sin(
-            elapsed *
-            0.08
-          ) *
-          (
-            0.03 +
-            bassLevel *
-            0.03
-          );
-
-        const artScale =
+      artGroup.scale.set(
+        1.16 *
+        pulse,
+        1.16 *
+        pulse,
+        1.16 *
+        (
           1 +
-          reactiveLevel *
-          0.03 +
-          bassLevel *
-          0.02;
+          audioBoost *
+          0.16
+        )
+      );
 
-        artwork.scale.set(
-          artworkBaseScale.x *
-          artScale,
-          artworkBaseScale.y *
-          artScale,
-          artworkBaseScale.z *
-          (
-            1 +
-            reactiveLevel *
-            0.04 +
-            bassLevel *
-            0.02
-          )
-        );
-
-        organCore.rotation.y =
-          elapsed *
-          0.18;
-
-        organCore.rotation.z =
-          Math.sin(
-            elapsed *
-            0.22
-          ) *
-          0.11;
-
-        organInnerMembrane.rotation.y =
-          -elapsed *
-          0.12;
-
-        organInnerMembrane.rotation.z =
-          Math.sin(
-            elapsed *
-            0.16
-          ) *
-          0.14;
-
-        organOuterMembrane.rotation.y =
-          elapsed *
-          0.08;
-
-        organOuterMembrane.rotation.x =
-          Math.sin(
-            elapsed *
-            0.11
-          ) *
-          0.12;
-
-        organCoreGlow.scale.set(
-          0.92 +
-          bassLevel *
-          0.18,
-          1.24 +
-          reactiveLevel *
-          0.22,
-          0.68 +
-          bassLevel *
-          0.12
-        );
-
-        tendrilLines.forEach(
-          function (
-            line,
-            index
-          ) {
-            const attribute =
-              line.geometry.attributes.position;
-
-            for (
-              let i=0;
-              i<line.userData.pointsCount;
-              i++
-            ) {
-              const t =
-                i /
-                (
-                  line.userData.pointsCount -
-                  1
-                );
-
-              const point =
-                sampleTendrilPoint(
-                  line.userData,
-                  t,
-                  elapsed,
-                  reactiveLevel,
-                  bassLevel
-                );
-
-              attribute.setXYZ(
-                i,
-                point.x,
-                point.y,
-                point.z
-              );
-            }
-
-            attribute.needsUpdate =
-              true;
-
-            line.material.opacity =
-              (
-                index % 3 === 2
-                  ? 0.28
-                  : 0.54
-              ) +
-              reactiveLevel *
-              0.16;
-
-            line.rotation.z =
-              Math.sin(
-                elapsed *
-                0.15 +
-                index
-              ) *
-              0.05;
-          }
-        );
-
-        neuralNodes.forEach(
-          function (
-            node
-          ) {
-            const line =
-              tendrilLines[
-                node.userData.tendrilIndex
-              ];
-
-            const point =
-              sampleTendrilPoint(
-                line.userData,
-                node.userData.t,
-                elapsed +
-                node.userData.drift *
-                0.12,
-                reactiveLevel,
-                bassLevel
-              );
-
-            node.position.copy(
-              point
-            );
-
-            const pulse =
-              0.9 +
-              Math.sin(
-                elapsed *
-                1.8 +
-                node.userData.drift
-              ) *
-              0.18 +
-              reactiveLevel *
-              0.35;
-
-            node.scale.setScalar(
-              pulse
-            );
-
-            node.material.emissiveIntensity =
-              0.9 +
-              reactiveLevel *
-              1.0 +
-              bassLevel *
-              0.5;
-          }
-        );
-
-        floatingCells.forEach(
-          function (
-            cell,
-            index
-          ) {
-            const a =
-              cell.userData.angle +
-              elapsed *
-              cell.userData.speed;
-
-            const r =
-              cell.userData.radius +
-              Math.sin(
-                elapsed *
-                0.9 +
-                index
-              ) *
-              0.12 +
-              reactiveLevel *
-              0.14;
-
-            cell.position.set(
-              Math.cos(
-                a
-              ) *
-              r *
-              0.92,
-              cell.userData.lift +
-              Math.sin(
-                elapsed *
-                0.8 +
-                index *
-                0.7
-              ) *
-              0.28,
-              Math.sin(
-                a
-              ) *
-              (
-                0.82 +
-                (
-                  index %
-                  3
-                ) *
-                0.08
-              )
-            );
-
-            const flicker =
-              0.18 +
-              reactiveLevel *
-              0.22 +
-              Math.sin(
-                elapsed *
-                1.4 +
-                index
-              ) *
-              0.05;
-
-            cell.material.opacity =
-              flicker;
-          }
-        );
-
-        fogSheetA.material.opacity =
-          0.052 +
-          Math.sin(
-            elapsed *
-            0.55
-          ) *
-          0.012 +
-          reactiveLevel *
-          0.030;
-
-        fogSheetB.material.opacity =
-          0.038 +
-          Math.sin(
-            elapsed *
-            0.40 +
-            0.9
-          ) *
-          0.009 +
-          bassLevel *
-          0.018;
-
-        fogSheetA.rotation.z =
-          Math.sin(
-            elapsed *
-            0.18
-          ) *
-          0.03;
-
-        fogSheetB.rotation.z =
-          Math.sin(
-            elapsed *
-            0.11 +
-            1.2
-          ) *
-          0.02;
-
-        fogAura.rotation.z =
-          Math.sin(
-            elapsed *
-            0.08
-          ) *
-          0.025;
-
-        fogAura.material.opacity =
-          0.042 +
-          reactiveLevel *
-          0.030 +
-          Math.sin(
-            elapsed *
-            0.32
-          ) *
-          0.008;
-      } else {
-        artwork.scale.copy(
-          artworkBaseScale
-        );
-      }
-
-      magentaLight.intensity =
-        11 +
-        reactiveLevel *
-        10 +
-        bassLevel *
-        4;
-
-      violetLight.intensity =
-        12 +
-        reactiveLevel *
-        8 +
-        bassLevel *
-        7;
-
-      artworkSpot.intensity =
-        16 +
-        reactiveLevel *
-        7 +
-        bassLevel *
-        2;
-
-      ambient.intensity =
-        0.56 +
-        reactiveLevel *
+      artGroup.rotation.y =
+        Math.sin(
+          time *
+          0.085
+        ) *
         0.12;
 
-      fill.intensity =
-        1.18 +
-        bassLevel *
-        0.42;
+      artGroup.rotation.x =
+        Math.cos(
+          time *
+          0.064
+        ) *
+        0.045;
 
-      updateCharacter(
-        delta
+      artGroup.position.z =
+        1.20 +
+        Math.sin(
+          time *
+          0.22
+        ) *
+        0.12;
+
+      mainRibbons.forEach(
+        (
+          ribbon,
+          index
+        ) => {
+          const curve =
+            buildRibbonCurve(
+              ribbon,
+              time *
+              0.60
+            );
+
+          const tubeGeometry =
+            new THREE.TubeGeometry(
+              curve,
+              112,
+              ribbon.thickness *
+              (
+                1 +
+                audioBoost *
+                0.14
+              ),
+              14,
+              true
+            );
+
+          ribbon.mesh.geometry.dispose();
+
+          ribbon.mesh.geometry =
+            tubeGeometry;
+
+          ribbon.mesh.material.emissiveIntensity =
+            (
+              index %
+              5 ===
+              4
+                ? 4.3
+                : 3.0
+            ) +
+            audioBoost *
+            2.4 +
+            Math.sin(
+              time *
+              0.36 +
+              index
+            ) *
+            0.30;
+
+          const linePoints =
+            curve.getPoints(
+              180
+            );
+
+          ribbon.coreLine.geometry.dispose();
+
+          ribbon.coreLine.geometry =
+            new THREE.BufferGeometry()
+              .setFromPoints(
+                linePoints
+              );
+
+          ribbon.coreLine.material.opacity =
+            0.74 +
+            audioBoost *
+            0.20;
+
+          const lightPoint =
+            curve.getPoint(
+              0.45 +
+              Math.sin(
+                time *
+                0.20 +
+                index
+              ) *
+              0.15
+            );
+
+          ribbon.light.position.copy(
+            lightPoint
+          );
+
+          ribbon.light.intensity =
+            2.4 +
+            audioBoost *
+            4.5 +
+            Math.sin(
+              time *
+              0.50 +
+              index
+            ) *
+            0.45;
+        }
       );
 
-      updateCamera(
-        delta
+      filamentLoops.forEach(
+        (
+          line,
+          index
+        ) => {
+          const base =
+            line.userData.baseRotation;
+
+          line.rotation.set(
+            base.x +
+            Math.sin(
+              time *
+              line.userData.speed +
+              line.userData.phase
+            ) *
+            0.28,
+            base.y +
+            Math.cos(
+              time *
+              (
+                line.userData.speed *
+                0.84
+              ) +
+              line.userData.phase
+            ) *
+            0.34,
+            base.z +
+            Math.sin(
+              time *
+              (
+                line.userData.speed *
+                1.12
+              ) +
+              line.userData.phase
+            ) *
+            0.20
+          );
+
+          line.material.opacity =
+            0.20 +
+            (
+              0.5 +
+              0.5 *
+              Math.sin(
+                time *
+                0.42 +
+                index *
+                0.6
+              )
+            ) *
+            0.26 +
+            audioBoost *
+            0.12;
+        }
       );
 
-      if (
-        mixer
-      ) {
-        mixer.update(
-          delta
-        );
+      luminousCore.scale.set(
+        2.45 +
+        Math.sin(
+          time *
+          0.34
+        ) *
+        0.20 +
+        audioBoost *
+        0.32,
+        1.72 +
+        Math.cos(
+          time *
+          0.28
+        ) *
+        0.12 +
+        audioBoost *
+        0.18,
+        1.20 +
+        Math.sin(
+          time *
+          0.42
+        ) *
+        0.14 +
+        audioBoost *
+        0.26
+      );
+
+      luminousCore.material.opacity =
+        0.08 +
+        audioBoost *
+        0.10;
+
+      coreLight.intensity =
+        17 +
+        audioBoost *
+        16;
+
+      violetCoreLight.intensity =
+        11 +
+        audioBoost *
+        10;
+
+      whiteCoreLight.intensity =
+        5 +
+        audioBoost *
+        8;
+
+      artLight.intensity =
+        8.5 +
+        audioBoost *
+        10;
+
+      artFillLight.intensity =
+        7 +
+        audioBoost *
+        8;
+    }
+
+    function updateAudio(dt) {
+      if (!atlasMusic.paused) {
+        atlasMusic.volume = THREE.MathUtils.damp(atlasMusic.volume, targetVolume, 2.2, dt);
+        const faux = 0.18 + Math.sin(clock.elapsedTime * 0.96) * 0.08 + Math.sin(clock.elapsedTime * 2.7) * 0.04;
+        analyserData.value = Math.max(0, faux);
+      } else {
+        atlasMusic.volume = THREE.MathUtils.damp(atlasMusic.volume, 0, 3, dt);
+        analyserData.value = THREE.MathUtils.damp(analyserData.value, 0, 3, dt);
       }
+    }
 
-      renderer.render(
-        scene,
-        camera
-      );
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = Math.min(clock.getDelta(), 0.033);
+      const elapsed = clock.elapsedTime;
+
+      updateAudio(dt);
+      const audioBoost = analyserData.value;
+      updateArtwork(elapsed, audioBoost);
+
+      const targetX = pointer.x * 0.55;
+      const targetY = -pointer.y * 0.28;
+      viewDrift.x = THREE.MathUtils.damp(viewDrift.x, targetX, 1.6, dt);
+      viewDrift.y = THREE.MathUtils.damp(viewDrift.y, targetY, 1.6, dt);
+
+      camera.position.x = THREE.MathUtils.damp(camera.position.x, viewDrift.x, 1.3, dt);
+      camera.position.y = THREE.MathUtils.damp(camera.position.y, 4.35 + viewDrift.y, 1.3, dt);
+      camera.position.z = THREE.MathUtils.damp(camera.position.z, mobile ? 19.0 : 18.2, 1.5, dt);
+      tmpVec.copy(targetLook).add(new THREE.Vector3(viewDrift.x * 0.15, viewDrift.y * 0.05, 0));
+      camera.lookAt(tmpVec);
+
+      const artPulse = 0.5 + audioBoost * 2.0;
+      overhead.intensity = 22 + artPulse * 2.5;
+      composer.render();
     }
 
     animate();
+
+    function resize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+      bloomPass.setSize(window.innerWidth, window.innerHeight);
+      if (window.innerWidth < 640) {
+        camera.fov = 48;
+        camera.position.z = 19.3;
+      } else if (window.innerWidth < 1024) {
+        camera.fov = 45;
+        camera.position.z = 18.8;
+      } else {
+        camera.fov = 42;
+        camera.position.z = 18.2;
+      }
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
   </script>
 </body>
 </html>
