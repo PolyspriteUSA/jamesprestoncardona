@@ -60,7 +60,7 @@
 </head>
 <body>
 <header class="site-header"><a class="brand" href="./index.html">James Preston Cardona</a><nav class="site-nav" aria-label="Primary navigation"><a href="./index.html#work">Work</a><a href="./digitalhuman.html">Digital Human</a><a href="./resume.html">Resume</a><a href="./index.html#contact">Contact</a></nav></header>
-<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Keyboard or Xbox controller supported. Left stick or D-pad steers, A or right trigger fires, left trigger or right bumper activates nitrous."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p><p class="hud-sub" id="gunValue">Gun Mk I</p></div><div class="hud-card"><p class="hud-label">Nitrous</p><p class="hud-value" id="nitroValue">35%</p><div class="meter"><div class="meter-fill" id="nitroMeter"></div></div></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Steer through incoming enemy formations, shoot hostile ships, collect weapon, repair, and nitro pickups, and survive as the game becomes faster and harder.</p><div class="vehicle-picker" aria-label="Choose player vehicle"><button class="vehicle-choice active" type="button" data-vehicle="interceptor"><canvas class="vehicle-preview" data-preview="interceptor" width="240" height="120" aria-hidden="true"></canvas><span>Interceptor</span><small>Fast / spear</small></button><button class="vehicle-choice" type="button" data-vehicle="razor"><canvas class="vehicle-preview" data-preview="razor" width="240" height="120" aria-hidden="true"></canvas><span>Razor</span><small>Wide / assault</small></button><button class="vehicle-choice" type="button" data-vehicle="vanguard"><canvas class="vehicle-preview" data-preview="vanguard" width="240" height="120" aria-hidden="true"></canvas><span>Vanguard</span><small>Heavy / gunship</small></button></div><div class="controls-line">Keyboard: WASD / Arrows — steer • Space — fire • Shift — nitrous<br>Xbox: Left Stick / D-pad — steer • A / RT — fire • LT / RB — nitrous</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Procedural game audio + soundtrack ready</span><button class="audio-toggle" id="audioToggle" type="button" aria-pressed="false">Audio On</button></div></div><div class="nitro-control"><span class="nitro-key">Shift</span><button class="nitro-button" id="nitroButton" data-input="nitro" type="button">Nitro</button></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="nitro" type="button">NITRO</button><button data-input="fire" type="button">FIRE</button></div></div></section></main>
+<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Keyboard or Xbox controller supported. Left stick or D-pad steers, A or right trigger fires, left trigger or right bumper activates nitrous."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p><p class="hud-sub" id="gunValue">Gun Mk I</p></div><div class="hud-card"><p class="hud-label">Nitrous</p><p class="hud-value" id="nitroValue">35%</p><div class="meter"><div class="meter-fill" id="nitroMeter"></div></div></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Steer through incoming enemy formations, shoot hostile ships, collect weapon, repair, and nitro pickups, and survive as the game becomes faster and harder.</p><div class="vehicle-picker" aria-label="Choose player vehicle"><button class="vehicle-choice active" type="button" data-vehicle="interceptor"><canvas class="vehicle-preview" data-preview="interceptor" width="240" height="120" aria-hidden="true"></canvas><span>Interceptor</span><small>Fast / spear</small></button><button class="vehicle-choice" type="button" data-vehicle="razor"><canvas class="vehicle-preview" data-preview="razor" width="240" height="120" aria-hidden="true"></canvas><span>Razor</span><small>Wide / assault</small></button><button class="vehicle-choice" type="button" data-vehicle="vanguard"><canvas class="vehicle-preview" data-preview="vanguard" width="240" height="120" aria-hidden="true"></canvas><span>Vanguard</span><small>Heavy / gunship</small></button></div><div class="controls-line">Keyboard: WASD / Arrows — steer • Space — fire • Shift — nitrous<br>Xbox: Left Stick / D-pad — steer • A / RT — fire • LT / RB — nitrous</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Game audio + soundtrack ready</span><button class="audio-toggle" id="audioToggle" type="button" aria-pressed="false">Audio On</button></div></div><div class="nitro-control"><span class="nitro-key">Shift</span><button class="nitro-button" id="nitroButton" data-input="nitro" type="button">Nitro</button></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="nitro" type="button">NITRO</button><button data-input="fire" type="button">FIRE</button></div></div></section></main>
 <script>
 (function(){
   function detectDeviceProfile(){
@@ -252,9 +252,6 @@ const SOUNDTRACK_LOCAL_URL="./neontunnel.mp3";
 
 let audioContext=null;
 let sfxMaster=null;
-let engineOscillator=null;
-let engineGain=null;
-let engineFilter=null;
 let audioEnabled=true;
 let soundtrackFallbackTried=false;
 let previousNitroSoundState=false;
@@ -282,21 +279,6 @@ function ensureAudio(){
     sfxMaster.gain.value=.58;
     sfxMaster.connect(audioContext.destination);
 
-    engineFilter=audioContext.createBiquadFilter();
-    engineFilter.type="lowpass";
-    engineFilter.frequency.value=420;
-
-    engineGain=audioContext.createGain();
-    engineGain.gain.value=0;
-
-    engineOscillator=audioContext.createOscillator();
-    engineOscillator.type="sawtooth";
-    engineOscillator.frequency.value=54;
-
-    engineOscillator.connect(engineFilter);
-    engineFilter.connect(engineGain);
-    engineGain.connect(sfxMaster);
-    engineOscillator.start();
   }
   if(audioContext.state==="suspended")audioContext.resume().catch(()=>{});
 }
@@ -318,7 +300,6 @@ function setAudioEnabled(enabled){
   }
   if(!enabled){
     soundtrack.pause();
-    if(engineGain&&audioContext)engineGain.gain.setTargetAtTime(0,audioContext.currentTime,.04);
   }else if(running){
     ensureAudio();
     startSoundtrack(false);
@@ -385,13 +366,6 @@ function sfxNitroStart(){noise(.22,.07,2100);tone(72,150,.28,.065,"sawtooth");}
 function sfxStart(){tone(190,410,.18,.06,"triangle");tone(410,780,.20,.045,"sine",.09);}
 function sfxGameOver(){tone(310,78,.72,.09,"sawtooth");tone(185,46,.86,.05,"triangle",.08);}
 
-function updateEngineAudio(){
-  if(!audioEnabled||!audioContext||!engineGain||!engineOscillator||!engineFilter)return;
-  const now=audioContext.currentTime;
-  engineGain.gain.setTargetAtTime(running?.032+Math.min(.022,speed*.0007)+(nitroActive?.035:0):0,now,.045);
-  engineOscillator.frequency.setTargetAtTime(48+speed*1.55+(nitroActive?24:0),now,.04);
-  engineFilter.frequency.setTargetAtTime(350+speed*9+(nitroActive?310:0),now,.06);
-}
 
 const DEVICE_PROFILE=window.__DEVICE_PROFILE||window.__setupDeviceProfile();const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x07030f,0.008);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:DEVICE_PROFILE.kind!=="phone",powerPreference:"high-performance",alpha:false});renderer.setPixelRatio(DEVICE_PROFILE.dpr);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.72;container.appendChild(renderer.domElement);
 scene.add(new THREE.AmbientLight(0x8d77bf,.10));const playerLight=new THREE.PointLight(0xff42d0,2.8,14,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,2.2,26,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
@@ -8684,8 +8658,6 @@ resize();hud();const clock=new THREE.Clock();function animate(){
       cruiseSpeed+
       nitroBoost;
 
-    updateEngineAudio();
-
     score+=
       dt*
       speed*
@@ -8780,8 +8752,6 @@ resize();hud();const clock=new THREE.Clock();function animate(){
   }else{
     nitroActive=false;
     previousNitroSoundState=false;
-    updateEngineAudio();
-
     playerRing.rotation.z+=
       dt*.8;
 
