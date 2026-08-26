@@ -466,7 +466,7 @@
       >
         <span class="status-dot"></span>
         <span id="statusText">
-          Loading Mateo.fbx…
+          Loading Mateo.fbx + reactive artwork…
         </span>
       </div>
     </aside>
@@ -872,6 +872,214 @@
     scene.add(
       room
     );
+
+    let reactiveContext =
+      null;
+
+    let reactiveAnalyser =
+      null;
+
+    let reactiveData =
+      null;
+
+    let reactiveSource =
+      null;
+
+    let reactiveLevel =
+      0;
+
+    let bassLevel =
+      0;
+
+    function initAudioReactive() {
+      const atlasMusic =
+        window.__atlasMusic;
+
+      if (
+        !atlasMusic ||
+        reactiveAnalyser
+      ) {
+        return;
+      }
+
+      const AudioCtx =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+      if (
+        !AudioCtx
+      ) {
+        return;
+      }
+
+      reactiveContext =
+        window.__atlasReactiveContext ||
+        new AudioCtx();
+
+      window.__atlasReactiveContext =
+        reactiveContext;
+
+      if (
+        !window.__atlasReactiveSource
+      ) {
+        reactiveSource =
+          reactiveContext.createMediaElementSource(
+            atlasMusic
+          );
+
+        reactiveAnalyser =
+          reactiveContext.createAnalyser();
+
+        reactiveAnalyser.fftSize =
+          256;
+
+        reactiveAnalyser.smoothingTimeConstant =
+          0.84;
+
+        reactiveData =
+          new Uint8Array(
+            reactiveAnalyser.frequencyBinCount
+          );
+
+        reactiveSource.connect(
+          reactiveAnalyser
+        );
+
+        reactiveAnalyser.connect(
+          reactiveContext.destination
+        );
+
+        window.__atlasReactiveSource =
+          reactiveSource;
+
+        window.__atlasReactiveAnalyser =
+          reactiveAnalyser;
+
+        window.__atlasReactiveData =
+          reactiveData;
+      } else {
+        reactiveSource =
+          window.__atlasReactiveSource;
+
+        reactiveAnalyser =
+          window.__atlasReactiveAnalyser;
+
+        reactiveData =
+          window.__atlasReactiveData;
+      }
+
+      reactiveContext.resume().catch(
+        function () {}
+      );
+    }
+
+    window.addEventListener(
+      "pointerdown",
+      initAudioReactive,
+      {
+        passive: true
+      }
+    );
+
+    window.addEventListener(
+      "keydown",
+      initAudioReactive
+    );
+
+    function updateAudioReactive() {
+      const atlasMusic =
+        window.__atlasMusic;
+
+      if (
+        !atlasMusic ||
+        atlasMusic.paused ||
+        !reactiveAnalyser
+      ) {
+        reactiveLevel +=
+          (0 - reactiveLevel) *
+          0.06;
+
+        bassLevel +=
+          (0 - bassLevel) *
+          0.08;
+
+        return;
+      }
+
+      reactiveAnalyser.getByteFrequencyData(
+        reactiveData
+      );
+
+      let bassSum =
+        0;
+
+      let lowMidSum =
+        0;
+
+      let highSum =
+        0;
+
+      let bassCount =
+        0;
+
+      let lowMidCount =
+        0;
+
+      let highCount =
+        0;
+
+      for (
+        let i=0;
+        i<reactiveData.length;
+        i++
+      ) {
+        const value =
+          reactiveData[i] / 255;
+
+        if (
+          i < 10
+        ) {
+          bassSum += value;
+          bassCount++;
+        } else if (
+          i < 28
+        ) {
+          lowMidSum += value;
+          lowMidCount++;
+        } else {
+          highSum += value;
+          highCount++;
+        }
+      }
+
+      const bassInstant =
+        bassCount
+          ? bassSum / bassCount
+          : 0;
+
+      const lowMidInstant =
+        lowMidCount
+          ? lowMidSum / lowMidCount
+          : 0;
+
+      const highInstant =
+        highCount
+          ? highSum / highCount
+          : 0;
+
+      const overall =
+        bassInstant * 0.52 +
+        lowMidInstant * 0.32 +
+        highInstant * 0.16;
+
+      bassLevel +=
+        (bassInstant - bassLevel) *
+        0.16;
+
+      reactiveLevel +=
+        (overall - reactiveLevel) *
+        0.14;
+    }
 
     const ambient =
       new THREE.HemisphereLight(
@@ -1347,6 +1555,12 @@
     const artworkUniforms = {
       uTime: {
         value: 0
+      },
+      uAudio: {
+        value: 0
+      },
+      uBass: {
+        value: 0
       }
     };
 
@@ -1361,22 +1575,28 @@
         vertexShader:
           [
             "uniform float uTime;",
+            "uniform float uAudio;",
+            "uniform float uBass;",
             "varying vec3 vNormal;",
             "varying vec3 vPos;",
             "varying float vBand;",
+            "varying float vReact;",
             "void main(){",
             "vec3 p=position;",
             "float t=uTime*0.52;",
             "float waveA=sin(p.y*3.3+t*1.2)+cos(p.x*2.9-t*0.8);",
             "float waveB=sin((p.x+p.z)*4.1+t*1.55)+cos(length(p.xz)*5.0-t*1.1);",
             "float pulse=sin(length(p)*4.4-t*1.35);",
+            "float audioWarp=uAudio*0.9+uBass*1.2;",
             "float disp=(waveA*0.45+waveB*0.35+pulse*0.25);",
-            "p+=normal*disp*0.22;",
-            "float twist=sin(p.y*1.7+t*0.7)*0.22;",
+            "p+=normal*(disp*0.22+audioWarp*0.12);",
+            "float twist=sin(p.y*1.7+t*0.7)*0.22+uAudio*0.28;",
             "mat2 rot=mat2(cos(twist),-sin(twist),sin(twist),cos(twist));",
             "p.xz=rot*p.xz;",
             "p.xy+=vec2(sin(p.z*3.4+t),cos(p.x*3.0-t))*0.06;",
-            "vBand=0.5+0.5*sin((p.y+p.z)*3.2+t*1.4);",
+            "p.xy+=vec2(sin(length(p.xz)*4.0-t*2.2),cos(p.y*5.0+t*2.0))*uAudio*0.08;",
+            "vBand=0.5+0.5*sin((p.y+p.z)*3.2+t*1.4+uAudio*4.0);",
+            "vReact=uAudio;",
             "vNormal=normalize(normalMatrix*normal);",
             "vPos=p;",
             "gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);",
@@ -1385,15 +1605,18 @@
         fragmentShader:
           [
             "uniform float uTime;",
+            "uniform float uAudio;",
+            "uniform float uBass;",
             "varying vec3 vNormal;",
             "varying vec3 vPos;",
             "varying float vBand;",
+            "varying float vReact;",
             "void main(){",
             "vec3 n=normalize(vNormal);",
             "float t=uTime*0.42;",
             "float rim=pow(1.0-abs(n.z),1.8);",
-            "float rings=0.5+0.5*sin(length(vPos.xy)*7.5-t*4.0);",
-            "float stripes=0.5+0.5*sin(vPos.y*8.0+t*5.0+vPos.x*4.5);",
+            "float rings=0.5+0.5*sin(length(vPos.xy)*7.5-t*4.0+uBass*7.0);",
+            "float stripes=0.5+0.5*sin(vPos.y*8.0+t*5.0+vPos.x*4.5+uAudio*8.0);",
             "float interference=mix(rings,stripes,0.45);",
             "vec3 violet=vec3(0.40,0.24,1.00);",
             "vec3 magenta=vec3(1.00,0.22,0.82);",
@@ -1402,11 +1625,12 @@
             "vec3 c1=mix(violet,magenta,vBand);",
             "vec3 c2=mix(magenta,pink,interference);",
             "vec3 base=mix(c1,c2,0.55);",
-            "base+=whiteGlow*pow(rim,2.8)*0.35;",
-            "base+=pink*pow(interference,3.0)*0.18;",
-            "base*=0.30+rim*0.90;",
-            "float core=pow(0.5+0.5*sin(length(vPos)*6.5-t*3.2),3.0);",
-            "base+=whiteGlow*core*0.12;",
+            "base+=whiteGlow*pow(rim,2.8)*(0.24+uAudio*0.60);",
+            "base+=pink*pow(interference,3.0)*(0.16+uBass*0.34);",
+            "base*=0.34+rim*(0.78+uAudio*0.55);",
+            "float core=pow(0.5+0.5*sin(length(vPos)*6.5-t*3.2+uAudio*8.0),3.0);",
+            "base+=whiteGlow*core*(0.10+uAudio*0.26);",
+            "base+=vec3(0.03,0.01,0.05)*vReact;",
             "gl_FragColor=vec4(base,1.0);",
             "}"
           ].join("\n")
@@ -2374,25 +2598,54 @@
       const elapsed =
         clock.elapsedTime;
 
+      updateAudioReactive();
+
+      artworkUniforms.uTime.value =
+        elapsed;
+
+      artworkUniforms.uAudio.value =
+        reactiveLevel;
+
+      artworkUniforms.uBass.value =
+        bassLevel;
+
       if (
         !reducedMotion.matches
       ) {
-        artworkUniforms.uTime.value =
-          elapsed;
-
         artwork.rotation.y =
           Math.sin(
             elapsed *
             0.16
           ) *
-          0.12;
+          (
+            0.12 +
+            reactiveLevel *
+            0.12
+          );
 
         artwork.rotation.x =
           Math.sin(
             elapsed *
             0.12
           ) *
-          0.04;
+          (
+            0.04 +
+            bassLevel *
+            0.08
+          );
+
+        const artScale =
+          1 +
+          reactiveLevel *
+          0.09 +
+          bassLevel *
+          0.05;
+
+        artwork.scale.set(
+          1.68 * artScale,
+          2.05 * artScale,
+          0.78 * artScale
+        );
 
         fogSheetA.material.opacity =
           0.040 +
@@ -2400,7 +2653,9 @@
             elapsed *
             0.55
           ) *
-          0.012;
+          0.012 +
+          reactiveLevel *
+          0.030;
 
         fogSheetB.material.opacity =
           0.028 +
@@ -2409,7 +2664,9 @@
             0.40 +
             0.9
           ) *
-          0.009;
+          0.009 +
+          bassLevel *
+          0.018;
 
         fogSheetA.rotation.z =
           Math.sin(
@@ -2417,7 +2674,45 @@
             0.18
           ) *
           0.03;
+
+        fogSheetB.rotation.z =
+          Math.sin(
+            elapsed *
+            0.11 +
+            1.2
+          ) *
+          0.02;
+      } else {
+        artwork.scale.set(
+          1.68,
+          2.05,
+          0.78
+        );
       }
+
+      magentaLight.intensity =
+        9 +
+        reactiveLevel *
+        11 +
+        bassLevel *
+        4;
+
+      violetLight.intensity =
+        10 +
+        reactiveLevel *
+        8 +
+        bassLevel *
+        7;
+
+      ambient.intensity =
+        0.72 +
+        reactiveLevel *
+        0.18;
+
+      fill.intensity =
+        1.35 +
+        bassLevel *
+        0.55;
 
       updateCharacter(
         delta
