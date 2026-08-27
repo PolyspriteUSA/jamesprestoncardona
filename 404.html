@@ -230,6 +230,9 @@
     <section class="panel">
       <p class="eyebrow">Page not found</p>
       <h2 class="title">The page disappeared into the signal field.</h2>
+      <p class="copy">
+        This 404 is rebuilt as an original, high-end procedural artwork inspired by the cinematic shader aesthetic you referenced — luminous, organic, and fully animated in 3D space.
+      </p>
       <div class="actions">
         <a class="btn primary" href="./index.html">Return Home</a>
         <a class="btn secondary" href="./index.html#work">View Work</a>
@@ -254,7 +257,7 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
       renderer.outputEncoding = THREE.sRGBEncoding;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
+      renderer.toneMappingExposure = 1.18;
       app.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
@@ -378,11 +381,12 @@
           }
 
           vec3 palette(float t){
-            vec3 pink = vec3(1.0, 0.29, 0.81);
-            vec3 purple = vec3(0.52, 0.37, 1.0);
-            vec3 white = vec3(1.0, 1.0, 1.0);
+            vec3 pink = vec3(1.22, 0.18, 0.86);
+            vec3 purple = vec3(0.60, 0.30, 1.24);
+            vec3 white = vec3(1.08, 1.04, 1.10);
             vec3 c = mix(purple, pink, smoothstep(0.15, 0.85, t));
-            c = mix(c, white, pow(clamp(t, 0.0, 1.0), 3.0) * 0.45);
+            c = mix(c, white, pow(clamp(t, 0.0, 1.0), 2.4) * 0.34);
+            c *= 1.12;
             return c;
           }
 
@@ -396,20 +400,20 @@
             float spark = smoothstep(0.05, 0.0, length(gv)) * step(0.92, h);
             stars += spark;
             vec3 base = mix(vec3(0.02,0.02,0.03), vec3(0.04,0.03,0.07), 0.5 + 0.5 * uv.y);
-            base += vec3(1.0,0.29,0.81) * exp(-10.0 * length(uv - vec2(-0.55, 0.25))) * 0.13;
-            base += vec3(0.52,0.37,1.0) * exp(-8.5 * length(uv - vec2(0.5, -0.15))) * 0.16;
+            base += vec3(1.18,0.18,0.86) * exp(-9.0 * length(uv - vec2(-0.55, 0.25))) * 0.20;
+            base += vec3(0.60,0.30,1.22) * exp(-7.8 * length(uv - vec2(0.5, -0.15))) * 0.23;
             base += stars * 0.75;
             return base * vign;
           }
 
           vec3 render(vec2 fragCoord){
             vec2 uv = (fragCoord - 0.5 * uResolution.xy) / uResolution.y;
-            vec2 m = uMouse * 0.18;
-            vec3 ro = vec3(0.0 + m.x, 0.0 + m.y * 0.7, 5.8);
+            vec2 m = uMouse * 0.34;
+            vec3 ro = vec3(m.x * 1.1, m.y * 0.95, 5.8);
             vec3 rd = normalize(vec3(uv, -1.55));
 
-            rd.xy *= rot(m.x * 0.5);
-            rd.yz *= rot(-m.y * 0.4);
+            rd.xy *= rot(m.x * 0.9);
+            rd.yz *= rot(-m.y * 0.72);
 
             vec3 col = background(uv);
             float t = 0.0;
@@ -428,13 +432,13 @@
               float pulse = 0.55 + 0.45 * sin(uTime * 1.5 + pos.z * 1.3 + pos.x * 0.8);
 
               vec3 localCol = palette(fract(0.18 * pos.x + 0.14 * pos.y + 0.12 * pos.z + id * 0.19 + uTime * 0.03));
-              accum += localCol * nearField * 0.035 * pulse;
-              accum += vec3(1.0) * shell * 0.015;
-              density += nearField * 0.022;
-              glow += shell * 0.02;
+              accum += localCol * nearField * 0.050 * pulse;
+              accum += vec3(1.08, 1.02, 1.12) * shell * 0.022;
+              density += nearField * 0.030;
+              glow += shell * 0.030;
 
               if(d < SURF_DIST){
-                accum += localCol * 0.24;
+                accum += localCol * 0.32;
                 break;
               }
               t += clamp(abs(d) * 0.75, 0.02, 0.24);
@@ -442,16 +446,16 @@
             }
 
             col += accum;
-            col += vec3(1.0,0.29,0.81) * glow * 0.9;
-            col += vec3(0.52,0.37,1.0) * density * 0.95;
+            col += vec3(1.22,0.18,0.86) * glow * 1.18;
+            col += vec3(0.60,0.30,1.24) * density * 1.22;
 
             float haze = exp(-length(uv) * 2.2);
-            col += vec3(0.06, 0.03, 0.08) * haze;
+            col += vec3(0.10, 0.04, 0.12) * haze;
 
             float vign = smoothstep(1.35, 0.25, length(uv));
             col *= vign;
 
-            col = 1.0 - exp(-col * 1.35);
+            col = 1.0 - exp(-col * 1.75);
             col = pow(col, vec3(0.95));
             return col;
           }
@@ -492,13 +496,13 @@
       resize();
 
       const clock = new THREE.Clock();
-      status.textContent = 'Signal field active';
+      status.textContent = 'Signal field active · high response';
 
       function animate(){
         requestAnimationFrame(animate);
         uniforms.uTime.value = clock.getElapsedTime();
-        currentMouseX += (targetMouseX - currentMouseX) * 0.05;
-        currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+        currentMouseX += (targetMouseX - currentMouseX) * 0.12;
+        currentMouseY += (targetMouseY - currentMouseY) * 0.12;
         uniforms.uMouse.value.set(currentMouseX, -currentMouseY);
         renderer.render(scene, camera);
       }
