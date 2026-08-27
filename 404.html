@@ -501,10 +501,10 @@
           }
 
           vec3 palette(float t){
-            vec3 pink = vec3(1.18, 0.24, 0.88);
-            vec3 purple = vec3(0.66, 0.34, 1.18);
-            vec3 lavender = vec3(0.94, 0.54, 1.00);
-            vec3 white = vec3(1.04, 1.02, 1.08);
+            vec3 pink = vec3(1.06, 0.12, 0.72);
+            vec3 purple = vec3(0.42, 0.16, 1.02);
+            vec3 lavender = vec3(0.68, 0.26, 0.96);
+            vec3 white = vec3(0.98, 0.96, 1.04);
 
             float a = smoothstep(0.0, 0.45, t);
             float b = smoothstep(0.28, 0.78, t);
@@ -512,9 +512,9 @@
 
             vec3 col = mix(purple, lavender, a);
             col = mix(col, pink, b);
-            col = mix(col, white, cMix * 0.18 + 0.08);
-            col = mix(col, lavender, 0.16);
-            return col * 1.08;
+            col = mix(col, white, cMix * 0.12 + 0.04);
+            col = mix(col, lavender, 0.22);
+            return col * 1.02;
           }
 
           vec3 background(vec2 uv){
@@ -526,13 +526,13 @@
             float h = hash21(id);
             float spark = smoothstep(0.05, 0.0, length(gv)) * step(0.92, h);
             stars += spark;
-            vec3 base = mix(vec3(0.025,0.02,0.04), vec3(0.05,0.035,0.08), 0.5 + 0.5 * uv.y);
-            vec3 glowA = vec3(1.10,0.24,0.88) * exp(-7.2 * length(uv - vec2(-0.48, 0.20))) * 0.19;
-            vec3 glowB = vec3(0.70,0.34,1.14) * exp(-6.6 * length(uv - vec2(0.42, -0.10))) * 0.21;
-            vec3 glowMid = vec3(0.96,0.42,0.98) * exp(-5.0 * length(uv - vec2(0.0, 0.04))) * 0.10;
+            vec3 base = mix(vec3(0.012,0.008,0.028), vec3(0.032,0.018,0.065), 0.5 + 0.5 * uv.y);
+            vec3 glowA = vec3(0.96,0.12,0.70) * exp(-6.8 * length(uv - vec2(-0.48, 0.20))) * 0.20;
+            vec3 glowB = vec3(0.48,0.16,1.06) * exp(-6.2 * length(uv - vec2(0.42, -0.10))) * 0.24;
+            vec3 glowMid = vec3(0.74,0.20,0.92) * exp(-4.5 * length(uv - vec2(0.0, 0.04))) * 0.11;
             base += glowA + glowB + glowMid;
             base = mix(base, (glowA + glowB + glowMid) * 0.90 + base, 0.32);
-            base += stars * 0.55;
+            base += stars * 0.38;
             return base * vign;
           }
 
@@ -580,17 +580,17 @@
             }
 
             col += accum;
-            col += vec3(1.10,0.24,0.88) * glow * 1.06;
-            col += vec3(0.72,0.38,1.16) * density * 1.10;
+            col += vec3(0.98,0.14,0.74) * glow * 1.14;
+            col += vec3(0.50,0.20,1.02) * density * 1.18;
 
             float haze = exp(-length(uv) * 2.2);
-            col += vec3(0.14, 0.06, 0.16) * haze;
+            col += vec3(0.10, 0.03, 0.14) * haze;
 
             float vign = smoothstep(1.35, 0.25, length(uv));
             col *= vign;
 
-            col = 1.0 - exp(-col * 1.58);
-            col = mix(col, vec3((col.r + col.b) * 0.5, (col.g + col.r) * 0.5, (col.b + col.r) * 0.5), 0.08);
+            col = 1.0 - exp(-col * 1.44);
+            col = mix(col, vec3((col.r + col.b) * 0.5, (col.g + col.r) * 0.45, (col.b + col.r) * 0.5), 0.06);
             col = pow(col, vec3(0.95));
             return col;
           }
