@@ -4217,12 +4217,99 @@ input[type="range"]{
   }
 }
 
+
+/* ===== MIDI recording + AKAI Fire / KORG nanoKONTROL support ===== */
+.enhanced-midi-panel{
+  grid-template-columns:auto minmax(180px,240px) minmax(150px,190px) minmax(220px,1fr);
+}
+
+.midi-mini-field{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:0;
+}
+
+.midi-mini-field>span{
+  color:var(--muted);
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.midi-mini-field select{
+  width:100%;
+}
+
+.midi-live-status{
+  min-width:0;
+}
+
+.midi-monitor{
+  grid-column:1/-1;
+  min-height:28px;
+  display:flex;
+  align-items:center;
+  padding:5px 9px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:8px;
+  background:rgba(0,0,0,.18);
+  color:rgba(255,255,255,.52);
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:9px;
+  line-height:1.3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+#transportRecordBtn.recording{
+  color:#fff;
+  border-color:rgba(255,70,95,.62);
+  background:rgba(255,50,75,.16);
+  box-shadow:0 0 18px rgba(255,50,75,.18);
+}
+
+.midi-recording-track{
+  box-shadow:
+    inset 3px 0 0 rgba(255,66,208,.72),
+    0 0 18px rgba(255,66,208,.06);
+}
+
+.midi-recording-track .track-name-row>span::after{
+  content:"  • MIDI REC";
+  color:#ff5fda;
+  font-size:8px;
+  letter-spacing:.08em;
+}
+
+@media(max-width:1000px){
+  .enhanced-midi-panel{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .midi-monitor{
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:650px){
+  .enhanced-midi-panel{
+    grid-template-columns:1fr;
+  }
+
+  .midi-monitor{
+    grid-column:auto;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="midi-learn-menu" id="midiLearnMenu" role="menu" aria-hidden="true">
   <div class="midi-learn-meta" id="midiLearnMeta">MIDI control</div>
-  <button id="midiLearnStart" type="button">MIDI Learn</button>
+  <button id="midiLearnStart" type="button">Map to Next MIDI Control</button>
   <button id="midiLearnClear" type="button">Clear MIDI Mapping</button>
 </div>
 <div id="midiLearnToast">Waiting for MIDI control…</div>
@@ -4613,7 +4700,7 @@ input[type="range"]{
       <div class="transport-buttons">
         <button class="btn primary midi-assignable" data-midi-key="transport.play" id="playBtn" type="button">Play</button>
         <button class="btn midi-assignable" data-midi-key="transport.stop" id="stopBtn" type="button">Stop</button>
-        <button class="btn midi-assignable" data-midi-key="transport.record" id="transportRecordBtn" type="button">Record</button>
+        <button class="btn midi-assignable" data-midi-key="transport.record" id="transportRecordBtn" type="button">MIDI Rec</button>
         <button class="btn midi-assignable" data-midi-key="transport.random" id="randomBtn" type="button">Randomize</button>
         <button class="btn midi-assignable" data-midi-key="transport.clear" id="clearBtn" type="button">Clear</button>
       </div>
@@ -4629,12 +4716,32 @@ input[type="range"]{
         <input data-midi-key="transport.swing" id="swing" max="0.45" min="0" step="0.01" type="range" value="0.08" />
       </label>
 
-      <div class="transport-midi">
+      <div class="transport-midi enhanced-midi-panel">
         <button class="btn compact-btn" id="midiConnect" type="button">Connect MIDI</button>
-        <select id="midiInput" aria-label="MIDI input">
-          <option value="">No MIDI input</option>
-        </select>
-        <div class="midi-status" id="midiStatus">MIDI disconnected</div>
+
+        <label class="midi-mini-field">
+          <span>Inputs</span>
+          <select id="midiInput" aria-label="MIDI input">
+            <option value="all">All MIDI Inputs</option>
+          </select>
+        </label>
+
+        <label class="midi-mini-field">
+          <span>MIDI Record Track</span>
+          <select id="midiRecordTrack" aria-label="MIDI record track">
+            <option value="0">Track 1</option>
+            <option value="1">Track 2</option>
+            <option value="2">Track 3</option>
+            <option value="3">Track 4</option>
+            <option value="4">Track 5</option>
+            <option value="5">Track 6</option>
+            <option value="6">Track 7</option>
+            <option value="7">Track 8</option>
+          </select>
+        </label>
+
+        <div class="midi-status midi-live-status" id="midiStatus">MIDI disconnected</div>
+        <div class="midi-monitor" id="midiMonitor">Waiting for MIDI…</div>
       </div>
     </div>
 
@@ -8950,13 +9057,190 @@ if(
   );
 }
 
-$("transportRecordBtn").addEventListener("click",()=>{
-  const record=$("tapeRecordBtn");
-  if(record)record.click();
-});
+let midiRecordArmed=false;
+let midiRecordTrackIndex=0;
+let midiStepRecordCursor=0;
+
+function refreshMidiRecordUi(){
+  const button=
+    $("transportRecordBtn");
+
+  if(button){
+    button.classList.toggle(
+      "recording",
+      midiRecordArmed
+    );
+
+    button.textContent=
+      midiRecordArmed
+        ?"MIDI Rec: On"
+        :"MIDI Rec";
+  }
+
+  document
+    .querySelectorAll(
+      ".track"
+    )
+    .forEach(
+      row=>
+        row.classList.remove(
+          "midi-recording-track"
+        )
+    );
+
+  if(midiRecordArmed){
+    const row=
+      document.querySelector(
+        '.track [data-track="'+
+        midiRecordTrackIndex+
+        '"]'
+      );
+
+    const trackRow=
+      row
+        ?row.closest(".track")
+        :document.querySelectorAll(".track")[
+            midiRecordTrackIndex
+          ];
+
+    if(trackRow){
+      trackRow.classList.add(
+        "midi-recording-track"
+      );
+    }
+  }
+}
+
+function setMidiRecordArmed(armed){
+  midiRecordArmed=
+    !!armed;
+
+  if(midiRecordArmed){
+    midiStepRecordCursor=
+      running
+        ?currentStep
+        :0;
+
+    setMidiStatus(
+      "MIDI record armed → Track "+
+      (midiRecordTrackIndex+1),
+      true
+    );
+  }else{
+    setMidiStatus(
+      "MIDI record disarmed",
+      !!midiAccess
+    );
+  }
+
+  refreshMidiRecordUi();
+}
+
+$("transportRecordBtn").addEventListener(
+  "click",
+  ()=>{
+    setMidiRecordArmed(
+      !midiRecordArmed
+    );
+  }
+);
+
+$("midiRecordTrack").addEventListener(
+  "change",
+  ()=>{
+    midiRecordTrackIndex=
+      Math.max(
+        0,
+        Math.min(
+          7,
+          parseInt(
+            $("midiRecordTrack").value,
+            10
+          )||0
+        )
+      );
+
+    midiStepRecordCursor=0;
+    refreshMidiRecordUi();
+
+    if(midiRecordArmed){
+      setMidiStatus(
+        "MIDI record armed → Track "+
+        (midiRecordTrackIndex+1),
+        true
+      );
+    }
+  }
+);
+
+function recordIncomingMidiNote(note,velocity){
+  if(!midiRecordArmed){
+    return false;
+  }
+
+  const track=
+    tracks[
+      midiRecordTrackIndex
+    ];
+
+  if(!track){
+    return false;
+  }
+
+  const step=
+    running
+      ?currentStep
+      :midiStepRecordCursor;
+
+  track.patterns[
+    activeSequence
+  ][step]=1;
+
+  track.notes[
+    activeSequence
+  ][step]=note;
+
+  if(!running){
+    midiStepRecordCursor=
+      (
+        midiStepRecordCursor+
+        1
+      )%
+      STEPS_PER_SEQUENCE;
+
+    if(
+      midiStepRecordCursor===0 &&
+      patternChainEnabled
+    ){
+      activeSequence=
+        (
+          activeSequence+
+          1
+        )%
+        SEQUENCE_COUNT;
+    }
+  }
+
+  refreshSequenceView();
+
+  setMidiStatus(
+    "Recorded "+
+    noteName(note)+
+    " → Track "+
+    (midiRecordTrackIndex+1)+
+    " / Pattern "+
+    (activeSequence+1)+
+    " / Step "+
+    (step+1),
+    true
+  );
+
+  return true;
+}
 
 let midiAccess=null;
 let activeMidiInput=null;
+let activeMidiInputs=new Map();
 
 function setMidiStatus(text,connected=false){
   const el=$("midiStatus");
@@ -8964,70 +9248,199 @@ function setMidiStatus(text,connected=false){
   el.classList.toggle("connected",connected);
 }
 
+function normalizeMidiDeviceName(input){
+  return (
+    input&&
+    input.name
+      ?input.name
+      :"MIDI Controller"
+  )
+    .trim()
+    .replace(/\s+/g," ");
+}
+
+function midiDeviceKey(input){
+  return normalizeMidiDeviceName(input)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-|-$/g,"")||
+    "midi";
+}
+
+function isAkaiFireInput(input){
+  return /(?:fl studio\s*)?fire|akai.*fire/i.test(
+    normalizeMidiDeviceName(
+      input
+    )
+  );
+}
+
+function isNanoKontrolInput(input){
+  return /nano\s*kontrol|nanokontrol|korg.*kontrol/i.test(
+    normalizeMidiDeviceName(
+      input
+    )
+  );
+}
+
 function refreshMidiInputs(){
-  const select=$("midiInput");
-  const previous=select.value;
+  const select=
+    $("midiInput");
+
+  const previous=
+    select.value||
+    "all";
 
   select.innerHTML=
-    '<option value="">No MIDI input</option>';
+    '<option value="all">All MIDI Inputs</option>';
 
-  if(!midiAccess)return;
+  if(!midiAccess){
+    return;
+  }
 
-  for(const input of midiAccess.inputs.values()){
-    const option=document.createElement("option");
-    option.value=input.id;
-    option.textContent=input.name||"MIDI Input";
-    select.appendChild(option);
+  for(
+    const input of
+    midiAccess.inputs.values()
+  ){
+    const option=
+      document.createElement(
+        "option"
+      );
+
+    option.value=
+      input.id;
+
+    option.textContent=
+      input.name||
+      "MIDI Input";
+
+    select.appendChild(
+      option
+    );
   }
 
   if(
-    previous &&
     [...select.options].some(
-      option=>option.value===previous
+      option=>
+        option.value===
+        previous
     )
   ){
-    select.value=previous;
-  }else if(select.options.length>1){
-    const preferred=
-      [...select.options].findIndex(
-        option=>
-          /nano\s*kontrol|nanokontrol|korg/i.test(
-            option.textContent||""
-          )
-      );
-
-    select.selectedIndex=
-      preferred>0
-        ?preferred
-        :1;
+    select.value=
+      previous;
+  }else{
+    select.value=
+      "all";
   }
 
   connectSelectedMidiInput();
 }
 
+function disconnectMidiInputs(){
+  activeMidiInputs.forEach(
+    input=>{
+      input.onmidimessage=
+        null;
+    }
+  );
+
+  activeMidiInputs.clear();
+  activeMidiInput=null;
+}
+
 function connectSelectedMidiInput(){
-  if(activeMidiInput){
-    activeMidiInput.onmidimessage=null;
-    activeMidiInput=null;
-  }
+  disconnectMidiInputs();
 
-  if(!midiAccess)return;
-
-  const id=$("midiInput").value;
-  const input=midiAccess.inputs.get(id);
-
-  if(!input){
-    setMidiStatus("Choose a MIDI input");
+  if(!midiAccess){
     return;
   }
 
-  activeMidiInput=input;
-  activeMidiInput.onmidimessage=handleMidiMessage;
+  const selected=
+    $("midiInput").value||
+    "all";
+
+  const inputs=
+    [...midiAccess.inputs.values()];
+
+  const chosen=
+    selected==="all"
+      ?inputs
+      :inputs.filter(
+          input=>
+            input.id===
+            selected
+        );
+
+  chosen.forEach(
+    input=>{
+      input.onmidimessage=
+        handleMidiMessage;
+
+      activeMidiInputs.set(
+        input.id,
+        input
+      );
+    }
+  );
+
+  activeMidiInput=
+    chosen[0]||
+    null;
+
+  if(!chosen.length){
+    setMidiStatus(
+      "No MIDI inputs connected"
+    );
+
+    return;
+  }
+
+  const deviceSummary=
+    chosen
+      .map(
+        input=>
+          normalizeMidiDeviceName(
+            input
+          )
+      )
+      .join(" + ");
 
   setMidiStatus(
-    "Connected: "+(input.name||"MIDI Controller"),
+    (
+      selected==="all"
+        ?"Listening: "
+        :"Connected: "
+    )+
+    deviceSummary,
     true
   );
+
+  const known=[];
+  if(chosen.some(isAkaiFireInput)){
+    known.push("AKAI Fire");
+  }
+
+  if(chosen.some(isNanoKontrolInput)){
+    known.push("nanoKONTROL");
+  }
+
+  if(known.length){
+    showMidiMonitor(
+      "Profiles active: "+
+      known.join(" + ")+
+      " · right-click any control to MIDI Learn"
+    );
+  }
+}
+
+function showMidiMonitor(text){
+  const monitor=
+    $("midiMonitor");
+
+  if(monitor){
+    monitor.textContent=
+      text;
+  }
 }
 
 async function connectMidi(){
@@ -9283,15 +9696,24 @@ function removeMappingsForTarget(targetKey){
   return changed;
 }
 
-function applyMidiValueToControl(control,value,mappingKey){
-  if(!control)return false;
+function applyMidiValueToControl(
+  control,
+  message,
+  mappingKey
+){
+  if(
+    !control||
+    !message
+  ){
+    return false;
+  }
 
   const normalized=
     Math.max(
       0,
       Math.min(
         1,
-        value
+        message.value
       )
     );
 
@@ -9302,9 +9724,7 @@ function applyMidiValueToControl(control,value,mappingKey){
           control.min
         )
       )
-        ?parseFloat(
-          control.min
-        )
+        ?parseFloat(control.min)
         :0;
 
     const max=
@@ -9313,9 +9733,7 @@ function applyMidiValueToControl(control,value,mappingKey){
           control.max
         )
       )
-        ?parseFloat(
-          control.max
-        )
+        ?parseFloat(control.max)
         :1;
 
     const step=
@@ -9323,10 +9741,41 @@ function applyMidiValueToControl(control,value,mappingKey){
         control.step
       );
 
-    let next=
-      min+
-      (max-min)*
-      normalized;
+    let next;
+
+    if(
+      message.relative &&
+      Number.isFinite(
+        message.relativeDelta
+      )
+    ){
+      const current=
+        parseFloat(
+          control.value
+        )||
+        min;
+
+      const increment=
+        Number.isFinite(step)&&
+        step>0
+          ?Math.max(
+              step,
+              (max-min)*
+              .008
+            )
+          :(max-min)*
+            .008;
+
+      next=
+        current+
+        message.relativeDelta*
+        increment;
+    }else{
+      next=
+        min+
+        (max-min)*
+        normalized;
+    }
 
     if(
       Number.isFinite(step)&&
@@ -9390,8 +9839,11 @@ function applyMidiValueToControl(control,value,mappingKey){
   return false;
 }
 
-function midiMessageKey(message){
-  return (
+function midiMessageKey(
+  message,
+  includeDevice=true
+){
+  const base=
     message.type+
     ":"+
     message.channel+
@@ -9401,11 +9853,19 @@ function midiMessageKey(message){
       null
         ?0
         :message.number
-    )
-  );
+    );
+
+  return includeDevice
+    ?message.deviceKey+
+      "|"+
+      base
+    :base;
 }
 
-function decodeMidiControlMessage(data){
+function decodeMidiControlMessage(
+  data,
+  input
+){
   const status=
     data[0];
 
@@ -9424,17 +9884,69 @@ function decodeMidiControlMessage(data){
     )+
     1;
 
+  const deviceKey=
+    midiDeviceKey(
+      input
+    );
+
+  const deviceName=
+    normalizeMidiDeviceName(
+      input
+    );
+
   if(command===0xb0){
+    const number=
+      data[1];
+
+    const raw=
+      data[2]||0;
+
+    const fireRelative=
+      isAkaiFireInput(input)&&
+      (
+        number===0x10||
+        number===0x11||
+        number===0x12||
+        number===0x13||
+        number===0x76
+      );
+
+    if(fireRelative){
+      const delta=
+        raw===0
+          ?0
+          :raw<0x40
+            ?raw
+            :-(0x80-raw);
+
+      return {
+        type:"cc",
+        channel,
+        number,
+        value:.5,
+        raw,
+        relative:true,
+        relativeDelta:delta,
+        deviceKey,
+        deviceName
+      };
+    }
+
     return {
       type:"cc",
       channel,
-      number:data[1],
-      value:(data[2]||0)/127
+      number,
+      value:raw/127,
+      raw,
+      relative:false,
+      relativeDelta:0,
+      deviceKey,
+      deviceName
     };
   }
 
   if(
-    command===0x90 ||
+    command===0x90||
     command===0x80
   ){
     const velocity=
@@ -9446,7 +9958,12 @@ function decodeMidiControlMessage(data){
       type:"note",
       channel,
       number:data[1],
-      value:velocity/127
+      value:velocity/127,
+      raw:velocity,
+      relative:false,
+      relativeDelta:0,
+      deviceKey,
+      deviceName
     };
   }
 
@@ -9461,7 +9978,12 @@ function decodeMidiControlMessage(data){
       type:"pitch",
       channel,
       number:0,
-      value:raw/16383
+      value:raw/16383,
+      raw,
+      relative:false,
+      relativeDelta:0,
+      deviceKey,
+      deviceName
     };
   }
 
@@ -9544,7 +10066,8 @@ function finishMidiLearn(message){
 
   const key=
     midiMessageKey(
-      message
+      message,
+      true
     );
 
   midiLearnMappings[
@@ -9553,7 +10076,10 @@ function finishMidiLearn(message){
     target:targetKey,
     type:message.type,
     channel:message.channel,
-    number:message.number
+    number:message.number,
+    deviceKey:message.deviceKey,
+    deviceName:message.deviceName,
+    relative:!!message.relative
   };
 
   saveMidiLearnMappings();
@@ -9571,6 +10097,8 @@ function finishMidiLearn(message){
 
   setMidiStatus(
     "Mapped "+
+    message.deviceName+
+    " · "+
     message.type.toUpperCase()+
     " Ch "+
     message.channel+
@@ -9590,14 +10118,24 @@ function finishMidiLearn(message){
 function applyLearnedMidiMapping(message){
   if(!message)return false;
 
-  const key=
+  const deviceKey=
     midiMessageKey(
-      message
+      message,
+      true
+    );
+
+  const genericKey=
+    midiMessageKey(
+      message,
+      false
     );
 
   const mapping=
     midiLearnMappings[
-      key
+      deviceKey
+    ]||
+    midiLearnMappings[
+      genericKey
     ];
 
   if(!mapping){
@@ -9615,8 +10153,8 @@ function applyLearnedMidiMapping(message){
 
   return applyMidiValueToControl(
     control,
-    message.value,
-    key
+    message,
+    deviceKey
   );
 }
 
@@ -9655,21 +10193,23 @@ function triggerTransportAction(action){
   }
 }
 
-function likelyDawController(){
+function likelyDawController(input){
   const name=
-    activeMidiInput&&
-    activeMidiInput.name
-      ?activeMidiInput.name
-      :"";
+    normalizeMidiDeviceName(
+      input
+    );
 
   return /mackie|hui|daw|control|x-touch|faderport|launch|keylab|komplete|nanokontrol|mpk|oxygen|panorama/i.test(name);
 }
 
-function handleStandardDawTransport(data){
+function handleStandardDawTransport(
+  data,
+  input
+){
   const status=
     data[0];
 
-  // MIDI realtime Start / Continue / Stop.
+  // MIDI realtime.
   if(status===0xfa){
     triggerTransportAction("play");
     return true;
@@ -9721,10 +10261,45 @@ function handleStandardDawTransport(data){
     }
   }
 
+  // AKAI Professional FL Studio Fire native transport buttons.
+  if(
+    isAkaiFireInput(input)&&
+    (status&0xf0)===0x90&&
+    (data[2]||0)>0
+  ){
+    const note=
+      data[1];
+
+    if(note===0x33){
+      triggerTransportAction("play");
+      return true;
+    }
+
+    if(note===0x34){
+      triggerTransportAction("stop");
+      return true;
+    }
+
+    if(note===0x35){
+      triggerTransportAction("record");
+      return true;
+    }
+
+    if(note===0x1f){
+      triggerTransportAction("forward");
+      return true;
+    }
+
+    if(note===0x20){
+      triggerTransportAction("rewind");
+      return true;
+    }
+  }
+
   // Mackie Control / common DAW transport note numbers.
   if(
-    likelyDawController() &&
-    (status&0xf0)===0x90 &&
+    likelyDawController(input)&&
+    (status&0xf0)===0x90&&
     (data[2]||0)>0
   ){
     const note=
@@ -9765,13 +10340,66 @@ async function handleMidiMessage(event){
   const data=
     event.data;
 
+  const input=
+    event.currentTarget||
+    event.target||
+    activeMidiInput;
+
   const message=
     decodeMidiControlMessage(
-      data
+      data,
+      input
     );
 
+  if(message){
+    const valueText=
+      message.relative
+        ?(
+            message.relativeDelta>0
+              ?"+"+message.relativeDelta
+              :String(message.relativeDelta)
+          )
+        :String(
+            Math.round(
+              message.value*
+              127
+            )
+          );
+
+    showMidiMonitor(
+      message.deviceName+
+      " · "+
+      message.type.toUpperCase()+
+      " Ch "+
+      message.channel+
+      " #"+
+      message.number+
+      " · "+
+      valueText+
+      (
+        message.relative
+          ?" (relative encoder)"
+          :""
+      )
+    );
+  }else if(data&&data.length){
+    showMidiMonitor(
+      normalizeMidiDeviceName(input)+
+      " · "+
+      [...data]
+        .map(
+          byte=>
+            byte
+              .toString(16)
+              .padStart(2,"0")
+              .toUpperCase()
+        )
+        .join(" ")
+    );
+  }
+
   if(
-    midiLearnTarget &&
+    midiLearnTarget&&
     message
   ){
     if(
@@ -9784,7 +10412,7 @@ async function handleMidiMessage(event){
   }
 
   if(
-    message &&
+    message&&
     applyLearnedMidiMapping(
       message
     )
@@ -9794,7 +10422,8 @@ async function handleMidiMessage(event){
 
   if(
     handleStandardDawTransport(
-      data
+      data,
+      input
     )
   ){
     return;
@@ -9828,8 +10457,9 @@ async function handleMidiMessage(event){
     $("midiChannel").value;
 
   if(
-    selectedChannel!=="all" &&
-    Number(selectedChannel)!==channel
+    selectedChannel!=="all"&&
+    Number(selectedChannel)!==
+      channel
   ){
     return;
   }
@@ -9844,19 +10474,34 @@ async function handleMidiMessage(event){
   }
 
   if(
-    command===0x90 &&
+    command===0x90&&
     velocity>0
   ){
+    recordIncomingMidiNote(
+      note,
+      velocity
+    );
+
     const velocityGain=
       velocity/
       127;
 
+    const recordTrack=
+      midiRecordArmed
+        ?tracks[
+            midiRecordTrackIndex
+          ]
+        :null;
+
     const midiTrackType=
-      $("midiTarget").value==="synth2"
-        ?"synth2"
-        :"synth";
+      recordTrack
+        ?recordTrack.instrument
+        :$("midiTarget").value==="synth2"
+          ?"synth2"
+          :"synth";
 
     const midiTrack=
+      recordTrack||
       tracks.find(
         track=>
           track.instrument===
@@ -9871,20 +10516,34 @@ async function handleMidiMessage(event){
     }
 
     try{
-      leadSynth(
-        audio.currentTime,
-        note,
-        Math.max(
-          .08,
-          (
-            midiTrack
-              ?midiTrack.level
-              :.38
-          )*
-          velocityGain
-        ),
-        midiTrackType
-      );
+      if(
+        midiTrack&&
+        !["synth","synth2"].includes(
+          midiTrack.instrument
+        )
+      ){
+        previewTrack(
+          midiTrack,
+          note
+        );
+      }else{
+        leadSynth(
+          audio.currentTime,
+          note,
+          Math.max(
+            .08,
+            (
+              midiTrack
+                ?midiTrack.level
+                :.38
+            )*
+            velocityGain
+          ),
+          midiTrackType==="synth2"
+            ?"synth2"
+            :"synth"
+        );
+      }
     }finally{
       activeRoutingMixerChannel=
         null;
@@ -9901,94 +10560,103 @@ async function handleMidiMessage(event){
       data[2]/
       127;
 
-    // Familiar defaults remain available when nothing is learned.
-    if(cc===7){
-      $("master").value=
-        value;
+    // Familiar absolute-CC defaults remain available.
+    // AKAI Fire rotary encoders are relative and therefore bypass
+    // these defaults unless explicitly MIDI-learned.
+    if(
+      !(
+        message&&
+        message.relative
+      )
+    ){
+      if(cc===7){
+        $("master").value=
+          value;
 
-      $("master").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
-    }
+        $("master").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
 
-    if(cc===73){
-      $("synthAttack").value=
-        .005+
-        value*
-        1.995;
+      if(cc===73){
+        $("synthAttack").value=
+          .005+
+          value*
+          1.995;
 
-      $("synthAttack").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
-    }
+        $("synthAttack").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
 
-    if(cc===72){
-      $("synthRelease").value=
-        .03+
-        value*
-        2.97;
+      if(cc===72){
+        $("synthRelease").value=
+          .03+
+          value*
+          2.97;
 
-      $("synthRelease").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
-    }
+        $("synthRelease").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
 
-    if(cc===75){
-      $("osc1Cutoff").value=
-        120+
-        value*
-        (12000-120);
+      if(cc===75){
+        $("osc1Cutoff").value=
+          120+
+          value*
+          (12000-120);
 
-      $("osc1Cutoff").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
-    }
+        $("osc1Cutoff").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
 
-    if(cc===76){
-      $("osc2Cutoff").value=
-        120+
-        value*
-        (12000-120);
+      if(cc===76){
+        $("osc2Cutoff").value=
+          120+
+          value*
+          (12000-120);
 
-      $("osc2Cutoff").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
-    }
+        $("osc2Cutoff").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
 
-    if(cc===77){
-      $("synthFilterCutoff").value=
-        80+
-        value*
-        (16000-80);
+      if(cc===77){
+        $("synthFilterCutoff").value=
+          80+
+          value*
+          (16000-80);
 
-      $("synthFilterCutoff").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
-    }
+        $("synthFilterCutoff").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
 
-    if(cc===78){
-      $("synthFilterRes").value=
-        .1+
-        value*
-        (24-.1);
+      if(cc===78){
+        $("synthFilterRes").value=
+          .1+
+          value*
+          (24-.1);
 
-      $("synthFilterRes").dispatchEvent(
-        new Event(
-          "input"
-        )
-      );
+        $("synthFilterRes").dispatchEvent(
+          new Event(
+            "input"
+          )
+        );
+      }
     }
   }
 }
@@ -13025,16 +13693,19 @@ animate();
       }
 
       if(
-        midiAccess &&
-        !activeMidiInput
+        midiAccess&&
+        activeMidiInputs.size===0
       ){
         refreshMidiInputs();
       }
 
-      if(!activeMidiInput){
+      if(
+        activeMidiInputs.size===0
+      ){
         showMidiLearnToast(
-          "Choose a MIDI input first."
+          "Connect a MIDI controller first."
         );
+
         return;
       }
 
