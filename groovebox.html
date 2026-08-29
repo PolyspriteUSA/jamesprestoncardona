@@ -4047,6 +4047,176 @@ input[type="range"]{
   }
 }
 
+
+/* ===== Sequencer pad hit-area + sequential pattern chain ===== */
+.pattern-chain-btn{
+  min-width:112px;
+}
+
+.pattern-chain-btn.active{
+  color:#fff;
+  border-color:rgba(255,66,208,.42);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,66,208,.15),
+      rgba(113,73,255,.16)
+    );
+  box-shadow:
+    0 0 16px rgba(255,66,208,.10);
+}
+
+.groove-step-area .step.note-pad{
+  position:relative!important;
+  display:block!important;
+  min-height:68px!important;
+  padding:0!important;
+  overflow:hidden;
+}
+
+.groove-step-area .step.note-pad .step-toggle{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  border-radius:inherit;
+}
+
+.groove-step-area .step.note-pad .step-note-select{
+  position:absolute!important;
+  z-index:3!important;
+  left:4px!important;
+  right:4px!important;
+  bottom:4px!important;
+  width:calc(100% - 8px)!important;
+  height:23px!important;
+  min-width:0!important;
+}
+
+.groove-step-area .step.note-pad::after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  left:0;
+  right:0;
+  bottom:0;
+  height:31px;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(5,5,8,.74)
+    );
+}
+
+/* ===== Mixer faders and Master FX share one continuous bank ===== */
+.unified-fader-section{
+  padding-bottom:0;
+}
+
+.mixer-fader-bank{
+  display:grid;
+  grid-template-columns:minmax(820px,1fr) minmax(340px,400px);
+  gap:8px;
+  align-items:stretch;
+  padding:0 10px 12px;
+  overflow-x:auto;
+}
+
+.mixer-fader-bank .eight-track-mixer{
+  min-width:820px;
+  overflow:visible;
+}
+
+.inline-master-fx{
+  min-width:340px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17,13,29,.76),
+      rgba(7,7,12,.78)
+    );
+  padding:9px;
+}
+
+.master-fx-label{
+  min-height:42px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  margin-bottom:8px;
+}
+
+.master-fx-label strong{
+  font-size:10px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+
+.master-fx-label span{
+  color:var(--muted);
+  font-size:8px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+
+.master-fx-fader-grid{
+  height:calc(100% - 50px);
+  min-height:300px;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(70px,1fr))!important;
+  gap:6px!important;
+}
+
+.master-fx-fader-grid .fx-strip{
+  min-width:70px;
+  height:100%;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  justify-items:center;
+  align-items:center;
+  padding:8px 5px;
+  border:1px solid rgba(255,255,255,.045);
+  border-radius:10px;
+  background:rgba(255,255,255,.015);
+}
+
+.master-fx-fader-grid .vertical-fader{
+  min-height:160px;
+  align-self:stretch;
+}
+
+.master-output-strip{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(113,73,255,.08),
+      rgba(255,66,208,.04)
+    )!important;
+}
+
+.master-filter-row{
+  padding:0 12px 12px;
+}
+
+.master-filter-row .master-module{
+  width:100%;
+}
+
+@media(max-width:1180px){
+  .mixer-fader-bank{
+    grid-template-columns:820px 340px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4362,6 +4532,14 @@ input[type="range"]{
           <button class="btn sequence-btn" data-seq="1" type="button">2</button>
           <button class="btn sequence-btn" data-seq="2" type="button">3</button>
           <button class="btn sequence-btn" data-seq="3" type="button">4</button>
+          <button
+            class="btn compact-btn pattern-chain-btn active midi-assignable"
+            data-midi-key="sequencer.patternChain"
+            id="patternChainBtn"
+            type="button"
+          >
+            Chain 1→4: On
+          </button>
         </div>
       </div>
 
@@ -4460,20 +4638,94 @@ input[type="range"]{
       </div>
     </div>
 
-    <div class="mixer-section eight-track-mixer-section">
+    
+    <div class="mixer-section eight-track-mixer-section unified-fader-section">
       <div class="embedded-mixer-head">
-        <strong>8 Track Mixer</strong>
-        <span>assign any instrument to any channel</span>
+        <strong>8 Track Mixer + Master FX</strong>
+        <span>8 channel faders • reverb • decay • drive • master</span>
       </div>
-      <div class="mixer eight-track-mixer" id="mixer"></div>
+
+      <div class="mixer-fader-bank">
+        <div class="mixer eight-track-mixer" id="mixer"></div>
+
+        <div class="master-fx-section inline-master-fx">
+          <div class="master-fx-label">
+            <strong>Master FX</strong>
+            <span>global</span>
+          </div>
+
+          <div class="fx-grid master-fx-fader-grid">
+            <div class="fx-strip">
+              <label>Reverb</label>
+              <input
+                class="vertical-fader"
+                data-midi-key="master.reverb"
+                id="reverb"
+                max=".8"
+                min="0"
+                step=".01"
+                type="range"
+                value=".22"
+              />
+              <output id="reverbOut">22%</output>
+            </div>
+
+            <div class="fx-strip">
+              <label>Decay</label>
+              <input
+                class="vertical-fader"
+                data-midi-key="master.reverbDecay"
+                id="reverbDecay"
+                max="6"
+                min=".3"
+                step=".1"
+                type="range"
+                value="2.4"
+              />
+              <output id="reverbDecayOut">2.4 s</output>
+            </div>
+
+            <div class="fx-strip">
+              <label>Drive</label>
+              <input
+                class="vertical-fader"
+                data-midi-key="master.drive"
+                id="drive"
+                max=".6"
+                min="0"
+                step=".01"
+                type="range"
+                value=".08"
+              />
+              <output id="driveOut">8%</output>
+            </div>
+
+            <div class="fx-strip master-output-strip">
+              <label>Master</label>
+              <input
+                class="vertical-fader"
+                data-midi-key="master.level"
+                id="master"
+                max="1"
+                min="0"
+                step=".01"
+                type="range"
+                value=".82"
+              />
+              <output id="masterOut">82%</output>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="master-row">
+    <div class="master-filter-row">
       <div class="instrument-master-filter master-module">
         <div class="embedded-mixer-head instrument-filter-head">
           <strong>Master Filter</strong>
           <span>global tone shaping</span>
         </div>
+
         <div class="rotary-filter-grid">
           <label class="rotary-control">
             <span>Type</span>
@@ -4484,50 +4736,64 @@ input[type="range"]{
               <option value="notch">Notch</option>
             </select>
           </label>
+
           <div class="rotary-control">
             <span>Cutoff</span>
             <div class="rotary-knob-wrap">
-              <input class="rotary-range" data-midi-key="master.filter.cutoff" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
+              <input
+                class="rotary-range"
+                data-midi-key="master.filter.cutoff"
+                id="synthFilterCutoff"
+                max="16000"
+                min="80"
+                type="range"
+                value="4200"
+              />
               <div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
             </div>
             <output id="synthFilterCutoffOut">4200 Hz</output>
           </div>
+
           <div class="rotary-control">
             <span>Resonance</span>
             <div class="rotary-knob-wrap">
-              <input class="rotary-range" data-midi-key="master.filter.resonance" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
+              <input
+                class="rotary-range"
+                data-midi-key="master.filter.resonance"
+                id="synthFilterRes"
+                max="24"
+                min=".1"
+                step=".1"
+                type="range"
+                value="4"
+              />
               <div class="rotary-knob" data-knob-for="synthFilterRes"></div>
             </div>
             <output id="synthFilterResOut">4.0</output>
           </div>
+
           <div class="rotary-control">
             <span>Drive</span>
             <div class="rotary-knob-wrap">
-              <input class="rotary-range" data-midi-key="master.filter.drive" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
+              <input
+                class="rotary-range"
+                data-midi-key="master.filter.drive"
+                id="synthFilterDrive"
+                max="1"
+                min="0"
+                step=".01"
+                type="range"
+                value="0"
+              />
               <div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
             </div>
             <output id="synthFilterDriveOut">0%</output>
           </div>
         </div>
       </div>
-
-      <div class="master-fx-section master-module">
-        <div class="embedded-mixer-head">
-          <strong>Master FX</strong>
-          <span>reverb • decay • drive • master</span>
-        </div>
-        <div class="fx">
-          <div class="fx-grid">
-            <div class="fx-strip"><label>Reverb</label><input class="vertical-fader" data-midi-key="master.reverb" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/><output id="reverbOut">22%</output></div>
-            <div class="fx-strip"><label>Decay</label><input class="vertical-fader" data-midi-key="master.reverbDecay" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/><output id="reverbDecayOut">2.4 s</output></div>
-            <div class="fx-strip"><label>Drive</label><input class="vertical-fader" data-midi-key="master.drive" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/><output id="driveOut">8%</output></div>
-            <div class="fx-strip"><label>Master</label><input class="vertical-fader" data-midi-key="master.level" id="master" max="1" min="0" step=".01" type="range" value=".82"/><output id="masterOut">82%</output></div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <div class="legacy-compat" aria-hidden="true">
+<div class="legacy-compat" aria-hidden="true">
       <div id="audioChannelMixer"></div>
       <select id="audioLatency"><option value="interactive">Interactive</option></select>
       <select id="audioSampleRate"><option value="default">Default</option></select>
@@ -4730,6 +4996,8 @@ let synthSequences=tracks[5].notes;
 let synth2Sequences=tracks[6].notes;
 
 let activeSequence=0;
+let patternChainEnabled=true;
+
 let copiedPattern=null;
 
 
@@ -5920,6 +6188,13 @@ function scheduler(){
           currentStep+1
         )%
         STEPS_PER_SEQUENCE;
+
+      if(
+        currentStep===0 &&
+        patternChainEnabled
+      ){
+        advancePatternChain();
+      }
     }
   }catch(error){
     console.warn(
@@ -6067,6 +6342,45 @@ function refreshSamplePadSelects(){
         select.value="";
       }
     });
+}
+
+function updatePatternChainButton(){
+  const button=
+    $("patternChainBtn");
+
+  if(!button)return;
+
+  button.classList.toggle(
+    "active",
+    patternChainEnabled
+  );
+
+  button.textContent=
+    patternChainEnabled
+      ?"Chain 1→4: On"
+      :"Chain 1→4: Off";
+
+  button.setAttribute(
+    "aria-pressed",
+    patternChainEnabled
+      ?"true"
+      :"false"
+  );
+}
+
+function advancePatternChain(){
+  if(!patternChainEnabled){
+    return;
+  }
+
+  activeSequence=
+    (
+      activeSequence+
+      1
+    )%
+    SEQUENCE_COUNT;
+
+  refreshSequenceView();
 }
 
 function refreshSequenceStatus(){
@@ -6426,6 +6740,18 @@ $("clearBtn").addEventListener("click",()=>{
 document.querySelectorAll(".sequence-btn").forEach(button=>{
   button.addEventListener("click",()=>switchSequence(parseInt(button.dataset.seq,10)||0));
 });
+
+$("patternChainBtn").addEventListener(
+  "click",
+  ()=>{
+    patternChainEnabled=
+      !patternChainEnabled;
+
+    updatePatternChainButton();
+  }
+);
+
+updatePatternChainButton();
 
 $("copyPatternBtn").addEventListener("click",copyCurrentPattern);
 $("pastePatternBtn").addEventListener("click",pastePatternToCurrent);
