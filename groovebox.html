@@ -3506,6 +3506,330 @@ body{
   }
 }
 
+
+/* ================================================================
+   Cohesive Groove Sequencer
+   Recorder + sequencer merged into one clip-oriented workflow.
+   ================================================================ */
+.groove-sequencer-card{
+  grid-column:1/-1;
+  width:100%;
+}
+
+.groove-sequencer-head{
+  align-items:center;
+}
+
+.groove-sequencer-head > div:first-child{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.groove-sequencer-body{
+  padding:14px;
+}
+
+.groove-toolbar{
+  display:grid;
+  grid-template-columns:auto auto minmax(360px,1fr) auto;
+  gap:10px;
+  align-items:end;
+  padding:10px;
+  margin-bottom:12px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(8,8,13,.74);
+}
+
+.groove-toolbar-group{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.groove-toolbar-label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+.groove-inline-actions,
+.compact-sequence-buttons{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.compact-sequence-buttons .sequence-btn{
+  width:36px;
+  min-width:36px;
+  padding:8px 0;
+}
+
+.compact-btn{
+  min-height:34px;
+  padding:7px 10px;
+  border-radius:10px;
+  font-size:11px;
+}
+
+.mini-select{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 9px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#0d0d14;
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.mini-select select{
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  font-size:11px;
+}
+
+.groove-sequence-status{
+  align-self:center;
+  justify-self:end;
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+}
+
+.groove-step-area{
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(7,7,12,.78);
+}
+
+.step-ruler{
+  display:grid;
+  grid-template-columns:150px repeat(16,minmax(38px,1fr));
+  gap:5px;
+  align-items:center;
+  padding:8px 10px 5px;
+  color:rgba(255,255,255,.34);
+  font-size:9px;
+  text-align:center;
+  user-select:none;
+}
+
+.groove-step-area .seq-wrap{
+  padding:5px 10px 10px;
+}
+
+.groove-step-area .track{
+  grid-template-columns:150px repeat(16,minmax(38px,1fr));
+  gap:5px;
+  padding:5px 0;
+  border-bottom:1px solid rgba(255,255,255,.045);
+}
+
+.groove-step-area .track:last-child{
+  border-bottom:0;
+}
+
+.groove-step-area .track-name{
+  min-width:0;
+  padding-right:8px;
+}
+
+.groove-step-area .track-name > span{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.groove-step-area .step,
+.groove-step-area .note-pad{
+  min-width:0;
+  width:100%;
+}
+
+.groove-step-area .step.note-pad{
+  display:grid;
+  grid-template-rows:minmax(30px,1fr) auto;
+  gap:3px;
+  height:auto;
+  min-height:58px;
+}
+
+.groove-step-area .step-note-select{
+  width:100%;
+  min-width:0;
+  padding:3px 2px;
+  font-size:9px;
+}
+
+.sample-context-panel{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(255,66,208,.08),transparent 28%),
+    rgba(9,9,15,.78);
+}
+
+.sample-context-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.sample-context-head > div:first-child{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.sample-context-head strong{
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.sample-context-head span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.sample-context-actions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.sample-context-controls{
+  display:grid;
+  grid-template-columns:minmax(220px,360px) minmax(240px,1fr);
+  gap:10px;
+  align-items:center;
+}
+
+.sample-source-control{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-height:38px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#0d0d14;
+}
+
+.sample-source-control span{
+  flex:0 0 auto;
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.sample-source-control select{
+  min-width:0;
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:var(--text);
+}
+
+.sample-context-panel .recording-status{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  padding:0 11px;
+  margin:0;
+}
+
+.compact-sample-slots{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:7px;
+}
+
+.compact-sample-slots .sample-slot{
+  margin:0;
+}
+
+.groove-internal-recorder{
+  display:none !important;
+}
+
+/* Sample row now behaves like a drum row: select one sample globally,
+   then click steps. This removes 16 tiny dropdowns from the row. */
+.track.sample-track-row .step{
+  position:relative;
+}
+
+.track.sample-track-row .step::before{
+  content:"";
+  position:absolute;
+  inset:35%;
+  border-radius:50%;
+  background:rgba(255,255,255,.30);
+  opacity:.28;
+}
+
+.track.sample-track-row .step.on::before{
+  background:#fff;
+  opacity:.95;
+  box-shadow:0 0 12px rgba(255,66,208,.65);
+}
+
+@media(max-width:1100px){
+  .groove-toolbar{
+    grid-template-columns:1fr 1fr;
+  }
+  .groove-sequence-status{
+    justify-self:start;
+  }
+}
+
+@media(max-width:900px){
+  .step-ruler{
+    display:none;
+  }
+  .groove-step-area{
+    overflow-x:auto;
+  }
+  .groove-step-area .seq-wrap{
+    min-width:900px;
+  }
+  .sample-context-controls{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:680px){
+  .groove-toolbar{
+    grid-template-columns:1fr;
+  }
+  .sample-context-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3805,75 +4129,116 @@ body{
 </div>
 </div>
 </section></main></div>
-<section class="card sequencer-card collapsible-section" data-collapse-section="sequencer">
-<div class="card-head">
-<h2>4 × 16-Step Sequencer</h2>
-<span>64 steps total • click pads to program</span>
-<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="sequencer" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="sequencer-collapse-body collapsible-body" data-collapse-id="sequencer"><div class="sequence-switcher">
-<div class="sequence-switcher-head">
-<strong>Pattern Banks</strong>
-<span>switch between 4 sequences</span>
-</div>
-<div class="sequence-buttons" id="sequenceButtons">
-<button class="btn sequence-btn active" data-seq="0" type="button">Seq 1</button>
-<button class="btn sequence-btn" data-seq="1" type="button">Seq 2</button>
-<button class="btn sequence-btn" data-seq="2" type="button">Seq 3</button>
-<button class="btn sequence-btn" data-seq="3" type="button">Seq 4</button>
-</div>
-<div class="pattern-edit-actions">
-<button class="btn" id="copyPatternBtn" type="button">Copy Pattern</button>
-<button class="btn" disabled="" id="pastePatternBtn" type="button">Paste Pattern</button>
-</div>
-<div class="sequence-status" id="sequenceStatus">
-          Editing Sequence 1 · steps 1–16
+
+<section class="card sequencer-card groove-sequencer-card collapsible-section" data-collapse-section="sequencer">
+  <div class="card-head groove-sequencer-head">
+    <div>
+      <h2>Groove Sequencer</h2>
+      <span>16-step tracks • record samples directly into the pattern</span>
+    </div>
+    <div class="collapse-head-actions">
+      <button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="sequencer" type="button">
+        <span class="collapse-icon">−</span>
+        <span class="collapse-label">Collapse</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sequencer-collapse-body collapsible-body groove-sequencer-body" data-collapse-id="sequencer">
+    <div class="groove-toolbar">
+      <div class="groove-toolbar-group pattern-bank-group">
+        <div class="groove-toolbar-label">Pattern</div>
+        <div class="sequence-buttons compact-sequence-buttons" id="sequenceButtons">
+          <button class="btn sequence-btn active" data-seq="0" type="button">1</button>
+          <button class="btn sequence-btn" data-seq="1" type="button">2</button>
+          <button class="btn sequence-btn" data-seq="2" type="button">3</button>
+          <button class="btn sequence-btn" data-seq="3" type="button">4</button>
         </div>
-</div><div class="seq-wrap" id="sequencer"></div></div>
-<div class="audio-recorder collapsible-section" data-collapse-section="audio-recorder">
-<div class="recorder-head">
-<div>
-<strong>Audio Recorder</strong>
-<span>record the groovebox output into timeline clips</span>
-</div>
-<div class="recorder-transport">
-<button class="btn recorder-record" id="audioRecordBtn" type="button">Record</button>
-<button class="btn" id="audioStopBtn" type="button">Stop</button>
-<button class="btn" id="audioPlayBtn" type="button">Play All</button>
-<button class="btn" id="audioClearBtn" type="button">Clear</button>
-</div>
-<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-drop-hint">
-<span>Drag loaded samples or audio files onto any Audio track</span>
-</div>
-<div class="sample-loader">
-<div class="embedded-mixer-head sample-loader-head">
-<strong>Samples</strong>
-<span>load • preview • trigger</span>
-</div>
-<div class="sample-actions">
-<label class="btn sample-add-button">
-                  Add Samples
-                  <input accept="audio/*" hidden="" id="sampleFiles" multiple="" type="file"/>
-</label>
-<button class="btn" id="sampleStopAll" type="button">
-                  Stop Samples
-                </button>
-</div>
-<div class="sample-track-source">
-<label for="sampleTrackSource">Sequencer Sample</label>
-<select id="sampleTrackSource">
-<option value="-1">No sample loaded</option>
-</select>
-</div>
-<div class="sample-slots" id="sampleSlots"></div>
-</div>
-<div class="audio-timeline-wrap" id="audioTimelineDropzone">
-<div class="timeline-ruler" id="timelineRuler"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div>
-<div class="audio-timeline" id="audioTimeline"><div class="audio-track-row" data-audio-channel="0"><div class="audio-track-label">Audio 1 • armed</div></div><div class="audio-track-row" data-audio-channel="1"><div class="audio-track-label">Audio 2</div></div><div class="audio-track-row" data-audio-channel="2"><div class="audio-track-label">Audio 3</div></div><div class="audio-track-row" data-audio-channel="3"><div class="audio-track-label">Audio 4</div></div></div>
-</div><div class="recording-status" id="recordingStatus">
-          Select an audio channel and press Record
-        </div></div>
-</div>
+      </div>
 
+      <div class="groove-toolbar-group">
+        <div class="groove-toolbar-label">Edit</div>
+        <div class="groove-inline-actions">
+          <button class="btn compact-btn" id="copyPatternBtn" type="button">Copy</button>
+          <button class="btn compact-btn" disabled id="pastePatternBtn" type="button">Paste</button>
+        </div>
+      </div>
 
+      <div class="groove-toolbar-group">
+        <div class="groove-toolbar-label">Sample Loop</div>
+        <div class="groove-inline-actions">
+          <button class="btn recorder-record compact-btn" id="audioRecordBtn" type="button">● Record</button>
+          <button class="btn compact-btn" id="audioStopBtn" type="button">Stop</button>
+          <label class="mini-select">
+            <span>Length</span>
+            <select id="recordBars">
+              <option value="1">1 bar</option>
+              <option value="2">2 bars</option>
+              <option value="4">4 bars</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="sequence-status groove-sequence-status" id="sequenceStatus">
+        Editing Sequence 1 · steps 1–16
+      </div>
+    </div>
+
+    <div class="groove-step-area">
+      <div class="step-ruler" aria-hidden="true">
+        <span></span>
+        <span>1</span><span>2</span><span>3</span><span>4</span>
+        <span>5</span><span>6</span><span>7</span><span>8</span>
+        <span>9</span><span>10</span><span>11</span><span>12</span>
+        <span>13</span><span>14</span><span>15</span><span>16</span>
+      </div>
+      <div class="seq-wrap" id="sequencer"></div>
+    </div>
+
+    <div class="sample-context-panel">
+      <div class="sample-context-head">
+        <div>
+          <strong>Sample Track</strong>
+          <span>record, load, then place the selected sample on steps</span>
+        </div>
+        <div class="sample-context-actions">
+          <label class="btn compact-btn sample-add-button">
+            Add Sample
+            <input accept="audio/*" hidden id="sampleFiles" multiple type="file" />
+          </label>
+          <button class="btn compact-btn" id="sampleStopAll" type="button">Stop Samples</button>
+        </div>
+      </div>
+
+      <div class="sample-context-controls">
+        <label class="sample-source-control" for="sampleTrackSource">
+          <span>Selected Sample</span>
+          <select id="sampleTrackSource">
+            <option value="-1">No sample loaded</option>
+          </select>
+        </label>
+
+        <div class="recording-status" id="recordingStatus">
+          Select or record a sample, then click Sample steps.
+        </div>
+      </div>
+
+      <div class="sample-slots compact-sample-slots" id="sampleSlots"></div>
+    </div>
+
+    <!-- Existing recorder/timeline engine remains available internally.
+         These hidden nodes preserve compatibility with the audio engine. -->
+    <div class="groove-internal-recorder" aria-hidden="true">
+      <button id="audioPlayBtn" type="button" tabindex="-1">Play All</button>
+      <button id="audioClearBtn" type="button" tabindex="-1">Clear</button>
+      <div id="audioTimelineDropzone">
+        <div id="timelineRuler"></div>
+        <div id="audioTimeline"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console">
 <div class="mixing-console-head">
@@ -5780,7 +6145,7 @@ tracks.forEach((track,ti)=>{
     const sampleTrack=
       track.type==="sample";
 
-    if(noteTrack||sampleTrack){
+    if(noteTrack){
       const pad=document.createElement("div");
       pad.className=
         "step note-pad"+
@@ -5806,9 +6171,7 @@ tracks.forEach((track,ti)=>{
       });
 
       const select=
-        sampleTrack
-          ?makeSampleSelect(si)
-          :makeNoteSelect(track,si);
+        makeNoteSelect(track,si);
 
       pad.append(toggle,select);
       row.appendChild(pad);
@@ -5820,7 +6183,24 @@ tracks.forEach((track,ti)=>{
 
       pad.addEventListener("click",()=>{
         const pattern=getTrackPattern(track);
-        pattern[si]=pattern[si]?0:1;
+        const turningOn=!pattern[si];
+        pattern[si]=turningOn?1:0;
+
+        if(sampleTrack){
+          if(turningOn){
+            const selected=
+              selectedSampleIndex>=0
+                ?sampleLibrary[selectedSampleIndex]
+                :sampleLibrary[0];
+
+            if(selected){
+              getSampleStepSelections()[si]=selected.id;
+            }
+          }else{
+            getSampleStepSelections()[si]=null;
+          }
+        }
+
         pad.classList.toggle(
           "on",
           !!pattern[si]
@@ -5830,6 +6210,10 @@ tracks.forEach((track,ti)=>{
       row.appendChild(pad);
     }
   });
+
+  if(track.type==="sample"){
+    row.classList.add("sample-track-row");
+  }
 
   sequencer.appendChild(row);
 });
@@ -6234,6 +6618,33 @@ $("sampleTrackSource").addEventListener(
     if(!Number.isFinite(selectedSampleIndex)){
       selectedSampleIndex=-1;
     }
+
+    const selected=
+      selectedSampleIndex>=0
+        ?sampleLibrary[selectedSampleIndex]
+        :null;
+
+    if(selected){
+      const sampleTrack=
+        tracks.find(
+          track=>track.type==="sample"
+        );
+
+      if(sampleTrack){
+        const pattern=getTrackPattern(sampleTrack);
+
+        pattern.forEach((on,step)=>{
+          if(on){
+            getSampleStepSelections()[step]=selected.id;
+          }
+        });
+      }
+
+      setRecordingStatus(
+        selected.name+
+        " selected for Sample Track"
+      );
+    }
   }
 );
 
@@ -6254,6 +6665,7 @@ const audioChannels=[
 let audioRecorder=null;
 let audioRecorderChunks=[];
 let audioRecordStart=0;
+let audioAutoStopTimer=null;
 let activeAudioChannel=0;
 let clipCounter=1;
 const activeTimelinePlayers=new Set();
@@ -7127,7 +7539,12 @@ async function startAudioRecording(){
     }
   };
 
-  audioRecorder.onstop=()=>{
+  audioRecorder.onstop=async()=>{
+    if(audioAutoStopTimer){
+      clearTimeout(audioAutoStopTimer);
+      audioAutoStopTimer=null;
+    }
+
     const duration=
       Math.max(
         .05,
@@ -7141,38 +7558,113 @@ async function startAudioRecording(){
       );
 
     const url=URL.createObjectURL(blob);
+    const takeName="Loop "+clipCounter;
 
     audioChannels[activeAudioChannel].clips.push({
       id:clipCounter,
-      name:"Take "+clipCounter,
+      name:takeName,
       duration,
       url,
       startPercent:0,
-      loop:false,
+      loop:true,
       sourceType:"recorded",
       ownsUrl:true
     });
 
+    const sample={
+      id:sampleIdCounter++,
+      name:takeName,
+      url,
+      duration,
+      volume:.85,
+      buffer:null
+    };
+
+    try{
+      const bytes=
+        await blob.arrayBuffer();
+
+      sample.buffer=
+        await audio.decodeAudioData(
+          bytes.slice(0)
+        );
+    }catch(error){
+      sample.buffer=null;
+    }
+
+    sampleLibrary.push(sample);
+    selectedSampleIndex=sampleLibrary.length-1;
+
+    const sampleTrack=
+      tracks.find(
+        track=>track.type==="sample"
+      );
+
+    if(sampleTrack){
+      const pattern=getTrackPattern(sampleTrack);
+
+      if(!pattern.some(Boolean)){
+        pattern[0]=1;
+        getSampleStepSelections()[0]=sample.id;
+      }
+    }
+
     clipCounter++;
+
     renderAudioTimeline();
     renderRecords();
+    renderSampleSlots();
+    refreshSamplePadSelects();
+    refreshSequenceView();
+
+    $("audioRecordBtn").classList.remove("active");
 
     setRecordingStatus(
-      "Recorded "+
-      duration.toFixed(2)+
-      " seconds to "+
-      audioChannels[activeAudioChannel].name
+      takeName+
+      " captured • selected for Sample Track"
     );
   };
 
   audioRecorder.start();
 
+  const barsControl=$("recordBars");
+  const bars=
+    barsControl
+      ?Math.max(1,parseInt(barsControl.value,10)||1)
+      :1;
+
+  const captureMs=
+    bars*
+    STEPS_PER_SEQUENCE*
+    secondsPerStep()*
+    1000;
+
+  if(audioAutoStopTimer){
+    clearTimeout(audioAutoStopTimer);
+  }
+
+  audioAutoStopTimer=
+    setTimeout(
+      ()=>{
+        if(
+          audioRecorder&&
+          audioRecorder.state==="recording"
+        ){
+          stopAudioRecording();
+        }
+      },
+      captureMs
+    );
+
   $("audioRecordBtn").classList.add("active");
 
+  const captureBars=
+    $("recordBars")
+      ?$("recordBars").value
+      :"1";
+
   setRecordingStatus(
-    "Recording "+
-    audioChannels[activeAudioChannel].name+
-    "...",
+    "Recording "+captureBars+" bar loop…",
     true
   );
 }
@@ -7189,13 +7681,9 @@ function stopAudioRecording(){
 
   $("audioRecordBtn").classList.remove("active");
 
-  if(
-    !audioRecorder ||
-    audioRecorder.state!=="recording"
-  ){
-    setRecordingStatus(
-      "Recorded audio playback stopped"
-    );
+  if(audioAutoStopTimer){
+    clearTimeout(audioAutoStopTimer);
+    audioAutoStopTimer=null;
   }
 }
 
