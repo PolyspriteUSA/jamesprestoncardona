@@ -3881,6 +3881,172 @@ body{
   .groove-toolbar{grid-template-columns:1fr}
 }
 
+
+/* ===== Real 8-channel mixer routing + generic MIDI learn ===== */
+.track-routing-selects{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+}
+
+.track-routing-selects label{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.track-routing-selects label>span{
+  color:var(--muted);
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.track-mixer-select{
+  width:100%;
+  min-height:30px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#0d0d14;
+  color:var(--text);
+  font-size:10px;
+  padding:4px 5px;
+}
+
+.transport-midi{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:auto minmax(180px,280px) 1fr;
+  gap:8px;
+  align-items:center;
+  padding-top:4px;
+}
+
+.transport-midi select{
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#0d0d14;
+  color:var(--text);
+  padding:0 8px;
+}
+
+.transport-midi .midi-status{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.025);
+}
+
+.eight-track-mixer{
+  display:grid!important;
+  grid-template-columns:repeat(8,minmax(96px,1fr))!important;
+  gap:7px!important;
+  overflow-x:auto;
+  align-items:stretch;
+}
+
+.real-mixer-channel{
+  min-width:96px!important;
+  display:grid!important;
+  grid-template-rows:auto minmax(34px,auto) auto auto 1fr auto;
+  justify-items:center;
+  align-items:start;
+  gap:8px;
+  padding:10px 7px!important;
+}
+
+.mixer-channel-number{
+  color:rgba(255,255,255,.34);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.real-mixer-channel .channel-track-label{
+  width:100%;
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.2;
+  font-size:10px;
+  color:#fff!important;
+}
+
+.mixer-pan-control{
+  width:100%;
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  gap:4px;
+}
+
+.mixer-pan-control .rotary-knob-wrap{
+  width:46px;
+  height:46px;
+}
+
+.mixer-pan-control output{
+  font-size:9px;
+  color:var(--muted);
+}
+
+.real-mixer-channel .vertical-fader{
+  align-self:stretch;
+  min-height:150px;
+}
+
+.midi-assignable,
+.step-toggle,
+input[type="range"]{
+  position:relative;
+}
+
+.midi-mapped{
+  box-shadow:
+    0 0 0 1px rgba(166,108,255,.62),
+    0 0 14px rgba(113,73,255,.20)!important;
+}
+
+.midi-learn-target{
+  box-shadow:
+    0 0 0 2px rgba(255,66,208,.78),
+    0 0 22px rgba(255,66,208,.36)!important;
+}
+
+.midi-learn-menu{
+  min-width:250px;
+}
+
+.midi-learn-menu button{
+  text-align:left;
+}
+
+@media(max-width:1000px){
+  .eight-track-mixer{
+    min-width:850px;
+  }
+}
+
+@media(max-width:760px){
+  .track-routing-selects{
+    grid-template-columns:1fr;
+  }
+
+  .transport-midi{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4267,22 +4433,31 @@ body{
   <div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console">
     <div class="mixer-transport">
       <div class="transport-buttons">
-        <button class="btn primary" id="playBtn" type="button">Play</button>
-        <button class="btn" id="stopBtn" type="button">Stop</button>
-        <button class="btn" id="randomBtn" type="button">Randomize</button>
-        <button class="btn" id="clearBtn" type="button">Clear</button>
+        <button class="btn primary midi-assignable" data-midi-key="transport.play" id="playBtn" type="button">Play</button>
+        <button class="btn midi-assignable" data-midi-key="transport.stop" id="stopBtn" type="button">Stop</button>
+        <button class="btn midi-assignable" data-midi-key="transport.record" id="transportRecordBtn" type="button">Record</button>
+        <button class="btn midi-assignable" data-midi-key="transport.random" id="randomBtn" type="button">Randomize</button>
+        <button class="btn midi-assignable" data-midi-key="transport.clear" id="clearBtn" type="button">Clear</button>
       </div>
 
       <label class="transport-slider tempo-slider">
         <span>Tempo</span>
-        <input id="bpm" max="180" min="60" step="1" type="range" value="124" />
+        <input data-midi-key="transport.tempo" id="bpm" max="180" min="60" step="1" type="range" value="124" />
         <output id="transportBpmOut">124 BPM</output>
       </label>
 
       <label class="transport-slider">
         <span>Swing</span>
-        <input id="swing" max="0.45" min="0" step="0.01" type="range" value="0.08" />
+        <input data-midi-key="transport.swing" id="swing" max="0.45" min="0" step="0.01" type="range" value="0.08" />
       </label>
+
+      <div class="transport-midi">
+        <button class="btn compact-btn" id="midiConnect" type="button">Connect MIDI</button>
+        <select id="midiInput" aria-label="MIDI input">
+          <option value="">No MIDI input</option>
+        </select>
+        <div class="midi-status" id="midiStatus">MIDI disconnected</div>
+      </div>
     </div>
 
     <div class="mixer-section eight-track-mixer-section">
@@ -4312,7 +4487,7 @@ body{
           <div class="rotary-control">
             <span>Cutoff</span>
             <div class="rotary-knob-wrap">
-              <input class="rotary-range" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
+              <input class="rotary-range" data-midi-key="master.filter.cutoff" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
               <div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
             </div>
             <output id="synthFilterCutoffOut">4200 Hz</output>
@@ -4320,7 +4495,7 @@ body{
           <div class="rotary-control">
             <span>Resonance</span>
             <div class="rotary-knob-wrap">
-              <input class="rotary-range" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
+              <input class="rotary-range" data-midi-key="master.filter.resonance" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
               <div class="rotary-knob" data-knob-for="synthFilterRes"></div>
             </div>
             <output id="synthFilterResOut">4.0</output>
@@ -4328,7 +4503,7 @@ body{
           <div class="rotary-control">
             <span>Drive</span>
             <div class="rotary-knob-wrap">
-              <input class="rotary-range" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
+              <input class="rotary-range" data-midi-key="master.filter.drive" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
               <div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
             </div>
             <output id="synthFilterDriveOut">0%</output>
@@ -4343,10 +4518,10 @@ body{
         </div>
         <div class="fx">
           <div class="fx-grid">
-            <div class="fx-strip"><label>Reverb</label><input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/><output id="reverbOut">22%</output></div>
-            <div class="fx-strip"><label>Decay</label><input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/><output id="reverbDecayOut">2.4 s</output></div>
-            <div class="fx-strip"><label>Drive</label><input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/><output id="driveOut">8%</output></div>
-            <div class="fx-strip"><label>Master</label><input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/><output id="masterOut">82%</output></div>
+            <div class="fx-strip"><label>Reverb</label><input class="vertical-fader" data-midi-key="master.reverb" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/><output id="reverbOut">22%</output></div>
+            <div class="fx-strip"><label>Decay</label><input class="vertical-fader" data-midi-key="master.reverbDecay" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/><output id="reverbDecayOut">2.4 s</output></div>
+            <div class="fx-strip"><label>Drive</label><input class="vertical-fader" data-midi-key="master.drive" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/><output id="driveOut">8%</output></div>
+            <div class="fx-strip"><label>Master</label><input class="vertical-fader" data-midi-key="master.level" id="master" max="1" min="0" step=".01" type="range" value=".82"/><output id="masterOut">82%</output></div>
           </div>
         </div>
       </div>
@@ -4366,11 +4541,8 @@ body{
       <input id="bassFilterCutoff" type="range" min="50" max="8000" value="900"/><output id="bassFilterCutoffOut">900 Hz</output>
       <input id="bassFilterRes" type="range" min=".1" max="24" step=".1" value="6"/><output id="bassFilterResOut">6.0</output>
       <input id="bassFilterDrive" type="range" min="0" max="1" step=".01" value=".08"/><output id="bassFilterDriveOut">8%</output>
-      <button id="midiConnect" type="button">Connect MIDI</button>
       <select id="midiTarget"><option value="synth">Synth 1</option><option value="synth2">Synth 2</option></select>
-      <select id="midiInput"><option value="">None</option></select>
       <select id="midiChannel"><option value="all">All</option></select>
-      <div id="midiStatus"></div>
       <div id="tapeDeck"></div><span id="tapeStatus">Ready</span><strong id="tapeTime">00:00</strong>
       <button id="tapeRecordBtn" type="button">Record</button><button id="tapeStopBtn" type="button">Stop</button>
       <button id="tapePlayBtn" type="button">Play</button><button id="tapeDownloadBtn" type="button">Save</button>
@@ -4405,17 +4577,142 @@ function makeTrackNotes(note){
 }
 
 const tracks=[
-  {id:"track1",name:"Track 1",type:"kick",instrument:"kick",level:.86,patterns:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(36)},
-  {id:"track2",name:"Track 2",type:"snare",instrument:"snare",level:.56,patterns:[[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(38)},
-  {id:"track3",name:"Track 3",type:"hat",instrument:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(42)},
-  {id:"track4",name:"Track 4",type:"openhat",instrument:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(46)},
-  {id:"track5",name:"Track 5",type:"perc",instrument:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(43)},
-  {id:"track6",name:"Track 6",type:"synth",instrument:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[60,63,67,70,67,70,72,70,72,75,74,74,72,70,67,63],Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60)]},
-  {id:"track7",name:"Track 7",type:"synth2",instrument:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[48,50,51,51,55,53,43,46,46,48,51,55,55,48,51,55],Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48)]},
-  {id:"track8",name:"Track 8",type:"sample",instrument:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(60)}
+  {id:"track1",name:"Track 1",mixerChannel:0,type:"kick",instrument:"kick",level:.86,patterns:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(36)},
+  {id:"track2",name:"Track 2",mixerChannel:1,type:"snare",instrument:"snare",level:.56,patterns:[[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(38)},
+  {id:"track3",name:"Track 3",mixerChannel:2,type:"hat",instrument:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(42)},
+  {id:"track4",name:"Track 4",mixerChannel:3,type:"openhat",instrument:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(46)},
+  {id:"track5",name:"Track 5",mixerChannel:4,type:"perc",instrument:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(43)},
+  {id:"track6",name:"Track 6",mixerChannel:5,type:"synth",instrument:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[60,63,67,70,67,70,72,70,72,75,74,74,72,70,67,63],Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60)]},
+  {id:"track7",name:"Track 7",mixerChannel:6,type:"synth2",instrument:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[48,50,51,51,55,53,43,46,46,48,51,55,55,48,51,55],Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48)]},
+  {id:"track8",name:"Track 8",mixerChannel:7,type:"sample",instrument:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(60)}
 ];
 
 window.tracks=tracks;
+
+const mixerChannels=
+  Array.from(
+    {length:8},
+    (_,index)=>({
+      id:index,
+      level:.82,
+      pan:0
+    })
+  );
+
+window.grooveboxMixerChannels=
+  mixerChannels;
+
+let mixerBusNodes=[];
+let activeRoutingMixerChannel=null;
+let mixerMuted=new Set();
+let mixerSoloed=new Set();
+
+function mixerChannelForTrack(track){
+  return Math.max(
+    0,
+    Math.min(
+      7,
+      Number.isFinite(track.mixerChannel)
+        ?track.mixerChannel
+        :0
+    )
+  );
+}
+
+function instrumentLabel(type){
+  const item=
+    INSTRUMENT_OPTIONS.find(
+      option=>option[0]===type
+    );
+
+  return item
+    ?item[1]
+    :type;
+}
+
+function refreshMixerChannelLabels(){
+  for(let channel=0;channel<8;channel++){
+    const assigned=
+      tracks.find(
+        track=>
+          mixerChannelForTrack(track)===channel
+      );
+
+    const label=
+      document.querySelector(
+        '[data-mixer-label="'+channel+'"]'
+      );
+
+    if(label){
+      label.textContent=
+        assigned
+          ?assigned.name+" · "+instrumentLabel(assigned.instrument)
+          :"Unassigned";
+    }
+  }
+
+  document
+    .querySelectorAll(
+      ".track-mixer-select"
+    )
+    .forEach(select=>{
+      const track=
+        tracks[
+          +select.dataset.trackIndex
+        ];
+
+      if(track){
+        select.value=
+          String(
+            mixerChannelForTrack(track)
+          );
+      }
+    });
+}
+
+function setTrackMixerChannel(trackIndex,newChannel){
+  const track=
+    tracks[trackIndex];
+
+  if(!track)return;
+
+  const target=
+    Math.max(
+      0,
+      Math.min(
+        7,
+        parseInt(newChannel,10)||0
+      )
+    );
+
+  const old=
+    mixerChannelForTrack(track);
+
+  if(old===target){
+    refreshMixerChannelLabels();
+    return;
+  }
+
+  const occupantIndex=
+    tracks.findIndex(
+      (candidate,index)=>
+        index!==trackIndex &&
+        mixerChannelForTrack(candidate)===target
+    );
+
+  track.mixerChannel=
+    target;
+
+  if(occupantIndex>=0){
+    tracks[
+      occupantIndex
+    ].mixerChannel=
+      old;
+  }
+
+  refreshMixerChannelLabels();
+}
+
 
 function setTrackInstrument(index,type){
   const track=tracks[index];
@@ -4425,6 +4722,8 @@ function setTrackInstrument(index,type){
   document.querySelectorAll('[data-instrument-track="'+index+'"]').forEach(select=>{
     if(select.value!==type)select.value=type;
   });
+
+  refreshMixerChannelLabels();
 }
 
 let synthSequences=tracks[5].notes;
@@ -4693,6 +4992,35 @@ function ensureAudio(){
   filter.frequency.value=1400;
   filter.Q.value=7;
 
+  mixerBusNodes=
+    mixerChannels.map(channel=>{
+      const input=
+        audio.createGain();
+
+      input.gain.value=
+        channel.level;
+
+      let panner=null;
+
+      if(audio.createStereoPanner){
+        panner=
+          audio.createStereoPanner();
+
+        panner.pan.value=
+          channel.pan;
+
+        input.connect(panner);
+        panner.connect(filter);
+      }else{
+        input.connect(filter);
+      }
+
+      return {
+        input,
+        panner
+      };
+    });
+
   reverbNode=audio.createConvolver();
   reverbWet=audio.createGain();
   reverbDry=audio.createGain();
@@ -4749,9 +5077,26 @@ function ensureAudio(){
   updateAudioStatus();
   applySelectedAudioOutput();
 }
-function out(node){
+function routeNodeToMixer(node){
   ensureAudio();
-  node.connect(filter);
+
+  const index=
+    activeRoutingMixerChannel;
+
+  const bus=
+    Number.isFinite(index)
+      ?mixerBusNodes[index]
+      :null;
+
+  if(bus&&bus.input){
+    node.connect(bus.input);
+  }else{
+    node.connect(filter);
+  }
+}
+
+function out(node){
+  routeNodeToMixer(node);
 }
 function noiseBuffer(){
   ensureAudio();
@@ -5387,7 +5732,7 @@ function leadSynth(t,n=60,v=.38,synthType="synth"){
   env.connect(synthFilter);
   synthFilter.connect(synthDrive);
   synthDrive.connect(synthFmFilter);
-  synthFmFilter.connect(filter);
+  routeNodeToMixer(synthFmFilter);
 
   if(synthVisualizerAnalyser){
     synthFmFilter.connect(
@@ -5425,17 +5770,43 @@ function playTrack(track,t,step){
   if(muted.has(track.id))return;
   if(soloed.size>0&&!soloed.has(track.id))return;
 
-  const instrument=track.instrument||track.type;
-  const note=track.notes[activeSequence][step];
+  const channel=
+    mixerChannelForTrack(track);
 
-  if(instrument==="kick")kick(t,track.level,note);
-  if(instrument==="snare")snare(t,track.level,note);
-  if(instrument==="hat")hat(t,track.level,false,note);
-  if(instrument==="openhat")hat(t,track.level,true,note);
-  if(instrument==="perc")perc(t,track.level,note);
-  if(instrument==="synth")leadSynth(t,note,track.level,"synth");
-  if(instrument==="synth2")leadSynth(t,note,track.level,"synth2");
-  if(instrument==="sample")triggerSequencerSample(t,track.level,step,note);
+  if(mixerMuted.has(channel))return;
+
+  if(
+    mixerSoloed.size>0 &&
+    !mixerSoloed.has(channel)
+  ){
+    return;
+  }
+
+  const instrument=
+    track.instrument||
+    track.type;
+
+  const note=
+    track.notes[
+      activeSequence
+    ][step];
+
+  activeRoutingMixerChannel=
+    channel;
+
+  try{
+    if(instrument==="kick")kick(t,track.level,note);
+    if(instrument==="snare")snare(t,track.level,note);
+    if(instrument==="hat")hat(t,track.level,false,note);
+    if(instrument==="openhat")hat(t,track.level,true,note);
+    if(instrument==="perc")perc(t,track.level,note);
+    if(instrument==="synth")leadSynth(t,note,track.level,"synth");
+    if(instrument==="synth2")leadSynth(t,note,track.level,"synth2");
+    if(instrument==="sample")triggerSequencerSample(t,track.level,step,note);
+  }finally{
+    activeRoutingMixerChannel=
+      null;
+  }
 }
 
 function secondsPerStep(){
@@ -5801,19 +6172,82 @@ function buildInstrumentSelect(trackIndex,className){
   return select;
 }
 
+function buildMixerAssignSelect(trackIndex){
+  const select=
+    document.createElement(
+      "select"
+    );
+
+  select.className=
+    "track-mixer-select";
+
+  select.dataset.trackIndex=
+    trackIndex;
+
+  for(
+    let channel=0;
+    channel<8;
+    channel++
+  ){
+    const option=
+      document.createElement(
+        "option"
+      );
+
+    option.value=
+      channel;
+
+    option.textContent=
+      "Mixer "+
+      (channel+1);
+
+    select.appendChild(
+      option
+    );
+  }
+
+  select.value=
+    String(
+      mixerChannelForTrack(
+        tracks[trackIndex]
+      )
+    );
+
+  select.addEventListener(
+    "change",
+    ()=>{
+      setTrackMixerChannel(
+        trackIndex,
+        +select.value
+      );
+    }
+  );
+
+  return select;
+}
+
 function previewTrack(track,note){
   if(!audio||audio.state==="suspended")return;
+
   const t=audio.currentTime;
   const type=track.instrument;
 
-  if(type==="kick")kick(t,Math.min(track.level,.6),note);
-  if(type==="snare")snare(t,Math.min(track.level,.5),note);
-  if(type==="hat")hat(t,Math.min(track.level,.35),false,note);
-  if(type==="openhat")hat(t,Math.min(track.level,.35),true,note);
-  if(type==="perc")perc(t,Math.min(track.level,.4),note);
-  if(type==="synth")leadSynth(t,note,track.level,"synth");
-  if(type==="synth2")leadSynth(t,note,track.level,"synth2");
-  if(type==="sample")triggerSequencerSample(t,track.level,0,note);
+  activeRoutingMixerChannel=
+    mixerChannelForTrack(track);
+
+  try{
+    if(type==="kick")kick(t,Math.min(track.level,.6),note);
+    if(type==="snare")snare(t,Math.min(track.level,.5),note);
+    if(type==="hat")hat(t,Math.min(track.level,.35),false,note);
+    if(type==="openhat")hat(t,Math.min(track.level,.35),true,note);
+    if(type==="perc")perc(t,Math.min(track.level,.4),note);
+    if(type==="synth")leadSynth(t,note,track.level,"synth");
+    if(type==="synth2")leadSynth(t,note,track.level,"synth2");
+    if(type==="sample")triggerSequencerSample(t,track.level,0,note);
+  }finally{
+    activeRoutingMixerChannel=
+      null;
+  }
 }
 
 function makeNoteSelect(track,step,trackIndex){
@@ -5882,7 +6316,53 @@ function renderSequencer(){
 
     buttons.append(mute,solo);
     nameRow.append(title,buttons);
-    name.append(nameRow,buildInstrumentSelect(trackIndex,"track-instrument-select"));
+    const routing=
+      document.createElement(
+        "div"
+      );
+
+    routing.className=
+      "track-routing-selects";
+
+    const instrumentWrap=
+      document.createElement(
+        "label"
+      );
+
+    instrumentWrap.innerHTML=
+      "<span>Instrument</span>";
+
+    instrumentWrap.appendChild(
+      buildInstrumentSelect(
+        trackIndex,
+        "track-instrument-select"
+      )
+    );
+
+    const mixerWrap=
+      document.createElement(
+        "label"
+      );
+
+    mixerWrap.innerHTML=
+      "<span>Mixer</span>";
+
+    mixerWrap.appendChild(
+      buildMixerAssignSelect(
+        trackIndex
+      )
+    );
+
+    routing.append(
+      instrumentWrap,
+      mixerWrap
+    );
+
+    name.append(
+      nameRow,
+      routing
+    );
+
     row.appendChild(name);
 
     for(let step=0;step<STEPS_PER_SEQUENCE;step++){
@@ -5893,7 +6373,12 @@ function renderSequencer(){
 
       const toggle=document.createElement("button");
       toggle.type="button";
-      toggle.className="step-toggle";
+      toggle.className="step-toggle midi-assignable";
+      toggle.dataset.midiKey=
+        "seq.track"+
+        (trackIndex+1)+
+        ".step"+
+        (step+1);
       toggle.addEventListener("click",()=>{
         const pattern=getTrackPattern(track);
         pattern[step]=pattern[step]?0:1;
@@ -7504,63 +7989,410 @@ renderAudioTimeline();
 
 const mixer=$("mixer");
 
-tracks.forEach((track,index)=>{
-  const strip=document.createElement("div");
-  strip.className="channel";
+function syncMixerButtons(){
+  document
+    .querySelectorAll(
+      ".channel-mute"
+    )
+    .forEach(button=>{
+      const channel=
+        +button.dataset.mixerChannel;
 
-  const label=document.createElement("label");
-  label.className="channel-track-label";
-  label.textContent=track.name;
+      button.classList.toggle(
+        "on",
+        mixerMuted.has(
+          channel
+        )
+      );
+    });
 
-  const instrumentSelect=buildInstrumentSelect(index,"channel-instrument-select");
+  document
+    .querySelectorAll(
+      ".channel-solo"
+    )
+    .forEach(button=>{
+      const channel=
+        +button.dataset.mixerChannel;
 
-  const buttons=document.createElement("div");
-  buttons.className="channel-buttons";
+      button.classList.toggle(
+        "on",
+        mixerSoloed.has(
+          channel
+        )
+      );
+    });
+}
 
-  const mute=document.createElement("button");
-  mute.className="channel-mute";
-  mute.dataset.trackId=track.id;
-  mute.type="button";
-  mute.textContent="M";
+mixerChannels.forEach((channel,index)=>{
+  const strip=
+    document.createElement(
+      "div"
+    );
 
-  const solo=document.createElement("button");
-  solo.className="channel-solo";
-  solo.dataset.trackId=track.id;
-  solo.type="button";
-  solo.textContent="S";
+  strip.className=
+    "channel real-mixer-channel";
 
-  const range=document.createElement("input");
-  range.className="vertical-fader";
-  range.type="range";
-  range.min=0;
-  range.max=1;
-  range.step=.01;
-  range.value=track.level;
-  range.dataset.midiKey="track-mixer."+track.id;
+  const channelNumber=
+    document.createElement(
+      "div"
+    );
 
-  const outv=document.createElement("output");
-  outv.textContent=Math.round(track.level*100)+"%";
+  channelNumber.className=
+    "mixer-channel-number";
 
-  mute.addEventListener("click",()=>{
-    if(muted.has(track.id))muted.delete(track.id); else muted.add(track.id);
-    syncTrackButtons();
-  });
+  channelNumber.textContent=
+    "CH "+
+    (index+1);
 
-  solo.addEventListener("click",()=>{
-    if(soloed.has(track.id))soloed.delete(track.id); else soloed.add(track.id);
-    syncTrackButtons();
-  });
+  const label=
+    document.createElement(
+      "div"
+    );
 
-  range.addEventListener("input",()=>{
-    track.level=parseFloat(range.value);
-    outv.textContent=Math.round(track.level*100)+"%";
-  });
+  label.className=
+    "channel-track-label";
 
-  buttons.append(mute,solo);
-  strip.append(label,instrumentSelect,buttons,range,outv);
-  mixer.appendChild(strip);
+  label.dataset.mixerLabel=
+    index;
+
+  const panWrap=
+    document.createElement(
+      "div"
+    );
+
+  panWrap.className=
+    "mixer-pan-control rotary-control";
+
+  const panTitle=
+    document.createElement(
+      "span"
+    );
+
+  panTitle.textContent=
+    "Pan";
+
+  const knobWrap=
+    document.createElement(
+      "div"
+    );
+
+  knobWrap.className=
+    "rotary-knob-wrap";
+
+  const pan=
+    document.createElement(
+      "input"
+    );
+
+  pan.className=
+    "rotary-range";
+
+  pan.id=
+    "mixerPan"+
+    (index+1);
+
+  pan.type=
+    "range";
+
+  pan.min=
+    -1;
+
+  pan.max=
+    1;
+
+  pan.step=
+    .01;
+
+  pan.value=
+    channel.pan;
+
+  pan.dataset.midiKey=
+    "mixer.channel"+
+    (index+1)+
+    ".pan";
+
+  const knob=
+    document.createElement(
+      "div"
+    );
+
+  knob.className=
+    "rotary-knob";
+
+  knob.dataset.knobFor=
+    pan.id;
+
+  knobWrap.append(
+    pan,
+    knob
+  );
+
+  const panOut=
+    document.createElement(
+      "output"
+    );
+
+  panOut.textContent=
+    "C";
+
+  panWrap.append(
+    panTitle,
+    knobWrap,
+    panOut
+  );
+
+  const buttons=
+    document.createElement(
+      "div"
+    );
+
+  buttons.className=
+    "channel-buttons";
+
+  const mute=
+    document.createElement(
+      "button"
+    );
+
+  mute.className=
+    "channel-mute midi-assignable";
+
+  mute.type=
+    "button";
+
+  mute.textContent=
+    "M";
+
+  mute.dataset.mixerChannel=
+    index;
+
+  mute.dataset.midiKey=
+    "mixer.channel"+
+    (index+1)+
+    ".mute";
+
+  const solo=
+    document.createElement(
+      "button"
+    );
+
+  solo.className=
+    "channel-solo midi-assignable";
+
+  solo.type=
+    "button";
+
+  solo.textContent=
+    "S";
+
+  solo.dataset.mixerChannel=
+    index;
+
+  solo.dataset.midiKey=
+    "mixer.channel"+
+    (index+1)+
+    ".solo";
+
+  const fader=
+    document.createElement(
+      "input"
+    );
+
+  fader.className=
+    "vertical-fader";
+
+  fader.type=
+    "range";
+
+  fader.min=
+    0;
+
+  fader.max=
+    1;
+
+  fader.step=
+    .01;
+
+  fader.value=
+    channel.level;
+
+  fader.dataset.midiKey=
+    "mixer.channel"+
+    (index+1)+
+    ".level";
+
+  fader.setAttribute(
+    "aria-label",
+    "Mixer channel "+
+    (index+1)+
+    " level"
+  );
+
+  const outv=
+    document.createElement(
+      "output"
+    );
+
+  outv.textContent=
+    Math.round(
+      channel.level*
+      100
+    )+
+    "%";
+
+  mute.addEventListener(
+    "click",
+    ()=>{
+      if(
+        mixerMuted.has(
+          index
+        )
+      ){
+        mixerMuted.delete(
+          index
+        );
+      }else{
+        mixerMuted.add(
+          index
+        );
+      }
+
+      syncMixerButtons();
+    }
+  );
+
+  solo.addEventListener(
+    "click",
+    ()=>{
+      if(
+        mixerSoloed.has(
+          index
+        )
+      ){
+        mixerSoloed.delete(
+          index
+        );
+      }else{
+        mixerSoloed.add(
+          index
+        );
+      }
+
+      syncMixerButtons();
+    }
+  );
+
+  fader.addEventListener(
+    "input",
+    ()=>{
+      channel.level=
+        parseFloat(
+          fader.value
+        );
+
+      outv.textContent=
+        Math.round(
+          channel.level*
+          100
+        )+
+        "%";
+
+      const bus=
+        mixerBusNodes[
+          index
+        ];
+
+      if(
+        bus&&
+        bus.input&&
+        audio
+      ){
+        bus.input.gain.setTargetAtTime(
+          channel.level,
+          audio.currentTime,
+          .015
+        );
+      }
+    }
+  );
+
+  pan.addEventListener(
+    "input",
+    ()=>{
+      channel.pan=
+        parseFloat(
+          pan.value
+        );
+
+      panOut.textContent=
+        Math.abs(
+          channel.pan
+        )<
+        .02
+          ?"C"
+          :channel.pan<0
+            ?"L "+
+              Math.round(
+                Math.abs(
+                  channel.pan
+                )*
+                100
+              )
+            :"R "+
+              Math.round(
+                channel.pan*
+                100
+              );
+
+      const bus=
+        mixerBusNodes[
+          index
+        ];
+
+      if(
+        bus&&
+        bus.panner&&
+        audio
+      ){
+        bus.panner.pan.setTargetAtTime(
+          channel.pan,
+          audio.currentTime,
+          .015
+        );
+      }
+
+      if(
+        typeof updateRotaryKnob===
+        "function"
+      ){
+        updateRotaryKnob(
+          pan
+        );
+      }
+    }
+  );
+
+  buttons.append(
+    mute,
+    solo
+  );
+
+  strip.append(
+    channelNumber,
+    label,
+    panWrap,
+    buttons,
+    fader,
+    outv
+  );
+
+  mixer.appendChild(
+    strip
+  );
 });
 
+refreshMixerChannelLabels();
+syncMixerButtons();
 syncTrackButtons();
 
 function updateAudioStatus(message=""){
@@ -7792,6 +8624,11 @@ if(
   );
 }
 
+$("transportRecordBtn").addEventListener("click",()=>{
+  const record=$("tapeRecordBtn");
+  if(record)record.click();
+});
+
 let midiAccess=null;
 let activeMidiInput=null;
 
@@ -7876,10 +8713,23 @@ async function connectMidi(){
   }
 
   try{
-    midiAccess=await navigator.requestMIDIAccess();
-    midiAccess.onstatechange=refreshMidiInputs;
+    try{
+      midiAccess=
+        await navigator.requestMIDIAccess({
+          sysex:true
+        });
+    }catch(sysexError){
+      midiAccess=
+        await navigator.requestMIDIAccess();
+    }
+
+    midiAccess.onstatechange=
+      refreshMidiInputs;
+
     refreshMidiInputs();
-    $("midiConnect").textContent="MIDI Connected";
+
+    $("midiConnect").textContent=
+      "MIDI Connected";
   }catch(error){
     setMidiStatus(
       "MIDI permission was not granted"
@@ -7889,11 +8739,12 @@ async function connectMidi(){
 
 
 const MIDI_LEARN_STORAGE_KEY=
-  "neonGrooveboxMidiMappingsV1";
+  "neonGrooveboxMidiMappingsV2";
 
 let midiLearnTarget=null;
 let midiLearnMappings={};
 let midiLearnToastTimer=null;
+const midiMappingLastValues={};
 
 function loadMidiLearnMappings(){
   try{
@@ -7948,12 +8799,11 @@ function findMidiControlByKey(key){
   }
 
   if(key.startsWith("key:")){
-    const value=
-      key.slice(4);
-
     return document.querySelector(
       '[data-midi-key="'+
-      CSS.escape(value)+
+      CSS.escape(
+        key.slice(4)
+      )+
       '"]'
     );
   }
@@ -7964,18 +8814,30 @@ function findMidiControlByKey(key){
 function describeMidiControl(control){
   if(!control)return "Control";
 
+  if(
+    control.dataset&&
+    control.dataset.midiKey
+  ){
+    return control.dataset.midiKey
+      .replace(/\./g," ")
+      .replace(/\b\w/g,char=>char.toUpperCase());
+  }
+
   const container=
     control.closest(
-      ".knob-card,.rotary-control,.channel,.fx-strip,.audio-channel-strip,.keyboard-scale-control"
+      ".rotary-control,.channel,.fx-strip,.track,.transport-buttons,.transport-slider"
     );
 
   if(container){
     const label=
       container.querySelector(
-        "label,span"
+        "label,span,strong,.channel-track-label"
       );
 
-    if(label&&label.textContent.trim()){
+    if(
+      label&&
+      label.textContent.trim()
+    ){
       return label.textContent
         .replace(/\s+/g," ")
         .trim();
@@ -7985,7 +8847,6 @@ function describeMidiControl(control){
   return (
     control.getAttribute("aria-label")||
     control.id||
-    control.dataset.midiKey||
     "Control"
   );
 }
@@ -7998,8 +8859,12 @@ function showMidiLearnToast(text){
 
   if(!toast)return;
 
-  toast.textContent=text;
-  toast.classList.add("show");
+  toast.textContent=
+    text;
+
+  toast.classList.add(
+    "show"
+  );
 
   clearTimeout(
     midiLearnToastTimer
@@ -8008,7 +8873,7 @@ function showMidiLearnToast(text){
   midiLearnToastTimer=
     setTimeout(
       ()=>toast.classList.remove("show"),
-      1800
+      2200
     );
 }
 
@@ -8028,11 +8893,13 @@ function clearMidiLearnHighlight(){
 function refreshMidiMappedVisuals(){
   document
     .querySelectorAll(
-      'input[type="range"]'
+      'input[type="range"],.midi-assignable,.step-toggle'
     )
     .forEach(control=>{
       const key=
-        midiControlKey(control);
+        midiControlKey(
+          control
+        );
 
       const mapped=
         Object.values(
@@ -8050,7 +8917,7 @@ function refreshMidiMappedVisuals(){
 
       const wrap=
         control.closest(
-          ".synth-rotary-wrap,.rotary-knob-wrap,.channel,.fx-strip,.audio-channel-strip"
+          ".synth-rotary-wrap,.rotary-knob-wrap,.channel,.fx-strip,.track"
         );
 
       if(wrap){
@@ -8090,34 +8957,10 @@ function removeMappingsForTarget(targetKey){
   return changed;
 }
 
-function applyMidiValueToControl(control,value){
-  if(
-    !control ||
-    control.type!=="range"
-  ){
-    return false;
-  }
+function applyMidiValueToControl(control,value,mappingKey){
+  if(!control)return false;
 
-  const min=
-    Number.isFinite(
-      parseFloat(control.min)
-    )
-      ?parseFloat(control.min)
-      :0;
-
-  const max=
-    Number.isFinite(
-      parseFloat(control.max)
-    )
-      ?parseFloat(control.max)
-      :1;
-
-  const step=
-    parseFloat(control.step);
-
-  let next=
-    min+
-    (max-min)*
+  const normalized=
     Math.max(
       0,
       Math.min(
@@ -8126,46 +8969,184 @@ function applyMidiValueToControl(control,value){
       )
     );
 
-  if(
-    Number.isFinite(step)&&
-    step>0
-  ){
-    next=
-      min+
-      Math.round(
-        (next-min)/step
-      )*step;
-  }
+  if(control.type==="range"){
+    const min=
+      Number.isFinite(
+        parseFloat(
+          control.min
+        )
+      )
+        ?parseFloat(
+          control.min
+        )
+        :0;
 
-  next=
-    Math.max(
-      min,
-      Math.min(
-        max,
-        next
+    const max=
+      Number.isFinite(
+        parseFloat(
+          control.max
+        )
+      )
+        ?parseFloat(
+          control.max
+        )
+        :1;
+
+    const step=
+      parseFloat(
+        control.step
+      );
+
+    let next=
+      min+
+      (max-min)*
+      normalized;
+
+    if(
+      Number.isFinite(step)&&
+      step>0
+    ){
+      next=
+        min+
+        Math.round(
+          (next-min)/
+          step
+        )*
+        step;
+    }
+
+    control.value=
+      String(
+        Math.max(
+          min,
+          Math.min(
+            max,
+            next
+          )
+        )
+      );
+
+    control.dispatchEvent(
+      new Event(
+        "input",
+        {bubbles:true}
       )
     );
 
-  control.value=
-    String(next);
+    return true;
+  }
 
-  control.dispatchEvent(
-    new Event(
-      "input",
-      {bubbles:true}
+  if(
+    control.matches(
+      "button,.step-toggle,.synth-key"
     )
-  );
+  ){
+    const previous=
+      midiMappingLastValues[
+        mappingKey
+      ]||0;
 
-  return true;
+    midiMappingLastValues[
+      mappingKey
+    ]=
+      normalized;
+
+    if(
+      normalized>.5 &&
+      previous<=.5
+    ){
+      control.click();
+    }
+
+    return true;
+  }
+
+  return false;
 }
 
-function mappingLookupKey(channel,cc){
-  return channel+":"+cc;
+function midiMessageKey(message){
+  return (
+    message.type+
+    ":"+
+    message.channel+
+    ":"+
+    (
+      message.number==
+      null
+        ?0
+        :message.number
+    )
+  );
+}
+
+function decodeMidiControlMessage(data){
+  const status=
+    data[0];
+
+  if(status>=0xf0){
+    return null;
+  }
+
+  const command=
+    status&
+    0xf0;
+
+  const channel=
+    (
+      status&
+      0x0f
+    )+
+    1;
+
+  if(command===0xb0){
+    return {
+      type:"cc",
+      channel,
+      number:data[1],
+      value:(data[2]||0)/127
+    };
+  }
+
+  if(
+    command===0x90 ||
+    command===0x80
+  ){
+    const velocity=
+      command===0x80
+        ?0
+        :(data[2]||0);
+
+    return {
+      type:"note",
+      channel,
+      number:data[1],
+      value:velocity/127
+    };
+  }
+
+  if(command===0xe0){
+    const raw=
+      (
+        (data[2]||0)<<7
+      )+
+      (data[1]||0);
+
+    return {
+      type:"pitch",
+      channel,
+      number:0,
+      value:raw/16383
+    };
+  }
+
+  return null;
 }
 
 function startMidiLearn(control){
   const targetKey=
-    midiControlKey(control);
+    midiControlKey(
+      control
+    );
 
   if(!targetKey){
     showMidiLearnToast(
@@ -8174,7 +9155,8 @@ function startMidiLearn(control){
     return;
   }
 
-  midiLearnTarget=control;
+  midiLearnTarget=
+    control;
 
   clearMidiLearnHighlight();
 
@@ -8184,7 +9166,7 @@ function startMidiLearn(control){
 
   const wrap=
     control.closest(
-      ".synth-rotary-wrap,.rotary-knob-wrap,.channel,.fx-strip,.audio-channel-strip"
+      ".synth-rotary-wrap,.rotary-knob-wrap,.channel,.fx-strip,.track"
     );
 
   if(wrap){
@@ -8194,17 +9176,28 @@ function startMidiLearn(control){
   }
 
   setMidiStatus(
-    "MIDI Learn: move a nanoKONTROL knob or fader",
+    "MIDI Learn: move the first knob, fader, pad, or transport control",
     true
   );
 
   showMidiLearnToast(
-    "Move the nanoKONTROL control you want to assign…"
+    "MIDI Learn armed — move one controller now."
   );
 }
 
-function finishMidiLearn(channel,cc){
-  if(!midiLearnTarget){
+function finishMidiLearn(message){
+  if(
+    !midiLearnTarget ||
+    !message
+  ){
+    return false;
+  }
+
+  // For note controls, wait for an actual press rather than note-off.
+  if(
+    message.type==="note" &&
+    message.value<=0
+  ){
     return false;
   }
 
@@ -8223,15 +9216,18 @@ function finishMidiLearn(channel,cc){
     targetKey
   );
 
+  const key=
+    midiMessageKey(
+      message
+    );
+
   midiLearnMappings[
-    mappingLookupKey(
-      channel,
-      cc
-    )
+    key
   ]={
     target:targetKey,
-    channel,
-    cc
+    type:message.type,
+    channel:message.channel,
+    number:message.number
   };
 
   saveMidiLearnMappings();
@@ -8241,37 +9237,41 @@ function finishMidiLearn(channel,cc){
       midiLearnTarget
     );
 
-  midiLearnTarget=null;
+  midiLearnTarget=
+    null;
+
   clearMidiLearnHighlight();
   refreshMidiMappedVisuals();
 
   setMidiStatus(
-    "Mapped CC "+
-    cc+
-    " · Ch "+
-    channel+
+    "Mapped "+
+    message.type.toUpperCase()+
+    " Ch "+
+    message.channel+
     " → "+
     name,
     true
   );
 
   showMidiLearnToast(
-    "Mapped CC "+
-    cc+
-    " to "+
+    "Mapped "+
     name
   );
 
   return true;
 }
 
-function applyLearnedMidiMapping(channel,cc,value){
+function applyLearnedMidiMapping(message){
+  if(!message)return false;
+
+  const key=
+    midiMessageKey(
+      message
+    );
+
   const mapping=
     midiLearnMappings[
-      mappingLookupKey(
-        channel,
-        cc
-      )
+      key
     ];
 
   if(!mapping){
@@ -8289,21 +9289,217 @@ function applyLearnedMidiMapping(channel,cc,value){
 
   return applyMidiValueToControl(
     control,
-    value
+    message.value,
+    key
   );
+}
+
+function triggerTransportAction(action){
+  if(action==="play"){
+    const button=$("playBtn");
+    if(button)button.click();
+  }
+
+  if(action==="stop"){
+    const button=$("stopBtn");
+    if(button)button.click();
+  }
+
+  if(action==="record"){
+    const button=$("transportRecordBtn");
+    if(button)button.click();
+  }
+
+  if(action==="rewind"){
+    switchSequence(
+      Math.max(
+        0,
+        activeSequence-1
+      )
+    );
+  }
+
+  if(action==="forward"){
+    switchSequence(
+      Math.min(
+        SEQUENCE_COUNT-1,
+        activeSequence+1
+      )
+    );
+  }
+}
+
+function likelyDawController(){
+  const name=
+    activeMidiInput&&
+    activeMidiInput.name
+      ?activeMidiInput.name
+      :"";
+
+  return /mackie|hui|daw|control|x-touch|faderport|launch|keylab|komplete|nanokontrol|mpk|oxygen|panorama/i.test(name);
+}
+
+function handleStandardDawTransport(data){
+  const status=
+    data[0];
+
+  // MIDI realtime Start / Continue / Stop.
+  if(status===0xfa){
+    triggerTransportAction("play");
+    return true;
+  }
+
+  if(status===0xfb){
+    triggerTransportAction("play");
+    return true;
+  }
+
+  if(status===0xfc){
+    triggerTransportAction("stop");
+    return true;
+  }
+
+  // MIDI Machine Control.
+  if(
+    status===0xf0 &&
+    data.length>=6 &&
+    data[1]===0x7f &&
+    data[3]===0x06
+  ){
+    const command=
+      data[4];
+
+    if(command===0x01){
+      triggerTransportAction("stop");
+      return true;
+    }
+
+    if(command===0x02){
+      triggerTransportAction("play");
+      return true;
+    }
+
+    if(command===0x06){
+      triggerTransportAction("record");
+      return true;
+    }
+
+    if(command===0x05){
+      triggerTransportAction("rewind");
+      return true;
+    }
+
+    if(command===0x04){
+      triggerTransportAction("forward");
+      return true;
+    }
+  }
+
+  // Mackie Control / common DAW transport note numbers.
+  if(
+    likelyDawController() &&
+    (status&0xf0)===0x90 &&
+    (data[2]||0)>0
+  ){
+    const note=
+      data[1];
+
+    if(note===0x5d){
+      triggerTransportAction("stop");
+      return true;
+    }
+
+    if(note===0x5e){
+      triggerTransportAction("play");
+      return true;
+    }
+
+    if(note===0x5f){
+      triggerTransportAction("record");
+      return true;
+    }
+
+    if(note===0x5b){
+      triggerTransportAction("rewind");
+      return true;
+    }
+
+    if(note===0x5c){
+      triggerTransportAction("forward");
+      return true;
+    }
+  }
+
+  return false;
 }
 
 loadMidiLearnMappings();
 
 async function handleMidiMessage(event){
-  const data=event.data;
-  const status=data[0];
-  const command=status&0xf0;
-  const channel=(status&0x0f)+1;
-  const note=data[1];
-  const velocity=data[2]||0;
+  const data=
+    event.data;
 
-  const selectedChannel=$("midiChannel").value;
+  const message=
+    decodeMidiControlMessage(
+      data
+    );
+
+  if(
+    midiLearnTarget &&
+    message
+  ){
+    if(
+      finishMidiLearn(
+        message
+      )
+    ){
+      return;
+    }
+  }
+
+  if(
+    message &&
+    applyLearnedMidiMapping(
+      message
+    )
+  ){
+    return;
+  }
+
+  if(
+    handleStandardDawTransport(
+      data
+    )
+  ){
+    return;
+  }
+
+  const status=
+    data[0];
+
+  if(status>=0xf0){
+    return;
+  }
+
+  const command=
+    status&
+    0xf0;
+
+  const channel=
+    (
+      status&
+      0x0f
+    )+
+    1;
+
+  const note=
+    data[1];
+
+  const velocity=
+    data[2]||0;
+
+  const selectedChannel=
+    $("midiChannel").value;
 
   if(
     selectedChannel!=="all" &&
@@ -8314,12 +9510,20 @@ async function handleMidiMessage(event){
 
   ensureAudio();
 
-  if(audio.state==="suspended"){
+  if(
+    audio.state===
+    "suspended"
+  ){
     await audio.resume();
   }
 
-  if(command===0x90&&velocity>0){
-    const velocityGain=velocity/127;
+  if(
+    command===0x90 &&
+    velocity>0
+  ){
+    const velocityGain=
+      velocity/
+      127;
 
     const midiTrackType=
       $("midiTarget").value==="synth2"
@@ -8328,109 +9532,136 @@ async function handleMidiMessage(event){
 
     const midiTrack=
       tracks.find(
-        track=>track.type===midiTrackType
+        track=>
+          track.instrument===
+          midiTrackType
       );
 
-    leadSynth(
-      audio.currentTime,
-      note,
-      Math.max(
-        .08,
-        (midiTrack?midiTrack.level:.38)*
-        velocityGain
-      ),
-      midiTrackType
-    );
+    if(midiTrack){
+      activeRoutingMixerChannel=
+        mixerChannelForTrack(
+          midiTrack
+        );
+    }
+
+    try{
+      leadSynth(
+        audio.currentTime,
+        note,
+        Math.max(
+          .08,
+          (
+            midiTrack
+              ?midiTrack.level
+              :.38
+          )*
+          velocityGain
+        ),
+        midiTrackType
+      );
+    }finally{
+      activeRoutingMixerChannel=
+        null;
+    }
 
     pulseVisual();
   }
 
   if(command===0xb0){
-    const cc=data[1];
-    const value=data[2]/127;
+    const cc=
+      data[1];
 
-    if(midiLearnTarget){
-      finishMidiLearn(
-        channel,
-        cc
-      );
-      return;
-    }
+    const value=
+      data[2]/
+      127;
 
-    if(
-      applyLearnedMidiMapping(
-        channel,
-        cc,
-        value
-      )
-    ){
-      return;
-    }
-
+    // Familiar defaults remain available when nothing is learned.
     if(cc===7){
-      $("master").value=value;
+      $("master").value=
+        value;
+
       $("master").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
 
     if(cc===73){
       $("synthAttack").value=
         .005+
-        value*1.995;
+        value*
+        1.995;
 
       $("synthAttack").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
 
     if(cc===72){
       $("synthRelease").value=
         .03+
-        value*2.97;
+        value*
+        2.97;
 
       $("synthRelease").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
 
     if(cc===75){
       $("osc1Cutoff").value=
         120+
-        value*(12000-120);
+        value*
+        (12000-120);
 
       $("osc1Cutoff").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
 
     if(cc===76){
       $("osc2Cutoff").value=
         120+
-        value*(12000-120);
+        value*
+        (12000-120);
 
       $("osc2Cutoff").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
 
     if(cc===77){
       $("synthFilterCutoff").value=
         80+
-        value*(16000-80);
+        value*
+        (16000-80);
 
       $("synthFilterCutoff").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
 
     if(cc===78){
       $("synthFilterRes").value=
         .1+
-        value*(24-.1);
+        value*
+        (24-.1);
 
       $("synthFilterRes").dispatchEvent(
-        new Event("input")
+        new Event(
+          "input"
+        )
       );
     }
   }
@@ -11284,36 +12515,114 @@ animate();
     );
   }
 
-  function openMenu(
-    control,
-    x,
-    y
-  ){
-    menuControl=control;
+  function resolveAssignableControl(target){
+    const candidate=
+      target.closest(
+        'input[type="range"],.rotary-knob,.synth-rotary-knob,.step-toggle,.midi-assignable,.synth-key'
+      );
 
+    if(!candidate){
+      return null;
+    }
+
+    if(
+      candidate.classList.contains(
+        "rotary-knob"
+      )
+    ){
+      const id=
+        candidate.dataset.knobFor;
+
+      return id
+        ?document.getElementById(id)
+        :null;
+    }
+
+    if(
+      candidate.classList.contains(
+        "synth-rotary-knob"
+      )
+    ){
+      const wrap=
+        candidate.closest(
+          ".synth-rotary-wrap"
+        );
+
+      return wrap
+        ?wrap.querySelector(
+            'input[type="range"]'
+          )
+        :null;
+    }
+
+    if(
+      candidate.classList.contains(
+        "synth-key"
+      ) &&
+      !candidate.dataset.midiKey
+    ){
+      candidate.dataset.midiKey=
+        "keyboard.note."+
+        (
+          candidate.dataset.midi||
+          "unknown"
+        );
+    }
+
+    return candidate;
+  }
+
+  function mappingForControl(control){
     const targetKey=
-      midiControlKey(control);
-
-    const mapping=
-      Object.values(
-        midiLearnMappings
-      ).find(
-        item=>
-          item&&
-          item.target===targetKey
+      midiControlKey(
+        control
       );
 
-    meta.textContent=
-      describeMidiControl(control)+
-      (
-        mapping
-          ?" · CC "+mapping.cc+
-            " Ch "+mapping.channel
-          :" · not mapped"
+    return Object.entries(
+      midiLearnMappings
+    ).find(
+      entry=>
+        entry[1]&&
+        entry[1].target===
+        targetKey
+    )||null;
+  }
+
+  function openMenu(control,x,y){
+    menuControl=
+      control;
+
+    const entry=
+      mappingForControl(
+        control
       );
+
+    if(entry){
+      const mapping=
+        entry[1];
+
+      meta.textContent=
+        describeMidiControl(control)+
+        " · "+
+        mapping.type.toUpperCase()+
+        " Ch "+
+        mapping.channel+
+        (
+          mapping.type==="pitch"
+            ?""
+            :" #"+mapping.number
+        );
+    }else{
+      meta.textContent=
+        describeMidiControl(control)+
+        " · not mapped";
+    }
 
     clearButton.disabled=
-      !mapping;
+      !entry;
+
+    learnButton.textContent=
+      "MIDI Learn — move first control";
 
     menu.classList.add(
       "open"
@@ -11324,20 +12633,33 @@ animate();
       "false"
     );
 
-    const width=210;
-    const height=128;
+    const width=
+      260;
+
+    const height=
+      138;
 
     menu.style.left=
-      Math.min(
-        x,
-        innerWidth-width-8
+      Math.max(
+        8,
+        Math.min(
+          x,
+          innerWidth-
+          width-
+          8
+        )
       )+
       "px";
 
     menu.style.top=
-      Math.min(
-        y,
-        innerHeight-height-8
+      Math.max(
+        8,
+        Math.min(
+          y,
+          innerHeight-
+          height-
+          8
+        )
       )+
       "px";
   }
@@ -11346,8 +12668,8 @@ animate();
     "contextmenu",
     event=>{
       const control=
-        event.target.closest(
-          'input[type="range"]'
+        resolveAssignableControl(
+          event.target
         );
 
       if(!control){
@@ -11385,7 +12707,7 @@ animate();
 
       if(!activeMidiInput){
         showMidiLearnToast(
-          "Connect your Korg nanoKONTROL first."
+          "Choose a MIDI input first."
         );
         return;
       }
@@ -11401,14 +12723,11 @@ animate();
     ()=>{
       if(!menuControl)return;
 
-      const targetKey=
-        midiControlKey(
-          menuControl
-        );
-
       const removed=
         removeMappingsForTarget(
-          targetKey
+          midiControlKey(
+            menuControl
+          )
         );
 
       closeMenu();
@@ -11425,8 +12744,12 @@ animate();
     "pointerdown",
     event=>{
       if(
-        menu.classList.contains("open") &&
-        !menu.contains(event.target)
+        menu.classList.contains(
+          "open"
+        ) &&
+        !menu.contains(
+          event.target
+        )
       ){
         closeMenu();
       }
@@ -11440,19 +12763,10 @@ animate();
         closeMenu();
 
         if(midiLearnTarget){
-          midiLearnTarget=null;
-          clearMidiLearnHighlight();
+          midiLearnTarget=
+            null;
 
-          setMidiStatus(
-            activeMidiInput
-              ?"Connected: "+
-                (
-                  activeMidiInput.name||
-                  "MIDI Controller"
-                )
-              :"MIDI disconnected",
-            !!activeMidiInput
-          );
+          clearMidiLearnHighlight();
 
           showMidiLearnToast(
             "MIDI Learn cancelled."
