@@ -4304,6 +4304,78 @@ input[type="range"]{
   }
 }
 
+
+/* ===== Per-channel 3-band EQ + FX send ===== */
+.real-mixer-channel{
+  grid-template-rows:
+    auto
+    minmax(30px,auto)
+    auto
+    auto
+    auto
+    1fr
+    auto!important;
+  align-items:start;
+}
+
+.channel-eq-grid{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+}
+
+.mixer-mini-knob{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+}
+
+.mixer-mini-knob>span{
+  color:var(--muted);
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.mixer-mini-knob .rotary-knob-wrap{
+  width:38px;
+  height:38px;
+}
+
+.mixer-mini-knob output{
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:rgba(255,255,255,.48);
+  font-size:7px;
+  text-align:center;
+}
+
+.real-mixer-channel .channel-track-label{
+  font-size:16px!important;
+  font-weight:800!important;
+  letter-spacing:.04em;
+}
+
+.real-mixer-channel .vertical-fader{
+  margin-top:auto;
+}
+
+@media(max-width:1100px){
+  .real-mixer-channel{
+    min-width:104px!important;
+  }
+
+  .eight-track-mixer{
+    min-width:890px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4950,14 +5022,14 @@ function makeTrackNotes(note){
 }
 
 const tracks=[
-  {id:"track1",name:"Track 1",mixerChannel:0,type:"kick",instrument:"kick",level:.86,patterns:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(36)},
-  {id:"track2",name:"Track 2",mixerChannel:1,type:"snare",instrument:"snare",level:.56,patterns:[[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(38)},
-  {id:"track3",name:"Track 3",mixerChannel:2,type:"hat",instrument:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(42)},
-  {id:"track4",name:"Track 4",mixerChannel:3,type:"openhat",instrument:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(46)},
-  {id:"track5",name:"Track 5",mixerChannel:4,type:"perc",instrument:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(43)},
-  {id:"track6",name:"Track 6",mixerChannel:5,type:"synth",instrument:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[60,63,67,70,67,70,72,70,72,75,74,74,72,70,67,63],Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60)]},
-  {id:"track7",name:"Track 7",mixerChannel:6,type:"synth2",instrument:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[48,50,51,51,55,53,43,46,46,48,51,55,55,48,51,55],Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48)]},
-  {id:"track8",name:"Track 8",mixerChannel:7,type:"sample",instrument:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(60)}
+  {id:"track1",name:"1",mixerChannel:0,type:"kick",instrument:"kick",level:.86,patterns:[[1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(36)},
+  {id:"track2",name:"2",mixerChannel:1,type:"snare",instrument:"snare",level:.56,patterns:[[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(38)},
+  {id:"track3",name:"3",mixerChannel:2,type:"hat",instrument:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(42)},
+  {id:"track4",name:"4",mixerChannel:3,type:"openhat",instrument:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(46)},
+  {id:"track5",name:"5",mixerChannel:4,type:"perc",instrument:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(43)},
+  {id:"track6",name:"6",mixerChannel:5,type:"synth",instrument:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[60,63,67,70,67,70,72,70,72,75,74,74,72,70,67,63],Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60)]},
+  {id:"track7",name:"7",mixerChannel:6,type:"synth2",instrument:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[48,50,51,51,55,53,43,46,46,48,51,55,55,48,51,55],Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48)]},
+  {id:"track8",name:"8",mixerChannel:7,type:"sample",instrument:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(60)}
 ];
 
 window.tracks=tracks;
@@ -4968,7 +5040,11 @@ const mixerChannels=
     (_,index)=>({
       id:index,
       level:.82,
-      pan:0
+      pan:0,
+      low:0,
+      mid:0,
+      high:0,
+      fxSend:.28
     })
   );
 
@@ -5019,8 +5095,8 @@ function refreshMixerChannelLabels(){
     if(label){
       label.textContent=
         assigned
-          ?assigned.name+" · "+instrumentLabel(assigned.instrument)
-          :"Unassigned";
+          ?assigned.name
+          :"—";
     }
   }
 
@@ -5375,7 +5451,56 @@ function ensureAudio(){
       input.gain.value=
         channel.level;
 
+      const low=
+        audio.createBiquadFilter();
+
+      low.type=
+        "lowshelf";
+
+      low.frequency.value=
+        180;
+
+      low.gain.value=
+        channel.low;
+
+      const mid=
+        audio.createBiquadFilter();
+
+      mid.type=
+        "peaking";
+
+      mid.frequency.value=
+        1000;
+
+      mid.Q.value=
+        .8;
+
+      mid.gain.value=
+        channel.mid;
+
+      const high=
+        audio.createBiquadFilter();
+
+      high.type=
+        "highshelf";
+
+      high.frequency.value=
+        4500;
+
+      high.gain.value=
+        channel.high;
+
+      const fxSend=
+        audio.createGain();
+
+      fxSend.gain.value=
+        channel.fxSend;
+
       let panner=null;
+
+      input.connect(low);
+      low.connect(mid);
+      mid.connect(high);
 
       if(audio.createStereoPanner){
         panner=
@@ -5384,19 +5509,38 @@ function ensureAudio(){
         panner.pan.value=
           channel.pan;
 
-        input.connect(panner);
+        high.connect(panner);
         panner.connect(filter);
+        panner.connect(fxSend);
       }else{
-        input.connect(filter);
+        high.connect(filter);
+        high.connect(fxSend);
       }
 
       return {
         input,
-        panner
+        low,
+        mid,
+        high,
+        panner,
+        fxSend
       };
     });
 
   reverbNode=audio.createConvolver();
+
+  mixerBusNodes.forEach(
+    bus=>{
+      if(
+        bus&&
+        bus.fxSend
+      ){
+        bus.fxSend.connect(
+          reverbNode
+        );
+      }
+    }
+  );
   reverbWet=audio.createGain();
   reverbDry=audio.createGain();
 
@@ -5438,7 +5582,6 @@ function ensureAudio(){
   filter.connect(reverbDry);
   reverbDry.connect(master);
 
-  filter.connect(reverbNode);
   reverbNode.connect(reverbWet);
   reverbWet.connect(master);
 
@@ -8574,6 +8717,313 @@ mixerChannels.forEach((channel,index)=>{
     panOut
   );
 
+  function makeChannelKnob(
+    labelText,
+    idSuffix,
+    midiSuffix,
+    min,
+    max,
+    step,
+    value,
+    formatter,
+    onInput
+  ){
+    const control=
+      document.createElement(
+        "div"
+      );
+
+    control.className=
+      "mixer-mini-knob rotary-control";
+
+    const title=
+      document.createElement(
+        "span"
+      );
+
+    title.textContent=
+      labelText;
+
+    const wrap=
+      document.createElement(
+        "div"
+      );
+
+    wrap.className=
+      "rotary-knob-wrap";
+
+    const input=
+      document.createElement(
+        "input"
+      );
+
+    input.className=
+      "rotary-range";
+
+    input.id=
+      "mixer"+
+      idSuffix+
+      (index+1);
+
+    input.type=
+      "range";
+
+    input.min=
+      min;
+
+    input.max=
+      max;
+
+    input.step=
+      step;
+
+    input.value=
+      value;
+
+    input.dataset.midiKey=
+      "mixer.channel"+
+      (index+1)+
+      "."+
+      midiSuffix;
+
+    const knob=
+      document.createElement(
+        "div"
+      );
+
+    knob.className=
+      "rotary-knob";
+
+    knob.dataset.knobFor=
+      input.id;
+
+    wrap.append(
+      input,
+      knob
+    );
+
+    const output=
+      document.createElement(
+        "output"
+      );
+
+    output.textContent=
+      formatter(
+        parseFloat(
+          input.value
+        )
+      );
+
+    input.addEventListener(
+      "input",
+      ()=>{
+        const value=
+          parseFloat(
+            input.value
+          );
+
+        output.textContent=
+          formatter(
+            value
+          );
+
+        onInput(
+          value
+        );
+
+        if(
+          typeof updateRotaryKnob===
+          "function"
+        ){
+          updateRotaryKnob(
+            input
+          );
+        }
+      }
+    );
+
+    control.append(
+      title,
+      wrap,
+      output
+    );
+
+    return control;
+  }
+
+  const eqGrid=
+    document.createElement(
+      "div"
+    );
+
+  eqGrid.className=
+    "channel-eq-grid";
+
+  const lowControl=
+    makeChannelKnob(
+      "Low",
+      "Low",
+      "low",
+      -12,
+      12,
+      .5,
+      channel.low,
+      value=>
+        (
+          value>0
+            ?"+"
+            :""
+        )+
+        value.toFixed(1)+
+        " dB",
+      value=>{
+        channel.low=
+          value;
+
+        const bus=
+          mixerBusNodes[
+            index
+          ];
+
+        if(
+          bus&&
+          bus.low&&
+          audio
+        ){
+          bus.low.gain.setTargetAtTime(
+            value,
+            audio.currentTime,
+            .015
+          );
+        }
+      }
+    );
+
+  const midControl=
+    makeChannelKnob(
+      "Mid",
+      "Mid",
+      "mid",
+      -12,
+      12,
+      .5,
+      channel.mid,
+      value=>
+        (
+          value>0
+            ?"+"
+            :""
+        )+
+        value.toFixed(1)+
+        " dB",
+      value=>{
+        channel.mid=
+          value;
+
+        const bus=
+          mixerBusNodes[
+            index
+          ];
+
+        if(
+          bus&&
+          bus.mid&&
+          audio
+        ){
+          bus.mid.gain.setTargetAtTime(
+            value,
+            audio.currentTime,
+            .015
+          );
+        }
+      }
+    );
+
+  const highControl=
+    makeChannelKnob(
+      "High",
+      "High",
+      "high",
+      -12,
+      12,
+      .5,
+      channel.high,
+      value=>
+        (
+          value>0
+            ?"+"
+            :""
+        )+
+        value.toFixed(1)+
+        " dB",
+      value=>{
+        channel.high=
+          value;
+
+        const bus=
+          mixerBusNodes[
+            index
+          ];
+
+        if(
+          bus&&
+          bus.high&&
+          audio
+        ){
+          bus.high.gain.setTargetAtTime(
+            value,
+            audio.currentTime,
+            .015
+          );
+        }
+      }
+    );
+
+  const fxControl=
+    makeChannelKnob(
+      "FX",
+      "Fx",
+      "fx",
+      0,
+      1,
+      .01,
+      channel.fxSend,
+      value=>
+        Math.round(
+          value*
+          100
+        )+
+        "%",
+      value=>{
+        channel.fxSend=
+          value;
+
+        const bus=
+          mixerBusNodes[
+            index
+          ];
+
+        if(
+          bus&&
+          bus.fxSend&&
+          audio
+        ){
+          bus.fxSend.gain.setTargetAtTime(
+            value,
+            audio.currentTime,
+            .015
+          );
+        }
+      }
+    );
+
+  eqGrid.append(
+    lowControl,
+    midControl,
+    highControl,
+    fxControl
+  );
+
   const buttons=
     document.createElement(
       "div"
@@ -8814,6 +9264,7 @@ mixerChannels.forEach((channel,index)=>{
     channelNumber,
     label,
     panWrap,
+    eqGrid,
     buttons,
     fader,
     outv
@@ -10964,7 +11415,38 @@ bind("reverbDecay","reverbDecayOut",v=>(+v).toFixed(1)+" s",()=>{
 });
 bind("drive","driveOut",v=>Math.round(v*100)+"%");
 bind("master","masterOut",v=>Math.round(v*100)+"%",v=>{if(master)master.gain.setTargetAtTime(v,audio.currentTime,.02)});
-$("bpm").addEventListener("input",()=>{$("bpmReadout").textContent=$("bpm").value;if($("transportBpmOut"))$("transportBpmOut").textContent=$("bpm").value+" BPM";});
+function syncTempoDisplay(){
+  const bpmValue=
+    Math.round(
+      parseFloat(
+        $("bpm").value
+      )||
+      124
+    );
+
+  if($("bpmReadout")){
+    $("bpmReadout").textContent=
+      bpmValue;
+  }
+
+  if($("transportBpmOut")){
+    $("transportBpmOut").textContent=
+      bpmValue+
+      " BPM";
+  }
+}
+
+$("bpm").addEventListener(
+  "input",
+  syncTempoDisplay
+);
+
+$("bpm").addEventListener(
+  "change",
+  syncTempoDisplay
+);
+
+syncTempoDisplay();
 
 
 
