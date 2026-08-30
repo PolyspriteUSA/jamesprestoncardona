@@ -7402,6 +7402,611 @@ input[type="range"]{
   }
 }
 
+
+/* ================================================================
+   GROOVEBOX MIXER V2 — clean rebuild
+   ================================================================ */
+.mx2-console{
+  grid-column:1/-1;
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11,11,17,.96),
+      rgba(5,5,9,.98)
+    );
+}
+
+.mx2-console-head,
+.mx2-section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.mx2-console-head{
+  min-height:48px;
+  padding:9px 12px;
+  border-bottom:1px solid var(--line);
+}
+
+.mx2-console-head>div:first-child,
+.mx2-section-head{
+  min-width:0;
+}
+
+.mx2-console-head strong,
+.mx2-section-head strong{
+  display:block;
+  color:#fff;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.mx2-console-head span,
+.mx2-section-head span{
+  color:var(--muted);
+  font-size:8px;
+}
+
+.mx2-body{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:10px;
+}
+
+.mx2-transport{
+  display:grid;
+  grid-template-columns:auto minmax(260px,1fr) minmax(200px,.55fr);
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:rgba(255,255,255,.018);
+}
+
+.mx2-transport-buttons{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.mx2-transport-range{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:8px;
+  align-items:center;
+  color:var(--muted);
+  font-size:8px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.mx2-transport-range input{
+  width:100%;
+}
+
+.mx2-transport-range output{
+  min-width:62px;
+  color:#fff;
+  font-size:9px;
+  text-align:right;
+}
+
+.mx2-midi{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:auto 200px 170px minmax(180px,.6fr);
+  gap:7px;
+  align-items:center;
+}
+
+.mx2-midi select{
+  min-height:32px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#0d0d14;
+  color:var(--text);
+  padding:0 7px;
+  font-size:9px;
+}
+
+.mx2-midi .midi-monitor{
+  grid-column:1/-1;
+}
+
+.mx2-mixer-section,
+.mx2-filter{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.014);
+}
+
+.mx2-section-head{
+  min-height:42px;
+  padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,.055);
+}
+
+.mx2-bank-scroll{
+  width:100%;
+  overflow-x:auto;
+}
+
+.mx2-bank{
+  min-width:1160px;
+  display:grid;
+  grid-template-columns:minmax(820px,1fr) 190px 250px;
+  gap:8px;
+  padding:8px;
+  align-items:stretch;
+}
+
+.mx2-channels{
+  display:grid;
+  grid-template-columns:repeat(8,minmax(100px,1fr));
+  gap:6px;
+  min-width:820px;
+}
+
+.mx2-channel,
+.mx2-master,
+.mx2-master-fx{
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:11px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,18,27,.98),
+      rgba(7,7,12,.99)
+    );
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.mx2-channel{
+  min-width:100px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding:7px 6px;
+}
+
+.mx2-channel-number{
+  min-height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.045);
+  border-radius:7px;
+  background:rgba(255,255,255,.016);
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+}
+
+.mx2-pan-row{
+  display:flex;
+  justify-content:center;
+  padding-bottom:5px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.mx2-eq-panel{
+  padding:5px 4px 6px;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:8px;
+  background:rgba(0,0,0,.16);
+}
+
+.mx2-subhead,
+.mx2-section-label,
+.mx2-control-label{
+  color:rgba(255,255,255,.36);
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.11em;
+  text-align:center;
+  text-transform:uppercase;
+}
+
+.mx2-subhead{
+  margin-bottom:5px;
+}
+
+.mx2-eq-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px 3px;
+}
+
+.mx2-knob{
+  min-width:0;
+  display:grid;
+  grid-template-rows:12px 42px 9px;
+  justify-items:center;
+  align-items:center;
+  gap:1px;
+}
+
+.mx2-knob-head{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:2px;
+  align-items:center;
+  color:rgba(255,255,255,.48);
+  font-size:6px;
+  font-weight:900;
+}
+
+.mx2-knob-head strong{
+  color:rgba(255,255,255,.84);
+  font-size:7px;
+  text-align:center;
+}
+
+.mx2-knob-head span:first-child{text-align:left}
+.mx2-knob-head span:last-child{text-align:right}
+
+.mx2-knob-shell{
+  --mx2-angle:0deg;
+  position:relative;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+}
+
+.mx2-knob-shell:focus-within,
+.mx2-knob-shell.dragging{
+  box-shadow:0 0 0 1px rgba(255,66,208,.48),0 0 12px rgba(113,73,255,.20);
+}
+
+.mx2-knob-face{
+  --mx2-angle:0deg;
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.22);
+  background:
+    radial-gradient(circle at 32% 27%,rgba(255,255,255,.22),transparent 20%),
+    radial-gradient(circle at 50% 62%,#30313c,#101016 72%);
+  box-shadow:
+    inset 0 0 0 4px rgba(255,255,255,.022),
+    inset 0 -5px 8px rgba(0,0,0,.34),
+    0 3px 8px rgba(0,0,0,.42);
+  pointer-events:none;
+}
+
+.mx2-knob-face::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:4px;
+  width:2px;
+  height:14px;
+  border-radius:3px;
+  background:linear-gradient(#ff57d4,#8660ff);
+  box-shadow:0 0 5px rgba(255,66,208,.45);
+  transform:translateX(-50%) rotate(var(--mx2-angle));
+  transform-origin:50% 17px;
+}
+
+.mx2-knob-input{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  width:42px;
+  height:42px;
+  margin:0;
+  opacity:0;
+  cursor:ns-resize;
+  touch-action:none;
+}
+
+.mx2-knob-value{
+  width:52px;
+  color:rgba(255,255,255,.43);
+  font-size:6px;
+  line-height:9px;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.mx2-ms{
+  min-height:27px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+}
+
+.mx2-ms button{
+  width:30px;
+  height:24px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:5px;
+  background:rgba(255,255,255,.02);
+  color:rgba(255,255,255,.52);
+  font-size:8px;
+  font-weight:900;
+}
+
+.mx2-ms button.on{
+  color:#fff;
+  border-color:rgba(255,66,208,.42);
+  background:rgba(255,66,208,.12);
+}
+
+.mx2-fader-unit{
+  margin-top:auto;
+  min-width:0;
+  display:grid;
+  grid-template-rows:12px 152px 12px;
+  justify-items:center;
+  align-items:center;
+  gap:2px;
+}
+
+.mx2-fader-shell{
+  position:relative;
+  width:32px;
+  height:152px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.mx2-fader{
+  width:150px;
+  height:28px;
+  margin:0;
+  appearance:none;
+  -webkit-appearance:none;
+  background:transparent;
+  transform:rotate(-90deg);
+  cursor:pointer;
+}
+
+.mx2-fader::-webkit-slider-runnable-track{
+  height:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg,rgba(113,73,255,.72),rgba(255,66,208,.72));
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.04);
+}
+
+.mx2-fader::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:24px;
+  height:12px;
+  margin-top:-3px;
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:3px;
+  background:linear-gradient(#dedee4,#7a7c87 55%,#373941);
+  box-shadow:0 2px 6px rgba(0,0,0,.50),inset 0 1px 0 rgba(255,255,255,.42);
+}
+
+.mx2-fader::-moz-range-track{
+  height:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg,rgba(113,73,255,.72),rgba(255,66,208,.72));
+}
+
+.mx2-fader::-moz-range-thumb{
+  width:24px;
+  height:12px;
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:3px;
+  background:linear-gradient(#dedee4,#7a7c87 55%,#373941);
+}
+
+.mx2-fader-value{
+  color:rgba(255,255,255,.58);
+  font-size:7px;
+}
+
+/* Master with VU above fader */
+.mx2-master{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:8px;
+}
+
+.mx2-master>.mx2-section-label,
+.mx2-master-fx>.mx2-section-label{
+  min-height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.mx2-vu-pair{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+}
+
+.mx2-vu-title{
+  margin-bottom:3px;
+  color:rgba(255,255,255,.54);
+  font-size:7px;
+  font-weight:900;
+  text-align:center;
+}
+
+.mx2-vu-face{
+  position:relative;
+  aspect-ratio:1.22/1;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:7px;
+  background:
+    radial-gradient(ellipse at 50% 115%,rgba(113,73,255,.14),rgba(7,7,11,.98) 62%),
+    linear-gradient(rgba(255,255,255,.018),rgba(5,5,8,.98));
+  box-shadow:inset 0 0 15px rgba(0,0,0,.66);
+}
+
+.mx2-vu-arc{
+  position:absolute;
+  left:12%;
+  right:12%;
+  bottom:-27%;
+  height:78%;
+  border:1px solid rgba(166,108,255,.20);
+  border-bottom:0;
+  border-radius:50% 50% 0 0;
+}
+
+.mx2-vu-mark{
+  position:absolute;
+  color:rgba(255,255,255,.30);
+  font-size:4.5px;
+  transform:translate(-50%,-50%);
+}
+.mx2-vu-mark.m0{left:13%;top:65%}
+.mx2-vu-mark.m1{left:31%;top:34%}
+.mx2-vu-mark.m2{left:50%;top:25%}
+.mx2-vu-mark.m3{left:72%;top:39%;color:rgba(255,66,208,.68)}
+.mx2-vu-mark.m4{left:87%;top:65%;color:rgba(255,105,190,.86)}
+
+.mx2-vu-needle{
+  position:absolute;
+  left:50%;
+  bottom:8%;
+  width:1.5px;
+  height:56%;
+  background:linear-gradient(#ff55d3,#835fff);
+  box-shadow:0 0 5px rgba(255,66,208,.40);
+  transform-origin:50% 100%;
+  transform:translateX(-50%) rotate(-48deg);
+  transition:transform 48ms linear;
+}
+
+.mx2-vu-pivot{
+  position:absolute;
+  left:50%;
+  bottom:6%;
+  width:8px;
+  height:8px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#70717d,#252630 58%,#08080b);
+}
+
+.mx2-vu-db{
+  position:absolute;
+  right:4px;
+  bottom:3px;
+  color:rgba(255,255,255,.35);
+  font-size:4.5px;
+}
+
+.mx2-master .mx2-fader-unit{
+  min-height:188px;
+}
+
+/* Master FX */
+.mx2-master-fx{
+  display:flex;
+  flex-direction:column;
+  padding:8px;
+}
+
+.mx2-fx-grid{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+  align-items:stretch;
+}
+
+.mx2-master-fx .mx2-fader-unit{
+  min-height:205px;
+}
+
+/* Master Filter */
+.mx2-filter{
+  padding-bottom:8px;
+}
+
+.mx2-filter-grid{
+  display:grid;
+  grid-template-columns:minmax(150px,.8fr) repeat(3,minmax(90px,1fr));
+  gap:8px;
+  align-items:center;
+  padding:8px;
+}
+
+.mx2-filter-type{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.mx2-filter-type span{
+  color:rgba(255,255,255,.40);
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.10em;
+}
+
+.mx2-filter-type select{
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#0d0d14;
+  color:var(--text);
+  padding:0 8px;
+}
+
+.mx2-filter .mx2-knob{
+  grid-template-rows:12px 48px 9px;
+}
+
+.mx2-filter .mx2-knob-shell,
+.mx2-filter .mx2-knob-input{
+  width:48px;
+  height:48px;
+}
+
+/* Hide all legacy visual mixer wrappers left elsewhere in old stylesheet */
+.compact-mixer-console,
+.embedded-mixer.compact-mixer-console{
+  display:none!important;
+}
+
+@media(max-width:1000px){
+  .mx2-transport{
+    grid-template-columns:1fr;
+  }
+
+  .mx2-midi{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .mx2-filter-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:650px){
+  .mx2-midi,
+  .mx2-filter-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -7808,22 +8413,27 @@ input[type="range"]{
 </section>
 
 
-<div class="embedded-mixer compact-mixer-console collapsible-section" data-collapse-section="mixing-console">
-  <div class="mixing-console-head">
+
+<div class="mx2-console collapsible-section" data-collapse-section="mixing-console">
+  <div class="mx2-console-head">
     <div>
       <strong>Mixer + Transport</strong>
-      <span>8 assignable tracks • master filter • master FX</span>
+      <span>8 channels • 3-band EQ • master • FX • filter</span>
     </div>
-    <div class="collapse-head-actions">
-      <button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button">
-        <span class="collapse-icon">−</span><span class="collapse-label">Collapse</span>
-      </button>
-    </div>
+    <button
+      aria-expanded="true"
+      class="btn collapse-toggle"
+      data-collapse-target="mixing-console"
+      type="button"
+    >
+      <span class="collapse-icon">−</span>
+      <span class="collapse-label">Collapse</span>
+    </button>
   </div>
 
-  <div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console">
-    <div class="mixer-transport">
-      <div class="transport-buttons">
+  <div class="mx2-body collapsible-body" data-collapse-id="mixing-console">
+    <section class="mx2-transport">
+      <div class="mx2-transport-buttons">
         <button class="btn primary midi-assignable" data-midi-key="transport.play" id="playBtn" type="button">Play</button>
         <button class="btn midi-assignable" data-midi-key="transport.stop" id="stopBtn" type="button">Stop</button>
         <button class="btn midi-assignable" data-midi-key="transport.record" id="transportRecordBtn" type="button">MIDI Rec</button>
@@ -7831,270 +8441,1532 @@ input[type="range"]{
         <button class="btn midi-assignable" data-midi-key="transport.clear" id="clearBtn" type="button">Clear</button>
       </div>
 
-      <label class="transport-slider tempo-slider">
+      <label class="mx2-transport-range">
         <span>Tempo</span>
         <input data-midi-key="transport.tempo" id="bpm" max="180" min="60" step="1" type="range" value="124" />
         <output id="transportBpmOut">124 BPM</output>
       </label>
 
-      <label class="transport-slider">
+      <label class="mx2-transport-range">
         <span>Swing</span>
-        <input data-midi-key="transport.swing" id="swing" max="0.45" min="0" step="0.01" type="range" value="0.08" />
+        <input data-midi-key="transport.swing" id="swing" max=".45" min="0" step=".01" type="range" value=".08" />
       </label>
 
-      <div class="transport-midi enhanced-midi-panel">
+      <div class="mx2-midi">
         <button class="btn compact-btn" id="midiConnect" type="button">Connect MIDI</button>
-
-        <label class="midi-mini-field">
-          <span>Inputs</span>
-          <select id="midiInput" aria-label="MIDI input">
-            <option value="all">All MIDI Inputs</option>
-          </select>
-        </label>
-
-        <label class="midi-mini-field">
-          <span>MIDI Record Track</span>
-          <select id="midiRecordTrack" aria-label="MIDI record track">
-            <option value="0">Track 1</option>
-            <option value="1">Track 2</option>
-            <option value="2">Track 3</option>
-            <option value="3">Track 4</option>
-            <option value="4">Track 5</option>
-            <option value="5">Track 6</option>
-            <option value="6">Track 7</option>
-            <option value="7">Track 8</option>
-          </select>
-        </label>
-
-        <div class="midi-status midi-live-status" id="midiStatus">MIDI disconnected</div>
+        <select id="midiInput" aria-label="MIDI input"><option value="all">All MIDI Inputs</option></select>
+        <select id="midiRecordTrack" aria-label="MIDI record track">
+          <option value="0">Track 1</option><option value="1">Track 2</option>
+          <option value="2">Track 3</option><option value="3">Track 4</option>
+          <option value="4">Track 5</option><option value="5">Track 6</option>
+          <option value="6">Track 7</option><option value="7">Track 8</option>
+        </select>
+        <div class="midi-status" id="midiStatus">MIDI disconnected</div>
         <div class="midi-monitor" id="midiMonitor">Waiting for MIDI…</div>
       </div>
-    </div>
+    </section>
 
-    
-    <div class="mixer-section eight-track-mixer-section unified-fader-section">
-      <div class="embedded-mixer-head">
-        <strong>8 Track Mixer + Master</strong>
-        <span>8 channel faders • master output • master FX</span>
+    <section class="mx2-mixer-section">
+      <div class="mx2-section-head">
+        <strong>8 Track Mixer</strong>
+        <span>pan • low • mid • high • FX send • M/S • level</span>
       </div>
 
-      <div class="mixer-fader-bank">
-        <div class="mixer eight-track-mixer" id="mixer"></div>
-        <div class="master-volume-strip mixer-bank-strip">
-          <div class="mixer-channel-number">MASTER</div>
-          <div class="channel-track-label">Main Out</div>
-          <div class="master-strip-spacer" aria-hidden="true"></div>
-          <div class="channel-buttons master-strip-buttons">
-            <span>L / R</span>
-          </div>
+      <div class="mx2-bank-scroll">
+        <div class="mx2-bank">
+          <div class="mx2-channels" id="mixer">
+            
+      <section class="mx2-channel" data-channel="0">
+        <div class="mx2-channel-number">1</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
           <input
-            class="vertical-fader gb-mixer-fader"
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel1.pan"
+            id="mx2Ch1Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch1PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel1.low"
+            id="mx2Ch1Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch1LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel1.mid"
+            id="mx2Ch1Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch1MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel1.high"
+            id="mx2Ch1High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch1HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel1.fx"
+            id="mx2Ch1Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch1FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel1.mute"
+            data-channel="0"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel1.solo"
+            data-channel="0"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel1.level"
+            id="mx2Ch1Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch1LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="1">
+        <div class="mx2-channel-number">2</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel2.pan"
+            id="mx2Ch2Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch2PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel2.low"
+            id="mx2Ch2Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch2LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel2.mid"
+            id="mx2Ch2Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch2MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel2.high"
+            id="mx2Ch2High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch2HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel2.fx"
+            id="mx2Ch2Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch2FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel2.mute"
+            data-channel="1"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel2.solo"
+            data-channel="1"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel2.level"
+            id="mx2Ch2Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch2LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="2">
+        <div class="mx2-channel-number">3</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel3.pan"
+            id="mx2Ch3Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch3PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel3.low"
+            id="mx2Ch3Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch3LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel3.mid"
+            id="mx2Ch3Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch3MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel3.high"
+            id="mx2Ch3High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch3HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel3.fx"
+            id="mx2Ch3Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch3FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel3.mute"
+            data-channel="2"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel3.solo"
+            data-channel="2"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel3.level"
+            id="mx2Ch3Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch3LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="3">
+        <div class="mx2-channel-number">4</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel4.pan"
+            id="mx2Ch4Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch4PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel4.low"
+            id="mx2Ch4Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch4LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel4.mid"
+            id="mx2Ch4Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch4MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel4.high"
+            id="mx2Ch4High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch4HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel4.fx"
+            id="mx2Ch4Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch4FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel4.mute"
+            data-channel="3"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel4.solo"
+            data-channel="3"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel4.level"
+            id="mx2Ch4Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch4LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="4">
+        <div class="mx2-channel-number">5</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel5.pan"
+            id="mx2Ch5Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch5PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel5.low"
+            id="mx2Ch5Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch5LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel5.mid"
+            id="mx2Ch5Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch5MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel5.high"
+            id="mx2Ch5High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch5HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel5.fx"
+            id="mx2Ch5Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch5FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel5.mute"
+            data-channel="4"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel5.solo"
+            data-channel="4"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel5.level"
+            id="mx2Ch5Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch5LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="5">
+        <div class="mx2-channel-number">6</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel6.pan"
+            id="mx2Ch6Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch6PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel6.low"
+            id="mx2Ch6Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch6LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel6.mid"
+            id="mx2Ch6Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch6MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel6.high"
+            id="mx2Ch6High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch6HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel6.fx"
+            id="mx2Ch6Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch6FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel6.mute"
+            data-channel="5"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel6.solo"
+            data-channel="5"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel6.level"
+            id="mx2Ch6Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch6LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="6">
+        <div class="mx2-channel-number">7</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel7.pan"
+            id="mx2Ch7Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch7PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel7.low"
+            id="mx2Ch7Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch7LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel7.mid"
+            id="mx2Ch7Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch7MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel7.high"
+            id="mx2Ch7High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch7HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel7.fx"
+            id="mx2Ch7Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch7FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel7.mute"
+            data-channel="6"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel7.solo"
+            data-channel="6"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel7.level"
+            id="mx2Ch7Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch7LevelOut"></output>
+      </div>
+    
+      </section>
+    
+      <section class="mx2-channel" data-channel="7">
+        <div class="mx2-channel-number">8</div>
+
+        <div class="mx2-pan-row">
+          
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span>L</span><strong>PAN</strong><span>R</span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel8.pan"
+            id="mx2Ch8Pan"
+            min="-1"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="PAN"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch8PanOut"></output>
+      </div>
+    
+        </div>
+
+        <div class="mx2-eq-panel">
+          <div class="mx2-subhead">EQ / SEND</div>
+          <div class="mx2-eq-grid">
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>LOW</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel8.low"
+            id="mx2Ch8Low"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="LOW"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch8LowOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>MID</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel8.mid"
+            id="mx2Ch8Mid"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="MID"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch8MidOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>HIGH</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel8.high"
+            id="mx2Ch8High"
+            min="-12"
+            max="12"
+            step="0.5"
+            type="range"
+            value="0"
+            aria-label="HIGH"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch8HighOut"></output>
+      </div>
+    
+            
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>FX</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="mixer.channel8.fx"
+            id="mx2Ch8Fx"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="FX"
+          />
+        </div>
+        <output class="mx2-knob-value" id="mx2Ch8FxOut"></output>
+      </div>
+    
+          </div>
+        </div>
+
+        <div class="mx2-ms">
+          <button
+            class="mx2-mute midi-assignable"
+            data-midi-key="mixer.channel8.mute"
+            data-channel="7"
+            type="button"
+          >M</button>
+          <button
+            class="mx2-solo midi-assignable"
+            data-midi-key="mixer.channel8.solo"
+            data-channel="7"
+            type="button"
+          >S</button>
+        </div>
+
+        
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">LEVEL</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="mixer.channel8.level"
+            id="mx2Ch8Level"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.82"
+            aria-label="LEVEL"
+          />
+        </div>
+        <output class="mx2-fader-value" id="mx2Ch8LevelOut"></output>
+      </div>
+    
+      </section>
+    
+          </div>
+
+          <section class="mx2-master">
+            <div class="mx2-section-label">MASTER</div>
+            
+  <div class="mx2-vu-pair">
+    <div class="mx2-vu">
+      <div class="mx2-vu-title">L</div>
+      <div class="mx2-vu-face">
+        <span class="mx2-vu-mark m0">−20</span>
+        <span class="mx2-vu-mark m1">−10</span>
+        <span class="mx2-vu-mark m2">−5</span>
+        <span class="mx2-vu-mark m3">0</span>
+        <span class="mx2-vu-mark m4">+3</span>
+        <div class="mx2-vu-arc"></div>
+        <div class="mx2-vu-needle" id="vuNeedleL"></div>
+        <div class="mx2-vu-pivot"></div>
+        <div class="mx2-vu-db" id="vuValueL">−∞ dB</div>
+      </div>
+    </div>
+    <div class="mx2-vu">
+      <div class="mx2-vu-title">R</div>
+      <div class="mx2-vu-face">
+        <span class="mx2-vu-mark m0">−20</span>
+        <span class="mx2-vu-mark m1">−10</span>
+        <span class="mx2-vu-mark m2">−5</span>
+        <span class="mx2-vu-mark m3">0</span>
+        <span class="mx2-vu-mark m4">+3</span>
+        <div class="mx2-vu-arc"></div>
+        <div class="mx2-vu-needle" id="vuNeedleR"></div>
+        <div class="mx2-vu-pivot"></div>
+        <div class="mx2-vu-db" id="vuValueR">−∞ dB</div>
+      </div>
+    </div>
+  </div>
+
+            
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">MASTER</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
             data-midi-key="master.level"
             id="master"
-            max="1"
             min="0"
-            step=".01"
+            max="1"
+            step="0.01"
             type="range"
-            value=".82"
-            aria-label="Master volume"
+            value="0.82"
+            aria-label="MASTER"
           />
-          <output id="masterOut">82%</output>
         </div>
-
-
-        <div class="master-fx-section inline-master-fx">
-          <div class="master-fx-label">
-            <strong>Master FX</strong>
-            <span>global</span>
-          </div>
-
-          <div class="fx-grid master-fx-fader-grid">
-            <div class="fx-strip">
-              <label>Reverb</label>
-              <input
-                class="vertical-fader gb-mixer-fader"
-                data-midi-key="master.reverb"
-                id="reverb"
-                max=".8"
-                min="0"
-                step=".01"
-                type="range"
-                value=".22"
-              />
-              <output id="reverbOut">22%</output>
-            </div>
-
-            <div class="fx-strip">
-              <label>Decay</label>
-              <input
-                class="vertical-fader gb-mixer-fader"
-                data-midi-key="master.reverbDecay"
-                id="reverbDecay"
-                max="6"
-                min=".3"
-                step=".1"
-                type="range"
-                value="2.4"
-              />
-              <output id="reverbDecayOut">2.4 s</output>
-            </div>
-
-            <div class="fx-strip">
-              <label>Drive</label>
-              <input
-                class="vertical-fader gb-mixer-fader"
-                data-midi-key="master.drive"
-                id="drive"
-                max=".6"
-                min="0"
-                step=".01"
-                type="range"
-                value=".08"
-              />
-              <output id="driveOut">8%</output>
-            </div>
-
-            <div class="fx-strip">
-              <label>Comp</label>
-              <input
-                class="vertical-fader gb-mixer-fader"
-                data-midi-key="master.compression"
-                id="compression"
-                max="1"
-                min="0"
-                step=".01"
-                type="range"
-                value=".28"
-              />
-              <output id="compressionOut">28%</output>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="master-filter-row">
-      <div class="instrument-master-filter master-module">
-        <div class="embedded-mixer-head instrument-filter-head">
-          <strong>Master Filter</strong>
-          <span>global tone shaping</span>
-        </div>
-
-        <div class="rotary-filter-grid">
-          <label class="rotary-control">
-            <span>Type</span>
-            <select id="synthFilterType">
-              <option value="lowpass">Low Pass</option>
-              <option value="highpass">High Pass</option>
-              <option value="bandpass">Band Pass</option>
-              <option value="notch">Notch</option>
-            </select>
-          </label>
-
-          <div class="rotary-control">
-            <span>Cutoff</span>
-            <div class="rotary-knob-wrap">
-              <input
-                class="rotary-range"
-                data-midi-key="master.filter.cutoff"
-                id="synthFilterCutoff"
-                max="16000"
-                min="80"
-                type="range"
-                value="4200"
-              />
-              <div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
-            </div>
-            <output id="synthFilterCutoffOut">4200 Hz</output>
-          </div>
-
-          <div class="rotary-control">
-            <span>Resonance</span>
-            <div class="rotary-knob-wrap">
-              <input
-                class="rotary-range"
-                data-midi-key="master.filter.resonance"
-                id="synthFilterRes"
-                max="24"
-                min=".1"
-                step=".1"
-                type="range"
-                value="4"
-              />
-              <div class="rotary-knob" data-knob-for="synthFilterRes"></div>
-            </div>
-            <output id="synthFilterResOut">4.0</output>
-          </div>
-
-          <div class="rotary-control">
-            <span>Drive</span>
-            <div class="rotary-knob-wrap">
-              <input
-                class="rotary-range"
-                data-midi-key="master.filter.drive"
-                id="synthFilterDrive"
-                max="1"
-                min="0"
-                step=".01"
-                type="range"
-                value="0"
-              />
-              <div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
-            </div>
-            <output id="synthFilterDriveOut">0%</output>
-          </div>
-        </div>
+        <output class="mx2-fader-value" id="masterOut"></output>
       </div>
     
-      <div class="master-vu-module">
-        <div class="embedded-mixer-head">
-          <strong>Output VU</strong>
-          <span>stereo master</span>
+          </section>
+
+          <section class="mx2-master-fx">
+            <div class="mx2-section-label">MASTER FX</div>
+            <div class="mx2-fx-grid">
+              
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">REVERB</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="master.reverb"
+            id="reverb"
+            min="0"
+            max="0.8"
+            step="0.01"
+            type="range"
+            value="0.22"
+            aria-label="REVERB"
+          />
         </div>
-
-        <div class="vu-meter-pair">
-          <div class="analog-vu" aria-label="Left output VU meter">
-            <div class="vu-face">
-              <div class="vu-scale">
-                <span class="vu-tick t0">−20</span>
-                <span class="vu-tick t1">−10</span>
-                <span class="vu-tick t2">−7</span>
-                <span class="vu-tick t3">−5</span>
-                <span class="vu-tick t4">−3</span>
-                <span class="vu-tick t5">0</span>
-                <span class="vu-tick t6">+3</span>
-              </div>
-              <div class="vu-arc"></div>
-              <div class="vu-needle" id="vuNeedleL"></div>
-              <div class="vu-pivot"></div>
-              <div class="vu-label">LEFT</div>
-              <div class="vu-db" id="vuValueL">−∞ dB</div>
+        <output class="mx2-fader-value" id="reverbOut"></output>
+      </div>
+    
+              
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">DECAY</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="master.reverbDecay"
+            id="reverbDecay"
+            min="0.3"
+            max="6"
+            step="0.1"
+            type="range"
+            value="2.4"
+            aria-label="DECAY"
+          />
+        </div>
+        <output class="mx2-fader-value" id="reverbDecayOut"></output>
+      </div>
+    
+              
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">DRIVE</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="master.drive"
+            id="drive"
+            min="0"
+            max="0.6"
+            step="0.01"
+            type="range"
+            value="0.08"
+            aria-label="DRIVE"
+          />
+        </div>
+        <output class="mx2-fader-value" id="driveOut"></output>
+      </div>
+    
+              
+      <div class="mx2-fader-unit">
+        <div class="mx2-control-label">COMP</div>
+        <div class="mx2-fader-shell">
+          <input
+            class="mx2-fader"
+            data-midi-key="master.compression"
+            id="compression"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0.28"
+            aria-label="COMP"
+          />
+        </div>
+        <output class="mx2-fader-value" id="compressionOut"></output>
+      </div>
+    
             </div>
-          </div>
-
-          <div class="analog-vu" aria-label="Right output VU meter">
-            <div class="vu-face">
-              <div class="vu-scale">
-                <span class="vu-tick t0">−20</span>
-                <span class="vu-tick t1">−10</span>
-                <span class="vu-tick t2">−7</span>
-                <span class="vu-tick t3">−5</span>
-                <span class="vu-tick t4">−3</span>
-                <span class="vu-tick t5">0</span>
-                <span class="vu-tick t6">+3</span>
-              </div>
-              <div class="vu-arc"></div>
-              <div class="vu-needle" id="vuNeedleR"></div>
-              <div class="vu-pivot"></div>
-              <div class="vu-label">RIGHT</div>
-              <div class="vu-db" id="vuValueR">−∞ dB</div>
-            </div>
-          </div>
+          </section>
         </div>
       </div>
-</div>
+    </section>
 
-<div class="legacy-compat" aria-hidden="true">
+    <section class="mx2-filter">
+      <div class="mx2-section-head">
+        <strong>Master Filter</strong>
+        <span>global tone shaping</span>
+      </div>
+      <div class="mx2-filter-grid">
+        <label class="mx2-filter-type">
+          <span>TYPE</span>
+          <select id="synthFilterType">
+            <option value="lowpass">Low Pass</option>
+            <option value="highpass">High Pass</option>
+            <option value="bandpass">Band Pass</option>
+            <option value="notch">Notch</option>
+          </select>
+        </label>
+        
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>CUTOFF</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="master.filter.cutoff"
+            id="synthFilterCutoff"
+            min="80"
+            max="16000"
+            step="1"
+            type="range"
+            value="4200"
+            aria-label="CUTOFF"
+          />
+        </div>
+        <output class="mx2-knob-value" id="synthFilterCutoffOut"></output>
+      </div>
+    
+        
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>RESONANCE</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="master.filter.resonance"
+            id="synthFilterRes"
+            min="0.1"
+            max="24"
+            step="0.1"
+            type="range"
+            value="4"
+            aria-label="RESONANCE"
+          />
+        </div>
+        <output class="mx2-knob-value" id="synthFilterResOut"></output>
+      </div>
+    
+        
+      <div class="mx2-knob">
+        <div class="mx2-knob-head">
+          <span></span><strong>DRIVE</strong><span></span>
+        </div>
+        <div class="mx2-knob-shell">
+          <div class="mx2-knob-face" aria-hidden="true"></div>
+          <input
+            class="mx2-knob-input"
+            data-midi-key="master.filter.drive"
+            id="synthFilterDrive"
+            min="0"
+            max="1"
+            step="0.01"
+            type="range"
+            value="0"
+            aria-label="DRIVE"
+          />
+        </div>
+        <output class="mx2-knob-value" id="synthFilterDriveOut"></output>
+      </div>
+    
+      </div>
+    </section>
+
+    <div class="legacy-compat" aria-hidden="true">
       <div id="audioChannelMixer"></div>
       <select id="audioLatency"><option value="interactive">Interactive</option></select>
       <select id="audioSampleRate"><option value="default">Default</option></select>
@@ -8111,13 +9983,17 @@ input[type="range"]{
       <select id="midiTarget"><option value="synth">Synth 1</option><option value="synth2">Synth 2</option></select>
       <select id="midiChannel"><option value="all">All</option></select>
       <div id="tapeDeck"></div><span id="tapeStatus">Ready</span><strong id="tapeTime">00:00</strong>
-      <button id="tapeRecordBtn" type="button">Record</button><button id="tapeStopBtn" type="button">Stop</button>
-      <button id="tapePlayBtn" type="button">Play</button><button id="tapeDownloadBtn" type="button">Save</button>
-      <button id="tapeClearBtn" type="button">Clear</button><button id="recordsClearBtn" type="button">Clear Records</button>
+      <button id="tapeRecordBtn" type="button">Record</button>
+      <button id="tapeStopBtn" type="button">Stop</button>
+      <button id="tapePlayBtn" type="button">Play</button>
+      <button id="tapeDownloadBtn" type="button">Save</button>
+      <button id="tapeClearBtn" type="button">Clear</button>
+      <button id="recordsClearBtn" type="button">Clear Records</button>
       <div id="recordsList"></div>
     </div>
   </div>
 </div>
+
 <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 <script type="importmap">
 {
@@ -8235,47 +10111,15 @@ function instrumentLabel(type){
 }
 
 function refreshMixerChannelLabels(){
-  for(let channel=0;channel<8;channel++){
-    const label=
-      document.querySelector(
-        '[data-mixer-label="'+channel+'"]'
-      );
-
-    if(label){
-      label.textContent=
-        String(
-          channel+1
-        );
-    }
-
-    const small=
-      document.querySelector(
-        '[data-mixer-channel-number="'+channel+'"]'
-      );
-
-    if(small){
-      small.textContent=
-        "CH";
-    }
-  }
-
   document
     .querySelectorAll(
       ".track-mixer-select"
     )
     .forEach(select=>{
-      const track=
-        tracks[
-          +select.dataset.trackIndex
-        ];
+      const track=tracks[+select.dataset.trackIndex];
 
       if(track){
-        select.value=
-          String(
-            mixerChannelForTrack(
-              track
-            )
-          );
+        select.value=String(mixerChannelForTrack(track));
       }
     });
 }
@@ -12183,61 +14027,26 @@ buildTimelineRuler();
 buildAudioChannelMixer();
 renderAudioTimeline();
 
+
 const mixer=$("mixer");
 
-function syncMixerButtons(){
-  document
-    .querySelectorAll(
-      ".gb-mute"
-    )
-    .forEach(button=>{
-      button.classList.toggle(
-        "on",
-        mixerMuted.has(
-          +button.dataset.channel
-        )
-      );
-    });
-
-  document
-    .querySelectorAll(
-      ".gb-solo"
-    )
-    .forEach(button=>{
-      button.classList.toggle(
-        "on",
-        mixerSoloed.has(
-          +button.dataset.channel
-        )
-      );
-    });
+function mx2FormatDb(value){
+  return (
+    value>0
+      ?"+"
+      :""
+  )+
+  value.toFixed(1);
 }
 
-function gbKnobDegrees(input){
-  const min=
-    parseFloat(
-      input.min
-    );
-
-  const max=
-    parseFloat(
-      input.max
-    );
-
-  const value=
-    parseFloat(
-      input.value
-    );
+function mx2KnobAngle(input){
+  const min=parseFloat(input.min);
+  const max=parseFloat(input.max);
+  const value=parseFloat(input.value);
 
   const normalized=
     max>min
-      ?Math.max(
-          0,
-          Math.min(
-            1,
-            (value-min)/(max-min)
-          )
-        )
+      ?Math.max(0,Math.min(1,(value-min)/(max-min)))
       :0;
 
   return -135+
@@ -12245,894 +14054,272 @@ function gbKnobDegrees(input){
     270;
 }
 
-function gbUpdateKnob(input){
-  const control=
-    input.closest(
-      ".gb-knob"
-    );
+function mx2RefreshKnob(input){
+  const shell=input.closest(".mx2-knob-shell");
+  if(!shell)return;
 
-  if(!control){
-    return;
-  }
-
-  const face=
-    control.querySelector(
-      ".gb-knob-face"
-    );
-
+  const face=shell.querySelector(".mx2-knob-face");
   if(face){
     face.style.setProperty(
-      "--gb-angle",
-      gbKnobDegrees(
-        input
-      )+
-      "deg"
+      "--mx2-angle",
+      mx2KnobAngle(input)+"deg"
     );
   }
 }
 
-function gbCreateKnob({
-  channel,
-  label,
-  midiKey,
-  min,
-  max,
-  step,
-  value,
-  leftLabel="",
-  rightLabel="",
-  format,
-  update
-}){
-  const control=
-    document.createElement(
-      "div"
-    );
+function mx2SetKnobValue(input,value){
+  const min=parseFloat(input.min);
+  const max=parseFloat(input.max);
+  const step=parseFloat(input.step);
 
-  control.className=
-    "gb-knob";
+  let next=Math.max(min,Math.min(max,value));
 
-  const head=
-    document.createElement(
-      "div"
-    );
+  if(Number.isFinite(step)&&step>0){
+    next=
+      min+
+      Math.round((next-min)/step)*
+      step;
+  }
 
-  head.className=
-    "gb-knob-head";
+  input.value=String(next);
+  input.dispatchEvent(new Event("input",{bubbles:true}));
+}
 
-  const left=
-    document.createElement(
-      "span"
-    );
-
-  left.textContent=
-    leftLabel;
-
-  const title=
-    document.createElement(
-      "strong"
-    );
-
-  title.textContent=
-    label;
-
-  const right=
-    document.createElement(
-      "span"
-    );
-
-  right.textContent=
-    rightLabel;
-
-  head.append(
-    left,
-    title,
-    right
-  );
-
-  const shell=
-    document.createElement(
-      "div"
-    );
-
-  shell.className=
-    "gb-knob-shell";
-
-  const face=
-    document.createElement(
-      "div"
-    );
-
-  face.className=
-    "gb-knob-face";
-
-  const input=
-    document.createElement(
-      "input"
-    );
-
-  input.type=
-    "range";
-
-  input.className=
-    "gb-knob-input";
-
-  input.min=
-    min;
-
-  input.max=
-    max;
-
-  input.step=
-    step;
-
-  input.value=
-    value;
-
-  input.dataset.midiKey=
-    midiKey;
-
-  const out=
-    document.createElement(
-      "output"
-    );
-
-  out.className=
-    "gb-knob-value";
+function mx2AttachKnob(input,output,formatter,onChange){
+  const shell=input.closest(".mx2-knob-shell");
 
   const refresh=()=>{
-    const next=
-      parseFloat(
-        input.value
-      );
-
-    gbUpdateKnob(
-      input
-    );
-
-    out.textContent=
-      format(
-        next
-      );
-
-    update(
-      next
-    );
+    const value=parseFloat(input.value);
+    mx2RefreshKnob(input);
+    if(output){
+      output.textContent=formatter(value);
+    }
+    if(onChange){
+      onChange(value);
+    }
   };
 
-  input.addEventListener(
-    "input",
-    refresh
-  );
+  input.addEventListener("input",refresh);
 
-  // Real knob-style interaction on the visible face.
-  // Drag upward/downward, use mouse wheel, or double-click to reset.
-  let dragStartY=0;
-  let dragStartValue=0;
   let dragging=false;
+  let startY=0;
+  let startValue=0;
 
-  const clampValue=value=>{
-    const lo=parseFloat(input.min);
-    const hi=parseFloat(input.max);
-    return Math.max(lo,Math.min(hi,value));
-  };
+  input.addEventListener("pointerdown",event=>{
+    if(event.button!==0)return;
+    event.preventDefault();
+    dragging=true;
+    startY=event.clientY;
+    startValue=parseFloat(input.value);
+    input.setPointerCapture(event.pointerId);
+    if(shell)shell.classList.add("dragging");
+  });
 
-  const setKnobValue=value=>{
-    const stepValue=
-      parseFloat(input.step);
-
-    const lo=
-      parseFloat(input.min);
-
-    let next=
-      clampValue(value);
-
-    if(
-      Number.isFinite(stepValue)&&
-      stepValue>0
-    ){
-      next=
-        lo+
-        Math.round(
-          (next-lo)/
-          stepValue
-        )*
-        stepValue;
-    }
-
-    input.value=
-      String(
-        next
-      );
-
-    input.dispatchEvent(
-      new Event(
-        "input",
-        {bubbles:true}
-      )
-    );
-  };
-
-  face.addEventListener(
-    "pointerdown",
-    event=>{
-      if(event.button!==0)return;
-
-      event.preventDefault();
-
-      dragging=true;
-      dragStartY=event.clientY;
-      dragStartValue=
-        parseFloat(
-          input.value
-        );
-
-      face.setPointerCapture(
-        event.pointerId
-      );
-
-      face.classList.add(
-        "dragging"
-      );
-    }
-  );
-
-  face.addEventListener(
-    "pointermove",
-    event=>{
-      if(!dragging)return;
-
-      event.preventDefault();
-
-      const lo=
-        parseFloat(
-          input.min
-        );
-
-      const hi=
-        parseFloat(
-          input.max
-        );
-
-      const range=
-        hi-lo;
-
-      const delta=
-        (
-          dragStartY-
-          event.clientY
-        )/
-        120;
-
-      setKnobValue(
-        dragStartValue+
-        delta*
-        range
-      );
-    }
-  );
-
-  function endDrag(event){
+  input.addEventListener("pointermove",event=>{
     if(!dragging)return;
+    event.preventDefault();
 
-    dragging=false;
+    const min=parseFloat(input.min);
+    const max=parseFloat(input.max);
+    const delta=(startY-event.clientY)/120;
 
-    face.classList.remove(
-      "dragging"
+    mx2SetKnobValue(
+      input,
+      startValue+
+      delta*(max-min)
     );
+  });
 
-    try{
-      face.releasePointerCapture(
-        event.pointerId
-      );
-    }catch(error){}
-  }
+  const endDrag=event=>{
+    if(!dragging)return;
+    dragging=false;
+    if(shell)shell.classList.remove("dragging");
+    try{input.releasePointerCapture(event.pointerId);}catch(error){}
+  };
 
-  face.addEventListener(
-    "pointerup",
-    endDrag
-  );
+  input.addEventListener("pointerup",endDrag);
+  input.addEventListener("pointercancel",endDrag);
 
-  face.addEventListener(
-    "pointercancel",
-    endDrag
-  );
+  input.addEventListener("wheel",event=>{
+    event.preventDefault();
+    const step=
+      Number.isFinite(parseFloat(input.step))
+        ?parseFloat(input.step)
+        :(parseFloat(input.max)-parseFloat(input.min))/100;
+    mx2SetKnobValue(
+      input,
+      parseFloat(input.value)+(event.deltaY<0?step:-step)
+    );
+  },{passive:false});
 
-  face.addEventListener(
-    "wheel",
-    event=>{
-      event.preventDefault();
+  input.addEventListener("dblclick",event=>{
+    event.preventDefault();
+    const min=parseFloat(input.min);
+    const max=parseFloat(input.max);
+    mx2SetKnobValue(
+      input,
+      min<0&&max>0
+        ?0
+        :min+(max-min)*.5
+    );
+  });
 
-      const lo=
-        parseFloat(
-          input.min
-        );
-
-      const hi=
-        parseFloat(
-          input.max
-        );
-
-      const stepValue=
-        Number.isFinite(
-          parseFloat(
-            input.step
-          )
-        )
-          ?parseFloat(
-              input.step
-            )
-          :(hi-lo)/100;
-
-      setKnobValue(
-        parseFloat(
-          input.value
-        )+
-        (
-          event.deltaY<0
-            ?stepValue
-            :-stepValue
-        )
-      );
-    },
-    {passive:false}
-  );
-
-  face.addEventListener(
-    "dblclick",
-    event=>{
-      event.preventDefault();
-
-      if(min<0&&max>0){
-        setKnobValue(0);
-      }else{
-        setKnobValue(
-          min+
-          (max-min)*
-          .5
-        );
-      }
-    }
-  );
-
-  shell.append(
-    face,
-    input
-  );
-
-  control.append(
-    head,
-    shell,
-    out
-  );
-
-  requestAnimationFrame(
-    ()=>{
-      gbUpdateKnob(
-        input
-      );
-
-      out.textContent=
-        format(
-          parseFloat(
-            input.value
-          )
-        );
-    }
-  );
-
-  return control;
+  refresh();
 }
 
-function gbCreateChannelStrip(channel,index){
-  const strip=
-    document.createElement(
-      "section"
+function mx2SyncMixerButtons(){
+  document.querySelectorAll(".mx2-mute").forEach(button=>{
+    button.classList.toggle(
+      "on",
+      mixerMuted.has(+button.dataset.channel)
     );
+  });
 
-  strip.className=
-    "gb-channel";
-
-  const number=
-    document.createElement(
-      "div"
+  document.querySelectorAll(".mx2-solo").forEach(button=>{
+    button.classList.toggle(
+      "on",
+      mixerSoloed.has(+button.dataset.channel)
     );
+  });
+}
 
-  number.className=
-    "gb-channel-number";
+mixerChannels.forEach((channel,index)=>{
+  const n=index+1;
 
-  number.dataset.mixerChannelNumber=
-    index;
+  const pan=$("mx2Ch"+n+"Pan");
+  const low=$("mx2Ch"+n+"Low");
+  const mid=$("mx2Ch"+n+"Mid");
+  const high=$("mx2Ch"+n+"High");
+  const fx=$("mx2Ch"+n+"Fx");
+  const level=$("mx2Ch"+n+"Level");
 
-  number.textContent=
-    "CH";
+  pan.value=channel.pan;
+  low.value=channel.low;
+  mid.value=channel.mid;
+  high.value=channel.high;
+  fx.value=channel.fxSend;
+  level.value=channel.level;
 
-  const name=
-    document.createElement(
-      "div"
-    );
-
-  name.className=
-    "gb-channel-name channel-track-label";
-
-  name.dataset.mixerLabel=
-    index;
-
-  name.textContent=
-    String(
-      index+1
-    );
-
-  const pan=
-    gbCreateKnob({
-      channel:index,
-      label:"PAN",
-      midiKey:
-        "mixer.channel"+
-        (index+1)+
-        ".pan",
-      min:-1,
-      max:1,
-      step:.01,
-      value:channel.pan,
-      leftLabel:"L",
-      rightLabel:"R",
-      format:value=>
-        Math.abs(value)<.02
-          ?"C"
-          :value<0
-            ?"L "+Math.round(Math.abs(value)*100)
-            :"R "+Math.round(value*100),
-      update:value=>{
-        channel.pan=
-          value;
-
-        const bus=
-          mixerBusNodes[
-            index
-          ];
-
-        if(
-          bus&&
-          bus.panner&&
-          audio
-        ){
-          bus.panner.pan.setTargetAtTime(
-            value,
-            audio.currentTime,
-            .015
-          );
-        }
-      }
-    });
-
-  const eq=
-    document.createElement(
-      "div"
-    );
-
-  eq.className=
-    "gb-eq";
-
-  const eqLabel=
-    document.createElement(
-      "div"
-    );
-
-  eqLabel.className=
-    "gb-section-label";
-
-  eqLabel.textContent=
-    "EQ / SEND";
-
-  const eqGrid=
-    document.createElement(
-      "div"
-    );
-
-  eqGrid.className=
-    "gb-eq-grid";
-
-  const dbFormat=
+  mx2AttachKnob(
+    pan,
+    $("mx2Ch"+n+"PanOut"),
     value=>
-      (
-        value>0
-          ?"+"
-          :""
-      )+
-      value.toFixed(1);
-
-  const low=
-    gbCreateKnob({
-      channel:index,
-      label:"LOW",
-      midiKey:
-        "mixer.channel"+
-        (index+1)+
-        ".low",
-      min:-12,
-      max:12,
-      step:.5,
-      value:channel.low,
-      format:dbFormat,
-      update:value=>{
-        channel.low=
-          value;
-
-        const bus=
-          mixerBusNodes[
-            index
-          ];
-
-        if(
-          bus&&
-          bus.low&&
-          audio
-        ){
-          bus.low.gain.setTargetAtTime(
-            value,
-            audio.currentTime,
-            .015
-          );
-        }
+      Math.abs(value)<.02
+        ?"C"
+        :value<0
+          ?"L "+Math.round(Math.abs(value)*100)
+          :"R "+Math.round(value*100),
+    value=>{
+      channel.pan=value;
+      const bus=mixerBusNodes[index];
+      if(bus&&bus.panner&&audio){
+        bus.panner.pan.setTargetAtTime(value,audio.currentTime,.015);
       }
-    });
+    }
+  );
 
-  const mid=
-    gbCreateKnob({
-      channel:index,
-      label:"MID",
-      midiKey:
-        "mixer.channel"+
-        (index+1)+
-        ".mid",
-      min:-12,
-      max:12,
-      step:.5,
-      value:channel.mid,
-      format:dbFormat,
-      update:value=>{
-        channel.mid=
-          value;
-
-        const bus=
-          mixerBusNodes[
-            index
-          ];
-
-        if(
-          bus&&
-          bus.mid&&
-          audio
-        ){
-          bus.mid.gain.setTargetAtTime(
-            value,
-            audio.currentTime,
-            .015
-          );
-        }
-      }
-    });
-
-  const high=
-    gbCreateKnob({
-      channel:index,
-      label:"HIGH",
-      midiKey:
-        "mixer.channel"+
-        (index+1)+
-        ".high",
-      min:-12,
-      max:12,
-      step:.5,
-      value:channel.high,
-      format:dbFormat,
-      update:value=>{
-        channel.high=
-          value;
-
-        const bus=
-          mixerBusNodes[
-            index
-          ];
-
-        if(
-          bus&&
-          bus.high&&
-          audio
-        ){
-          bus.high.gain.setTargetAtTime(
-            value,
-            audio.currentTime,
-            .015
-          );
-        }
-      }
-    });
-
-  const fx=
-    gbCreateKnob({
-      channel:index,
-      label:"FX",
-      midiKey:
-        "mixer.channel"+
-        (index+1)+
-        ".fx",
-      min:0,
-      max:1,
-      step:.01,
-      value:channel.fxSend,
-      format:value=>
-        Math.round(
-          value*
-          100
-        )+
-        "%",
-      update:value=>{
-        channel.fxSend=
-          value;
-
-        const bus=
-          mixerBusNodes[
-            index
-          ];
-
-        if(
-          bus&&
-          bus.fxSend&&
-          audio
-        ){
-          bus.fxSend.gain.setTargetAtTime(
-            value,
-            audio.currentTime,
-            .015
-          );
-        }
-      }
-    });
-
-  eqGrid.append(
+  mx2AttachKnob(
     low,
+    $("mx2Ch"+n+"LowOut"),
+    mx2FormatDb,
+    value=>{
+      channel.low=value;
+      const bus=mixerBusNodes[index];
+      if(bus&&bus.low&&audio){
+        bus.low.gain.setTargetAtTime(value,audio.currentTime,.015);
+      }
+    }
+  );
+
+  mx2AttachKnob(
     mid,
+    $("mx2Ch"+n+"MidOut"),
+    mx2FormatDb,
+    value=>{
+      channel.mid=value;
+      const bus=mixerBusNodes[index];
+      if(bus&&bus.mid&&audio){
+        bus.mid.gain.setTargetAtTime(value,audio.currentTime,.015);
+      }
+    }
+  );
+
+  mx2AttachKnob(
     high,
-    fx
-  );
-
-  eq.append(
-    eqLabel,
-    eqGrid
-  );
-
-  const ms=
-    document.createElement(
-      "div"
-    );
-
-  ms.className=
-    "gb-ms";
-
-  const mute=
-    document.createElement(
-      "button"
-    );
-
-  mute.type=
-    "button";
-
-  mute.className=
-    "gb-mute midi-assignable";
-
-  mute.dataset.channel=
-    index;
-
-  mute.dataset.midiKey=
-    "mixer.channel"+
-    (index+1)+
-    ".mute";
-
-  mute.textContent=
-    "M";
-
-  const solo=
-    document.createElement(
-      "button"
-    );
-
-  solo.type=
-    "button";
-
-  solo.className=
-    "gb-solo midi-assignable";
-
-  solo.dataset.channel=
-    index;
-
-  solo.dataset.midiKey=
-    "mixer.channel"+
-    (index+1)+
-    ".solo";
-
-  solo.textContent=
-    "S";
-
-  mute.addEventListener(
-    "click",
-    ()=>{
-      if(
-        mixerMuted.has(
-          index
-        )
-      ){
-        mixerMuted.delete(
-          index
-        );
-      }else{
-        mixerMuted.add(
-          index
-        );
+    $("mx2Ch"+n+"HighOut"),
+    mx2FormatDb,
+    value=>{
+      channel.high=value;
+      const bus=mixerBusNodes[index];
+      if(bus&&bus.high&&audio){
+        bus.high.gain.setTargetAtTime(value,audio.currentTime,.015);
       }
-
-      syncMixerButtons();
     }
   );
 
-  solo.addEventListener(
-    "click",
-    ()=>{
-      if(
-        mixerSoloed.has(
-          index
-        )
-      ){
-        mixerSoloed.delete(
-          index
-        );
-      }else{
-        mixerSoloed.add(
-          index
-        );
+  mx2AttachKnob(
+    fx,
+    $("mx2Ch"+n+"FxOut"),
+    value=>Math.round(value*100)+"%",
+    value=>{
+      channel.fxSend=value;
+      const bus=mixerBusNodes[index];
+      if(bus&&bus.fxSend&&audio){
+        bus.fxSend.gain.setTargetAtTime(value,audio.currentTime,.015);
       }
-
-      syncMixerButtons();
     }
   );
 
-  ms.append(
-    mute,
-    solo
-  );
+  const levelOut=$("mx2Ch"+n+"LevelOut");
 
-  const faderBox=
-    document.createElement(
-      "div"
-    );
+  const updateLevel=()=>{
+    channel.level=parseFloat(level.value);
+    levelOut.textContent=Math.round(channel.level*100)+"%";
 
-  faderBox.className=
-    "gb-fader-box";
-
-  const faderLabel=
-    document.createElement(
-      "div"
-    );
-
-  faderLabel.className=
-    "gb-section-label";
-
-  faderLabel.textContent=
-    "LEVEL";
-
-  const fader=
-    document.createElement(
-      "input"
-    );
-
-  fader.type=
-    "range";
-
-  fader.className=
-    "gb-mixer-fader";
-
-  fader.min=
-    0;
-
-  fader.max=
-    1;
-
-  fader.step=
-    .01;
-
-  fader.value=
-    channel.level;
-
-  fader.dataset.midiKey=
-    "mixer.channel"+
-    (index+1)+
-    ".level";
-
-  const faderOut=
-    document.createElement(
-      "output"
-    );
-
-  faderOut.className=
-    "gb-fader-value";
-
-  const updateFader=()=>{
-    channel.level=
-      parseFloat(
-        fader.value
-      );
-
-    faderOut.textContent=
-      Math.round(
-        channel.level*
-        100
-      )+
-      "%";
-
-    const bus=
-      mixerBusNodes[
-        index
-      ];
-
-    if(
-      bus&&
-      bus.input&&
-      audio
-    ){
-      bus.input.gain.setTargetAtTime(
-        channel.level,
-        audio.currentTime,
-        .015
-      );
+    const bus=mixerBusNodes[index];
+    if(bus&&bus.input&&audio){
+      bus.input.gain.setTargetAtTime(channel.level,audio.currentTime,.015);
     }
   };
 
-  fader.addEventListener(
-    "input",
-    updateFader
-  );
+  level.addEventListener("input",updateLevel);
+  updateLevel();
 
-  faderOut.textContent=
-    Math.round(
-      channel.level*
-      100
-    )+
-    "%";
+  const mute=document.querySelector('.mx2-mute[data-channel="'+index+'"]');
+  const solo=document.querySelector('.mx2-solo[data-channel="'+index+'"]');
 
-  faderBox.append(
-    faderLabel,
-    fader,
-    faderOut
-  );
+  mute.addEventListener("click",()=>{
+    if(mixerMuted.has(index))mixerMuted.delete(index);
+    else mixerMuted.add(index);
+    mx2SyncMixerButtons();
+  });
 
-  strip.append(
-    number,
-    name,
-    pan,
-    eq,
-    ms,
-    faderBox
-  );
+  solo.addEventListener("click",()=>{
+    if(mixerSoloed.has(index))mixerSoloed.delete(index);
+    else mixerSoloed.add(index);
+    mx2SyncMixerButtons();
+  });
+});
 
-  return strip;
-}
-
-mixerChannels.forEach(
-  (channel,index)=>{
-    mixer.appendChild(
-      gbCreateChannelStrip(
-        channel,
-        index
-      )
-    );
-  }
+mx2AttachKnob(
+  $("synthFilterCutoff"),
+  $("synthFilterCutoffOut"),
+  value=>Math.round(value)+" Hz"
 );
 
-refreshMixerChannelLabels();
-syncMixerButtons();
-syncTrackButtons();
+mx2AttachKnob(
+  $("synthFilterRes"),
+  $("synthFilterResOut"),
+  value=>value.toFixed(1)
+);
 
+mx2AttachKnob(
+  $("synthFilterDrive"),
+  $("synthFilterDriveOut"),
+  value=>Math.round(value*100)+"%"
+);
+
+mx2SyncMixerButtons();
 function updateAudioStatus(message=""){
   const status=$("audioStatus");
   if(!status)return;
@@ -18072,11 +19259,29 @@ animate();
   function resolveAssignableControl(target){
     const candidate=
       target.closest(
-        'input[type="range"],.gb-knob-face,.rotary-knob,.synth-rotary-knob,.step-toggle,.midi-assignable,.synth-key'
+        'input[type="range"],.mx2-knob-face,.mx2-knob-shell,.gb-knob-face,.rotary-knob,.synth-rotary-knob,.step-toggle,.midi-assignable,.synth-key'
       );
 
     if(!candidate){
       return null;
+    }
+
+    if(
+      candidate.classList.contains(
+        "mx2-knob-face"
+      )||
+      candidate.classList.contains(
+        "mx2-knob-shell"
+      )
+    ){
+      const shell=
+        candidate.classList.contains("mx2-knob-shell")
+          ?candidate
+          :candidate.closest(".mx2-knob-shell");
+
+      return shell
+        ?shell.querySelector(".mx2-knob-input")
+        :null;
     }
 
     if(
