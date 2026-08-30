@@ -4376,6 +4376,379 @@ input[type="range"]{
   }
 }
 
+
+/* ===== Tight mixer bank / aligned faders ===== */
+.mixer-fader-bank{
+  display:flex!important;
+  align-items:stretch!important;
+  gap:6px!important;
+  padding:0 8px 10px!important;
+  overflow-x:auto!important;
+}
+
+.mixer-fader-bank .eight-track-mixer{
+  flex:0 0 810px;
+  min-width:810px!important;
+  display:grid!important;
+  grid-template-columns:repeat(8,96px)!important;
+  gap:6px!important;
+  overflow:visible!important;
+}
+
+.real-mixer-channel,
+.master-volume-strip,
+.inline-master-fx{
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:12px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16,16,24,.94),
+      rgba(7,7,12,.94)
+    )!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.real-mixer-channel{
+  min-width:96px!important;
+  padding:7px 6px!important;
+  gap:4px!important;
+  grid-template-rows:
+    13px
+    28px
+    56px
+    88px
+    24px
+    150px
+    15px!important;
+}
+
+.real-mixer-channel .channel-track-label{
+  min-height:28px!important;
+  font-size:14px!important;
+  line-height:1!important;
+}
+
+.real-mixer-channel .channel-buttons{
+  min-height:24px!important;
+}
+
+.channel-eq-grid{
+  gap:3px!important;
+}
+
+.mixer-mini-knob{
+  gap:1px!important;
+}
+
+.mixer-mini-knob .rotary-knob-wrap{
+  width:33px!important;
+  height:33px!important;
+}
+
+.mixer-mini-knob output{
+  font-size:6px!important;
+}
+
+.mixer-pan-control{
+  gap:1px!important;
+}
+
+.mixer-pan-control .rotary-knob-wrap{
+  width:40px!important;
+  height:40px!important;
+}
+
+.real-mixer-channel .vertical-fader,
+.master-volume-strip .vertical-fader,
+.master-fx-fader-grid .vertical-fader{
+  height:150px!important;
+  min-height:150px!important;
+  max-height:150px!important;
+  margin:0 auto!important;
+  align-self:center!important;
+}
+
+.real-mixer-channel output,
+.master-volume-strip output,
+.master-fx-fader-grid output{
+  min-height:15px;
+  color:rgba(255,255,255,.58)!important;
+  font-size:8px!important;
+  line-height:15px!important;
+}
+
+/* Dedicated master fader uses the same visual proportions as a channel strip. */
+.master-volume-strip{
+  flex:0 0 96px;
+  width:96px;
+  min-width:96px;
+  display:grid;
+  grid-template-rows:
+    13px
+    28px
+    56px
+    24px
+    150px
+    15px;
+  justify-items:center;
+  align-items:start;
+  gap:4px;
+  padding:7px 6px;
+}
+
+.master-volume-strip .channel-track-label{
+  width:100%;
+  min-height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  text-align:center;
+}
+
+.master-strip-spacer{
+  align-self:center;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.035);
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.022),
+      rgba(255,255,255,.005)
+    );
+}
+
+.master-strip-buttons{
+  min-height:24px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(255,255,255,.34);
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.10em;
+}
+
+/* Master FX strips now match the channel fader language. */
+.inline-master-fx{
+  flex:0 0 280px;
+  min-width:280px!important;
+  padding:7px 6px!important;
+}
+
+.master-fx-label{
+  min-height:44px!important;
+  margin:0 0 5px!important;
+}
+
+.master-fx-fader-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,86px)!important;
+  gap:5px!important;
+  min-height:0!important;
+  height:auto!important;
+}
+
+.master-fx-fader-grid .fx-strip{
+  width:86px;
+  min-width:86px!important;
+  min-height:232px!important;
+  display:grid!important;
+  grid-template-rows:28px 150px 15px!important;
+  justify-items:center!important;
+  align-items:start!important;
+  gap:4px!important;
+  padding:7px 5px!important;
+  border:1px solid rgba(255,255,255,.05)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.012)!important;
+}
+
+.master-fx-fader-grid .fx-strip label{
+  min-height:28px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:8px!important;
+  letter-spacing:.06em!important;
+  text-transform:uppercase;
+}
+
+/* ===== Master Filter + analog stereo VU meters ===== */
+.master-filter-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 350px!important;
+  gap:10px!important;
+  padding:0 10px 10px!important;
+  align-items:stretch!important;
+}
+
+.master-vu-module{
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,14,20,.94),
+      rgba(7,7,11,.96)
+    );
+}
+
+.vu-meter-pair{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding:10px;
+}
+
+.analog-vu{
+  min-width:0;
+}
+
+.vu-face{
+  position:relative;
+  width:100%;
+  aspect-ratio:1.55/1;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;
+  background:
+    radial-gradient(
+      ellipse at 50% 122%,
+      rgba(255,235,176,.16) 0%,
+      rgba(164,128,75,.07) 42%,
+      rgba(8,8,10,.97) 74%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(226,207,153,.075),
+      rgba(9,8,10,.96)
+    );
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,.78),
+    0 2px 8px rgba(0,0,0,.26);
+}
+
+.vu-face::before{
+  content:"VU";
+  position:absolute;
+  left:50%;
+  top:15%;
+  transform:translateX(-50%);
+  color:rgba(235,218,170,.58);
+  font-family:Georgia,serif;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+
+.vu-arc{
+  position:absolute;
+  left:13%;
+  right:13%;
+  bottom:-28%;
+  height:82%;
+  border:1px solid rgba(232,215,168,.24);
+  border-radius:50% 50% 0 0;
+  border-bottom:0;
+}
+
+.vu-scale{
+  position:absolute;
+  inset:0;
+  color:rgba(232,215,168,.56);
+  font-family:Georgia,serif;
+  font-size:5.5px;
+}
+
+.vu-tick{
+  position:absolute;
+  transform:translate(-50%,-50%);
+}
+
+.vu-tick.t0{left:14%;top:65%}
+.vu-tick.t1{left:24%;top:43%}
+.vu-tick.t2{left:36%;top:30%}
+.vu-tick.t3{left:50%;top:25%}
+.vu-tick.t4{left:64%;top:30%}
+.vu-tick.t5{left:76%;top:43%;color:rgba(255,230,160,.82)}
+.vu-tick.t6{left:86%;top:65%;color:rgba(255,100,90,.88)}
+
+.vu-needle{
+  position:absolute;
+  left:50%;
+  bottom:9%;
+  width:1.5px;
+  height:58%;
+  border-radius:2px;
+  background:
+    linear-gradient(
+      to top,
+      rgba(255,86,80,.92),
+      rgba(255,194,146,.88)
+    );
+  box-shadow:0 0 4px rgba(255,84,80,.28);
+  transform-origin:50% 100%;
+  transform:translateX(-50%) rotate(-48deg);
+  transition:transform 48ms linear;
+}
+
+.vu-pivot{
+  position:absolute;
+  left:50%;
+  bottom:7%;
+  width:10px;
+  height:10px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #777,
+      #222 54%,
+      #090909 100%
+    );
+  border:1px solid #050505;
+  z-index:2;
+}
+
+.vu-label{
+  position:absolute;
+  left:7px;
+  bottom:5px;
+  color:rgba(232,215,168,.64);
+  font-size:6px;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+
+.vu-db{
+  position:absolute;
+  right:7px;
+  bottom:5px;
+  color:rgba(232,215,168,.52);
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:6px;
+}
+
+@media(max-width:1200px){
+  .master-filter-row{
+    grid-template-columns:1fr!important;
+  }
+
+  .master-vu-module{
+    max-width:520px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4820,12 +5193,33 @@ input[type="range"]{
     
     <div class="mixer-section eight-track-mixer-section unified-fader-section">
       <div class="embedded-mixer-head">
-        <strong>8 Track Mixer + Master FX</strong>
-        <span>8 channel faders • reverb • decay • drive • master</span>
+        <strong>8 Track Mixer + Master</strong>
+        <span>8 channel faders • master output • master FX</span>
       </div>
 
       <div class="mixer-fader-bank">
         <div class="mixer eight-track-mixer" id="mixer"></div>
+        <div class="master-volume-strip mixer-bank-strip">
+          <div class="mixer-channel-number">MASTER</div>
+          <div class="channel-track-label">Main Out</div>
+          <div class="master-strip-spacer" aria-hidden="true"></div>
+          <div class="channel-buttons master-strip-buttons">
+            <span>L / R</span>
+          </div>
+          <input
+            class="vertical-fader"
+            data-midi-key="master.level"
+            id="master"
+            max="1"
+            min="0"
+            step=".01"
+            type="range"
+            value=".82"
+            aria-label="Master volume"
+          />
+          <output id="masterOut">82%</output>
+        </div>
+
 
         <div class="master-fx-section inline-master-fx">
           <div class="master-fx-label">
@@ -4877,21 +5271,6 @@ input[type="range"]{
                 value=".08"
               />
               <output id="driveOut">8%</output>
-            </div>
-
-            <div class="fx-strip master-output-strip">
-              <label>Master</label>
-              <input
-                class="vertical-fader"
-                data-midi-key="master.level"
-                id="master"
-                max="1"
-                min="0"
-                step=".01"
-                type="range"
-                value=".82"
-              />
-              <output id="masterOut">82%</output>
             </div>
           </div>
         </div>
@@ -4970,7 +5349,54 @@ input[type="range"]{
           </div>
         </div>
       </div>
-    </div>
+    
+      <div class="master-vu-module">
+        <div class="embedded-mixer-head">
+          <strong>Output VU</strong>
+          <span>stereo master</span>
+        </div>
+
+        <div class="vu-meter-pair">
+          <div class="analog-vu" aria-label="Left output VU meter">
+            <div class="vu-face">
+              <div class="vu-scale">
+                <span class="vu-tick t0">−20</span>
+                <span class="vu-tick t1">−10</span>
+                <span class="vu-tick t2">−7</span>
+                <span class="vu-tick t3">−5</span>
+                <span class="vu-tick t4">−3</span>
+                <span class="vu-tick t5">0</span>
+                <span class="vu-tick t6">+3</span>
+              </div>
+              <div class="vu-arc"></div>
+              <div class="vu-needle" id="vuNeedleL"></div>
+              <div class="vu-pivot"></div>
+              <div class="vu-label">LEFT</div>
+              <div class="vu-db" id="vuValueL">−∞ dB</div>
+            </div>
+          </div>
+
+          <div class="analog-vu" aria-label="Right output VU meter">
+            <div class="vu-face">
+              <div class="vu-scale">
+                <span class="vu-tick t0">−20</span>
+                <span class="vu-tick t1">−10</span>
+                <span class="vu-tick t2">−7</span>
+                <span class="vu-tick t3">−5</span>
+                <span class="vu-tick t4">−3</span>
+                <span class="vu-tick t5">0</span>
+                <span class="vu-tick t6">+3</span>
+              </div>
+              <div class="vu-arc"></div>
+              <div class="vu-needle" id="vuNeedleR"></div>
+              <div class="vu-pivot"></div>
+              <div class="vu-label">RIGHT</div>
+              <div class="vu-db" id="vuValueR">−∞ dB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
 
 <div class="legacy-compat" aria-hidden="true">
       <div id="audioChannelMixer"></div>
@@ -5195,6 +5621,9 @@ let sampleStepSelections=
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}
 let audio=null,master=null,analyser=null,filter=null,reverbNode=null,reverbWet=null,reverbDry=null,synthDelayNode=null,synthDelayFeedbackNode=null,synthDelayWet=null,recordDestination=null;
+let vuSplitter=null,vuAnalyserL=null,vuAnalyserR=null;
+let vuDataL=null,vuDataR=null;
+let vuLevelL=0,vuLevelR=0;
 let synthVisualizerAnalyser=null;
 let synthVisualizerSink=null;
 let audioInputStream=null,audioInputSource=null,audioInputGain=null;
@@ -5586,6 +6015,53 @@ function ensureAudio(){
   reverbWet.connect(master);
 
   master.connect(analyser);
+
+  vuSplitter=
+    audio.createChannelSplitter(
+      2
+    );
+
+  vuAnalyserL=
+    audio.createAnalyser();
+
+  vuAnalyserR=
+    audio.createAnalyser();
+
+  vuAnalyserL.fftSize=
+    256;
+
+  vuAnalyserR.fftSize=
+    256;
+
+  vuAnalyserL.smoothingTimeConstant=
+    .68;
+
+  vuAnalyserR.smoothingTimeConstant=
+    .68;
+
+  master.connect(
+    vuSplitter
+  );
+
+  vuSplitter.connect(
+    vuAnalyserL,
+    0
+  );
+
+  vuSplitter.connect(
+    vuAnalyserR,
+    1
+  );
+
+  vuDataL=
+    new Float32Array(
+      vuAnalyserL.fftSize
+    );
+
+  vuDataR=
+    new Float32Array(
+      vuAnalyserR.fftSize
+    );
 
   recordDestination=audio.createMediaStreamDestination();
   master.connect(recordDestination);
@@ -9416,6 +9892,13 @@ async function restartAudioEngine(){
   audio=null;
   master=null;
   analyser=null;
+  vuSplitter=null;
+  vuAnalyserL=null;
+  vuAnalyserR=null;
+  vuDataL=null;
+  vuDataR=null;
+  vuLevelL=0;
+  vuLevelR=0;
   filter=null;
   reverbNode=null;
   reverbWet=null;
@@ -11415,6 +11898,179 @@ bind("reverbDecay","reverbDecayOut",v=>(+v).toFixed(1)+" s",()=>{
 });
 bind("drive","driveOut",v=>Math.round(v*100)+"%");
 bind("master","masterOut",v=>Math.round(v*100)+"%",v=>{if(master)master.gain.setTargetAtTime(v,audio.currentTime,.02)});
+
+function readVuDb(analyserNode,data){
+  if(
+    !analyserNode||
+    !data
+  ){
+    return -60;
+  }
+
+  analyserNode.getFloatTimeDomainData(
+    data
+  );
+
+  let sum=0;
+  let peak=0;
+
+  for(
+    let i=0;
+    i<data.length;
+    i++
+  ){
+    const sample=data[i];
+
+    sum+=sample*sample;
+
+    peak=Math.max(
+      peak,
+      Math.abs(sample)
+    );
+  }
+
+  const rms=Math.sqrt(
+    sum/data.length
+  );
+
+  const analogLevel=
+    rms*.82+
+    peak*.18;
+
+  return 20*
+    Math.log10(
+      Math.max(
+        .0001,
+        analogLevel
+      )
+    );
+}
+
+function meterDbToNorm(db){
+  return Math.max(
+    0,
+    Math.min(
+      1,
+      (db+36)/39
+    )
+  );
+}
+
+function meterNormToDb(norm){
+  return -36+
+    norm*39;
+}
+
+function meterNeedleAngle(norm){
+  return -48+
+    norm*96;
+}
+
+function meterDbText(db){
+  if(db<=-35.5){
+    return "−∞ dB";
+  }
+
+  return (
+    db>0
+      ?"+"
+      :""
+  )+
+  db.toFixed(1)+
+  " dB";
+}
+
+function animateOutputVu(){
+  requestAnimationFrame(
+    animateOutputVu
+  );
+
+  const targetL=
+    meterDbToNorm(
+      audio&&vuAnalyserL
+        ?readVuDb(
+            vuAnalyserL,
+            vuDataL
+          )
+        :-60
+    );
+
+  const targetR=
+    meterDbToNorm(
+      audio&&vuAnalyserR
+        ?readVuDb(
+            vuAnalyserR,
+            vuDataR
+          )
+        :-60
+    );
+
+  vuLevelL+=
+    (
+      targetL-
+      vuLevelL
+    )*
+    (
+      targetL>vuLevelL
+        ?.34
+        :.07
+    );
+
+  vuLevelR+=
+    (
+      targetR-
+      vuLevelR
+    )*
+    (
+      targetR>vuLevelR
+        ?.34
+        :.07
+    );
+
+  const needleL=$("vuNeedleL");
+  const needleR=$("vuNeedleR");
+
+  if(needleL){
+    needleL.style.transform=
+      "translateX(-50%) rotate("+
+      meterNeedleAngle(
+        vuLevelL
+      )+
+      "deg)";
+  }
+
+  if(needleR){
+    needleR.style.transform=
+      "translateX(-50%) rotate("+
+      meterNeedleAngle(
+        vuLevelR
+      )+
+      "deg)";
+  }
+
+  const valueL=$("vuValueL");
+  const valueR=$("vuValueR");
+
+  if(valueL){
+    valueL.textContent=
+      meterDbText(
+        meterNormToDb(
+          vuLevelL
+        )
+      );
+  }
+
+  if(valueR){
+    valueR.textContent=
+      meterDbText(
+        meterNormToDb(
+          vuLevelR
+        )
+      );
+  }
+}
+
+animateOutputVu();
 function syncTempoDisplay(){
   const bpmValue=
     Math.round(
