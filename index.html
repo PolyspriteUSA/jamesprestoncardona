@@ -423,6 +423,99 @@
   }
   </script>
 
+
+  <script>
+    (function () {
+      function initResumeModal() {
+        const resumeModal = document.getElementById("resume-modal");
+        const resumeTrigger = document.getElementById("resume-trigger");
+        const resumeClose = document.getElementById("resume-close");
+
+        if (!resumeModal || !resumeTrigger || !resumeClose) {
+          console.warn("Resume modal elements were not found.");
+          return;
+        }
+
+        let previousFocus = null;
+
+        function openResume(event) {
+          if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          previousFocus = document.activeElement;
+
+          resumeModal.classList.add("open");
+          resumeModal.setAttribute("aria-hidden", "false");
+          resumeTrigger.setAttribute("aria-expanded", "true");
+          document.body.classList.add("resume-open");
+
+          window.setTimeout(function () {
+            try {
+              resumeClose.focus({ preventScroll: true });
+            } catch (error) {
+              resumeClose.focus();
+            }
+          }, 40);
+        }
+
+        function closeResume(event) {
+          if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          resumeModal.classList.remove("open");
+          resumeModal.setAttribute("aria-hidden", "true");
+          resumeTrigger.setAttribute("aria-expanded", "false");
+          document.body.classList.remove("resume-open");
+
+          if (
+            previousFocus &&
+            typeof previousFocus.focus === "function"
+          ) {
+            window.setTimeout(function () {
+              try {
+                previousFocus.focus({ preventScroll: true });
+              } catch (error) {
+                previousFocus.focus();
+              }
+            }, 20);
+          }
+        }
+
+        resumeTrigger.addEventListener("click", openResume);
+        resumeClose.addEventListener("click", closeResume);
+
+        resumeModal
+          .querySelectorAll("[data-resume-close]")
+          .forEach(function (element) {
+            element.addEventListener("click", closeResume);
+          });
+
+        document.addEventListener("keydown", function (event) {
+          if (
+            event.key === "Escape" &&
+            resumeModal.classList.contains("open")
+          ) {
+            closeResume(event);
+          }
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener(
+          "DOMContentLoaded",
+          initResumeModal,
+          { once: true }
+        );
+      } else {
+        initResumeModal();
+      }
+    })();
+  </script>
+
   <script src="./audio.js" defer></script>
   <script type="module" src="./main.js"></script>
 
