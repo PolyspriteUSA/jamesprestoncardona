@@ -4806,6 +4806,229 @@ input[type="range"]{
   }
 }
 
+
+/* ===== Refined mixer channel identity / EQ visibility ===== */
+.real-mixer-channel{
+  min-width:104px!important;
+  width:104px!important;
+  padding:8px 7px!important;
+  gap:5px!important;
+  grid-template-rows:
+    12px
+    34px
+    52px
+    100px
+    25px
+    154px
+    16px!important;
+}
+
+.eight-track-mixer{
+  grid-template-columns:repeat(8,104px)!important;
+  min-width:874px!important;
+}
+
+.mixer-channel-number{
+  font-size:7px!important;
+  letter-spacing:.13em!important;
+  color:rgba(255,255,255,.30)!important;
+}
+
+.real-mixer-channel .channel-track-label{
+  min-height:34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.045);
+  border-radius:7px;
+  background:rgba(255,255,255,.018);
+}
+
+.channel-eq-grid{
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:5px!important;
+  align-items:start!important;
+}
+
+.mixer-mini-knob{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:2px!important;
+}
+
+.mixer-mini-knob>span{
+  color:rgba(255,255,255,.62)!important;
+  font-size:7px!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+}
+
+.mixer-mini-knob .rotary-knob-wrap{
+  width:40px!important;
+  height:40px!important;
+}
+
+.mixer-mini-knob .rotary-knob{
+  width:40px!important;
+  height:40px!important;
+}
+
+.mixer-mini-knob output{
+  max-width:46px!important;
+  font-size:6px!important;
+  line-height:1!important;
+  color:rgba(255,255,255,.42)!important;
+}
+
+/* ===== All mixer/master/FX faders share exactly the same visual treatment ===== */
+.real-mixer-channel .vertical-fader,
+.master-volume-strip .vertical-fader,
+.master-fx-fader-grid .vertical-fader{
+  --fader-track-w:6px;
+  --fader-thumb-w:24px;
+  --fader-thumb-h:12px;
+  width:150px!important;
+  height:30px!important;
+  min-height:30px!important;
+  max-height:30px!important;
+  margin:60px 0!important;
+  padding:0!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  background:transparent!important;
+  transform:rotate(-90deg)!important;
+  transform-origin:center!important;
+  cursor:pointer!important;
+}
+
+.real-mixer-channel .vertical-fader::-webkit-slider-runnable-track,
+.master-volume-strip .vertical-fader::-webkit-slider-runnable-track,
+.master-fx-fader-grid .vertical-fader::-webkit-slider-runnable-track{
+  height:var(--fader-track-w)!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(113,73,255,.62),
+      rgba(255,66,208,.62)
+    )!important;
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.75),
+    0 0 0 1px rgba(255,255,255,.04)!important;
+}
+
+.real-mixer-channel .vertical-fader::-webkit-slider-thumb,
+.master-volume-strip .vertical-fader::-webkit-slider-thumb,
+.master-fx-fader-grid .vertical-fader::-webkit-slider-thumb{
+  -webkit-appearance:none!important;
+  width:var(--fader-thumb-w)!important;
+  height:var(--fader-thumb-h)!important;
+  margin-top:-3px!important;
+  border-radius:3px!important;
+  border:1px solid rgba(255,255,255,.26)!important;
+  background:
+    linear-gradient(
+      180deg,
+      #d8d8df,
+      #777984 52%,
+      #383a42
+    )!important;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,255,255,.42)!important;
+}
+
+.real-mixer-channel .vertical-fader::-moz-range-track,
+.master-volume-strip .vertical-fader::-moz-range-track,
+.master-fx-fader-grid .vertical-fader::-moz-range-track{
+  height:var(--fader-track-w)!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(113,73,255,.62),
+      rgba(255,66,208,.62)
+    )!important;
+}
+
+.real-mixer-channel .vertical-fader::-moz-range-thumb,
+.master-volume-strip .vertical-fader::-moz-range-thumb,
+.master-fx-fader-grid .vertical-fader::-moz-range-thumb{
+  width:var(--fader-thumb-w)!important;
+  height:var(--fader-thumb-h)!important;
+  border-radius:3px!important;
+  border:1px solid rgba(255,255,255,.26)!important;
+  background:
+    linear-gradient(
+      180deg,
+      #d8d8df,
+      #777984 52%,
+      #383a42
+    )!important;
+}
+
+/* ===== Bright sequencer playhead / beat indication ===== */
+.groove-step-area .step.note-pad{
+  transition:
+    box-shadow 70ms linear,
+    transform 70ms linear,
+    border-color 70ms linear,
+    background 70ms linear!important;
+}
+
+.groove-step-area .step.note-pad.playing{
+  z-index:4!important;
+  transform:translateY(-2px) scale(1.035)!important;
+  border-color:rgba(255,255,255,.82)!important;
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(255,255,255,.36),
+      rgba(255,66,208,.22) 38%,
+      rgba(113,73,255,.12) 72%,
+      rgba(8,8,13,.90) 100%
+    )!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.74),
+    0 0 16px rgba(255,66,208,.72),
+    0 0 34px rgba(113,73,255,.46)!important;
+}
+
+.groove-step-area .step.note-pad.on.playing{
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255,255,255,.82),
+      rgba(255,66,208,.54) 30%,
+      rgba(113,73,255,.32) 68%,
+      rgba(8,8,13,.90) 100%
+    )!important;
+}
+
+.groove-step-area .step.note-pad.playing .step-toggle{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.14),
+      rgba(255,66,208,.12)
+    )!important;
+}
+
+.groove-step-area .step.note-pad.playing .step-note-select{
+  border-color:rgba(255,255,255,.30)!important;
+  color:#fff!important;
+  background:rgba(8,8,13,.80)!important;
+}
+
 </style>
 </head>
 <body>
@@ -5578,12 +5801,6 @@ function instrumentLabel(type){
 
 function refreshMixerChannelLabels(){
   for(let channel=0;channel<8;channel++){
-    const assigned=
-      tracks.find(
-        track=>
-          mixerChannelForTrack(track)===channel
-      );
-
     const label=
       document.querySelector(
         '[data-mixer-label="'+channel+'"]'
@@ -5591,14 +5808,9 @@ function refreshMixerChannelLabels(){
 
     if(label){
       label.textContent=
-        assigned
-          ?String(
-              tracks.indexOf(
-                assigned
-              )+
-              1
-            )
-          :"—";
+        String(
+          channel+1
+        );
     }
   }
 
@@ -6959,6 +7171,29 @@ function scheduleStep(step,time){
             "playing"
           )
         );
+
+      const holdMs=
+        Math.max(
+          55,
+          secondsPerStep()*
+          1000*
+          .82
+        );
+
+      setTimeout(
+        ()=>{
+          document
+            .querySelectorAll(
+              '.step[data-step="'+step+'"]'
+            )
+            .forEach(
+              x=>x.classList.remove(
+                "playing"
+              )
+            );
+        },
+        holdMs
+      );
 
       pulseVisual();
     }catch(error){}
@@ -9415,8 +9650,7 @@ mixerChannels.forEach((channel,index)=>{
     "mixer-channel-number";
 
   channelNumber.textContent=
-    "CH "+
-    (index+1);
+    "CHANNEL";
 
   const label=
     document.createElement(
@@ -9659,7 +9893,7 @@ mixerChannels.forEach((channel,index)=>{
 
   const lowControl=
     makeChannelKnob(
-      "Low",
+      "LOW",
       "Low",
       "low",
       -12,
@@ -9699,7 +9933,7 @@ mixerChannels.forEach((channel,index)=>{
 
   const midControl=
     makeChannelKnob(
-      "Mid",
+      "MID",
       "Mid",
       "mid",
       -12,
@@ -9739,7 +9973,7 @@ mixerChannels.forEach((channel,index)=>{
 
   const highControl=
     makeChannelKnob(
-      "High",
+      "HIGH",
       "High",
       "high",
       -12,
