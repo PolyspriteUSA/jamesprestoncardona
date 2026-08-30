@@ -1287,8 +1287,27 @@ body.resume-open {
 }
 
 .resume-header {
-  padding-bottom: 34px;
+  position: relative;
+  padding: 10px 0 34px;
   border-bottom: 1px solid var(--border);
+}
+
+.resume-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(220px, 38%);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--magenta),
+    var(--violet),
+    transparent
+  );
+  box-shadow:
+    0 0 16px rgba(255,56,209,0.18),
+    0 0 28px rgba(154,98,255,0.10);
 }
 
 .resume-kicker {
@@ -1306,12 +1325,35 @@ body.resume-open {
   font-size: clamp(2.3rem, 6vw, 4.8rem);
   line-height: 0.96;
   letter-spacing: -0.05em;
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #f3dcff 58%,
+    #ff55d6 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .resume-role {
   margin-top: 16px;
   color: rgba(255,255,255,0.78);
   line-height: 1.55;
+}
+
+.resume-role::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 1px;
+  margin-top: 16px;
+  background: linear-gradient(
+    90deg,
+    var(--magenta),
+    var(--violet)
+  );
+  opacity: 0.72;
 }
 
 .resume-contact-line {
