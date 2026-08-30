@@ -77,6 +77,26 @@
       color:#fff;
       outline:none;
     }
+
+    .music-toggle{
+      border:0;
+      padding:0;
+      background:transparent;
+      color:rgba(255,255,255,0.62);
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      font-size:0.68rem;
+      font-family:inherit;
+      cursor:pointer;
+      transition:color 180ms ease, opacity 180ms ease;
+      pointer-events:auto;
+    }
+
+    .music-toggle:hover,
+    .music-toggle:focus-visible{
+      color:#fff;
+      outline:none;
+    }
     .hero404{
       position:absolute;
       top:10vh;
@@ -219,6 +239,13 @@
         <a href="./index.html#work">Work</a>
         <a href="./index.html#about">About</a>
         <a href="./resume.html">Resume</a>
+        <button
+          class="music-toggle"
+          type="button"
+          data-jpc-music-toggle
+          aria-pressed="true"
+          aria-label="Turn background music off"
+        >Music On</button>
         <a href="./index.html#contact">Contact</a>
       </div>
     </div>
@@ -238,6 +265,7 @@
     <div class="status" id="status">Loading signal field</div>
   </div>
 
+  <script src="./audio.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
   <script>
     (function(){
