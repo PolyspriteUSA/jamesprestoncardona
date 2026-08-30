@@ -8,47 +8,6 @@
 
     <link rel="stylesheet" href="./style.css">
 
-  <style>
-    .resume-loading,
-    .resume-error {
-      padding: 80px 0;
-      color: rgba(255,255,255,0.58);
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
-
-    .resume-error strong {
-      color: #ff5bd7;
-    }
-
-    .resume-error p {
-      margin-top: 8px;
-    }
-  </style>
-
-
-  <style>
-    .resume-plain {
-      margin: 0;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.92rem;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.78);
-    }
-
-    .resume-plain::first-line {
-      color: #ffffff;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .resume-scroll {
-      padding-top: 64px;
-    }
-  </style>
-
 </head>
 
 <body>
@@ -349,84 +308,23 @@
   >
     <div class="resume-backdrop" data-resume-close></div>
 
-    <section class="resume-panel" aria-label="James Preston Cardona resume">
-      <button
-        id="resume-close"
-        class="resume-close"
-        type="button"
-        aria-label="Close resume"
-      >×</button>
+    <section class="resume-frame-panel">
+      <div class="resume-frame-toolbar">
+        <span id="resume-modal-title">Resume</span>
 
-      <div class="resume-scroll">
-        <pre class="resume-plain" id="resume-modal-title">JAMES PRESTON CARDONA
-Senior Real-Time 3D Designer | Unreal Engine | Immersive Experiences | Virtual Production
-Dallas, TX | JamesPrestonCardona.com | JamesPrestonCardona@gmail.com | (214) 883-9567
-
-PROFESSIONAL SUMMARY
-Senior real-time 3D experience designer with 20+ years of experience spanning Unreal Engine, architectural visualization, virtual production, VR/AR, interactive media, character development, motion capture, cinematic production, and technical direction. Specializes in combining real-time technology, visual design, and production pipelines to transform architectural and creative concepts into interactive environments, cinematic experiences, and client-facing digital products. Experienced leading complex projects and collaborating across architecture, design, development, and production teams.
-
-CORE EXPERTISE
-Unreal Engine • Real-Time 3D • Architectural Visualization • Immersive Experiences • Environment &amp; Level Design • Virtual Production • VR / AR • Character Development • Motion Capture • Cinematics • Real-Time Lighting • Visual Effects • UX / UI • Technical Direction • Pipeline Development • Project Leadership
-
-TOOLS &amp; TECHNOLOGIES
-Real-Time / 3D: Unreal Engine, Blender, 3ds Max, Maya, ZBrush, Substance, Marvelous Designer, Twinmotion, Revit, Unity, Anima, Daz Studio
-Production / VFX: Nuke, After Effects, Premiere Pro, DaVinci Resolve, SynthEyes, Photoshop, Illustrator, InDesign
-Development: C++, C#, Python, JavaScript, Three.js, React, Angular, HTML5, CSS3, PHP, SQL, MySQL
-Audio / Additional: Pro Tools, FL Studio
-Compliance: ADA Accessibility, HIPAA
-
-PROFESSIONAL EXPERIENCE
-
-VLK Architects | Experience Designer
-March 2020–Present
-Design and develop interactive real-time architectural environments in Unreal Engine for client presentations, design communication, immersive visualization, and experiential storytelling.
-Lead character-development and motion-capture workflows for real-time architectural and interactive experiences.
-Create cinematic architectural visualization content integrating real-time 3D, animation, virtual cinematography, lighting, editing, motion graphics, compositing, and visual effects.
-Develop immersive VR experiences that allow clients and project teams to explore architectural environments at full scale before construction.
-Design and refine real-time and virtual-production pipelines supporting interactive, cinematic, and live production workflows.
-Optimize complex architectural assets, materials, lighting, characters, and environments for real-time performance and presentation.
-Collaborate with architects, designers, visualization teams, and technical stakeholders to translate design concepts into polished interactive and cinematic experiences.
-Research and implement emerging real-time technologies, tools, and production techniques to expand visualization capabilities.
-
-iTours | Director of Digital Design
-August 2016–March 2020
-Directed creative design and technical production across interactive experiences, mobile applications, VR/AR, animation, web development, and commercial media.
-Led projects from concept and client discovery through design, development, production, testing, and final delivery.
-Managed client relationships, project planning, technical direction, contracts, schedules, and multidisciplinary production workflows.
-Directed mobile VR and AR application design, development, and production.
-Developed interactive experiences combining 3D content, UX/UI, animation, video, and application development.
-Directed commercial and branded content from concept and scripting through cinematography, animation, lighting, editing, motion graphics, and color finishing.
-Bridged creative direction and technical implementation to deliver digital products across multiple platforms.
-
-City of Dallas | Coordinator III / Digital Designer
-August 2006–August 2016
-Designed and developed digital products and interactive systems supporting the Dallas Municipal Court, City Attorney’s Office, City Manager’s Office, Community Prosecution, Community Court, Dallas Love Field Airport, and Dallas Police initiatives.
-Led UX/UI design and full-stack development for public-facing and internal applications.
-Researched, designed, and developed Municipal Court payment kiosk interfaces, digital docket systems, digital signage, and other public-service technologies.
-Created user experiences for systems requiring accessibility, security, reliability, and public-sector compliance.
-Supported server infrastructure, Active Directory, databases, VMware environments, networking, and security for digital systems and services.
-Designed and administered multimedia streaming infrastructure supporting multicast and unicast video delivery.
-Produced documentary video, motion graphics, photography, and digital media for City Attorney, Community Prosecution, Dallas Police, and Dallas City Council initiatives.
-Coordinated technical and creative requirements across departments, stakeholders, vendors, and production teams.
-
-KVIA ABC Channel 7 | Master Controller
-May 2004–May 2006
-Managed master-control operations supporting live and scheduled television broadcasting.
-Performed technical-directing functions for live television and broadcast production.
-Supported satellite acquisition, linking, rebroadcasting, signal routing, and transmission workflows.
-Produced and edited broadcast content using linear and non-linear production systems.
-Created motion graphics and provided camera, editing, and production support for commercial and station content.
-
-EDUCATION
-University of Texas at Dallas
-Bachelor of Arts and Technology, Game Design | 2018
-
-TechSkills
-Microsoft Systems Engineer | 2009
-
-El Paso Community College
-Associate of Multimedia Production Technology, Web Design | 2006</pre>
+        <button
+          id="resume-close"
+          class="resume-close"
+          type="button"
+          aria-label="Close resume"
+        >×</button>
       </div>
+
+      <iframe
+        class="resume-frame"
+        src="./resume.html"
+        title="James Preston Cardona Resume"
+      ></iframe>
     </section>
   </div>
 
@@ -516,63 +414,43 @@ Associate of Multimedia Production Technology, Web Design | 2006</pre>
   <script>
     (function () {
       function initResumeModal() {
-        const resumeModal = document.getElementById("resume-modal");
-        const resumeTrigger = document.getElementById("resume-trigger");
-        const resumeClose = document.getElementById("resume-close");
+        const modal = document.getElementById("resume-modal");
+        const trigger = document.getElementById("resume-trigger");
+        const close = document.getElementById("resume-close");
 
-        if (!resumeModal || !resumeTrigger || !resumeClose) {
-          return;
-        }
-
-        let previousFocus = null;
+        if (!modal || !trigger || !close) return;
 
         function openResume(event) {
-          if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
+          if (event) event.preventDefault();
 
-          previousFocus = document.activeElement;
-          resumeModal.classList.add("open");
-          resumeModal.setAttribute("aria-hidden", "false");
-          resumeTrigger.setAttribute("aria-expanded", "true");
+          modal.classList.add("open");
+          modal.setAttribute("aria-hidden", "false");
+          trigger.setAttribute("aria-expanded", "true");
           document.body.classList.add("resume-open");
 
           setTimeout(function () {
-            resumeClose.focus();
+            close.focus();
           }, 20);
         }
 
         function closeResume(event) {
-          if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
+          if (event) event.preventDefault();
 
-          resumeModal.classList.remove("open");
-          resumeModal.setAttribute("aria-hidden", "true");
-          resumeTrigger.setAttribute("aria-expanded", "false");
+          modal.classList.remove("open");
+          modal.setAttribute("aria-hidden", "true");
+          trigger.setAttribute("aria-expanded", "false");
           document.body.classList.remove("resume-open");
-
-          if (previousFocus && typeof previousFocus.focus === "function") {
-            previousFocus.focus();
-          }
         }
 
-        resumeTrigger.addEventListener("click", openResume);
-        resumeClose.addEventListener("click", closeResume);
+        trigger.addEventListener("click", openResume);
+        close.addEventListener("click", closeResume);
 
-        resumeModal
-          .querySelectorAll("[data-resume-close]")
-          .forEach(function (element) {
-            element.addEventListener("click", closeResume);
-          });
+        modal.querySelectorAll("[data-resume-close]").forEach(function (element) {
+          element.addEventListener("click", closeResume);
+        });
 
         document.addEventListener("keydown", function (event) {
-          if (
-            event.key === "Escape" &&
-            resumeModal.classList.contains("open")
-          ) {
+          if (event.key === "Escape" && modal.classList.contains("open")) {
             closeResume(event);
           }
         });
