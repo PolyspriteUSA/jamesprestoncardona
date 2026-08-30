@@ -4749,6 +4749,63 @@ input[type="range"]{
   }
 }
 
+
+/* ===== Single-row selectable sequencer ===== */
+.sequencer-track-selector-group{
+  min-width:260px;
+}
+
+.sequencer-track-buttons{
+  display:grid;
+  grid-template-columns:repeat(8,32px);
+  gap:4px;
+}
+
+.sequencer-track-btn{
+  min-width:32px!important;
+  width:32px!important;
+  min-height:32px!important;
+  padding:0!important;
+  border-radius:8px!important;
+  font-size:10px!important;
+}
+
+.sequencer-track-btn.active{
+  color:#fff;
+  border-color:rgba(255,66,208,.42);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,66,208,.17),
+      rgba(113,73,255,.20)
+    );
+  box-shadow:
+    0 0 14px rgba(255,66,208,.10);
+}
+
+.single-sequencer-track{
+  border-bottom:0!important;
+}
+
+.groove-step-area .seq-wrap{
+  min-height:80px;
+}
+
+.groove-step-area .single-sequencer-track{
+  padding-top:8px!important;
+  padding-bottom:8px!important;
+}
+
+@media(max-width:900px){
+  .sequencer-track-buttons{
+    grid-template-columns:repeat(4,32px);
+  }
+
+  .sequencer-track-selector-group{
+    min-width:150px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5046,7 +5103,7 @@ input[type="range"]{
   <div class="card-head groove-sequencer-head">
     <div>
       <h2>Groove Sequencer</h2>
-      <span>8 assignable tracks • 16 steps • note per pad</span>
+      <span>select one track • 16 steps • note per pad</span>
     </div>
     <div class="collapse-head-actions">
       <button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="sequencer" type="button">
@@ -5057,6 +5114,20 @@ input[type="range"]{
 
   <div class="sequencer-collapse-body collapsible-body groove-sequencer-body" data-collapse-id="sequencer">
     <div class="groove-toolbar">
+      <div class="groove-toolbar-group sequencer-track-selector-group">
+        <div class="groove-toolbar-label">Track</div>
+        <div class="sequencer-track-buttons" id="sequencerTrackButtons">
+          <button class="btn sequencer-track-btn active" data-track-select="0" type="button">1</button>
+          <button class="btn sequencer-track-btn" data-track-select="1" type="button">2</button>
+          <button class="btn sequencer-track-btn" data-track-select="2" type="button">3</button>
+          <button class="btn sequencer-track-btn" data-track-select="3" type="button">4</button>
+          <button class="btn sequencer-track-btn" data-track-select="4" type="button">5</button>
+          <button class="btn sequencer-track-btn" data-track-select="5" type="button">6</button>
+          <button class="btn sequencer-track-btn" data-track-select="6" type="button">7</button>
+          <button class="btn sequencer-track-btn" data-track-select="7" type="button">8</button>
+        </div>
+      </div>
+
       <div class="groove-toolbar-group">
         <div class="groove-toolbar-label">Pattern</div>
         <div class="sequence-buttons compact-sequence-buttons">
@@ -5521,7 +5592,12 @@ function refreshMixerChannelLabels(){
     if(label){
       label.textContent=
         assigned
-          ?assigned.name
+          ?String(
+              tracks.indexOf(
+                assigned
+              )+
+              1
+            )
           :"—";
     }
   }
@@ -5606,6 +5682,7 @@ let synth2Sequences=tracks[6].notes;
 
 let activeSequence=0;
 let patternChainEnabled=true;
+let selectedSequencerTrack=0;
 
 let copiedPattern=null;
 
@@ -7106,30 +7183,51 @@ function advancePatternChain(){
     )%
     SEQUENCE_COUNT;
 
+  renderSequencer();
   refreshSequenceView();
 }
 
 function refreshSequenceStatus(){
   const status=$("sequenceStatus");
-  if(status){
-    const start=(activeSequence*STEPS_PER_SEQUENCE)+1;
-    const end=start+STEPS_PER_SEQUENCE-1;
 
+  if(status){
     status.textContent=
-      "Editing Sequence "+
+      "Track "+
+      (selectedSequencerTrack+1)+
+      " · Pattern "+
       (activeSequence+1)+
-      " · steps "+
-      start+
-      "–"+
-      end;
+      " · Steps 1–16";
   }
 
-  document.querySelectorAll(".sequence-btn").forEach(button=>{
-    button.classList.toggle(
-      "active",
-      parseInt(button.dataset.seq,10)===activeSequence
-    );
-  });
+  document
+    .querySelectorAll(
+      ".sequence-btn"
+    )
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        parseInt(
+          button.dataset.seq,
+          10
+        )===
+        activeSequence
+      );
+    });
+
+  document
+    .querySelectorAll(
+      ".sequencer-track-btn"
+    )
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        parseInt(
+          button.dataset.trackSelect,
+          10
+        )===
+        selectedSequencerTrack
+      );
+    });
 }
 
 function refreshSequenceView(){
@@ -7182,7 +7280,16 @@ function pastePatternToCurrent(){
 }
 
 function switchSequence(index){
-  activeSequence=Math.max(0,Math.min(SEQUENCE_COUNT-1,index));
+  activeSequence=
+    Math.max(
+      0,
+      Math.min(
+        SEQUENCE_COUNT-1,
+        index
+      )
+    );
+
+  renderSequencer();
   refreshSequenceView();
 }
 
@@ -7318,122 +7425,316 @@ function makeNoteSelect(track,step,trackIndex){
 function renderSequencer(){
   sequencer.innerHTML="";
 
-  tracks.forEach((track,trackIndex)=>{
-    const row=document.createElement("div");
-    row.className="track";
+  const trackIndex=
+    Math.max(
+      0,
+      Math.min(
+        tracks.length-1,
+        selectedSequencerTrack
+      )
+    );
 
-    const name=document.createElement("div");
-    name.className="track-name";
+  const track=
+    tracks[
+      trackIndex
+    ];
 
-    const nameRow=document.createElement("div");
-    nameRow.className="track-name-row";
+  if(!track){
+    return;
+  }
 
-    const title=document.createElement("span");
-    title.textContent=track.name;
+  const row=
+    document.createElement(
+      "div"
+    );
 
-    const buttons=document.createElement("div");
-    buttons.className="track-buttons";
+  row.className=
+    "track single-sequencer-track";
 
-    const mute=document.createElement("button");
-    mute.className="mute";
-    mute.dataset.trackId=track.id;
-    mute.textContent="M";
+  const name=
+    document.createElement(
+      "div"
+    );
 
-    const solo=document.createElement("button");
-    solo.className="solo";
-    solo.dataset.trackId=track.id;
-    solo.textContent="S";
+  name.className=
+    "track-name";
 
-    mute.addEventListener("click",()=>{
-      if(muted.has(track.id))muted.delete(track.id); else muted.add(track.id);
+  const nameRow=
+    document.createElement(
+      "div"
+    );
+
+  nameRow.className=
+    "track-name-row";
+
+  const title=
+    document.createElement(
+      "span"
+    );
+
+  title.textContent=
+    track.name;
+
+  const buttons=
+    document.createElement(
+      "div"
+    );
+
+  buttons.className=
+    "track-buttons";
+
+  const mute=
+    document.createElement(
+      "button"
+    );
+
+  mute.className=
+    "mute";
+
+  mute.dataset.trackId=
+    track.id;
+
+  mute.textContent=
+    "M";
+
+  const solo=
+    document.createElement(
+      "button"
+    );
+
+  solo.className=
+    "solo";
+
+  solo.dataset.trackId=
+    track.id;
+
+  solo.textContent=
+    "S";
+
+  mute.addEventListener(
+    "click",
+    ()=>{
+      if(
+        muted.has(
+          track.id
+        )
+      ){
+        muted.delete(
+          track.id
+        );
+      }else{
+        muted.add(
+          track.id
+        );
+      }
+
       syncTrackButtons();
-    });
+    }
+  );
 
-    solo.addEventListener("click",()=>{
-      if(soloed.has(track.id))soloed.delete(track.id); else soloed.add(track.id);
+  solo.addEventListener(
+    "click",
+    ()=>{
+      if(
+        soloed.has(
+          track.id
+        )
+      ){
+        soloed.delete(
+          track.id
+        );
+      }else{
+        soloed.add(
+          track.id
+        );
+      }
+
       syncTrackButtons();
-    });
+    }
+  );
 
-    buttons.append(mute,solo);
-    nameRow.append(title,buttons);
-    const routing=
+  buttons.append(
+    mute,
+    solo
+  );
+
+  nameRow.append(
+    title,
+    buttons
+  );
+
+  const routing=
+    document.createElement(
+      "div"
+    );
+
+  routing.className=
+    "track-routing-selects";
+
+  const instrumentWrap=
+    document.createElement(
+      "label"
+    );
+
+  instrumentWrap.innerHTML=
+    "<span>Instrument</span>";
+
+  instrumentWrap.appendChild(
+    buildInstrumentSelect(
+      trackIndex,
+      "track-instrument-select"
+    )
+  );
+
+  const mixerWrap=
+    document.createElement(
+      "label"
+    );
+
+  mixerWrap.innerHTML=
+    "<span>Mixer</span>";
+
+  mixerWrap.appendChild(
+    buildMixerAssignSelect(
+      trackIndex
+    )
+  );
+
+  routing.append(
+    instrumentWrap,
+    mixerWrap
+  );
+
+  name.append(
+    nameRow,
+    routing
+  );
+
+  row.appendChild(
+    name
+  );
+
+  for(
+    let step=0;
+    step<STEPS_PER_SEQUENCE;
+    step++
+  ){
+    const pad=
       document.createElement(
         "div"
       );
 
-    routing.className=
-      "track-routing-selects";
-
-    const instrumentWrap=
-      document.createElement(
-        "label"
+    pad.className=
+      "step note-pad"+
+      (
+        getTrackPattern(
+          track
+        )[step]
+          ?" on"
+          :""
       );
 
-    instrumentWrap.innerHTML=
-      "<span>Instrument</span>";
+    pad.dataset.track=
+      trackIndex;
 
-    instrumentWrap.appendChild(
-      buildInstrumentSelect(
-        trackIndex,
-        "track-instrument-select"
-      )
+    pad.dataset.step=
+      step;
+
+    const toggle=
+      document.createElement(
+        "button"
+      );
+
+    toggle.type=
+      "button";
+
+    toggle.className=
+      "step-toggle midi-assignable";
+
+    toggle.dataset.midiKey=
+      "seq.track"+
+      (trackIndex+1)+
+      ".step"+
+      (step+1);
+
+    toggle.setAttribute(
+      "aria-label",
+      "Track "+
+      (trackIndex+1)+
+      " step "+
+      (step+1)
     );
 
-    const mixerWrap=
-      document.createElement(
-        "label"
-      );
+    toggle.addEventListener(
+      "click",
+      ()=>{
+        const pattern=
+          getTrackPattern(
+            track
+          );
 
-    mixerWrap.innerHTML=
-      "<span>Mixer</span>";
+        pattern[step]=
+          pattern[step]
+            ?0
+            :1;
 
-    mixerWrap.appendChild(
-      buildMixerAssignSelect(
+        pad.classList.toggle(
+          "on",
+          !!pattern[step]
+        );
+      }
+    );
+
+    pad.append(
+      toggle,
+      makeNoteSelect(
+        track,
+        step,
         trackIndex
       )
     );
 
-    routing.append(
-      instrumentWrap,
-      mixerWrap
+    row.appendChild(
+      pad
     );
+  }
 
-    name.append(
-      nameRow,
-      routing
-    );
-
-    row.appendChild(name);
-
-    for(let step=0;step<STEPS_PER_SEQUENCE;step++){
-      const pad=document.createElement("div");
-      pad.className="step note-pad"+(getTrackPattern(track)[step]?" on":"");
-      pad.dataset.track=trackIndex;
-      pad.dataset.step=step;
-
-      const toggle=document.createElement("button");
-      toggle.type="button";
-      toggle.className="step-toggle midi-assignable";
-      toggle.dataset.midiKey=
-        "seq.track"+
-        (trackIndex+1)+
-        ".step"+
-        (step+1);
-      toggle.addEventListener("click",()=>{
-        const pattern=getTrackPattern(track);
-        pattern[step]=pattern[step]?0:1;
-        pad.classList.toggle("on",!!pattern[step]);
-      });
-
-      pad.append(toggle,makeNoteSelect(track,step,trackIndex));
-      row.appendChild(pad);
-    }
-
-    sequencer.appendChild(row);
-  });
+  sequencer.appendChild(
+    row
+  );
 
   syncTrackButtons();
   refreshSequenceView();
+}
+
+function selectSequencerTrack(index){
+  selectedSequencerTrack=
+    Math.max(
+      0,
+      Math.min(
+        tracks.length-1,
+        parseInt(
+          index,
+          10
+        )||0
+      )
+    );
+
+  const midiRecordSelect=
+    $("midiRecordTrack");
+
+  if(midiRecordSelect){
+    midiRecordSelect.value=
+      String(
+        selectedSequencerTrack
+      );
+
+    midiRecordTrackIndex=
+      selectedSequencerTrack;
+  }
+
+  renderSequencer();
+  refreshSequenceStatus();
 }
 
 renderSequencer();
@@ -7464,8 +7765,29 @@ $("clearBtn").addEventListener("click",()=>{
 });
 
 document.querySelectorAll(".sequence-btn").forEach(button=>{
-  button.addEventListener("click",()=>switchSequence(parseInt(button.dataset.seq,10)||0));
+  button.addEventListener(
+    "click",
+    ()=>switchSequence(
+      parseInt(
+        button.dataset.seq,
+        10
+      )||0
+    )
+  );
 });
+
+document
+  .querySelectorAll(
+    ".sequencer-track-btn"
+  )
+  .forEach(button=>{
+    button.addEventListener(
+      "click",
+      ()=>selectSequencerTrack(
+        button.dataset.trackSelect
+      )
+    );
+  });
 
 $("patternChainBtn").addEventListener(
   "click",
@@ -10094,8 +10416,14 @@ $("midiRecordTrack").addEventListener(
         )
       );
 
+    selectedSequencerTrack=
+      midiRecordTrackIndex;
+
     midiStepRecordCursor=0;
+
+    renderSequencer();
     refreshMidiRecordUi();
+    refreshSequenceStatus();
 
     if(midiRecordArmed){
       setMidiStatus(
