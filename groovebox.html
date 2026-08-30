@@ -5321,6 +5321,422 @@ input[type="range"]{
   line-height:8px!important;
 }
 
+
+/* ================================================================
+   CLEAN MIXER — final layout override
+   ================================================================ */
+.mixer-fader-bank{
+  display:grid!important;
+  grid-template-columns:minmax(1080px,1fr) 112px minmax(270px,310px)!important;
+  gap:10px!important;
+  align-items:stretch!important;
+  width:100%!important;
+  max-width:none!important;
+  padding:0 10px 12px!important;
+  overflow-x:auto!important;
+}
+
+.mixer-fader-bank .eight-track-mixer{
+  display:grid!important;
+  grid-template-columns:repeat(8,minmax(128px,1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+  min-width:1080px!important;
+  max-width:none!important;
+  align-items:stretch!important;
+}
+
+.real-mixer-channel{
+  width:auto!important;
+  min-width:128px!important;
+  max-width:none!important;
+  min-height:520px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:8px!important;
+  padding:10px 8px!important;
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20,20,29,.96),
+      rgba(8,8,13,.97)
+    )!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 5px 16px rgba(0,0,0,.14)!important;
+}
+
+.mixer-channel-number{
+  height:12px!important;
+  color:rgba(255,255,255,.30)!important;
+  font-size:7px!important;
+  font-weight:800!important;
+  letter-spacing:.13em!important;
+  text-align:center!important;
+}
+
+.real-mixer-channel .channel-track-label{
+  width:100%!important;
+  min-height:36px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(255,255,255,.045)!important;
+  border-radius:9px!important;
+  background:rgba(255,255,255,.018)!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+
+/* Pan section */
+.mixer-pan-control{
+  width:100%!important;
+  min-height:70px!important;
+  display:grid!important;
+  grid-template-rows:14px 46px 10px!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:0!important;
+  padding:4px 0!important;
+  border-bottom:1px solid rgba(255,255,255,.045)!important;
+}
+
+.pan-scale-label{
+  width:82px!important;
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr!important;
+  align-items:center!important;
+  color:rgba(255,255,255,.60)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+}
+
+.pan-scale-label span:first-child{text-align:left!important}
+.pan-scale-label span:nth-child(2){
+  text-align:center!important;
+  color:rgba(255,255,255,.32)!important;
+  font-size:6px!important;
+}
+.pan-scale-label span:last-child{text-align:right!important}
+
+.mixer-pan-control .rotary-knob-wrap{
+  width:46px!important;
+  height:46px!important;
+}
+
+.mixer-pan-control .rotary-knob{
+  width:46px!important;
+  height:46px!important;
+}
+
+.mixer-pan-control output{
+  color:rgba(255,255,255,.48)!important;
+  font-size:7px!important;
+}
+
+/* Clearly visible EQ / FX knob block */
+.channel-eq-grid{
+  position:relative!important;
+  width:100%!important;
+  min-height:156px!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(50px,1fr))!important;
+  grid-template-rows:18px repeat(2,64px)!important;
+  gap:4px 6px!important;
+  padding:5px 4px 6px!important;
+  border:1px solid rgba(255,255,255,.055)!important;
+  border-radius:10px!important;
+  background:rgba(0,0,0,.16)!important;
+  overflow:visible!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.channel-eq-title{
+  grid-column:1/-1!important;
+  min-height:18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:rgba(255,255,255,.34)!important;
+  font-size:7px!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+}
+
+.channel-eq-grid .mixer-mini-knob{
+  display:grid!important;
+  grid-template-rows:11px 42px 9px!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:1px!important;
+  visibility:visible!important;
+  opacity:1!important;
+  min-width:0!important;
+}
+
+.channel-eq-grid .mixer-mini-knob>span{
+  display:block!important;
+  color:rgba(255,255,255,.80)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.07em!important;
+}
+
+.channel-eq-grid .rotary-knob-wrap{
+  position:relative!important;
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.channel-eq-grid .rotary-range{
+  position:absolute!important;
+  inset:0!important;
+  width:42px!important;
+  height:42px!important;
+  opacity:0!important;
+  z-index:5!important;
+  cursor:pointer!important;
+}
+
+.channel-eq-grid .rotary-knob{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  background:
+    radial-gradient(
+      circle at 34% 28%,
+      rgba(255,255,255,.22),
+      transparent 22%
+    ),
+    linear-gradient(
+      145deg,
+      #353542,
+      #111117 70%
+    )!important;
+  box-shadow:
+    inset 0 0 0 5px rgba(255,255,255,.025),
+    0 4px 10px rgba(0,0,0,.38)!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.channel-eq-grid .rotary-knob::after{
+  content:""!important;
+  position:absolute!important;
+  width:2px!important;
+  height:14px!important;
+  left:50%!important;
+  top:5px!important;
+  transform:
+    translateX(-50%)
+    rotate(var(--knob-angle))!important;
+  transform-origin:50% 16px!important;
+  background:
+    linear-gradient(
+      var(--magenta),
+      var(--violet)
+    )!important;
+  border-radius:2px!important;
+  box-shadow:0 0 7px rgba(166,108,255,.44)!important;
+}
+
+.channel-eq-grid output{
+  display:block!important;
+  width:52px!important;
+  color:rgba(255,255,255,.44)!important;
+  font-size:6px!important;
+  line-height:9px!important;
+  text-align:center!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+/* Mute / solo area */
+.real-mixer-channel .channel-buttons{
+  min-height:28px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+}
+
+/* Unified fader well */
+.channel-fader-well{
+  margin-top:auto!important;
+  min-height:190px!important;
+  display:grid!important;
+  grid-template-rows:14px 160px 14px!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:3px!important;
+  padding:6px 4px 4px!important;
+  border-top:1px solid rgba(255,255,255,.045)!important;
+}
+
+.channel-fader-well>span{
+  color:rgba(255,255,255,.34)!important;
+  font-size:7px!important;
+  font-weight:900!important;
+  letter-spacing:.11em!important;
+}
+
+/* ONE fader definition used everywhere in the mixer bank */
+.real-mixer-channel .vertical-fader,
+.master-volume-strip .vertical-fader,
+.master-fx-fader-grid .vertical-fader{
+  width:30px!important;
+  height:160px!important;
+  min-width:30px!important;
+  min-height:160px!important;
+  max-width:30px!important;
+  max-height:160px!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  writing-mode:vertical-lr!important;
+  direction:rtl!important;
+  appearance:auto!important;
+  -webkit-appearance:slider-vertical!important;
+  accent-color:var(--violet)!important;
+  cursor:pointer!important;
+  background:transparent!important;
+}
+
+.real-mixer-channel .vertical-fader::-webkit-slider-runnable-track,
+.master-volume-strip .vertical-fader::-webkit-slider-runnable-track,
+.master-fx-fader-grid .vertical-fader::-webkit-slider-runnable-track{
+  width:6px!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,66,208,.68),
+      rgba(113,73,255,.68)
+    )!important;
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.70),
+    0 0 0 1px rgba(255,255,255,.045)!important;
+}
+
+.real-mixer-channel .vertical-fader::-webkit-slider-thumb,
+.master-volume-strip .vertical-fader::-webkit-slider-thumb,
+.master-fx-fader-grid .vertical-fader::-webkit-slider-thumb{
+  -webkit-appearance:none!important;
+  width:24px!important;
+  height:12px!important;
+  border-radius:3px!important;
+  border:1px solid rgba(255,255,255,.28)!important;
+  background:
+    linear-gradient(
+      180deg,
+      #d9dae0,
+      #747681 55%,
+      #34363e
+    )!important;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.42)!important;
+}
+
+.channel-fader-well output{
+  color:rgba(255,255,255,.62)!important;
+  font-size:8px!important;
+  line-height:14px!important;
+}
+
+/* Master strip and Master FX share the same visual language */
+.master-volume-strip,
+.inline-master-fx{
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20,20,29,.96),
+      rgba(8,8,13,.97)
+    )!important;
+}
+
+.master-volume-strip{
+  width:112px!important;
+  min-width:112px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:10px 8px!important;
+}
+
+.master-volume-strip .vertical-fader{
+  margin-top:auto!important;
+  margin-bottom:auto!important;
+}
+
+.inline-master-fx{
+  min-width:270px!important;
+  max-width:310px!important;
+  padding:10px 8px!important;
+}
+
+.master-fx-fader-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:6px!important;
+  min-height:0!important;
+}
+
+.master-fx-fader-grid .fx-strip{
+  min-width:0!important;
+  min-height:230px!important;
+  display:grid!important;
+  grid-template-rows:28px 160px 14px!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:3px!important;
+  padding:8px 5px!important;
+  border:1px solid rgba(255,255,255,.05)!important;
+  border-radius:10px!important;
+  background:rgba(0,0,0,.12)!important;
+}
+
+.master-fx-fader-grid .fx-strip label{
+  font-size:8px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.07em!important;
+}
+
+/* Hide the note dropdown band when the selected instrument intentionally
+   has no note editor (Sample and Synth 2). */
+.groove-step-area .step.note-pad.no-note-selector::after{
+  display:none!important;
+}
+
+.groove-step-area .step.note-pad.no-note-selector .step-toggle{
+  inset:0!important;
+}
+
+@media(max-width:1200px){
+  .mixer-fader-bank{
+    grid-template-columns:1080px 112px 270px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5420,7 +5836,7 @@ input[type="range"]{
 </div>
 <div class="knob-card">
 <label>Filter <output id="osc1CutoffOut">3200 Hz</output></label>
-<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="osc1Cutoff" max="12000" min="120" type="range" value="3200"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
+<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="osc1Cutoff" max="12000" min="120" type="range" value="1250"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
 </div>
 <div class="knob-card">
 <label>Resonance <output id="osc1ResOut">5.0</output></label>
@@ -5568,7 +5984,7 @@ input[type="range"]{
 <div class="synth-controls envelope-controls">
 <div class="knob-card">
 <label>Attack <output id="synthAttackOut">0.02 s</output></label>
-<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="synthAttack" max="2" min=".005" step=".005" type="range" value=".02"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
+<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="synthAttack" max="2" min=".005" step=".005" type="range" value=".01"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
 </div>
 <div class="knob-card">
 <label>Decay <output id="synthDecayOut">0.18 s</output></label>
@@ -5580,7 +5996,7 @@ input[type="range"]{
 </div>
 <div class="knob-card">
 <label>Release <output id="synthReleaseOut">0.42 s</output></label>
-<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="synthRelease" max="3" min=".03" step=".01" type="range" value=".42"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
+<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="synthRelease" max="3" min=".03" step=".01" type="range" value=".18"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
 </div>
 <div class="knob-card">
 <label>Delay Send <output id="synthDelayOut">22%</output></label>
@@ -5638,14 +6054,14 @@ input[type="range"]{
           </div>
         </div>
         <div class="sequencer-track-buttons" id="sequencerTrackButtons">
-          <button class="btn sequencer-track-btn active" data-track-select="0" onclick="selectSequencerTrack(0)" type="button">1</button>
-          <button class="btn sequencer-track-btn" data-track-select="1" onclick="selectSequencerTrack(1)" type="button">2</button>
-          <button class="btn sequencer-track-btn" data-track-select="2" onclick="selectSequencerTrack(2)" type="button">3</button>
-          <button class="btn sequencer-track-btn" data-track-select="3" onclick="selectSequencerTrack(3)" type="button">4</button>
-          <button class="btn sequencer-track-btn" data-track-select="4" onclick="selectSequencerTrack(4)" type="button">5</button>
-          <button class="btn sequencer-track-btn" data-track-select="5" onclick="selectSequencerTrack(5)" type="button">6</button>
-          <button class="btn sequencer-track-btn" data-track-select="6" onclick="selectSequencerTrack(6)" type="button">7</button>
-          <button class="btn sequencer-track-btn" data-track-select="7" onclick="selectSequencerTrack(7)" type="button">8</button>
+          <button class="btn sequencer-track-btn active" data-track-select="0" type="button">1</button>
+          <button class="btn sequencer-track-btn" data-track-select="1" type="button">2</button>
+          <button class="btn sequencer-track-btn" data-track-select="2" type="button">3</button>
+          <button class="btn sequencer-track-btn" data-track-select="3" type="button">4</button>
+          <button class="btn sequencer-track-btn" data-track-select="4" type="button">5</button>
+          <button class="btn sequencer-track-btn" data-track-select="5" type="button">6</button>
+          <button class="btn sequencer-track-btn" data-track-select="6" type="button">7</button>
+          <button class="btn sequencer-track-btn" data-track-select="7" type="button">8</button>
         </div>
       </div>
 
@@ -6049,7 +6465,7 @@ const tracks=[
   {id:"track3",name:"3",mixerChannel:2,type:"hat",instrument:"hat",level:.34,patterns:[[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(42)},
   {id:"track4",name:"4",mixerChannel:3,type:"openhat",instrument:"openhat",level:.22,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(46)},
   {id:"track5",name:"5",mixerChannel:4,type:"perc",instrument:"perc",level:.30,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(43)},
-  {id:"track6",name:"6",mixerChannel:5,type:"synth",instrument:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[60,63,67,70,67,70,72,70,72,75,74,74,72,70,67,63],Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60),Array(STEPS_PER_SEQUENCE).fill(60)]},
+  {id:"track6",name:"6",mixerChannel:5,type:"synth",instrument:"synth",level:.38,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[36,36,39,43,36,41,43,46,36,39,43,48,46,43,39,36],Array(STEPS_PER_SEQUENCE).fill(36),Array(STEPS_PER_SEQUENCE).fill(36),Array(STEPS_PER_SEQUENCE).fill(36)]},
   {id:"track7",name:"7",mixerChannel:6,type:"synth2",instrument:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[48,50,51,51,55,53,43,46,46,48,51,55,55,48,51,55],Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48)]},
   {id:"track8",name:"8",mixerChannel:7,type:"sample",instrument:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(60)}
 ];
@@ -6209,6 +6625,14 @@ function setTrackMixerChannel(trackIndex,newChannel){
   }
 
   refreshMixerChannelLabels();
+
+  if(
+    typeof selectedSequencerTrack!=="undefined" &&
+    index===selectedSequencerTrack &&
+    typeof renderSequencer==="function"
+  ){
+    renderSequencer();
+  }
 }
 
 
@@ -6886,7 +7310,31 @@ function initializeSynthParameterStates(){
     captureCurrentSynthState();
 
   synthParameterStates.synth=
-    Object.assign({},base);
+    Object.assign({},base,{
+      osc1Wave:"sawtooth",
+      osc2Wave:"square",
+      osc1Octave:"0",
+      osc2Octave:"0",
+      osc1Detune:"-3",
+      osc2Detune:"4",
+      osc1Level:".72",
+      osc2Level:".42",
+      osc1Cutoff:"1250",
+      osc2Cutoff:"950",
+      osc1Res:"4.2",
+      osc2Res:"3.8",
+      synthAttack:".01",
+      synthDecay:".16",
+      synthSustain:".48",
+      synthRelease:".18",
+      synthFmRate:".55",
+      synthFmRate2:"1.1",
+      synthFmDepth:"80",
+      synthFmDepth2:"38",
+      synthFilterCutoff:"1100",
+      synthFilterRes:"5.4",
+      synthLevel:".42"
+    });
 
   synthParameterStates.synth2=
     Object.assign({},base,{
@@ -8266,14 +8714,32 @@ function renderSequencer(){
       }
     );
 
-    pad.append(
-      toggle,
-      makeNoteSelect(
-        track,
-        step,
-        trackIndex
-      )
-    );
+    const showNoteSelector=
+      ![
+        "sample",
+        "synth2"
+      ].includes(
+        track.instrument
+      );
+
+    if(showNoteSelector){
+      pad.append(
+        toggle,
+        makeNoteSelect(
+          track,
+          step,
+          trackIndex
+        )
+      );
+    }else{
+      pad.classList.add(
+        "no-note-selector"
+      );
+
+      pad.append(
+        toggle
+      );
+    }
 
     row.appendChild(
       pad
@@ -8348,8 +8814,13 @@ function selectSequencerTrack(index){
   refreshSequenceStatus();
 }
 
+window.selectSequencerTrack=
+  selectSequencerTrack;
 
 renderSequencer();
+selectSequencerTrack(
+  selectedSequencerTrack
+);
 
 $("randomBtn").addEventListener("click",()=>{
   const scale=[48,51,53,55,58,60,63,65,67,70,72];
@@ -8361,7 +8832,7 @@ $("randomBtn").addEventListener("click",()=>{
       pattern[step]=Math.random()<chance?1:0;
     }
 
-    if(["synth","synth2","sample"].includes(track.instrument)){
+    if(track.instrument==="synth"){
       track.notes[activeSequence]=track.notes[activeSequence].map(
         ()=>scale[Math.floor(Math.random()*scale.length)]
       );
@@ -8388,28 +8859,26 @@ document.querySelectorAll(".sequence-btn").forEach(button=>{
   );
 });
 
-const sequencerTrackButtons=
-  $("sequencerTrackButtons");
+document
+  .querySelectorAll(
+    ".sequencer-track-btn"
+  )
+  .forEach(button=>{
+    button.addEventListener(
+      "click",
+      event=>{
+        event.preventDefault();
+        event.stopPropagation();
 
-if(sequencerTrackButtons){
-  sequencerTrackButtons.addEventListener(
-    "click",
-    event=>{
-      const button=
-        event.target.closest(
-          ".sequencer-track-btn"
+        selectSequencerTrack(
+          parseInt(
+            button.dataset.trackSelect,
+            10
+          )
         );
-
-      if(!button){
-        return;
       }
-
-      selectSequencerTrack(
-        button.dataset.trackSelect
-      );
-    }
-  );
-}
+    );
+  });
 
 $("patternChainBtn").addEventListener(
   "click",
@@ -10308,6 +10777,21 @@ mixerChannels.forEach((channel,index)=>{
   eqGrid.className=
     "channel-eq-grid";
 
+  const eqTitle=
+    document.createElement(
+      "div"
+    );
+
+  eqTitle.className=
+    "channel-eq-title";
+
+  eqTitle.textContent=
+    "EQ / SEND";
+
+  eqGrid.appendChild(
+    eqTitle
+  );
+
   const lowControl=
     makeChannelKnob(
       "LOW",
@@ -10709,14 +11193,35 @@ mixerChannels.forEach((channel,index)=>{
     solo
   );
 
+  const faderWell=
+    document.createElement(
+      "div"
+    );
+
+  faderWell.className=
+    "channel-fader-well";
+
+  const faderLabel=
+    document.createElement(
+      "span"
+    );
+
+  faderLabel.textContent=
+    "LEVEL";
+
+  faderWell.append(
+    faderLabel,
+    fader,
+    outv
+  );
+
   strip.append(
     channelNumber,
     label,
     panWrap,
     eqGrid,
     buttons,
-    fader,
-    outv
+    faderWell
   );
 
   mixer.appendChild(
@@ -10727,6 +11232,23 @@ mixerChannels.forEach((channel,index)=>{
 refreshMixerChannelLabels();
 syncMixerButtons();
 syncTrackButtons();
+
+requestAnimationFrame(()=>{
+  document
+    .querySelectorAll(
+      "#mixer .rotary-range"
+    )
+    .forEach(input=>{
+      if(
+        typeof updateRotaryKnob===
+        "function"
+      ){
+        updateRotaryKnob(
+          input
+        );
+      }
+    });
+});
 
 function updateAudioStatus(message=""){
   const status=$("audioStatus");
