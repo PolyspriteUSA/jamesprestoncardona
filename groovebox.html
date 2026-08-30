@@ -4379,28 +4379,37 @@ body{
 <strong>Master FX</strong>
 <span>reverb • decay • drive • master</span>
 </div>
-<div class="fx">
-<div class="fx-grid">
-<div class="fx-strip">
-<label>Reverb</label>
-<input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/>
-<output id="reverbOut">22%</output>
+<div class="fx master-console-layout">
+<div class="master-fx-faders">
+  <div class="fx-strip">
+    <label>Reverb</label>
+    <input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/>
+    <output id="reverbOut">22%</output>
+  </div>
+  <div class="fx-strip">
+    <label>Decay</label>
+    <input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/>
+    <output id="reverbDecayOut">2.4 s</output>
+  </div>
+  <div class="fx-strip">
+    <label>Drive</label>
+    <input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/>
+    <output id="driveOut">8%</output>
+  </div>
 </div>
-<div class="fx-strip">
-<label>Decay</label>
-<input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/>
-<output id="reverbDecayOut">2.4 s</output>
+<div class="master-meter-block" aria-label="Master output VU meters">
+  <div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
+  <div class="master-vu-pair">
+    <div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
+    <div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
+  </div>
 </div>
-<div class="fx-strip">
-<label>Drive</label>
-<input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/>
-<output id="driveOut">8%</output>
-</div>
-<div class="fx-strip">
-<label>Master</label>
-<input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/>
-<output id="masterOut">82%</output>
-</div>
+<div class="master-fader-section">
+  <div class="fx-strip master-strip">
+    <label>Master</label>
+    <input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/>
+    <output id="masterOut">82%</output>
+  </div>
 </div>
 </div>
 <div class="tape-recorder">
@@ -12414,7 +12423,170 @@ animate();
     }catch(error){console.warn("Groovebox auto-restore skipped:",error);}
   },350);
 })();
-</script>\n</body>
+</script>\n
+<style>
+/* ===== CLEAN HARDWARE MIXER ALIGNMENT ===== */
+.groovebox-mixer-section .assignable-mixer,
+.groovebox-mixer-section #mixer.assignable-mixer{
+  display:grid !important;
+  grid-template-columns:repeat(8,minmax(118px,1fr)) !important;
+  grid-auto-flow:column !important;
+  gap:0 !important;
+  min-width:944px !important;
+  align-items:stretch !important;
+}
+.groovebox-mixer-section .mixer-console-strip{
+  display:grid !important;
+  grid-template-rows:54px 72px 72px 72px 72px 190px 34px !important;
+  align-items:start !important;
+  justify-items:center !important;
+  gap:0 !important;
+  min-width:118px !important;
+  padding:12px 9px 10px !important;
+}
+.groovebox-mixer-section .mixer-channel-head{
+  min-height:0 !important;
+  height:54px !important;
+  padding:0 2px 7px !important;
+}
+.groovebox-mixer-section .mixer-knob-control{
+  height:72px !important;
+  min-height:72px !important;
+  justify-content:flex-start !important;
+  gap:3px !important;
+}
+.groovebox-mixer-section .mixer-knob-wrap{width:38px !important;height:38px !important;}
+.groovebox-mixer-section .mixer-knob-input{width:38px !important;height:38px !important;}
+.groovebox-mixer-section .mixer-fader-control{
+  height:190px !important;
+  min-height:190px !important;
+  margin:0 !important;
+  justify-content:flex-start !important;
+  gap:4px !important;
+}
+.groovebox-mixer-section .mixer-channel-fader{
+  width:24px !important;
+  height:150px !important;
+  min-height:150px !important;
+  margin:0 auto !important;
+}
+.groovebox-mixer-section .mixer-channel-buttons{
+  height:34px !important;
+  min-height:34px !important;
+  margin:0 !important;
+  align-self:end !important;
+}
+/* Master section: meters directly above the master fader. */
+.master-console-layout{
+  display:grid !important;
+  grid-template-columns:minmax(260px,1fr) minmax(150px,190px) minmax(100px,130px);
+  gap:18px;
+  align-items:end;
+  padding:12px 14px 16px;
+}
+.master-fx-faders{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(72px,1fr));
+  gap:10px;
+  align-items:end;
+}
+.master-fx-faders .fx-strip,
+.master-fader-section .fx-strip{
+  min-height:205px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:7px;
+}
+.master-meter-block{
+  align-self:end;
+  padding:10px 12px 12px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;
+  background:rgba(7,7,11,.72);
+}
+.master-meter-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:9px;
+  font-size:9px;
+  letter-spacing:.10em;
+  color:var(--muted);
+}
+.master-meter-title output{color:#ddd7ef;font-size:9px;letter-spacing:0;}
+.master-vu-pair{display:flex;justify-content:center;gap:12px;height:124px;}
+.master-vu-channel{display:flex;align-items:center;gap:6px;height:100%;font-size:9px;color:var(--muted);}
+.master-vu-track{
+  position:relative;
+  width:18px;
+  height:100%;
+  overflow:hidden;
+  border-radius:4px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(to top,rgba(255,255,255,.035),rgba(255,255,255,.015));
+}
+.master-vu-track::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(to top,transparent 0 8px,rgba(5,5,7,.8) 8px 10px);
+}
+.master-vu-fill{
+  position:absolute;left:0;right:0;bottom:0;height:0%;
+  background:linear-gradient(to top,var(--violet) 0 62%,var(--magenta) 82%,#fff 100%);
+  transition:height 55ms linear;
+}
+.master-fader-section{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding-top:4px;
+}
+.master-strip{width:100%;}
+.master-strip .vertical-fader{height:150px !important;min-height:150px !important;}
+@media(max-width:980px){
+  .master-console-layout{grid-template-columns:1fr 160px 110px;}
+}
+@media(max-width:720px){
+  .master-console-layout{grid-template-columns:1fr;align-items:start;}
+  .master-meter-block{width:100%;}
+  .master-fader-section{width:100%;}
+}
+</style>
+
+<script>
+(function(){
+  let frame=0;
+  let data=null;
+  function meterLoop(){
+    frame=requestAnimationFrame(meterLoop);
+    const left=document.getElementById('masterVuLeft');
+    const right=document.getElementById('masterVuRight');
+    const out=document.getElementById('masterVuDb');
+    if(!left||!right||!out||typeof analyser==='undefined'||!analyser)return;
+    if(!data||data.length!==analyser.fftSize)data=new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(data);
+    let sum=0,peak=0;
+    for(let i=0;i<data.length;i++){
+      const x=(data[i]-128)/128;
+      sum+=x*x;
+      const a=Math.abs(x);if(a>peak)peak=a;
+    }
+    const rms=Math.sqrt(sum/data.length);
+    const db=rms>0?20*Math.log10(rms):-60;
+    const pct=Math.max(0,Math.min(100,(db+54)/54*100));
+    const peakPct=Math.max(pct,Math.max(0,Math.min(100,(20*Math.log10(Math.max(peak,.0001))+54)/54*100)));
+    left.style.height=pct.toFixed(1)+'%';
+    right.style.height=Math.max(0,Math.min(100,pct*.94+peakPct*.06)).toFixed(1)+'%';
+    out.textContent=db<=-54?'−∞ dB':db.toFixed(1)+' dB';
+  }
+  meterLoop();
+  window.addEventListener('pagehide',()=>cancelAnimationFrame(frame),{once:true});
+})();
+</script>
+</body>
 </html>
 <style>
 /* ===== TRADITIONAL SINGLE-ROW MIXER OVERRIDE ===== */
