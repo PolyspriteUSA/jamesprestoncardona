@@ -6075,6 +6075,432 @@ input[type="range"]{
   }
 }
 
+
+/* ================================================================
+   FINAL MIXER + VU VISUAL SYSTEM
+   ================================================================ */
+.mixer-fader-bank{
+  display:grid!important;
+  grid-template-columns:minmax(1180px,1fr) 112px minmax(280px,310px)!important;
+  gap:10px!important;
+  width:100%!important;
+  max-width:none!important;
+  padding:0 10px 12px!important;
+  overflow-x:auto!important;
+  align-items:stretch!important;
+}
+
+#mixer.eight-track-mixer{
+  display:grid!important;
+  grid-template-columns:repeat(8,minmax(138px,1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+  min-width:1180px!important;
+  max-width:none!important;
+  overflow:visible!important;
+}
+
+.gb-channel{
+  min-width:138px;
+  min-height:565px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px 9px;
+  border:1px solid rgba(255,255,255,.075);
+  border-radius:14px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(19,19,28,.98),
+      rgba(7,7,12,.99)
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 7px 20px rgba(0,0,0,.14);
+}
+
+.gb-channel-number{
+  color:rgba(255,255,255,.28);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.14em;
+  line-height:12px;
+  text-align:center;
+}
+
+.gb-channel-name{
+  min-height:38px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0 5px!important;
+  border:1px solid rgba(255,255,255,.055)!important;
+  border-radius:9px!important;
+  background:rgba(255,255,255,.018)!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  letter-spacing:.07em!important;
+  white-space:nowrap!important;
+}
+
+/* Dedicated visible mixer knobs */
+.gb-knob{
+  display:grid;
+  grid-template-rows:13px 50px 10px;
+  justify-items:center;
+  align-items:center;
+  gap:2px;
+  min-width:0;
+}
+
+.gb-knob-head{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:4px;
+  color:rgba(255,255,255,.62);
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.07em;
+}
+
+.gb-knob-head strong{
+  color:rgba(255,255,255,.84);
+  font-size:7px;
+  text-align:center;
+}
+
+.gb-knob-head span:first-child{text-align:left}
+.gb-knob-head span:last-child{text-align:right}
+
+.gb-knob-shell{
+  position:relative;
+  width:50px;
+  height:50px;
+}
+
+.gb-knob-face{
+  --gb-angle:0deg;
+  position:absolute;
+  inset:0;
+  display:block;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.24);
+  background:
+    radial-gradient(
+      circle at 34% 28%,
+      rgba(255,255,255,.22),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 50% 62%,
+      #2e2f3a,
+      #121219 72%
+    );
+  box-shadow:
+    inset 0 0 0 5px rgba(255,255,255,.024),
+    inset 0 -6px 10px rgba(0,0,0,.32),
+    0 5px 12px rgba(0,0,0,.40);
+}
+
+.gb-knob-face::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:6px;
+  width:3px;
+  height:17px;
+  border-radius:3px;
+  background:
+    linear-gradient(
+      var(--magenta),
+      var(--violet)
+    );
+  box-shadow:0 0 7px rgba(166,108,255,.50);
+  transform:
+    translateX(-50%)
+    rotate(var(--gb-angle));
+  transform-origin:50% 19px;
+}
+
+.gb-knob-input{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  width:50px;
+  height:50px;
+  margin:0;
+  opacity:0;
+  cursor:pointer;
+}
+
+.gb-knob-value{
+  width:60px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:rgba(255,255,255,.43);
+  font-size:6px;
+  line-height:10px;
+  text-align:center;
+}
+
+.gb-channel>.gb-knob{
+  padding-bottom:7px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.gb-eq{
+  padding:7px 5px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:11px;
+  background:rgba(0,0,0,.16);
+}
+
+.gb-section-label{
+  color:rgba(255,255,255,.31);
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-align:center;
+  text-transform:uppercase;
+}
+
+.gb-eq-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(56px,1fr));
+  gap:8px 5px;
+  margin-top:6px;
+}
+
+.gb-eq-grid .gb-knob{
+  grid-template-rows:13px 46px 10px;
+}
+
+.gb-eq-grid .gb-knob-shell,
+.gb-eq-grid .gb-knob-face,
+.gb-eq-grid .gb-knob-input{
+  width:46px;
+  height:46px;
+}
+
+.gb-ms{
+  min-height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.gb-ms button{
+  width:34px;
+  height:26px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:6px;
+  background:rgba(255,255,255,.025);
+  color:rgba(255,255,255,.56);
+  font-size:9px;
+  font-weight:900;
+}
+
+.gb-ms button.on{
+  color:#fff;
+  border-color:rgba(255,66,208,.40);
+  background:rgba(255,66,208,.12);
+}
+
+/* Every mixer fader gets the SAME class and SAME appearance */
+.gb-fader-box{
+  margin-top:auto;
+  min-height:205px;
+  display:grid;
+  grid-template-rows:14px 172px 14px;
+  justify-items:center;
+  align-items:center;
+  gap:3px;
+  padding-top:7px;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+
+.gb-fader,
+.gb-master-fader{
+  width:30px!important;
+  height:172px!important;
+  min-width:30px!important;
+  min-height:172px!important;
+  max-width:30px!important;
+  max-height:172px!important;
+  margin:0!important;
+  padding:0!important;
+  writing-mode:vertical-lr!important;
+  direction:rtl!important;
+  -webkit-appearance:slider-vertical!important;
+  appearance:auto!important;
+  accent-color:var(--violet)!important;
+  background:transparent!important;
+  transform:none!important;
+  cursor:pointer!important;
+}
+
+.gb-fader::-webkit-slider-runnable-track,
+.gb-master-fader::-webkit-slider-runnable-track{
+  width:6px!important;
+  border-radius:999px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,66,208,.70),
+      rgba(113,73,255,.72)
+    )!important;
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.72),
+    0 0 0 1px rgba(255,255,255,.04)!important;
+}
+
+.gb-fader::-webkit-slider-thumb,
+.gb-master-fader::-webkit-slider-thumb{
+  -webkit-appearance:none!important;
+  width:25px!important;
+  height:12px!important;
+  border:1px solid rgba(255,255,255,.30)!important;
+  border-radius:3px!important;
+  background:
+    linear-gradient(
+      180deg,
+      #dedee4,
+      #7b7d88 55%,
+      #363840
+    )!important;
+  box-shadow:
+    0 2px 7px rgba(0,0,0,.50),
+    inset 0 1px 0 rgba(255,255,255,.42)!important;
+}
+
+.gb-fader-value{
+  color:rgba(255,255,255,.62);
+  font-size:8px;
+}
+
+/* Normalize master + master FX panels around the same fader language */
+.master-volume-strip,
+.inline-master-fx{
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(19,19,28,.98),
+      rgba(7,7,12,.99)
+    )!important;
+}
+
+.master-volume-strip .gb-master-fader{
+  margin-top:auto!important;
+  margin-bottom:auto!important;
+}
+
+.master-fx-fader-grid .fx-strip{
+  border:1px solid rgba(255,255,255,.05)!important;
+  border-radius:10px!important;
+  background:rgba(0,0,0,.13)!important;
+}
+
+/* VU meters now use the SAME JPC mixer styling instead of tan analog faces */
+.master-vu-module{
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(19,19,28,.98),
+      rgba(7,7,12,.99)
+    )!important;
+}
+
+.vu-face{
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:10px!important;
+  background:
+    radial-gradient(
+      ellipse at 50% 112%,
+      rgba(113,73,255,.12),
+      rgba(8,8,13,.96) 62%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.018),
+      rgba(5,5,8,.98)
+    )!important;
+  box-shadow:
+    inset 0 0 22px rgba(0,0,0,.70),
+    inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+
+.vu-face::before{
+  color:rgba(255,255,255,.36)!important;
+  font-family:inherit!important;
+  font-size:8px!important;
+  letter-spacing:.12em!important;
+}
+
+.vu-arc{
+  border-color:rgba(166,108,255,.20)!important;
+}
+
+.vu-scale{
+  color:rgba(255,255,255,.34)!important;
+  font-family:inherit!important;
+}
+
+.vu-tick.t5{
+  color:rgba(255,66,208,.74)!important;
+}
+
+.vu-tick.t6{
+  color:rgba(255,100,190,.90)!important;
+}
+
+.vu-needle{
+  width:2px!important;
+  background:
+    linear-gradient(
+      to top,
+      var(--violet),
+      var(--magenta)
+    )!important;
+  box-shadow:
+    0 0 7px rgba(255,66,208,.44)!important;
+}
+
+.vu-pivot{
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #6d6f7d,
+      #282932 56%,
+      #09090c 100%
+    )!important;
+  border-color:rgba(255,255,255,.08)!important;
+}
+
+.vu-label,
+.vu-db{
+  color:rgba(255,255,255,.42)!important;
+  font-family:inherit!important;
+}
+
+@media(max-width:1240px){
+  .mixer-fader-bank{
+    grid-template-columns:1180px 112px 280px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -6557,7 +6983,7 @@ input[type="range"]{
             <span>L / R</span>
           </div>
           <input
-            class="vertical-fader"
+            class="vertical-fader gb-master-fader"
             data-midi-key="master.level"
             id="master"
             max="1"
@@ -6581,7 +7007,7 @@ input[type="range"]{
             <div class="fx-strip">
               <label>Reverb</label>
               <input
-                class="vertical-fader"
+                class="vertical-fader gb-master-fader"
                 data-midi-key="master.reverb"
                 id="reverb"
                 max=".8"
@@ -6596,7 +7022,7 @@ input[type="range"]{
             <div class="fx-strip">
               <label>Decay</label>
               <input
-                class="vertical-fader"
+                class="vertical-fader gb-master-fader"
                 data-midi-key="master.reverbDecay"
                 id="reverbDecay"
                 max="6"
@@ -6611,7 +7037,7 @@ input[type="range"]{
             <div class="fx-strip">
               <label>Drive</label>
               <input
-                class="vertical-fader"
+                class="vertical-fader gb-master-fader"
                 data-midi-key="master.drive"
                 id="drive"
                 max=".6"
@@ -6890,12 +7316,6 @@ function instrumentLabel(type){
 
 function refreshMixerChannelLabels(){
   for(let channel=0;channel<8;channel++){
-    const assignedIndex=
-      tracks.findIndex(
-        track=>
-          mixerChannelForTrack(track)===channel
-      );
-
     const label=
       document.querySelector(
         '[data-mixer-label="'+channel+'"]'
@@ -6903,20 +7323,20 @@ function refreshMixerChannelLabels(){
 
     if(label){
       label.textContent=
-        assignedIndex>=0
-          ?String(assignedIndex+1)
-          :"—";
+        "TRACK "+
+        (channel+1);
     }
 
-    const smallLabel=
+    const small=
       document.querySelector(
         '[data-mixer-channel-number="'+channel+'"]'
       );
 
-    if(smallLabel){
-      smallLabel.textContent=
-        "MIX "+
-        (channel+1);
+    if(small){
+      small.textContent=
+        String(
+          channel+1
+        );
     }
   }
 
@@ -6933,7 +7353,9 @@ function refreshMixerChannelLabels(){
       if(track){
         select.value=
           String(
-            mixerChannelForTrack(track)
+            mixerChannelForTrack(
+              track
+            )
           );
       }
     });
@@ -10813,46 +11235,46 @@ const mixer=$("mixer");
 function syncMixerButtons(){
   document
     .querySelectorAll(
-      ".channel-mute"
+      ".gb-mute"
     )
     .forEach(button=>{
       button.classList.toggle(
         "on",
         mixerMuted.has(
-          +button.dataset.mixerChannel
+          +button.dataset.channel
         )
       );
     });
 
   document
     .querySelectorAll(
-      ".channel-solo"
+      ".gb-solo"
     )
     .forEach(button=>{
       button.classList.toggle(
         "on",
         mixerSoloed.has(
-          +button.dataset.mixerChannel
+          +button.dataset.channel
         )
       );
     });
 }
 
-function mixerKnobAngle(input){
+function gbKnobDegrees(input){
   const min=
     parseFloat(
       input.min
-    )||0;
+    );
 
   const max=
     parseFloat(
       input.max
-    )||1;
+    );
 
   const value=
     parseFloat(
       input.value
-    )||0;
+    );
 
   const normalized=
     max>min
@@ -10870,42 +11292,44 @@ function mixerKnobAngle(input){
     270;
 }
 
-function refreshMixerKnob(input){
-  const shell=
+function gbUpdateKnob(input){
+  const control=
     input.closest(
-      ".mixer-knob-shell"
+      ".gb-knob"
     );
 
-  if(!shell){
+  if(!control){
     return;
   }
 
   const face=
-    shell.querySelector(
-      ".mixer-knob-face"
+    control.querySelector(
+      ".gb-knob-face"
     );
 
   if(face){
     face.style.setProperty(
-      "--mixer-knob-angle",
-      mixerKnobAngle(input)+
+      "--gb-angle",
+      gbKnobDegrees(
+        input
+      )+
       "deg"
     );
   }
 }
 
-function createMixerKnob({
-  channelIndex,
+function gbCreateKnob({
+  channel,
   label,
-  key,
+  midiKey,
   min,
   max,
   step,
   value,
-  formatter,
-  onInput,
-  scaleLeft="",
-  scaleRight=""
+  leftLabel="",
+  rightLabel="",
+  format,
+  update
 }){
   const control=
     document.createElement(
@@ -10913,34 +11337,45 @@ function createMixerKnob({
     );
 
   control.className=
-    "mixer-knob-control";
+    "gb-knob";
 
-  const heading=
+  const head=
     document.createElement(
       "div"
     );
 
-  heading.className=
-    "mixer-knob-heading";
+  head.className=
+    "gb-knob-head";
 
-  if(
-    scaleLeft||
-    scaleRight
-  ){
-    heading.innerHTML=
-      '<span>'+
-      scaleLeft+
-      '</span><strong>'+
-      label+
-      '</strong><span>'+
-      scaleRight+
-      '</span>';
-  }else{
-    heading.innerHTML=
-      '<strong>'+
-      label+
-      '</strong>';
-  }
+  const left=
+    document.createElement(
+      "span"
+    );
+
+  left.textContent=
+    leftLabel;
+
+  const title=
+    document.createElement(
+      "strong"
+    );
+
+  title.textContent=
+    label;
+
+  const right=
+    document.createElement(
+      "span"
+    );
+
+  right.textContent=
+    rightLabel;
+
+  head.append(
+    left,
+    title,
+    right
+  );
 
   const shell=
     document.createElement(
@@ -10948,7 +11383,15 @@ function createMixerKnob({
     );
 
   shell.className=
-    "mixer-knob-shell";
+    "gb-knob-shell";
+
+  const face=
+    document.createElement(
+      "div"
+    );
+
+  face.className=
+    "gb-knob-face";
 
   const input=
     document.createElement(
@@ -10959,7 +11402,7 @@ function createMixerKnob({
     "range";
 
   input.className=
-    "mixer-knob-input";
+    "gb-knob-input";
 
   input.min=
     min;
@@ -10974,22 +11417,39 @@ function createMixerKnob({
     value;
 
   input.dataset.midiKey=
-    "mixer.channel"+
-    (channelIndex+1)+
-    "."+
-    key;
+    midiKey;
 
-  const face=
+  const out=
     document.createElement(
-      "div"
+      "output"
     );
 
-  face.className=
-    "mixer-knob-face";
+  out.className=
+    "gb-knob-value";
 
-  face.setAttribute(
-    "aria-hidden",
-    "true"
+  const refresh=()=>{
+    const next=
+      parseFloat(
+        input.value
+      );
+
+    gbUpdateKnob(
+      input
+    );
+
+    out.textContent=
+      format(
+        next
+      );
+
+    update(
+      next
+    );
+  };
+
+  input.addEventListener(
+    "input",
+    refresh
   );
 
   shell.append(
@@ -10997,53 +11457,20 @@ function createMixerKnob({
     input
   );
 
-  const output=
-    document.createElement(
-      "output"
-    );
-
-  output.className=
-    "mixer-knob-value";
-
-  const update=()=>{
-    const next=
-      parseFloat(
-        input.value
-      );
-
-    output.textContent=
-      formatter(
-        next
-      );
-
-    refreshMixerKnob(
-      input
-    );
-
-    onInput(
-      next
-    );
-  };
-
-  input.addEventListener(
-    "input",
-    update
-  );
-
   control.append(
-    heading,
+    head,
     shell,
-    output
+    out
   );
 
   requestAnimationFrame(
     ()=>{
-      refreshMixerKnob(
+      gbUpdateKnob(
         input
       );
 
-      output.textContent=
-        formatter(
+      out.textContent=
+        format(
           parseFloat(
             input.value
           )
@@ -11054,68 +11481,74 @@ function createMixerKnob({
   return control;
 }
 
-mixerChannels.forEach((channel,index)=>{
+function gbCreateChannelStrip(channel,index){
   const strip=
     document.createElement(
       "section"
     );
 
   strip.className=
-    "real-mixer-channel";
+    "gb-channel";
 
-  const channelNumber=
+  const number=
     document.createElement(
       "div"
     );
 
-  channelNumber.className=
-    "mixer-channel-number";
+  number.className=
+    "gb-channel-number";
 
-  channelNumber.dataset.mixerChannelNumber=
+  number.dataset.mixerChannelNumber=
     index;
 
-  channelNumber.textContent=
-    "MIX "+
-    (index+1);
-
-  const trackNumber=
-    document.createElement(
-      "div"
-    );
-
-  trackNumber.className=
-    "channel-track-label";
-
-  trackNumber.dataset.mixerLabel=
-    index;
-
-  trackNumber.textContent=
+  number.textContent=
     String(
       index+1
     );
 
+  const name=
+    document.createElement(
+      "div"
+    );
+
+  name.className=
+    "gb-channel-name channel-track-label";
+
+  name.dataset.mixerLabel=
+    index;
+
+  name.textContent=
+    "TRACK "+
+    (index+1);
+
   const pan=
-    createMixerKnob({
-      channelIndex:index,
+    gbCreateKnob({
+      channel:index,
       label:"PAN",
-      key:"pan",
+      midiKey:
+        "mixer.channel"+
+        (index+1)+
+        ".pan",
       min:-1,
       max:1,
       step:.01,
       value:channel.pan,
-      scaleLeft:"L",
-      scaleRight:"R",
-      formatter:value=>
+      leftLabel:"L",
+      rightLabel:"R",
+      format:value=>
         Math.abs(value)<.02
           ?"C"
           :value<0
             ?"L "+Math.round(Math.abs(value)*100)
             :"R "+Math.round(value*100),
-      onInput:value=>{
-        channel.pan=value;
+      update:value=>{
+        channel.pan=
+          value;
 
         const bus=
-          mixerBusNodes[index];
+          mixerBusNodes[
+            index
+          ];
 
         if(
           bus&&
@@ -11131,42 +11564,63 @@ mixerChannels.forEach((channel,index)=>{
       }
     });
 
-  const eqPanel=
+  const eq=
     document.createElement(
       "div"
     );
 
-  eqPanel.className=
-    "mixer-eq-panel";
+  eq.className=
+    "gb-eq";
 
-  const eqTitle=
+  const eqLabel=
     document.createElement(
       "div"
     );
 
-  eqTitle.className=
-    "mixer-section-label";
+  eqLabel.className=
+    "gb-section-label";
 
-  eqTitle.textContent=
+  eqLabel.textContent=
     "EQ / SEND";
 
+  const eqGrid=
+    document.createElement(
+      "div"
+    );
+
+  eqGrid.className=
+    "gb-eq-grid";
+
+  const dbFormat=
+    value=>
+      (
+        value>0
+          ?"+"
+          :""
+      )+
+      value.toFixed(1);
+
   const low=
-    createMixerKnob({
-      channelIndex:index,
+    gbCreateKnob({
+      channel:index,
       label:"LOW",
-      key:"low",
+      midiKey:
+        "mixer.channel"+
+        (index+1)+
+        ".low",
       min:-12,
       max:12,
       step:.5,
       value:channel.low,
-      formatter:value=>
-        (value>0?"+":"")+
-        value.toFixed(1),
-      onInput:value=>{
-        channel.low=value;
+      format:dbFormat,
+      update:value=>{
+        channel.low=
+          value;
 
         const bus=
-          mixerBusNodes[index];
+          mixerBusNodes[
+            index
+          ];
 
         if(
           bus&&
@@ -11183,22 +11637,26 @@ mixerChannels.forEach((channel,index)=>{
     });
 
   const mid=
-    createMixerKnob({
-      channelIndex:index,
+    gbCreateKnob({
+      channel:index,
       label:"MID",
-      key:"mid",
+      midiKey:
+        "mixer.channel"+
+        (index+1)+
+        ".mid",
       min:-12,
       max:12,
       step:.5,
       value:channel.mid,
-      formatter:value=>
-        (value>0?"+":"")+
-        value.toFixed(1),
-      onInput:value=>{
-        channel.mid=value;
+      format:dbFormat,
+      update:value=>{
+        channel.mid=
+          value;
 
         const bus=
-          mixerBusNodes[index];
+          mixerBusNodes[
+            index
+          ];
 
         if(
           bus&&
@@ -11215,22 +11673,26 @@ mixerChannels.forEach((channel,index)=>{
     });
 
   const high=
-    createMixerKnob({
-      channelIndex:index,
+    gbCreateKnob({
+      channel:index,
       label:"HIGH",
-      key:"high",
+      midiKey:
+        "mixer.channel"+
+        (index+1)+
+        ".high",
       min:-12,
       max:12,
       step:.5,
       value:channel.high,
-      formatter:value=>
-        (value>0?"+":"")+
-        value.toFixed(1),
-      onInput:value=>{
-        channel.high=value;
+      format:dbFormat,
+      update:value=>{
+        channel.high=
+          value;
 
         const bus=
-          mixerBusNodes[index];
+          mixerBusNodes[
+            index
+          ];
 
         if(
           bus&&
@@ -11247,25 +11709,31 @@ mixerChannels.forEach((channel,index)=>{
     });
 
   const fx=
-    createMixerKnob({
-      channelIndex:index,
+    gbCreateKnob({
+      channel:index,
       label:"FX",
-      key:"fx",
+      midiKey:
+        "mixer.channel"+
+        (index+1)+
+        ".fx",
       min:0,
       max:1,
       step:.01,
       value:channel.fxSend,
-      formatter:value=>
+      format:value=>
         Math.round(
           value*
           100
         )+
         "%",
-      onInput:value=>{
-        channel.fxSend=value;
+      update:value=>{
+        channel.fxSend=
+          value;
 
         const bus=
-          mixerBusNodes[index];
+          mixerBusNodes[
+            index
+          ];
 
         if(
           bus&&
@@ -11281,14 +11749,6 @@ mixerChannels.forEach((channel,index)=>{
       }
     });
 
-  const eqGrid=
-    document.createElement(
-      "div"
-    );
-
-  eqGrid.className=
-    "mixer-eq-grid";
-
   eqGrid.append(
     low,
     mid,
@@ -11296,18 +11756,18 @@ mixerChannels.forEach((channel,index)=>{
     fx
   );
 
-  eqPanel.append(
-    eqTitle,
+  eq.append(
+    eqLabel,
     eqGrid
   );
 
-  const buttons=
+  const ms=
     document.createElement(
       "div"
     );
 
-  buttons.className=
-    "channel-buttons";
+  ms.className=
+    "gb-ms";
 
   const mute=
     document.createElement(
@@ -11318,9 +11778,9 @@ mixerChannels.forEach((channel,index)=>{
     "button";
 
   mute.className=
-    "channel-mute midi-assignable";
+    "gb-mute midi-assignable";
 
-  mute.dataset.mixerChannel=
+  mute.dataset.channel=
     index;
 
   mute.dataset.midiKey=
@@ -11340,9 +11800,9 @@ mixerChannels.forEach((channel,index)=>{
     "button";
 
   solo.className=
-    "channel-solo midi-assignable";
+    "gb-solo midi-assignable";
 
-  solo.dataset.mixerChannel=
+  solo.dataset.channel=
     index;
 
   solo.dataset.midiKey=
@@ -11357,11 +11817,17 @@ mixerChannels.forEach((channel,index)=>{
     "click",
     ()=>{
       if(
-        mixerMuted.has(index)
+        mixerMuted.has(
+          index
+        )
       ){
-        mixerMuted.delete(index);
+        mixerMuted.delete(
+          index
+        );
       }else{
-        mixerMuted.add(index);
+        mixerMuted.add(
+          index
+        );
       }
 
       syncMixerButtons();
@@ -11372,39 +11838,45 @@ mixerChannels.forEach((channel,index)=>{
     "click",
     ()=>{
       if(
-        mixerSoloed.has(index)
+        mixerSoloed.has(
+          index
+        )
       ){
-        mixerSoloed.delete(index);
+        mixerSoloed.delete(
+          index
+        );
       }else{
-        mixerSoloed.add(index);
+        mixerSoloed.add(
+          index
+        );
       }
 
       syncMixerButtons();
     }
   );
 
-  buttons.append(
+  ms.append(
     mute,
     solo
   );
 
-  const faderBlock=
+  const faderBox=
     document.createElement(
       "div"
     );
 
-  faderBlock.className=
-    "mixer-fader-block";
+  faderBox.className=
+    "gb-fader-box";
 
-  const faderTitle=
+  const faderLabel=
     document.createElement(
       "div"
     );
 
-  faderTitle.className=
-    "mixer-section-label";
+  faderLabel.className=
+    "gb-section-label";
 
-  faderTitle.textContent=
+  faderLabel.textContent=
     "LEVEL";
 
   const fader=
@@ -11416,7 +11888,7 @@ mixerChannels.forEach((channel,index)=>{
     "range";
 
   fader.className=
-    "mixer-vertical-fader";
+    "gb-fader";
 
   fader.min=
     0;
@@ -11441,7 +11913,43 @@ mixerChannels.forEach((channel,index)=>{
     );
 
   faderOut.className=
-    "mixer-fader-value";
+    "gb-fader-value";
+
+  const updateFader=()=>{
+    channel.level=
+      parseFloat(
+        fader.value
+      );
+
+    faderOut.textContent=
+      Math.round(
+        channel.level*
+        100
+      )+
+      "%";
+
+    const bus=
+      mixerBusNodes[
+        index
+      ];
+
+    if(
+      bus&&
+      bus.input&&
+      audio
+    ){
+      bus.input.gain.setTargetAtTime(
+        channel.level,
+        audio.currentTime,
+        .015
+      );
+    }
+  };
+
+  fader.addEventListener(
+    "input",
+    updateFader
+  );
 
   faderOut.textContent=
     Math.round(
@@ -11450,57 +11958,34 @@ mixerChannels.forEach((channel,index)=>{
     )+
     "%";
 
-  fader.addEventListener(
-    "input",
-    ()=>{
-      channel.level=
-        parseFloat(
-          fader.value
-        );
-
-      faderOut.textContent=
-        Math.round(
-          channel.level*
-          100
-        )+
-        "%";
-
-      const bus=
-        mixerBusNodes[index];
-
-      if(
-        bus&&
-        bus.input&&
-        audio
-      ){
-        bus.input.gain.setTargetAtTime(
-          channel.level,
-          audio.currentTime,
-          .015
-        );
-      }
-    }
-  );
-
-  faderBlock.append(
-    faderTitle,
+  faderBox.append(
+    faderLabel,
     fader,
     faderOut
   );
 
   strip.append(
-    channelNumber,
-    trackNumber,
+    number,
+    name,
     pan,
-    eqPanel,
-    buttons,
-    faderBlock
+    eq,
+    ms,
+    faderBox
   );
 
-  mixer.appendChild(
-    strip
-  );
-});
+  return strip;
+}
+
+mixerChannels.forEach(
+  (channel,index)=>{
+    mixer.appendChild(
+      gbCreateChannelStrip(
+        channel,
+        index
+      )
+    );
+  }
+);
 
 refreshMixerChannelLabels();
 syncMixerButtons();
@@ -16407,11 +16892,28 @@ animate();
   function resolveAssignableControl(target){
     const candidate=
       target.closest(
-        'input[type="range"],.rotary-knob,.synth-rotary-knob,.step-toggle,.midi-assignable,.synth-key'
+        'input[type="range"],.gb-knob-face,.rotary-knob,.synth-rotary-knob,.step-toggle,.midi-assignable,.synth-key'
       );
 
     if(!candidate){
       return null;
+    }
+
+    if(
+      candidate.classList.contains(
+        "gb-knob-face"
+      )
+    ){
+      const shell=
+        candidate.closest(
+          ".gb-knob-shell"
+        );
+
+      return shell
+        ?shell.querySelector(
+            ".gb-knob-input"
+          )
+        :null;
     }
 
     if(
