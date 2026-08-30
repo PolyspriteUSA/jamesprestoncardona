@@ -5104,6 +5104,223 @@ input[type="range"]{
   letter-spacing:.08em!important;
 }
 
+
+/* ===== Large matched Track / Pattern selector buttons ===== */
+.sequencer-track-buttons,
+.compact-sequence-buttons{
+  display:grid!important;
+  grid-template-columns:repeat(8,48px)!important;
+  gap:6px!important;
+  align-items:center!important;
+}
+
+.sequencer-track-btn,
+.compact-sequence-buttons .sequence-btn{
+  width:48px!important;
+  min-width:48px!important;
+  max-width:48px!important;
+  height:48px!important;
+  min-height:48px!important;
+  padding:0!important;
+  border-radius:10px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  line-height:1!important;
+}
+
+.pattern-chain-btn{
+  grid-column:1/-1;
+  width:100%!important;
+  min-height:36px!important;
+  border-radius:10px!important;
+}
+
+.sequencer-track-selector-group{
+  min-width:430px!important;
+}
+
+@media(max-width:900px){
+  .sequencer-track-buttons,
+  .compact-sequence-buttons{
+    grid-template-columns:repeat(4,48px)!important;
+  }
+
+  .sequencer-track-selector-group{
+    min-width:220px!important;
+  }
+}
+
+
+/* ===== Full-width mixer ===== */
+.compact-mixer-console,
+.compact-mixer-console .mixing-console-body,
+.eight-track-mixer-section,
+.mixer-fader-bank{
+  width:100%!important;
+  max-width:none!important;
+}
+
+.mixer-fader-bank{
+  display:grid!important;
+  grid-template-columns:minmax(900px,1fr) 104px minmax(280px,330px)!important;
+  gap:8px!important;
+  align-items:stretch!important;
+  padding:0 8px 10px!important;
+  overflow-x:auto!important;
+}
+
+.mixer-fader-bank .eight-track-mixer{
+  width:100%!important;
+  min-width:900px!important;
+  display:grid!important;
+  grid-template-columns:repeat(8,minmax(106px,1fr))!important;
+  gap:7px!important;
+  overflow:visible!important;
+}
+
+.real-mixer-channel{
+  width:auto!important;
+  min-width:106px!important;
+  max-width:none!important;
+}
+
+.master-volume-strip{
+  width:104px!important;
+  min-width:104px!important;
+  flex:none!important;
+}
+
+.inline-master-fx{
+  width:100%!important;
+  min-width:280px!important;
+  max-width:330px!important;
+  flex:none!important;
+}
+
+
+/* ===== Visible per-channel EQ section above each fader ===== */
+.real-mixer-channel{
+  display:grid!important;
+  grid-template-rows:
+    13px
+    34px
+    62px
+    106px
+    26px
+    154px
+    16px!important;
+  gap:5px!important;
+  padding:8px 6px!important;
+}
+
+.channel-eq-grid{
+  width:100%!important;
+  min-height:106px!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(44px,1fr))!important;
+  grid-template-rows:repeat(2,50px)!important;
+  gap:6px 4px!important;
+  visibility:visible!important;
+  opacity:1!important;
+  overflow:visible!important;
+}
+
+.channel-eq-grid .mixer-mini-knob{
+  display:grid!important;
+  grid-template-rows:10px 34px 8px!important;
+  justify-items:center!important;
+  align-items:center!important;
+  min-width:0!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.channel-eq-grid .mixer-mini-knob>span{
+  display:block!important;
+  color:rgba(255,255,255,.74)!important;
+  font-size:7px!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+  line-height:10px!important;
+}
+
+.channel-eq-grid .rotary-knob-wrap{
+  display:block!important;
+  width:34px!important;
+  height:34px!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.channel-eq-grid .rotary-knob{
+  display:block!important;
+  width:34px!important;
+  height:34px!important;
+}
+
+.channel-eq-grid output{
+  display:block!important;
+  width:48px!important;
+  color:rgba(255,255,255,.42)!important;
+  font-size:6px!important;
+  line-height:8px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+
+
+/* ===== Explicit L / R pan indicator on every mixer channel ===== */
+.mixer-pan-control{
+  width:100%!important;
+  min-height:62px!important;
+  display:grid!important;
+  grid-template-rows:12px 42px 8px!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:0!important;
+}
+
+.pan-scale-label{
+  width:64px;
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:4px;
+  color:rgba(255,255,255,.55);
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.pan-scale-label span:first-child{
+  text-align:left;
+}
+
+.pan-scale-label span:nth-child(2){
+  color:rgba(255,255,255,.32);
+  font-size:6px;
+  text-align:center;
+}
+
+.pan-scale-label span:last-child{
+  text-align:right;
+}
+
+.mixer-pan-control .rotary-knob-wrap{
+  width:42px!important;
+  height:42px!important;
+}
+
+.mixer-pan-control output{
+  font-size:6px!important;
+  line-height:8px!important;
+}
+
 </style>
 </head>
 <body>
@@ -5439,13 +5656,17 @@ input[type="range"]{
           <button class="btn sequence-btn" data-seq="1" type="button">2</button>
           <button class="btn sequence-btn" data-seq="2" type="button">3</button>
           <button class="btn sequence-btn" data-seq="3" type="button">4</button>
+          <button class="btn sequence-btn" data-seq="4" type="button">5</button>
+          <button class="btn sequence-btn" data-seq="5" type="button">6</button>
+          <button class="btn sequence-btn" data-seq="6" type="button">7</button>
+          <button class="btn sequence-btn" data-seq="7" type="button">8</button>
           <button
-            class="btn compact-btn pattern-chain-btn active midi-assignable"
+            class="btn pattern-chain-btn active midi-assignable"
             data-midi-key="sequencer.patternChain"
             id="patternChainBtn"
             type="button"
           >
-            Chain 1→4: On
+            Chain 1→8: On
           </button>
         </div>
       </div>
@@ -5810,7 +6031,7 @@ input[type="range"]{
 
 const $=id=>document.getElementById(id);
 
-const SEQUENCE_COUNT=4;
+const SEQUENCE_COUNT=8;
 const STEPS_PER_SEQUENCE=16;
 
 const INSTRUMENT_OPTIONS=[
@@ -5832,6 +6053,39 @@ const tracks=[
   {id:"track7",name:"7",mixerChannel:6,type:"synth2",instrument:"synth2",level:.34,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:[[48,50,51,51,55,53,43,46,46,48,51,55,55,48,51,55],Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48),Array(STEPS_PER_SEQUENCE).fill(48)]},
   {id:"track8",name:"8",mixerChannel:7,type:"sample",instrument:"sample",level:.70,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)],notes:makeTrackNotes(60)}
 ];
+
+tracks.forEach(track=>{
+  const fallbackNote=
+    track.notes&&
+    track.notes[0]&&
+    Number.isFinite(track.notes[0][0])
+      ?track.notes[0][0]
+      :60;
+
+  while(
+    track.patterns.length<
+    SEQUENCE_COUNT
+  ){
+    track.patterns.push(
+      Array(
+        STEPS_PER_SEQUENCE
+      ).fill(0)
+    );
+  }
+
+  while(
+    track.notes.length<
+    SEQUENCE_COUNT
+  ){
+    track.notes.push(
+      Array(
+        STEPS_PER_SEQUENCE
+      ).fill(
+        fallbackNote
+      )
+    );
+  }
+});
 
 window.tracks=tracks;
 
@@ -7476,8 +7730,8 @@ function updatePatternChainButton(){
 
   button.textContent=
     patternChainEnabled
-      ?"Chain 1→4: On"
-      :"Chain 1→4: Off";
+      ?"Chain 1→8: On"
+      :"Chain 1→8: Off";
 
   button.setAttribute(
     "aria-pressed",
@@ -9806,11 +10060,41 @@ mixerChannels.forEach((channel,index)=>{
 
   const panTitle=
     document.createElement(
+      "div"
+    );
+
+  panTitle.className=
+    "pan-scale-label";
+
+  const panLeft=
+    document.createElement(
       "span"
     );
 
-  panTitle.textContent=
-    "Pan";
+  panLeft.textContent=
+    "L";
+
+  const panCenter=
+    document.createElement(
+      "span"
+    );
+
+  panCenter.textContent=
+    "PAN";
+
+  const panRight=
+    document.createElement(
+      "span"
+    );
+
+  panRight.textContent=
+    "R";
+
+  panTitle.append(
+    panLeft,
+    panCenter,
+    panRight
+  );
 
   const knobWrap=
     document.createElement(
