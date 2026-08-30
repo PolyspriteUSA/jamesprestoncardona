@@ -321,8 +321,10 @@
       </div>
 
       <iframe
+        id="resume-frame"
         class="resume-frame"
-        src="./resume.html"
+        data-src="./resume.html"
+        src="about:blank"
         title="James Preston Cardona Resume"
       ></iframe>
     </section>
@@ -417,11 +419,19 @@
         const modal = document.getElementById("resume-modal");
         const trigger = document.getElementById("resume-trigger");
         const close = document.getElementById("resume-close");
+        const frame = document.getElementById("resume-frame");
 
-        if (!modal || !trigger || !close) return;
+        if (!modal || !trigger || !close || !frame) return;
 
         function openResume(event) {
           if (event) event.preventDefault();
+
+          const baseUrl = frame.getAttribute("data-src") || "./resume.html";
+          frame.src =
+            baseUrl +
+            (baseUrl.includes("?") ? "&" : "?") +
+            "v=" +
+            Date.now();
 
           modal.classList.add("open");
           modal.setAttribute("aria-hidden", "false");
