@@ -26,6 +26,29 @@
     }
   </style>
 
+
+  <style>
+    .resume-plain {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .resume-plain::first-line {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .resume-scroll {
+      padding-top: 64px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -335,9 +358,74 @@
       >×</button>
 
       <div class="resume-scroll">
-        <div id="resume-live-content" class="resume-content" aria-live="polite">
-          <div class="resume-loading">Loading resume…</div>
-        </div>
+        <pre class="resume-plain" id="resume-modal-title">JAMES PRESTON CARDONA
+Senior Real-Time 3D Designer | Unreal Engine | Immersive Experiences | Virtual Production
+Dallas, TX | JamesPrestonCardona.com | JamesPrestonCardona@gmail.com | (214) 883-9567
+
+PROFESSIONAL SUMMARY
+Senior real-time 3D experience designer with 20+ years of experience spanning Unreal Engine, architectural visualization, virtual production, VR/AR, interactive media, character development, motion capture, cinematic production, and technical direction. Specializes in combining real-time technology, visual design, and production pipelines to transform architectural and creative concepts into interactive environments, cinematic experiences, and client-facing digital products. Experienced leading complex projects and collaborating across architecture, design, development, and production teams.
+
+CORE EXPERTISE
+Unreal Engine • Real-Time 3D • Architectural Visualization • Immersive Experiences • Environment &amp; Level Design • Virtual Production • VR / AR • Character Development • Motion Capture • Cinematics • Real-Time Lighting • Visual Effects • UX / UI • Technical Direction • Pipeline Development • Project Leadership
+
+TOOLS &amp; TECHNOLOGIES
+Real-Time / 3D: Unreal Engine, Blender, 3ds Max, Maya, ZBrush, Substance, Marvelous Designer, Twinmotion, Revit, Unity, Anima, Daz Studio
+Production / VFX: Nuke, After Effects, Premiere Pro, DaVinci Resolve, SynthEyes, Photoshop, Illustrator, InDesign
+Development: C++, C#, Python, JavaScript, Three.js, React, Angular, HTML5, CSS3, PHP, SQL, MySQL
+Audio / Additional: Pro Tools, FL Studio
+Compliance: ADA Accessibility, HIPAA
+
+PROFESSIONAL EXPERIENCE
+
+VLK Architects | Experience Designer
+March 2020–Present
+Design and develop interactive real-time architectural environments in Unreal Engine for client presentations, design communication, immersive visualization, and experiential storytelling.
+Lead character-development and motion-capture workflows for real-time architectural and interactive experiences.
+Create cinematic architectural visualization content integrating real-time 3D, animation, virtual cinematography, lighting, editing, motion graphics, compositing, and visual effects.
+Develop immersive VR experiences that allow clients and project teams to explore architectural environments at full scale before construction.
+Design and refine real-time and virtual-production pipelines supporting interactive, cinematic, and live production workflows.
+Optimize complex architectural assets, materials, lighting, characters, and environments for real-time performance and presentation.
+Collaborate with architects, designers, visualization teams, and technical stakeholders to translate design concepts into polished interactive and cinematic experiences.
+Research and implement emerging real-time technologies, tools, and production techniques to expand visualization capabilities.
+
+iTours | Director of Digital Design
+August 2016–March 2020
+Directed creative design and technical production across interactive experiences, mobile applications, VR/AR, animation, web development, and commercial media.
+Led projects from concept and client discovery through design, development, production, testing, and final delivery.
+Managed client relationships, project planning, technical direction, contracts, schedules, and multidisciplinary production workflows.
+Directed mobile VR and AR application design, development, and production.
+Developed interactive experiences combining 3D content, UX/UI, animation, video, and application development.
+Directed commercial and branded content from concept and scripting through cinematography, animation, lighting, editing, motion graphics, and color finishing.
+Bridged creative direction and technical implementation to deliver digital products across multiple platforms.
+
+City of Dallas | Coordinator III / Digital Designer
+August 2006–August 2016
+Designed and developed digital products and interactive systems supporting the Dallas Municipal Court, City Attorney’s Office, City Manager’s Office, Community Prosecution, Community Court, Dallas Love Field Airport, and Dallas Police initiatives.
+Led UX/UI design and full-stack development for public-facing and internal applications.
+Researched, designed, and developed Municipal Court payment kiosk interfaces, digital docket systems, digital signage, and other public-service technologies.
+Created user experiences for systems requiring accessibility, security, reliability, and public-sector compliance.
+Supported server infrastructure, Active Directory, databases, VMware environments, networking, and security for digital systems and services.
+Designed and administered multimedia streaming infrastructure supporting multicast and unicast video delivery.
+Produced documentary video, motion graphics, photography, and digital media for City Attorney, Community Prosecution, Dallas Police, and Dallas City Council initiatives.
+Coordinated technical and creative requirements across departments, stakeholders, vendors, and production teams.
+
+KVIA ABC Channel 7 | Master Controller
+May 2004–May 2006
+Managed master-control operations supporting live and scheduled television broadcasting.
+Performed technical-directing functions for live television and broadcast production.
+Supported satellite acquisition, linking, rebroadcasting, signal routing, and transmission workflows.
+Produced and edited broadcast content using linear and non-linear production systems.
+Created motion graphics and provided camera, editing, and production support for commercial and station content.
+
+EDUCATION
+University of Texas at Dallas
+Bachelor of Arts and Technology, Game Design | 2018
+
+TechSkills
+Microsoft Systems Engineer | 2009
+
+El Paso Community College
+Associate of Multimedia Production Technology, Web Design | 2006</pre>
       </div>
     </section>
   </div>
@@ -427,302 +515,32 @@
 
   <script>
     (function () {
-      const RESUME_URL = "https://script.google.com/macros/s/AKfycbyxqd7nU88hPW4AL7SRRPFl50d2mO2nI06vMwTn_LIMQzkmKv9rGqecM-hBYrgC8Gve/exec";
-
-      function escapeHtml(value) {
-        return value
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-
-      function isSectionHeading(line) {
-        return [
-          "PROFESSIONAL SUMMARY",
-          "CORE EXPERTISE",
-          "TOOLS & TECHNOLOGIES",
-          "PROFESSIONAL EXPERIENCE",
-          "EDUCATION"
-        ].includes(line);
-      }
-
-      function renderResume(text) {
-        const lines = text
-          .replace(/\r/g, "")
-          .split("\n")
-          .map(function (line) { return line.trim(); })
-          .filter(Boolean);
-
-        if (!lines.length) {
-          throw new Error("Resume file is empty.");
-        }
-
-        const name = lines[0] || "JAMES PRESTON CARDONA";
-        const role = lines[1] || "";
-        const contact = lines[2] || "";
-
-        let html = `
-          <header class="resume-header">
-            <div class="resume-kicker">Resume</div>
-            <h2 id="resume-modal-title">${escapeHtml(name)}</h2>
-            <p class="resume-role">${escapeHtml(role)}</p>
-            <div class="resume-contact-line">
-              ${contact.split("|").map(function (part) {
-                return "<span>" + escapeHtml(part.trim()) + "</span>";
-              }).join("")}
-            </div>
-          </header>
-        `;
-
-        let i = 3;
-
-        while (i < lines.length) {
-          const line = lines[i];
-
-          if (line === "PROFESSIONAL SUMMARY") {
-            i++;
-            const paragraphs = [];
-            while (i < lines.length && !isSectionHeading(lines[i])) {
-              paragraphs.push(lines[i]);
-              i++;
-            }
-
-            html += `
-              <section class="resume-section">
-                <h3>Professional Summary</h3>
-                ${paragraphs.map(function (p) {
-                  return "<p>" + escapeHtml(p) + "</p>";
-                }).join("")}
-              </section>
-            `;
-            continue;
-          }
-
-          if (line === "CORE EXPERTISE") {
-            i++;
-            const content = [];
-            while (i < lines.length && !isSectionHeading(lines[i])) {
-              content.push(lines[i]);
-              i++;
-            }
-
-            const tags = content
-              .join(" • ")
-              .split("•")
-              .map(function (item) { return item.trim(); })
-              .filter(Boolean);
-
-            html += `
-              <section class="resume-section">
-                <h3>Core Expertise</h3>
-                <div class="resume-tags">
-                  ${tags.map(function (tag) {
-                    return "<span>" + escapeHtml(tag) + "</span>";
-                  }).join("")}
-                </div>
-              </section>
-            `;
-            continue;
-          }
-
-          if (line === "TOOLS & TECHNOLOGIES") {
-            i++;
-            const tools = [];
-            while (i < lines.length && !isSectionHeading(lines[i])) {
-              tools.push(lines[i]);
-              i++;
-            }
-
-            html += `
-              <section class="resume-section">
-                <h3>Tools & Technologies</h3>
-                <div class="resume-tools">
-                  ${tools.map(function (item) {
-                    const splitAt = item.indexOf(":");
-                    if (splitAt === -1) {
-                      return "<div><p>" + escapeHtml(item) + "</p></div>";
-                    }
-                    const label = item.slice(0, splitAt).trim();
-                    const value = item.slice(splitAt + 1).trim();
-                    return `
-                      <div>
-                        <h4>${escapeHtml(label)}</h4>
-                        <p>${escapeHtml(value)}</p>
-                      </div>
-                    `;
-                  }).join("")}
-                </div>
-              </section>
-            `;
-            continue;
-          }
-
-          if (line === "PROFESSIONAL EXPERIENCE") {
-            i++;
-            const jobs = [];
-
-            while (i < lines.length && lines[i] !== "EDUCATION") {
-              const possibleJob = lines[i];
-
-              if (possibleJob.includes("|")) {
-                const titleParts = possibleJob.split("|");
-                const company = titleParts[0].trim();
-                const title = titleParts.slice(1).join("|").trim();
-                const dates = lines[i + 1] || "";
-                i += 2;
-
-                const bullets = [];
-                while (
-                  i < lines.length &&
-                  lines[i] !== "EDUCATION" &&
-                  !lines[i].includes("|")
-                ) {
-                  bullets.push(lines[i]);
-                  i++;
-                }
-
-                jobs.push({
-                  company: company,
-                  title: title,
-                  dates: dates,
-                  bullets: bullets
-                });
-              } else {
-                i++;
-              }
-            }
-
-            html += `
-              <section class="resume-section">
-                <h3>Professional Experience</h3>
-                ${jobs.map(function (job) {
-                  return `
-                    <article class="resume-job">
-                      <div class="resume-job-head">
-                        <div>
-                          <h4>${escapeHtml(job.company)}</h4>
-                          <p>${escapeHtml(job.title)}</p>
-                        </div>
-                        <time>${escapeHtml(job.dates)}</time>
-                      </div>
-                      <ul>
-                        ${job.bullets.map(function (bullet) {
-                          return "<li>" + escapeHtml(bullet) + "</li>";
-                        }).join("")}
-                      </ul>
-                    </article>
-                  `;
-                }).join("")}
-              </section>
-            `;
-            continue;
-          }
-
-          if (line === "EDUCATION") {
-            i++;
-            const schools = [];
-
-            while (i < lines.length) {
-              const school = lines[i] || "";
-              const degree = lines[i + 1] || "";
-              schools.push({ school: school, degree: degree });
-              i += 2;
-            }
-
-            html += `
-              <section class="resume-section">
-                <h3>Education</h3>
-                <div class="resume-education">
-                  ${schools.map(function (item) {
-                    return `
-                      <p>
-                        <strong>${escapeHtml(item.school)}</strong><br>
-                        ${escapeHtml(item.degree)}
-                      </p>
-                    `;
-                  }).join("")}
-                </div>
-              </section>
-            `;
-            continue;
-          }
-
-          i++;
-        }
-
-        return html;
-      }
-
       function initResumeModal() {
         const resumeModal = document.getElementById("resume-modal");
         const resumeTrigger = document.getElementById("resume-trigger");
         const resumeClose = document.getElementById("resume-close");
-        const resumeContent = document.getElementById("resume-live-content");
 
-        if (!resumeModal || !resumeTrigger || !resumeClose || !resumeContent) {
-          console.warn("Resume modal elements were not found.");
+        if (!resumeModal || !resumeTrigger || !resumeClose) {
           return;
         }
 
         let previousFocus = null;
-        let loading = false;
 
-        async function loadResume() {
-          if (loading) return;
-
-          loading = true;
-          resumeContent.innerHTML =
-            '<div class="resume-loading">Loading resume…</div>';
-
-          try {
-            const response = await fetch(
-              RESUME_URL + "?t=" + Date.now(),
-              { cache: "no-store" }
-            );
-
-            if (!response.ok) {
-              throw new Error("Resume request failed: " + response.status);
-            }
-
-            const text = await response.text();
-            resumeContent.innerHTML = renderResume(text);
-          } catch (error) {
-            console.error("Resume load failed.", error);
-            resumeContent.innerHTML = `
-              <div class="resume-error">
-                <strong>Resume unavailable.</strong>
-                <p>Please try again in a moment.</p>
-              </div>
-            `;
-          } finally {
-            loading = false;
-          }
-        }
-
-        async function openResume(event) {
+        function openResume(event) {
           if (event) {
             event.preventDefault();
             event.stopPropagation();
           }
 
           previousFocus = document.activeElement;
-
           resumeModal.classList.add("open");
           resumeModal.setAttribute("aria-hidden", "false");
           resumeTrigger.setAttribute("aria-expanded", "true");
           document.body.classList.add("resume-open");
 
-          loadResume();
-
-          window.setTimeout(function () {
-            try {
-              resumeClose.focus({ preventScroll: true });
-            } catch (error) {
-              resumeClose.focus();
-            }
-          }, 40);
+          setTimeout(function () {
+            resumeClose.focus();
+          }, 20);
         }
 
         function closeResume(event) {
@@ -736,17 +554,8 @@
           resumeTrigger.setAttribute("aria-expanded", "false");
           document.body.classList.remove("resume-open");
 
-          if (
-            previousFocus &&
-            typeof previousFocus.focus === "function"
-          ) {
-            window.setTimeout(function () {
-              try {
-                previousFocus.focus({ preventScroll: true });
-              } catch (error) {
-                previousFocus.focus();
-              }
-            }, 20);
+          if (previousFocus && typeof previousFocus.focus === "function") {
+            previousFocus.focus();
           }
         }
 
@@ -770,17 +579,12 @@
       }
 
       if (document.readyState === "loading") {
-        document.addEventListener(
-          "DOMContentLoaded",
-          initResumeModal,
-          { once: true }
-        );
+        document.addEventListener("DOMContentLoaded", initResumeModal, { once: true });
       } else {
         initResumeModal();
       }
     })();
   </script>
-
 
   <script src="./audio.js" defer></script>
   <script type="module" src="./main.js"></script>
