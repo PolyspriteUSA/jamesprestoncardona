@@ -1,0 +1,10 @@
+(function(){
+  window.GrooveboxApp={
+    version:"modular-1",
+    modules:[
+      "audio-engine","drum-machine","synth","arp","transport",
+      "sequencer","sampler","mixer","midi","project-save","visualizer"
+    ]
+  };
+  document.documentElement.dataset.grooveboxBuild="modular-1";
+})();
