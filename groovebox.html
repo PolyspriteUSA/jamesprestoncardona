@@ -12416,3 +12416,45 @@ animate();
 })();
 </script>\n</body>
 </html>
+<style>
+/* ===== TRADITIONAL SINGLE-ROW MIXER OVERRIDE ===== */
+.groovebox-mixer-section .assignable-mixer,
+.groovebox-mixer-section #mixer.assignable-mixer{
+  display:grid !important;
+  grid-template-columns:repeat(8,minmax(108px,1fr)) !important;
+  grid-auto-flow:column !important;
+  grid-auto-columns:minmax(108px,1fr) !important;
+  width:100% !important;
+  min-width:864px !important;
+  gap:0 !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  align-items:stretch !important;
+}
+.groovebox-mixer-section .mixer-console-strip{
+  grid-row:1 !important;
+  width:auto !important;
+  min-width:108px !important;
+  height:100% !important;
+}
+.groovebox-mixer-section .mixer-fader-control{
+  margin-top:auto;
+}
+.groovebox-mixer-section .mixer-channel-fader{
+  display:block !important;
+  width:24px !important;
+  height:150px !important;
+  min-height:150px !important;
+  margin:0 auto !important;
+  writing-mode:vertical-lr !important;
+  direction:rtl !important;
+}
+@media(max-width:900px){
+  .groovebox-mixer-section .assignable-mixer,
+  .groovebox-mixer-section #mixer.assignable-mixer{
+    grid-template-columns:repeat(8,108px) !important;
+    grid-auto-columns:108px !important;
+    min-width:864px !important;
+  }
+}
+</style>
