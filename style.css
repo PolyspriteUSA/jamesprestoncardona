@@ -1206,3 +1206,202 @@
         font-size: 0.59rem;
       }
     }
+/* =========================================================
+   RESUME MODAL
+   ========================================================= */
+
+body.resume-open {
+  overflow: hidden;
+}
+
+.resume-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:
+    calc(22px + env(safe-area-inset-top))
+    calc(22px + env(safe-area-inset-right))
+    calc(22px + env(safe-area-inset-bottom))
+    calc(22px + env(safe-area-inset-left));
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.resume-modal.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.resume-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(154,98,255,0.13), transparent 28%),
+    radial-gradient(circle at 78% 76%, rgba(255,56,209,0.08), transparent 24%),
+    rgba(2,2,5,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.resume-panel {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, 100%);
+  height: min(88svh, 920px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: #07070a;
+  box-shadow:
+    0 36px 120px rgba(0,0,0,0.68),
+    0 0 70px rgba(154,98,255,0.08);
+  transform: translateY(16px) scale(0.99);
+  transition: transform 240ms ease;
+}
+
+.resume-modal.open .resume-panel {
+  transform: translateY(0) scale(1);
+}
+
+.resume-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  height: 2px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--violet) 20%,
+      var(--magenta) 52%,
+      var(--violet) 82%,
+      transparent
+    );
+}
+
+.resume-toolbar {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(7,7,10,0.98);
+}
+
+.resume-kicker {
+  margin-bottom: 5px;
+  color: var(--violet);
+  font-size: 0.61rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.resume-toolbar h2 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.resume-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resume-open-page {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 15px;
+  border: 1px solid rgba(255,255,255,0.11);
+  color: rgba(255,255,255,0.62);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.resume-open-page:hover {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.94);
+}
+
+.resume-close {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.025);
+  color: rgba(255,255,255,0.78);
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.resume-close:hover {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.06);
+  transform: rotate(4deg);
+}
+
+.resume-frame-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #0a0a0e;
+}
+
+.resume-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #0a0a0e;
+}
+
+@media (max-width: 767px) {
+  .resume-modal {
+    padding:
+      calc(10px + env(safe-area-inset-top))
+      calc(10px + env(safe-area-inset-right))
+      calc(10px + env(safe-area-inset-bottom))
+      calc(10px + env(safe-area-inset-left));
+  }
+
+  .resume-panel {
+    height: calc(100svh - 20px);
+  }
+
+  .resume-toolbar {
+    min-height: 72px;
+    padding: 14px;
+  }
+
+  .resume-toolbar h2 {
+    font-size: 0.88rem;
+  }
+
+  .resume-open-page {
+    display: none;
+  }
+}

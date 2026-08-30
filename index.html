@@ -61,7 +61,7 @@
 
         <div class="hero-actions">
           <a class="button primary" href="#work">View Work</a>
-          <a class="button" href="./resume.html">Resume</a>
+          <button class="button" id="resume-trigger" type="button" aria-haspopup="dialog" aria-controls="resume-modal" aria-expanded="false">Resume</button>
           <button class="button contact-trigger" type="button">Contact</button>
         </div>
       </div>
@@ -293,6 +293,50 @@
           </div>
           <div class="experience-thumb experience-thumb--spiders" aria-hidden="true"></div>
         </a>
+      </div>
+    </div>
+  </div>
+
+
+  <div
+    id="resume-modal"
+    class="resume-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="resume-modal-title"
+    aria-hidden="true"
+  >
+    <div class="resume-backdrop" data-resume-close></div>
+
+    <div class="resume-panel">
+      <div class="resume-toolbar">
+        <div>
+          <div class="resume-kicker">Resume</div>
+          <h2 id="resume-modal-title">James Preston Cardona</h2>
+        </div>
+
+        <div class="resume-toolbar-actions">
+          <a class="resume-open-page" href="./resume.html" target="_blank" rel="noopener noreferrer">
+            Open Full Page
+          </a>
+
+          <button
+            id="resume-close"
+            class="resume-close"
+            type="button"
+            aria-label="Close resume"
+          >×</button>
+        </div>
+      </div>
+
+      <div class="resume-frame-wrap">
+        <iframe
+          id="resume-frame"
+          class="resume-frame"
+          src="./resume.html"
+          title="James Preston Cardona Resume"
+          loading="lazy"
+        ></iframe>
       </div>
     </div>
   </div>
