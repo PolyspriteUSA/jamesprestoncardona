@@ -6501,6 +6501,413 @@ input[type="range"]{
   }
 }
 
+
+/* ================================================================
+   COMPACT SYNTH WORKSPACE
+   ================================================================ */
+.synth-workspace-card{
+  overflow:visible!important;
+}
+
+.synth-workspace-content{
+  padding:0!important;
+}
+
+.synth-workspace-head{
+  min-height:42px!important;
+  padding:8px 12px!important;
+  gap:8px!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+}
+
+.synth-workspace-head h2{
+  margin:0!important;
+  font-size:13px!important;
+}
+
+.synth-workspace-head>span{
+  font-size:9px!important;
+}
+
+.synth-panel{
+  padding:8px!important;
+}
+
+.synth-box{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+/* One consistent shell for every synth module */
+.synth-module-shell,
+.synth-submodule{
+  border:1px solid rgba(255,255,255,.07)!important;
+  border-radius:12px!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,18,27,.92),
+      rgba(8,8,13,.94)
+    )!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.02)!important;
+}
+
+.synth-module-shell{
+  padding:7px!important;
+}
+
+.synth-submodule{
+  padding:6px!important;
+}
+
+/* Compact header + synth selector on same row */
+.synth-compact-header{
+  min-height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:6px 8px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,18,27,.92),
+      rgba(8,8,13,.94)
+    );
+}
+
+.synth-compact-header .synth-head{
+  min-width:0;
+  display:flex!important;
+  align-items:center!important;
+  flex-direction:row!important;
+  gap:10px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+.synth-compact-header .synth-head strong{
+  font-size:11px!important;
+  white-space:nowrap;
+}
+
+.synth-compact-header .synth-head span{
+  color:var(--muted)!important;
+  font-size:8px!important;
+  white-space:nowrap;
+}
+
+.synth-selector{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+.synth-selector-buttons{
+  gap:5px!important;
+}
+
+.synth-select-btn{
+  min-height:30px!important;
+  padding:5px 11px!important;
+  border-radius:8px!important;
+  font-size:9px!important;
+}
+
+/* Oscillators + visualizer stay in one tight 3-column row */
+.osc-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(220px,.72fr) minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:stretch!important;
+}
+
+.osc-panel,
+.osc-visualizer-panel{
+  min-width:0!important;
+  margin:0!important;
+}
+
+.osc-title{
+  min-height:26px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:6px!important;
+  margin:0 0 5px!important;
+  padding:0 2px 5px!important;
+  border-bottom:1px solid rgba(255,255,255,.05)!important;
+}
+
+.osc-title strong{
+  font-size:9px!important;
+  letter-spacing:.07em!important;
+}
+
+.osc-title span{
+  font-size:7px!important;
+  white-space:nowrap!important;
+}
+
+/* Dense knob-card grid */
+.synth-controls{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(54px,1fr))!important;
+  gap:5px!important;
+  align-items:stretch!important;
+}
+
+.osc-panel .synth-controls{
+  grid-template-columns:repeat(4,minmax(54px,1fr))!important;
+}
+
+.synth-controls .knob-card{
+  min-width:0!important;
+  min-height:66px!important;
+  padding:5px 3px!important;
+  border:1px solid rgba(255,255,255,.045)!important;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.012)!important;
+  display:grid!important;
+  grid-template-rows:18px 1fr!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:2px!important;
+}
+
+.synth-controls .knob-card label{
+  min-height:18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  margin:0!important;
+  color:rgba(255,255,255,.62)!important;
+  font-size:7px!important;
+  line-height:1.05!important;
+  text-align:center!important;
+}
+
+.synth-controls .knob-card output{
+  font-size:6px!important;
+  line-height:1!important;
+}
+
+.synth-controls select{
+  width:100%!important;
+  min-height:28px!important;
+  padding:3px 5px!important;
+  border-radius:7px!important;
+  font-size:8px!important;
+}
+
+/* Smaller rotary controls */
+.synth-rotary-wrap{
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+}
+
+.synth-rotary-knob{
+  width:42px!important;
+  height:42px!important;
+}
+
+.synth-rotary-input{
+  width:42px!important;
+  height:42px!important;
+}
+
+/* Visualizer compact */
+.osc-visualizer-panel{
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+#oscVisualizer{
+  width:100%!important;
+  height:116px!important;
+  min-height:116px!important;
+  max-height:116px!important;
+  border-radius:8px!important;
+  margin-top:auto!important;
+  margin-bottom:auto!important;
+}
+
+/* FM/Filter + Envelope sit next to each other */
+.synth-lower-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:stretch!important;
+}
+
+.synth-fm-filter-panel,
+.envelope-panel{
+  min-width:0!important;
+  margin:0!important;
+}
+
+.fm-lfo-layout{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+
+.fm-module-title{
+  min-height:22px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:4px!important;
+  margin-bottom:4px!important;
+}
+
+.fm-module-title strong{
+  font-size:8px!important;
+}
+
+.fm-module-title span{
+  font-size:6px!important;
+}
+
+.fm-filter-controls,
+.lfo-controls{
+  grid-template-columns:repeat(3,minmax(46px,1fr))!important;
+}
+
+.envelope-controls{
+  grid-template-columns:repeat(4,minmax(50px,1fr))!important;
+}
+
+/* Keyboard and octave control in one short strip */
+.synth-keyboard-strip{
+  display:grid!important;
+  grid-template-columns:170px minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:stretch!important;
+}
+
+.synth-keyboard-tools{
+  min-height:74px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:6px!important;
+  margin:0!important;
+}
+
+.keyboard-scale-control label{
+  margin:0!important;
+  gap:3px!important;
+}
+
+.keyboard-scale-control label span{
+  font-size:7px!important;
+}
+
+.keyboard-scale-control output{
+  font-size:7px!important;
+}
+
+.keyboard-scale-control input{
+  width:100%!important;
+}
+
+.synth-keyboard{
+  height:74px!important;
+  min-height:74px!important;
+  max-height:74px!important;
+  margin:0!important;
+  border-radius:10px!important;
+}
+
+.synth-key{
+  height:74px!important;
+  min-height:74px!important;
+  font-size:8px!important;
+}
+
+.synth-key.black{
+  height:45px!important;
+  min-height:45px!important;
+}
+
+/* Remove redundant vertical whitespace from old wrappers */
+.synth-fm-filter-panel,
+.envelope-panel,
+.osc-panel,
+.osc-visualizer-panel,
+.keyboard-scale-control{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+
+@media(max-width:1180px){
+  .osc-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  .osc-visualizer-panel{
+    grid-column:1/-1!important;
+  }
+
+  #oscVisualizer{
+    height:100px!important;
+    min-height:100px!important;
+    max-height:100px!important;
+  }
+
+  .synth-lower-grid{
+    grid-template-columns:1fr!important;
+  }
+}
+
+@media(max-width:780px){
+  .synth-compact-header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .synth-compact-header .synth-head{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:2px!important;
+  }
+
+  .osc-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  .osc-visualizer-panel{
+    grid-column:auto!important;
+  }
+
+  .synth-controls,
+  .osc-panel .synth-controls,
+  .envelope-controls{
+    grid-template-columns:repeat(2,minmax(60px,1fr))!important;
+  }
+
+  .fm-lfo-layout{
+    grid-template-columns:1fr!important;
+  }
+
+  .synth-keyboard-strip{
+    grid-template-columns:1fr!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -6556,18 +6963,20 @@ input[type="range"]{
 <div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="synth" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div>
 <div class="synth-panel collapsible-body" data-collapse-id="synth">
 <div class="synth-box">
-<div class="synth-head">
-<strong>Dual Oscillator Synthesizer</strong>
-<span>two oscillators • filters • frequency modulation • ADSR • delay</span>
-</div>
-<div class="synth-selector" aria-label="Select synthesizer">
-  <div class="synth-selector-buttons">
-    <button class="synth-select-btn active" data-synth-select="synth" type="button">Synth 1</button>
-    <button class="synth-select-btn" data-synth-select="synth2" type="button">Synth 2</button>
+<div class="synth-compact-header">
+  <div class="synth-head">
+    <strong>Dual Oscillator Synthesizer</strong>
+    <span>oscillators • modulation • envelope • delay</span>
+  </div>
+  <div class="synth-selector" aria-label="Select synthesizer">
+    <div class="synth-selector-buttons">
+      <button class="synth-select-btn active" data-synth-select="synth" type="button">Synth 1</button>
+      <button class="synth-select-btn" data-synth-select="synth2" type="button">Synth 2</button>
+    </div>
   </div>
 </div>
 <div class="osc-grid">
-<div class="osc-panel">
+<div class="osc-panel synth-module-shell">
 <div class="osc-title">
 <strong>Oscillator 1</strong>
 <span>primary</span>
@@ -6608,14 +7017,14 @@ input[type="range"]{
 </div>
 </div>
 </div>
-<div class="osc-visualizer-panel">
+<div class="osc-visualizer-panel synth-module-shell">
 <div class="osc-title">
 <strong>Wave Visualizer</strong>
 <span>live Synth 1 + Synth 2 output</span>
 </div>
 <canvas aria-label="Live synthesizer waveform visualizer" height="220" id="oscVisualizer" width="360"></canvas>
 </div>
-<div class="osc-panel">
+<div class="osc-panel synth-module-shell">
 <div class="osc-title">
 <strong>Oscillator 2</strong>
 <span>layer</span>
@@ -6657,13 +7066,13 @@ input[type="range"]{
 </div>
 </div>
 </div>
-<div class="synth-fm-filter-panel">
+<div class="synth-lower-grid"><div class="synth-fm-filter-panel synth-module-shell">
 <div class="osc-title">
 <strong>Frequency Mod Filter</strong>
 <span>filter + dual low frequency oscillators</span>
 </div>
 <div class="fm-lfo-layout">
-<div class="fm-module fm-filter-module">
+<div class="fm-module fm-filter-module synth-submodule">
 <div class="fm-module-title">
 <strong>Filter</strong>
 <span>modulated cutoff</span>
@@ -6688,7 +7097,7 @@ input[type="range"]{
 </div>
 </div>
 </div>
-<div class="fm-module lfo-module">
+<div class="fm-module lfo-module synth-submodule">
 <div class="fm-module-title">
 <strong>LFO 1</strong>
 <span>frequency modulation</span>
@@ -6713,7 +7122,7 @@ input[type="range"]{
 </div>
 </div>
 </div>
-<div class="fm-module lfo-module">
+<div class="fm-module lfo-module synth-submodule">
 <div class="fm-module-title">
 <strong>LFO 2</strong>
 <span>secondary modulation</span>
@@ -6740,7 +7149,7 @@ input[type="range"]{
 </div>
 </div>
 </div>
-<div class="envelope-panel">
+<div class="envelope-panel synth-module-shell">
 <div class="osc-title">
 <strong>Amplitude Envelope</strong>
 <span>ADSR + synth delay</span>
@@ -6779,15 +7188,14 @@ input[type="range"]{
 <div class="synth-rotary-wrap"><input class="synth-rotary-input" id="synthLevel" max=".8" min="0" step=".01" type="range" value=".38"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
 </div>
 </div>
-</div>
-<div class="keyboard-scale-control">
+</div></div>
+<div class="synth-keyboard-strip"><div class="keyboard-scale-control synth-module-shell synth-keyboard-tools">
 <label for="keyScale">
 <span>Keyboard Octave · Full Range</span>
 <output id="keyScaleOut">C4–C5</output>
 </label>
 <input id="keyScale" max="8" min="0" step="1" type="range" value="4"/>
-</div>
-<div class="synth-keyboard" id="synthKeyboard"><button class="synth-key" data-midi="60" style="--white-slot:0" type="button">C4</button><button class="synth-key black" data-midi="61" style="--black-slot:1" type="button"></button><button class="synth-key" data-midi="62" style="--white-slot:1" type="button">D4</button><button class="synth-key black" data-midi="63" style="--black-slot:2" type="button"></button><button class="synth-key" data-midi="64" style="--white-slot:2" type="button">E4</button><button class="synth-key" data-midi="65" style="--white-slot:3" type="button">F4</button><button class="synth-key black" data-midi="66" style="--black-slot:4" type="button"></button><button class="synth-key" data-midi="67" style="--white-slot:4" type="button">G4</button><button class="synth-key black" data-midi="68" style="--black-slot:5" type="button"></button><button class="synth-key" data-midi="69" style="--white-slot:5" type="button">A4</button><button class="synth-key black" data-midi="70" style="--black-slot:6" type="button"></button><button class="synth-key" data-midi="71" style="--white-slot:6" type="button">B4</button><button class="synth-key" data-midi="72" style="--white-slot:7" type="button">C5</button></div>
+</div><div class="synth-keyboard" id="synthKeyboard"><button class="synth-key" data-midi="60" style="--white-slot:0" type="button">C4</button><button class="synth-key black" data-midi="61" style="--black-slot:1" type="button"></button><button class="synth-key" data-midi="62" style="--white-slot:1" type="button">D4</button><button class="synth-key black" data-midi="63" style="--black-slot:2" type="button"></button><button class="synth-key" data-midi="64" style="--white-slot:2" type="button">E4</button><button class="synth-key" data-midi="65" style="--white-slot:3" type="button">F4</button><button class="synth-key black" data-midi="66" style="--black-slot:4" type="button"></button><button class="synth-key" data-midi="67" style="--white-slot:4" type="button">G4</button><button class="synth-key black" data-midi="68" style="--black-slot:5" type="button"></button><button class="synth-key" data-midi="69" style="--white-slot:5" type="button">A4</button><button class="synth-key black" data-midi="70" style="--black-slot:6" type="button"></button><button class="synth-key" data-midi="71" style="--white-slot:6" type="button">B4</button><button class="synth-key" data-midi="72" style="--white-slot:7" type="button">C5</button></div></div>
 </div>
 </div>
 </div>
