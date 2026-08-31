@@ -1,16 +1,13 @@
-JPC GROOVEBOX — SELF-CONTAINED FOLDER
+GROOVEBOX SELF-CONTAINED FOLDER
 
-Place this entire /groovebox folder in the repository root.
+All Groovebox files live in this folder.
 
 Structure:
-/groovebox/groovebox.html
-/groovebox/groovebox.css
-/groovebox/js/*.js
+  groovebox.html
+  groovebox.css     <-- single stylesheet / CSS source of truth
+  js/               <-- modular JavaScript
 
-Because groovebox.html moved from the repository root into /groovebox,
-update the portfolio/game link to:
-./groovebox/groovebox.html
+From the website root, link to:
+  ./groovebox/groovebox.html
 
-Navigation inside Groovebox is already updated to return to:
-../index.html
-../resume.html
+Do not add additional Groovebox CSS files. Keep mixer, synth, sequencer, and responsive styling in groovebox.css so there is one cascade to debug.
