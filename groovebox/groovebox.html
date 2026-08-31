@@ -397,10 +397,95 @@
 <div class="mixing-console-head">
 <strong>Mixing Console</strong>
 <span>8 channels • EQ • pan • master effects</span>
-<div class="mixer-settings-actions">
-  <button class="btn mixer-settings-btn" id="openAudioSettings" type="button">Audio Settings</button>
-  <button class="btn mixer-settings-btn" id="openMidiSettings" type="button">MIDI Settings</button>
+<details class="mixer-settings-menu"><summary>Settings</summary><div class="mixer-settings-menu-panel"><details class="mixer-settings-group"><summary>Audio Settings</summary><div class="mixer-settings-group-body"><div class="audio-settings-grid">
+<label class="audio-setting">
+<span>Latency</span>
+<select id="audioLatency">
+<option value="interactive">Interactive</option>
+<option value="balanced">Balanced</option>
+<option value="playback">Playback</option>
+</select>
+</label>
+<label class="audio-setting">
+<span>Sample Rate</span>
+<select id="audioSampleRate">
+<option value="default">System Default</option>
+<option value="44100">44.1 kHz</option>
+<option value="48000">48 kHz</option>
+<option value="96000">96 kHz</option>
+</select>
+</label>
+<label class="audio-setting audio-output-setting">
+<span>Output Device</span>
+<select id="audioOutput">
+<option value="default">System Default</option>
+</select>
+</label>
+<label class="audio-setting audio-input-setting">
+<span>Audio Input</span>
+<select id="audioInput">
+<option value="default">System Default</option>
+</select>
+</label>
+<button class="btn audio-input-enable" id="audioInputEnable" type="button">
+                  Enable Audio Input
+                </button>
+<label class="audio-setting audio-monitor-setting">
+<span>Input Monitor</span>
+<select id="audioInputMonitor">
+<option value="off">Off</option>
+<option value="on">On</option>
+</select>
+</label>
+<button class="btn audio-restart" id="audioRestart" type="button">
+                  Restart Audio Engine
+                </button>
+<div class="audio-status" id="audioStatus">
+                  Audio engine not started
+                </div>
+<div class="audio-status" id="audioInputStatus">
+                  Audio input disabled
+                </div>
+</div></div></details><details class="mixer-settings-group"><summary>MIDI Settings</summary><div class="mixer-settings-group-body"><div class="mixer-midi">
+<div class="embedded-mixer-head mixer-midi-head">
+<strong>MIDI Controller</strong>
+<span>input • target • channel</span>
 </div>
+<div class="midi-panel">
+<div class="midi-grid">
+<button class="btn" id="midiConnect" type="button">Connect MIDI</button>
+<select aria-label="MIDI target instrument" id="midiTarget">
+<option value="synth">Synth 1</option>
+<option value="synth2">Synth 2</option>
+</select>
+<select aria-label="MIDI input" id="midiInput">
+<option value="">No MIDI input</option>
+</select>
+<select aria-label="MIDI channel" id="midiChannel">
+<option value="all">All Channels</option>
+<option value="1">Channel 1</option>
+<option value="2">Channel 2</option>
+<option value="3">Channel 3</option>
+<option value="4">Channel 4</option>
+<option value="5">Channel 5</option>
+<option value="6">Channel 6</option>
+<option value="7">Channel 7</option>
+<option value="8">Channel 8</option>
+<option value="9">Channel 9</option>
+<option value="10">Channel 10</option>
+<option value="11">Channel 11</option>
+<option value="12">Channel 12</option>
+<option value="13">Channel 13</option>
+<option value="14">Channel 14</option>
+<option value="15">Channel 15</option>
+<option value="16">Channel 16</option>
+</select>
+<div class="midi-status" id="midiStatus">
+              MIDI disconnected
+            </div>
+</div>
+</div>
+</div></div></details></div></details>
 <div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console"><div class="embedded-mixer-row">
 <div class="console-column console-instruments">
 <div class="mixer-section">
@@ -533,117 +618,10 @@
 <output id="bassFilterDriveOut">8%</output>
 </div>
 </div>
-</div></div></div>
+</div></div>
 </section>
 
-<div class="mixer-settings-modal" id="audioSettingsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="audioSettingsTitle">
-  <div class="mixer-settings-backdrop" data-mixer-settings-close></div>
-  <section class="mixer-settings-panel">
-    <div class="mixer-settings-panel-head">
-      <div><strong id="audioSettingsTitle">Audio Settings</strong><span>engine • output • latency</span></div>
-      <button class="mixer-settings-close" type="button" data-mixer-settings-close aria-label="Close Audio Settings">×</button>
-    </div>
-    <div class="audio-settings-grid">
-<label class="audio-setting">
-<span>Latency</span>
-<select id="audioLatency">
-<option value="interactive">Interactive</option>
-<option value="balanced">Balanced</option>
-<option value="playback">Playback</option>
-</select>
-</label>
-<label class="audio-setting">
-<span>Sample Rate</span>
-<select id="audioSampleRate">
-<option value="default">System Default</option>
-<option value="44100">44.1 kHz</option>
-<option value="48000">48 kHz</option>
-<option value="96000">96 kHz</option>
-</select>
-</label>
-<label class="audio-setting audio-output-setting">
-<span>Output Device</span>
-<select id="audioOutput">
-<option value="default">System Default</option>
-</select>
-</label>
-<label class="audio-setting audio-input-setting">
-<span>Audio Input</span>
-<select id="audioInput">
-<option value="default">System Default</option>
-</select>
-</label>
-<button class="btn audio-input-enable" id="audioInputEnable" type="button">
-                  Enable Audio Input
-                </button>
-<label class="audio-setting audio-monitor-setting">
-<span>Input Monitor</span>
-<select id="audioInputMonitor">
-<option value="off">Off</option>
-<option value="on">On</option>
-</select>
-</label>
-<button class="btn audio-restart" id="audioRestart" type="button">
-                  Restart Audio Engine
-                </button>
-<div class="audio-status" id="audioStatus">
-                  Audio engine not started
-                </div>
-<div class="audio-status" id="audioInputStatus">
-                  Audio input disabled
-                </div>
-</div>
-  </section>
-</div>
-<div class="mixer-settings-modal" id="midiSettingsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="midiSettingsTitle">
-  <div class="mixer-settings-backdrop" data-mixer-settings-close></div>
-  <section class="mixer-settings-panel">
-    <div class="mixer-settings-panel-head">
-      <div><strong id="midiSettingsTitle">MIDI Settings</strong><span>input • target • channel</span></div>
-      <button class="mixer-settings-close" type="button" data-mixer-settings-close aria-label="Close MIDI Settings">×</button>
-    </div>
-    <div class="mixer-midi">
-<div class="embedded-mixer-head mixer-midi-head">
-<strong>MIDI Controller</strong>
-<span>input • target • channel</span>
-</div>
-<div class="midi-panel">
-<div class="midi-grid">
-<button class="btn" id="midiConnect" type="button">Connect MIDI</button>
-<select aria-label="MIDI target instrument" id="midiTarget">
-<option value="synth">Synth 1</option>
-<option value="synth2">Synth 2</option>
-</select>
-<select aria-label="MIDI input" id="midiInput">
-<option value="">No MIDI input</option>
-</select>
-<select aria-label="MIDI channel" id="midiChannel">
-<option value="all">All Channels</option>
-<option value="1">Channel 1</option>
-<option value="2">Channel 2</option>
-<option value="3">Channel 3</option>
-<option value="4">Channel 4</option>
-<option value="5">Channel 5</option>
-<option value="6">Channel 6</option>
-<option value="7">Channel 7</option>
-<option value="8">Channel 8</option>
-<option value="9">Channel 9</option>
-<option value="10">Channel 10</option>
-<option value="11">Channel 11</option>
-<option value="12">Channel 12</option>
-<option value="13">Channel 13</option>
-<option value="14">Channel 14</option>
-<option value="15">Channel 15</option>
-<option value="16">Channel 16</option>
-</select>
-<div class="midi-status" id="midiStatus">
-              MIDI disconnected
-            </div>
-</div>
-</div>
 
-  </section>
-</div>
 <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 <script type="importmap">
 {
