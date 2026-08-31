@@ -42,12 +42,6 @@ function refreshSequenceView(){
     );
   });
 
-  document.querySelectorAll(".step-note-select").forEach(select=>{
-    const stepIndex=+select.dataset.step;
-    select.value=String(
-      getStepNotes(select.dataset.type)[stepIndex]
-    );
-  });
 
   document.querySelectorAll(".step").forEach(
     stepEl=>stepEl.classList.remove("playing")
@@ -153,52 +147,6 @@ function syncTrackButtons(){
   });
 }
 
-function makeNoteSelect(track,step){
-  const select=document.createElement("select");
-  select.className="step-note-select";
-
-  const notes=synthNoteChoices;
-  const current=getStepNotes(track.type)[step];
-
-  select.dataset.step=step;
-  select.dataset.type=track.type;
-
-  notes.forEach(midi=>{
-    const option=document.createElement("option");
-    option.value=midi;
-    option.textContent=noteName(midi);
-    if(midi===current)option.selected=true;
-    select.appendChild(option);
-  });
-
-  select.addEventListener("pointerdown",event=>{
-    event.stopPropagation();
-  });
-
-  select.addEventListener("click",event=>{
-    event.stopPropagation();
-  });
-
-  select.addEventListener("change",event=>{
-    event.stopPropagation();
-    const midi=parseInt(select.value,10);
-
-    getStepNotes(track.type)[step]=midi;
-    updateMidiPitchForStep(track.type,step,midi);
-
-    if(audio&&audio.state!=="suspended"){
-      leadSynth(
-        audio.currentTime,
-        midi,
-        track.level,
-        track.type
-      );
-    }
-  });
-
-  return select;
-}
-
 tracks.forEach((track,ti)=>{
   const row=document.createElement("div");
   row.className="track";
@@ -255,7 +203,12 @@ tracks.forEach((track,ti)=>{
   });
 
   buttons.append(mute,solo);
-  name.append(title,assignment,buttons);
+
+  const trackControls=document.createElement("div");
+  trackControls.className="track-name-controls";
+  trackControls.append(assignment,buttons);
+
+  name.append(title,trackControls);
   row.appendChild(name);
 
   getTrackPattern(track,0).forEach((on,si)=>{
@@ -264,34 +217,23 @@ tracks.forEach((track,ti)=>{
       track.type==="synth2";
 
     if(noteTrack){
-      const pad=document.createElement("div");
-      pad.className=
-        "step note-pad"+
-        (on?" on":"");
+      const pad=document.createElement("button");
+      pad.type="button";
+      pad.className="step"+(on?" on":"");
       pad.dataset.track=ti;
       pad.dataset.step=si;
-
-      const toggle=document.createElement("button");
-      toggle.type="button";
-      toggle.className="step-toggle";
-      toggle.setAttribute(
+      pad.setAttribute(
         "aria-label",
         track.name+" step "+(si+1)
       );
 
-      toggle.addEventListener("click",()=>{
+      pad.addEventListener("click",()=>{
         const pattern=getTrackPattern(track);
         pattern[si]=pattern[si]?0:1;
-        if(noteTrack)updateMidiEventForStep(track.type,si,!!pattern[si]);
-        pad.classList.toggle(
-          "on",
-          !!pattern[si]
-        );
+        updateMidiEventForStep(track.type,si,!!pattern[si]);
+        pad.classList.toggle("on",!!pattern[si]);
       });
 
-      const select=makeNoteSelect(track,si);
-
-      pad.append(toggle,select);
       row.appendChild(pad);
     }else{
       const pad=document.createElement("button");
