@@ -397,6 +397,10 @@
 <div class="mixing-console-head">
 <strong>Mixing Console</strong>
 <span>8 channels • EQ • pan • master effects</span>
+<div class="mixer-settings-actions">
+  <button class="btn mixer-settings-btn" id="openAudioSettings" type="button">Audio Settings</button>
+  <button class="btn mixer-settings-btn" id="openMidiSettings" type="button">MIDI Settings</button>
+</div>
 <div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console"><div class="embedded-mixer-row">
 <div class="console-column console-instruments">
 <div class="mixer-section">
@@ -412,7 +416,134 @@
 <div class="embedded-mixer-head">
 <strong>Master FX</strong>
 <span>reverb • decay • drive • master • VU</span>
-</div><details class="mixer-audio-settings"><summary>Audio Settings<span class="mixer-audio-settings-meta">engine • output • latency</span></summary><div class="audio-settings-grid">
+</div>
+<div class="fx master-console-layout">
+<div class="instrument-master-filter">
+<div class="embedded-mixer-head instrument-filter-head">
+<strong>Master Filter</strong>
+<span>synth post-filter</span>
+</div>
+<div class="rotary-filter-grid">
+<label class="rotary-control">
+<span>Type</span>
+<select id="synthFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</label>
+<div class="rotary-control">
+<span>Cutoff</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
+<div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
+</div>
+<output id="synthFilterCutoffOut">4200 Hz</output>
+</div>
+<div class="rotary-control">
+<span>Resonance</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
+<div class="rotary-knob" data-knob-for="synthFilterRes"></div>
+</div>
+<output id="synthFilterResOut">4.0</output>
+</div>
+<div class="rotary-control">
+<span>Drive</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
+<div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
+</div>
+<output id="synthFilterDriveOut">0%</output>
+</div>
+</div>
+</div>
+<div aria-label="Master output VU meters" class="master-meter-block">
+<div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
+<div class="master-vu-pair">
+<div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
+<div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
+</div>
+</div>
+<div class="master-fader-row">
+<label class="master-console-fader">
+<span class="mixer-fader-label">REVERB</span>
+<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/></div>
+<output id="reverbOut">22%</output>
+</label>
+<label class="master-console-fader">
+<span class="mixer-fader-label">DECAY</span>
+<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/></div>
+<output id="reverbDecayOut">2.4 s</output>
+</label>
+<label class="master-console-fader">
+<span class="mixer-fader-label">DRIVE</span>
+<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/></div>
+<output id="driveOut">8%</output>
+</label>
+<label class="master-console-fader master-volume-fader">
+<span class="mixer-fader-label">MASTER</span>
+<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/></div>
+<output id="masterOut">82%</output>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="mixing-console-utilities"><div class="instrument-bass-filter">
+<div class="embedded-mixer-head instrument-filter-head">
+<strong>Bass Filter</strong>
+<span>bass tone shaping</span>
+</div>
+<div class="rotary-filter-grid">
+<label class="rotary-control">
+<span>Type</span>
+<select id="bassFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</label>
+<div class="rotary-control">
+<span>Cutoff</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterCutoff" max="8000" min="50" type="range" value="900"/>
+<div class="rotary-knob" data-knob-for="bassFilterCutoff"></div>
+</div>
+<output id="bassFilterCutoffOut">900 Hz</output>
+</div>
+<div class="rotary-control">
+<span>Resonance</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterRes" max="24" min=".1" step=".1" type="range" value="6"/>
+<div class="rotary-knob" data-knob-for="bassFilterRes"></div>
+</div>
+<output id="bassFilterResOut">6.0</output>
+</div>
+<div class="rotary-control">
+<span>Drive</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterDrive" max="1" min="0" step=".01" type="range" value=".08"/>
+<div class="rotary-knob" data-knob-for="bassFilterDrive"></div>
+</div>
+<output id="bassFilterDriveOut">8%</output>
+</div>
+</div>
+</div></div></div>
+</section>
+
+<div class="mixer-settings-modal" id="audioSettingsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="audioSettingsTitle">
+  <div class="mixer-settings-backdrop" data-mixer-settings-close></div>
+  <section class="mixer-settings-panel">
+    <div class="mixer-settings-panel-head">
+      <div><strong id="audioSettingsTitle">Audio Settings</strong><span>engine • output • latency</span></div>
+      <button class="mixer-settings-close" type="button" data-mixer-settings-close aria-label="Close Audio Settings">×</button>
+    </div>
+    <div class="audio-settings-grid">
 <label class="audio-setting">
 <span>Latency</span>
 <select id="audioLatency">
@@ -461,123 +592,17 @@
 <div class="audio-status" id="audioInputStatus">
                   Audio input disabled
                 </div>
-</div></details>
-<div class="fx master-console-layout">
-<div aria-label="Master output VU meters" class="master-meter-block">
-<div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
-<div class="master-vu-pair">
-<div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
-<div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
 </div>
+  </section>
 </div>
-<div class="master-fader-row">
-<label class="master-console-fader">
-<span class="mixer-fader-label">REVERB</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/></div>
-<output id="reverbOut">22%</output>
-</label>
-<label class="master-console-fader">
-<span class="mixer-fader-label">DECAY</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/></div>
-<output id="reverbDecayOut">2.4 s</output>
-</label>
-<label class="master-console-fader">
-<span class="mixer-fader-label">DRIVE</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/></div>
-<output id="driveOut">8%</output>
-</label>
-<label class="master-console-fader master-volume-fader">
-<span class="mixer-fader-label">MASTER</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/></div>
-<output id="masterOut">82%</output>
-</label>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="mixing-console-utilities"><div class="instrument-master-filter">
-<div class="embedded-mixer-head instrument-filter-head">
-<strong>Master Filter</strong>
-<span>synth post-filter</span>
-</div>
-<div class="rotary-filter-grid">
-<label class="rotary-control">
-<span>Type</span>
-<select id="synthFilterType">
-<option value="lowpass">Low Pass</option>
-<option value="highpass">High Pass</option>
-<option value="bandpass">Band Pass</option>
-<option value="notch">Notch</option>
-</select>
-</label>
-<div class="rotary-control">
-<span>Cutoff</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
-<div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
-</div>
-<output id="synthFilterCutoffOut">4200 Hz</output>
-</div>
-<div class="rotary-control">
-<span>Resonance</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
-<div class="rotary-knob" data-knob-for="synthFilterRes"></div>
-</div>
-<output id="synthFilterResOut">4.0</output>
-</div>
-<div class="rotary-control">
-<span>Drive</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
-<div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
-</div>
-<output id="synthFilterDriveOut">0%</output>
-</div>
-</div>
-</div><div class="instrument-bass-filter">
-<div class="embedded-mixer-head instrument-filter-head">
-<strong>Bass Filter</strong>
-<span>bass tone shaping</span>
-</div>
-<div class="rotary-filter-grid">
-<label class="rotary-control">
-<span>Type</span>
-<select id="bassFilterType">
-<option value="lowpass">Low Pass</option>
-<option value="highpass">High Pass</option>
-<option value="bandpass">Band Pass</option>
-<option value="notch">Notch</option>
-</select>
-</label>
-<div class="rotary-control">
-<span>Cutoff</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="bassFilterCutoff" max="8000" min="50" type="range" value="900"/>
-<div class="rotary-knob" data-knob-for="bassFilterCutoff"></div>
-</div>
-<output id="bassFilterCutoffOut">900 Hz</output>
-</div>
-<div class="rotary-control">
-<span>Resonance</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="bassFilterRes" max="24" min=".1" step=".1" type="range" value="6"/>
-<div class="rotary-knob" data-knob-for="bassFilterRes"></div>
-</div>
-<output id="bassFilterResOut">6.0</output>
-</div>
-<div class="rotary-control">
-<span>Drive</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="bassFilterDrive" max="1" min="0" step=".01" type="range" value=".08"/>
-<div class="rotary-knob" data-knob-for="bassFilterDrive"></div>
-</div>
-<output id="bassFilterDriveOut">8%</output>
-</div>
-</div>
-</div><div class="mixer-midi">
+<div class="mixer-settings-modal" id="midiSettingsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="midiSettingsTitle">
+  <div class="mixer-settings-backdrop" data-mixer-settings-close></div>
+  <section class="mixer-settings-panel">
+    <div class="mixer-settings-panel-head">
+      <div><strong id="midiSettingsTitle">MIDI Settings</strong><span>input • target • channel</span></div>
+      <button class="mixer-settings-close" type="button" data-mixer-settings-close aria-label="Close MIDI Settings">×</button>
+    </div>
+    <div class="mixer-midi">
 <div class="embedded-mixer-head mixer-midi-head">
 <strong>MIDI Controller</strong>
 <span>input • target • channel</span>
@@ -616,8 +641,9 @@
             </div>
 </div>
 </div>
-</div></div>
-</section>
+
+  </section>
+</div>
 <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 <script type="importmap">
 {
