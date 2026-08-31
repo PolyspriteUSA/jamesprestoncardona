@@ -487,14 +487,14 @@
 <div class="mixer" id="mixer"></div>
 </div>
 </div>
-<div class="console-column console-master">
-<div class="master-fx-section">
+<div class="console-column console-master jpc-master-column">
+<div class="master-fx-section jpc-master-section">
 <div class="embedded-mixer-head">
 <strong>Master FX</strong>
-<span>reverb • decay • drive • master • VU</span>
+<span>filter • VU • reverb • decay • drive • master</span>
 </div>
-<div class="fx master-console-layout">
-<div class="instrument-master-filter">
+<div class="jpc-master-stack">
+<section class="jpc-master-filter">
 <div class="embedded-mixer-head instrument-filter-head">
 <strong>Master Filter</strong>
 <span>synth post-filter</span>
@@ -534,33 +534,33 @@
 <output id="synthFilterDriveOut">0%</output>
 </div>
 </div>
+</section>
+<section aria-label="Master output VU meters" class="jpc-master-vu">
+<div class="jpc-master-vu-head"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
+<div class="jpc-master-vu-pair">
+<div class="jpc-master-vu-channel"><span>L</span><div class="jpc-master-vu-face"><div class="jpc-master-vu-needle" id="masterVuLeft"></div></div></div>
+<div class="jpc-master-vu-channel"><span>R</span><div class="jpc-master-vu-face"><div class="jpc-master-vu-needle" id="masterVuRight"></div></div></div>
 </div>
-<div aria-label="Master output VU meters" class="master-meter-block">
-<div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
-<div class="master-vu-pair">
-<div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
-<div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
-</div>
-</div>
-<div class="master-fader-row">
-<label class="master-console-fader">
-<span class="mixer-fader-label">REVERB</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/></div>
+</section>
+<div class="jpc-master-faders">
+<label class="jpc-master-fader-strip">
+<span>REVERB</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/></div>
 <output id="reverbOut">22%</output>
 </label>
-<label class="master-console-fader">
-<span class="mixer-fader-label">DECAY</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/></div>
+<label class="jpc-master-fader-strip">
+<span>DECAY</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/></div>
 <output id="reverbDecayOut">2.4 s</output>
 </label>
-<label class="master-console-fader">
-<span class="mixer-fader-label">DRIVE</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/></div>
+<label class="jpc-master-fader-strip">
+<span>DRIVE</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/></div>
 <output id="driveOut">8%</output>
 </label>
-<label class="master-console-fader master-volume-fader">
-<span class="mixer-fader-label">MASTER</span>
-<div class="mixer-fader-slot"><span aria-hidden="true" class="mixer-fader-scale"></span><input class="vertical-fader master-aligned-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/></div>
+<label class="jpc-master-fader-strip">
+<span>MASTER</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/></div>
 <output id="masterOut">82%</output>
 </label>
 </div>
