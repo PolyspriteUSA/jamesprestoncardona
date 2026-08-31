@@ -608,6 +608,7 @@ function playTrack(track,t,step){
     if(track.type==="hat")hat(t,track.level,false);
     if(track.type==="openhat")hat(t,track.level,true);
     if(track.type==="perc")perc(t,track.level);
+    if(track.type==="perc2")perc2(t,track.level);
 
     if(track.type==="synth"){
       leadSynth(

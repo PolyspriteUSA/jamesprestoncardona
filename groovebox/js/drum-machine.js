@@ -41,6 +41,19 @@ function perc(t,v=.25){
   g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);
   o.connect(g);out(g);o.start(t);o.stop(t+.14);
 }
+function perc2(t,v=.25){
+  ensureAudio();
+  const o=audio.createOscillator(),g=audio.createGain(),bp=audio.createBiquadFilter();
+  o.type="sine";
+  o.frequency.setValueAtTime(760,t);
+  o.frequency.exponentialRampToValueAtTime(330,t+.11);
+  bp.type="bandpass";
+  bp.frequency.value=1100;
+  bp.Q.value=1.6;
+  g.gain.setValueAtTime(Math.max(.001,v*.85),t);
+  g.gain.exponentialRampToValueAtTime(.001,t+.16);
+  o.connect(bp);bp.connect(g);out(g);o.start(t);o.stop(t+.18);
+}
 function bass(t,n=36,v=.45){
   ensureAudio();
 

@@ -5544,3 +5544,83 @@ body.mixer-settings-open{overflow:hidden !important;}
     overflow-x:auto !important;
   }
 }
+
+
+/* ==================================================
+   MASTER CONSOLE — FILTER / VU / FADER ROW FIX
+================================================== */
+.groovebox-mixer-section .master-console-layout{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  grid-template-rows:108px 192px 222px !important;
+  height:522px !important;
+  min-height:522px !important;
+  gap:0 !important;
+  align-items:stretch !important;
+  overflow:visible !important;
+}
+
+.groovebox-mixer-section .master-console-layout > .instrument-master-filter{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  height:102px !important;
+  min-height:102px !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  align-self:start !important;
+  z-index:3 !important;
+}
+
+.groovebox-mixer-section .master-meter-block{
+  grid-column:1 !important;
+  grid-row:2 !important;
+  position:relative !important;
+  width:100% !important;
+  height:184px !important;
+  min-height:184px !important;
+  margin:4px 0 4px !important;
+  padding:9px 12px 11px !important;
+  box-sizing:border-box !important;
+  align-self:center !important;
+  z-index:2 !important;
+  overflow:hidden !important;
+}
+
+.groovebox-mixer-section .master-meter-title{
+  height:18px !important;
+  margin:0 2px 3px !important;
+}
+
+.groovebox-mixer-section .master-vu-pair{
+  height:142px !important;
+  min-height:142px !important;
+  gap:10px !important;
+}
+
+.groovebox-mixer-section .master-vu-channel{
+  height:142px !important;
+  min-height:142px !important;
+  grid-template-rows:12px 126px !important;
+}
+
+.groovebox-mixer-section .master-vu-track{
+  width:174px !important;
+  height:122px !important;
+  min-height:122px !important;
+  border-radius:14px !important;
+}
+
+.groovebox-mixer-section .master-vu-fill{
+  height:92px !important;
+  bottom:8px !important;
+}
+
+.groovebox-mixer-section .master-fader-row{
+  grid-column:1 !important;
+  grid-row:3 !important;
+  position:relative !important;
+  height:222px !important;
+  min-height:222px !important;
+  align-self:end !important;
+  z-index:1 !important;
+}
