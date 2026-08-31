@@ -11,34 +11,74 @@
 
 
 (function(){
-  const pairs=[
-    ["openAudioSettings","audioSettingsModal"],
-    ["openMidiSettings","midiSettingsModal"]
-  ];
-  let active=null;
-  const closeActive=()=>{
-    if(!active)return;
-    active.classList.remove("open");
-    active.setAttribute("aria-hidden","true");
-    document.body.classList.remove("mixer-settings-open");
-    active=null;
+  const modalMap={
+    openAudioSettings:"audioSettingsModal",
+    openMidiSettings:"midiSettingsModal"
   };
-  pairs.forEach(([buttonId,modalId])=>{
+
+  let activeModal=null;
+  let returnFocus=null;
+
+  function closeMixerSettings(){
+    if(!activeModal)return;
+    activeModal.classList.remove("open");
+    activeModal.setAttribute("aria-hidden","true");
+    activeModal.style.removeProperty("display");
+    activeModal.style.removeProperty("visibility");
+    activeModal.style.removeProperty("opacity");
+    activeModal.style.removeProperty("pointer-events");
+    document.body.classList.remove("mixer-settings-open");
+    const focusTarget=returnFocus;
+    activeModal=null;
+    returnFocus=null;
+    if(focusTarget&&typeof focusTarget.focus==="function")focusTarget.focus();
+  }
+
+  function openMixerSettings(modal,trigger){
+    if(!modal)return;
+    closeMixerSettings();
+    activeModal=modal;
+    returnFocus=trigger||null;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    modal.style.display="flex";
+    modal.style.visibility="visible";
+    modal.style.opacity="1";
+    modal.style.pointerEvents="auto";
+    document.body.classList.add("mixer-settings-open");
+    requestAnimationFrame(()=>{
+      const focusable=modal.querySelector("select,input,button:not([disabled])");
+      if(focusable)focusable.focus();
+    });
+  }
+
+  Object.entries(modalMap).forEach(([buttonId,modalId])=>{
     const button=document.getElementById(buttonId);
     const modal=document.getElementById(modalId);
     if(!button||!modal)return;
-    button.addEventListener("click",()=>{
-      closeActive();
-      active=modal;
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden","false");
-      document.body.classList.add("mixer-settings-open");
-      const focusable=modal.querySelector("button,select,input");
-      if(focusable)focusable.focus();
+    button.setAttribute("aria-controls",modalId);
+    button.setAttribute("aria-haspopup","dialog");
+    button.addEventListener("click",event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      openMixerSettings(modal,button);
     });
   });
-  document.querySelectorAll("[data-mixer-settings-close]").forEach(el=>el.addEventListener("click",closeActive));
-  document.addEventListener("keydown",event=>{
-    if(event.key==="Escape"&&active)closeActive();
+
+  document.addEventListener("click",event=>{
+    if(event.target.closest("[data-mixer-settings-close]")){
+      event.preventDefault();
+      closeMixerSettings();
+    }
   });
+
+  document.addEventListener("keydown",event=>{
+    if(event.key==="Escape"&&activeModal)closeMixerSettings();
+  });
+
+  window.GrooveboxMixerSettings={
+    openAudio:()=>openMixerSettings(document.getElementById("audioSettingsModal"),document.getElementById("openAudioSettings")),
+    openMidi:()=>openMixerSettings(document.getElementById("midiSettingsModal"),document.getElementById("openMidiSettings")),
+    close:closeMixerSettings
+  };
 })();

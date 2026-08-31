@@ -5140,3 +5140,39 @@ body.mixer-settings-open{overflow:hidden;}
   .mixer-settings-panel .midi-grid{grid-template-columns:1fr;}
   .groovebox-mixer-section .master-console-layout > .instrument-master-filter .rotary-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
 }
+
+
+/* ==================================================
+   MIXER SETTINGS MODALS — RELIABLE OVERLAY LAYER
+================================================== */
+.mixer-settings-modal{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483000 !important;
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:24px !important;
+  isolation:isolate !important;
+}
+.mixer-settings-modal.open{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+.mixer-settings-modal .mixer-settings-backdrop{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  pointer-events:auto !important;
+}
+.mixer-settings-modal .mixer-settings-panel{
+  position:relative !important;
+  z-index:1 !important;
+  pointer-events:auto !important;
+}
+body.mixer-settings-open{overflow:hidden !important;}
