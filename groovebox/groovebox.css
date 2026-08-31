@@ -4540,3 +4540,27 @@ body{
     width:max-content !important;
   }
 }
+
+/* ======================================================================
+   MIXER — NO INTERNAL CHANNEL SCROLLBAR
+   ====================================================================== */
+.groovebox-mixer-section .mixing-console-body{
+  overflow-x:visible !important;
+  overflow-y:visible !important;
+}
+
+.groovebox-mixer-section .console-instruments,
+.groovebox-mixer-section .mixer-section,
+.groovebox-mixer-section #mixer.assignable-mixer{
+  overflow:visible !important;
+}
+
+.groovebox-mixer-section #mixer.assignable-mixer{
+  min-width:0 !important;
+  width:100% !important;
+  grid-template-columns:repeat(8,minmax(0,1fr)) !important;
+}
+
+.groovebox-mixer-section .mixer-console-strip{
+  min-width:0 !important;
+}
