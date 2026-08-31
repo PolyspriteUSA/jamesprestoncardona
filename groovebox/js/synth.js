@@ -62,8 +62,41 @@ function initializeSynthParameterStates(){
   const base=
     captureCurrentSynthState();
 
+  // Synth 1 boots as a punchy, dark bass patch.
   synthParameterStates.synth=
-    Object.assign({},base);
+    Object.assign({},base,{
+      osc1Wave:"sawtooth",
+      osc1Octave:"-1",
+      osc1Detune:"-3",
+      osc1Level:".78",
+      osc1Cutoff:"1150",
+      osc1Res:"7.5",
+      osc2Wave:"square",
+      osc2Octave:"-1",
+      osc2Pitch:"12",
+      osc2Detune:"5",
+      osc2Level:".34",
+      osc2Cutoff:"1450",
+      osc2Res:"5.5",
+      synthFmFilterType:"lowpass",
+      synthFmCutoff:"1800",
+      synthFmRes:"6.5",
+      synthFmRate:"0.75",
+      synthFmDepth:"120",
+      synthFmRate2:"1.5",
+      synthFmDepth2:"55",
+      synthAttack:".008",
+      synthDecay:".16",
+      synthSustain:".42",
+      synthRelease:".18",
+      synthDelay:".07",
+      synthDelayFeedback:".18",
+      synthLevel:".48",
+      synthFilterType:"lowpass",
+      synthFilterCutoff:"1050",
+      synthFilterRes:"8.0",
+      synthFilterDrive:".14"
+    });
 
   synthParameterStates.synth2=
     Object.assign({},base,{
