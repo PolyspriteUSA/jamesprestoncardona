@@ -59,8 +59,7 @@
       mixerMuted:typeof mixerChannelMuted!=="undefined"?[...mixerChannelMuted]:[],
       mixerSoloed:typeof mixerChannelSoloed!=="undefined"?[...mixerChannelSoloed]:[],
       trackMuted:typeof muted!=="undefined"?[...muted]:[],
-      trackSoloed:typeof soloed!=="undefined"?[...soloed]:[],
-      sampleStepSelections:typeof sampleStepSelections!=="undefined"?clone(sampleStepSelections):[]
+      trackSoloed:typeof soloed!=="undefined"?[...soloed]:[]
     };
   }
 
@@ -135,7 +134,6 @@
       if(typeof mixerChannelSoloed!=="undefined"){mixerChannelSoloed.clear();(project.mixerSoloed||[]).forEach(v=>mixerChannelSoloed.add(Number(v)));}
       if(typeof muted!=="undefined"){muted.clear();(project.trackMuted||[]).forEach(v=>muted.add(v));}
       if(typeof soloed!=="undefined"){soloed.clear();(project.trackSoloed||[]).forEach(v=>soloed.add(v));}
-      if(Array.isArray(project.sampleStepSelections) && typeof sampleStepSelections!=="undefined")sampleStepSelections=clone(project.sampleStepSelections);
 
       restoreControls(project.controls);
 
@@ -157,7 +155,6 @@
       if(typeof refreshSequenceStatus==="function")refreshSequenceStatus();
       if(typeof syncTrackButtons==="function")syncTrackButtons();
       if(typeof renderPianoRoll==="function")renderPianoRoll();
-      if(typeof renderSampleSlots==="function")renderSampleSlots();
 
       try{localStorage.setItem(AUTO_SAVE_KEY,JSON.stringify(captureProject()));}catch(error){}
       setStatus("Loaded", "saved");

@@ -6,7 +6,6 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Neon Groovebox</title>
 <meta content="A browser-based synthesizer and drum machine using Three.js and the Web Audio API." name="description"/>
-
 <link href="./groovebox.css" rel="stylesheet"/></head>
 <body>
 <div aria-hidden="true" class="midi-learn-menu" id="midiLearnMenu" role="menu">
@@ -113,11 +112,11 @@
 </div>
 <div class="knob-card">
 <label>Octave <output id="osc1OctaveOut">0</output></label>
-<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="osc1Octave" max="2" min="-2" step="1" type="range" value="0"><div aria-hidden="true" class="synth-rotary-knob"></div></input></div>
+<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="osc1Octave" max="2" min="-2" step="1" type="range" value="0"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
 </div>
 <div class="knob-card">
 <label>Pitch <output id="osc1PitchOut">0 st</output></label>
-<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="osc1Pitch" max="12" min="-12" step="1" type="range" value="0"><div aria-hidden="true" class="synth-rotary-knob"></div></input></div>
+<div class="synth-rotary-wrap"><input class="synth-rotary-input" id="osc1Pitch" max="12" min="-12" step="1" type="range" value="0"/><div aria-hidden="true" class="synth-rotary-knob"></div></div>
 </div>
 <div class="knob-card">
 <label>Detune <output id="osc1DetuneOut">-4 ct</output></label>
@@ -384,63 +383,79 @@
 </div>
 </div>
 <div class="seq-wrap" data-module-root="drum-machine-sequencer" id="sequencer"></div></div>
-<div class="audio-recorder collapsible-section" data-collapse-section="audio-recorder">
-<div class="recorder-head">
-<div>
-<strong>Audio Recorder</strong>
-<span>record the groovebox output into timeline clips</span>
-</div>
-<div class="recorder-transport">
-<button class="btn recorder-record" id="audioRecordBtn" type="button">Record</button>
-<button class="btn" id="audioStopBtn" type="button">Stop</button>
-<button class="btn" id="audioPlayBtn" type="button">Play All</button>
-<button class="btn" id="audioClearBtn" type="button">Clear</button>
-</div>
-<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-drop-hint">
-<span>Drag loaded samples or audio files onto any Audio track</span>
-</div>
-<div class="sample-loader">
-<div class="embedded-mixer-head sample-loader-head">
-<strong>Samples</strong>
-<span>load • preview • trigger</span>
-</div>
-<div class="sample-actions">
-<label class="btn sample-add-button">
-                  Add Samples
-                  <input accept="audio/*" hidden="" id="sampleFiles" multiple="" type="file"/>
-</label>
-<button class="btn" id="sampleStopAll" type="button">
-                  Stop Samples
-                </button>
-</div>
-<div class="sample-track-source">
-<label for="sampleTrackSource">Sequencer Sample</label>
-<select id="sampleTrackSource">
-<option value="-1">No sample loaded</option>
-</select>
-</div>
-<div class="sample-slots" data-module-root="sampler" id="sampleSlots"></div>
-</div>
-<div class="audio-timeline-wrap" id="audioTimelineDropzone">
-<div class="timeline-ruler" id="timelineRuler"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div>
-<div class="audio-timeline" id="audioTimeline"><div class="audio-track-row" data-audio-channel="0"><div class="audio-track-label">Audio 1 • armed</div></div><div class="audio-track-row" data-audio-channel="1"><div class="audio-track-label">Audio 2</div></div><div class="audio-track-row" data-audio-channel="2"><div class="audio-track-label">Audio 3</div></div><div class="audio-track-row" data-audio-channel="3"><div class="audio-track-label">Audio 4</div></div></div>
-</div><div class="recording-status" id="recordingStatus">
-          Select an audio channel and press Record
-        </div></div>
-</div>
+<section class="card sampler-reserved-section" id="sampler-section" aria-labelledby="samplerReservedTitle">
+  <div class="card-head">
+    <h2 id="samplerReservedTitle">Sampler</h2>
+    <span>dedicated section reserved</span>
+  </div>
+  <div class="sampler-reserved-body">
+    <strong>Dedicated sampler coming next.</strong>
+    <span>The previous sample loader and sequencer sample track have been removed so this section can be rebuilt independently.</span>
+  </div>
+</section>
 <div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console" id="mixer-section-source">
 <div class="mixing-console-head">
 <strong>Mixing Console</strong>
-<span>instruments • recorded audio • master effects</span>
+<span>8 channels • EQ • pan • master effects</span>
 <div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console"><div class="embedded-mixer-row">
 <div class="console-column console-instruments">
 <div class="mixer-section">
 <div class="embedded-mixer-head">
-<strong>Instrument Mixer</strong>
-<span>channel levels • mute • solo</span>
+<strong>Channel Mixer</strong>
+<span>8 assignable channels • EQ • pan • level</span>
 </div>
 <div class="mixer" id="mixer"></div>
-<div class="instrument-master-filter">
+
+
+
+</div>
+</div>
+<div class="console-column console-master">
+<div class="master-fx-section">
+<div class="embedded-mixer-head">
+<strong>Master FX</strong>
+<span>reverb • decay • drive • master • VU</span>
+</div>
+<div class="fx master-console-layout">
+<div class="master-fx-faders">
+<div class="fx-strip">
+<label>Reverb</label>
+<input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/>
+<output id="reverbOut">22%</output>
+</div>
+<div class="fx-strip">
+<label>Decay</label>
+<input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/>
+<output id="reverbDecayOut">2.4 s</output>
+</div>
+<div class="fx-strip">
+<label>Drive</label>
+<input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/>
+<output id="driveOut">8%</output>
+</div>
+</div>
+<div aria-label="Master output VU meters" class="master-meter-block">
+<div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
+<div class="master-vu-pair">
+<div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
+<div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
+</div>
+</div>
+<div class="master-fader-section">
+<div class="fx-strip master-strip">
+<label>Master</label>
+<input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/>
+<output id="masterOut">82%</output>
+</div>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div><div class="mixing-console-utilities"><div class="instrument-master-filter">
 <div class="embedded-mixer-head instrument-filter-head">
 <strong>Master Filter</strong>
 <span>synth post-filter</span>
@@ -480,8 +495,7 @@
 <output id="synthFilterDriveOut">0%</output>
 </div>
 </div>
-</div>
-<div class="instrument-bass-filter">
+</div><div class="instrument-bass-filter">
 <div class="embedded-mixer-head instrument-filter-head">
 <strong>Bass Filter</strong>
 <span>bass tone shaping</span>
@@ -521,8 +535,7 @@
 <output id="bassFilterDriveOut">8%</output>
 </div>
 </div>
-</div>
-<div class="mixer-midi">
+</div><div class="mixer-midi">
 <div class="embedded-mixer-head mixer-midi-head">
 <strong>MIDI Controller</strong>
 <span>input • target • channel</span>
@@ -561,17 +574,7 @@
             </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="console-column console-audio">
-<div class="audio-fader-section">
-<div class="embedded-mixer-head">
-<strong>Audio Mixer</strong>
-<span>recorded tracks</span>
-</div>
-<div class="audio-channel-mixer" id="audioChannelMixer"></div>
-<div class="audio-settings">
+</div><div class="audio-settings">
 <div class="embedded-mixer-head audio-settings-head">
 <strong>Audio Settings</strong>
 <span>engine • output • latency</span>
@@ -626,105 +629,7 @@
                   Audio input disabled
                 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="console-column console-master">
-<div class="master-fx-section">
-<div class="embedded-mixer-head">
-<strong>Master FX</strong>
-<span>reverb • decay • drive • master</span>
-</div>
-<div class="fx master-console-layout">
-<div class="master-fx-faders">
-<div class="fx-strip">
-<label>Reverb</label>
-<input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/>
-<output id="reverbOut">22%</output>
-</div>
-<div class="fx-strip">
-<label>Decay</label>
-<input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/>
-<output id="reverbDecayOut">2.4 s</output>
-</div>
-<div class="fx-strip">
-<label>Drive</label>
-<input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/>
-<output id="driveOut">8%</output>
-</div>
-</div>
-<div aria-label="Master output VU meters" class="master-meter-block">
-<div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
-<div class="master-vu-pair">
-<div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
-<div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
-</div>
-</div>
-<div class="master-fader-section">
-<div class="fx-strip master-strip">
-<label>Master</label>
-<input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/>
-<output id="masterOut">82%</output>
-</div>
-</div>
-</div>
-<div class="tape-recorder">
-<div class="embedded-mixer-head tape-recorder-head">
-<strong>Virtual Tape Recorder</strong>
-<span>record the full master session</span>
-</div>
-<div class="tape-deck" id="tapeDeck">
-<div aria-hidden="true" class="tape-window">
-<div class="tape-reel tape-reel-left">
-<span></span>
-</div>
-<div class="tape-path">
-<div class="tape-line"></div>
-<div class="tape-head"></div>
-</div>
-<div class="tape-reel tape-reel-right">
-<span></span>
-</div>
-</div>
-<div class="tape-counter">
-<span id="tapeStatus">Ready</span>
-<strong id="tapeTime">00:00</strong>
-</div>
-<div class="tape-transport">
-<button class="btn tape-record-button" id="tapeRecordBtn" type="button">
-                    Record
-                  </button>
-<button class="btn" id="tapeStopBtn" type="button">
-                    Stop
-                  </button>
-<button class="btn" disabled="" id="tapePlayBtn" type="button">
-                    Play
-                  </button>
-<button class="btn" disabled="" id="tapeDownloadBtn" type="button">
-                    Save
-                  </button>
-<button class="btn" disabled="" id="tapeClearBtn" type="button">
-                    Clear
-                  </button>
-</div>
-</div>
-</div>
-<div class="records-section">
-<div class="records-head">
-<div>
-<strong>Records</strong>
-<span>recorded takes</span>
-</div>
-<button class="btn" id="recordsClearBtn" type="button">Clear Records</button>
-</div>
-<div class="records-list" id="recordsList">
-<div class="records-empty">No recordings yet</div>
-</div>
-</div>
-</div>
-</div>
-</div></div>
-</div>
+</div></div></div></div>
 </section>
 <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 <script type="importmap">
@@ -750,6 +655,5 @@
 \n
 
 
-<script src="./groovebox-js/state.js"></script><script src="./groovebox-js/arp.js"></script><script src="./groovebox-js/score-state.js"></script><script src="./groovebox-js/mixer-engine.js"></script><script src="./groovebox-js/audio-engine.js"></script><script src="./groovebox-js/drum-machine.js"></script><script src="./groovebox-js/synth.js"></script><script src="./groovebox-js/transport.js"></script><script src="./groovebox-js/sequencer.js"></script><script src="./groovebox-js/sampler.js"></script><script src="./groovebox-js/recorder.js"></script><script src="./groovebox-js/mixer.js"></script><script src="./groovebox-js/audio-settings.js"></script><script src="./groovebox-js/midi.js"></script><script src="./groovebox-js/controls.js"></script><script src="./groovebox-js/visualizer.js"></script><script src="./groovebox-js/legacy-compat.js"></script><script src="./groovebox-js/project-save.js"></script><script src="./groovebox-js/master-vu.js"></script><script src="./groovebox-js/app.js"></script><!-- Modular build: edit groovebox.css and js/* modules; avoid adding inline overrides. --></body>
+<script src="./groovebox-js/state.js"></script><script src="./groovebox-js/arp.js"></script><script src="./groovebox-js/score-state.js"></script><script src="./groovebox-js/mixer-engine.js"></script><script src="./groovebox-js/audio-engine.js"></script><script src="./groovebox-js/drum-machine.js"></script><script src="./groovebox-js/synth.js"></script><script src="./groovebox-js/transport.js"></script><script src="./groovebox-js/sequencer.js"></script><script src="./groovebox-js/mixer.js"></script><script src="./groovebox-js/audio-settings.js"></script><script src="./groovebox-js/midi.js"></script><script src="./groovebox-js/controls.js"></script><script src="./groovebox-js/visualizer.js"></script><script src="./groovebox-js/legacy-compat.js"></script><script src="./groovebox-js/project-save.js"></script><script src="./groovebox-js/master-vu.js"></script><script src="./groovebox-js/app.js"></script><!-- Modular build: edit groovebox.css and js/* modules; avoid adding inline overrides. --></body>
 </html>
-

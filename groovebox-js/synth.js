@@ -593,14 +593,6 @@ function playTrack(track,t,step){
         "synth2"
       );
     }
-
-    if(track.type==="sample"){
-      triggerSequencerSample(
-        t,
-        track.level,
-        step
-      );
-    }
   }finally{
     currentTrackType=null;
   }

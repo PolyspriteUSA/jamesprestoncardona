@@ -53,13 +53,9 @@ function buildAssignableMixer(){
     channelHead.className="mixer-channel-head";
 
     const number=document.createElement("strong");
-    number.textContent="CH "+(index+1);
+    number.textContent=String(index+1);
 
-    const assignment=document.createElement("span");
-    assignment.className="mixer-assignment-label";
-    assignment.dataset.mixerChannelLabel=index;
-
-    channelHead.append(number,assignment);
+    channelHead.append(number);
 
     const high=makeMixerRotary(
       "HI",-12,12,.5,state.high,
@@ -84,6 +80,10 @@ function buildAssignableMixer(){
       value=>{state.pan=value;applyMixerChannelState(index);},
       value=>Math.abs(value)<.03?"C":(value<0?"L":"R")+Math.round(Math.abs(value)*100)
     );
+
+    const knobStack=document.createElement("div");
+    knobStack.className="mixer-knob-stack";
+    knobStack.append(high,mid,low,pan);
 
     const faderWrap=document.createElement("label");
     faderWrap.className="mixer-fader-control";
@@ -139,7 +139,7 @@ function buildAssignableMixer(){
     });
 
     buttons.append(muteButton,soloButton);
-    strip.append(channelHead,high,mid,low,pan,faderWrap,buttons);
+    strip.append(channelHead,knobStack,faderWrap,buttons);
     mixer.appendChild(strip);
   });
 

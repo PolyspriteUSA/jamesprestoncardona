@@ -8,68 +8,6 @@ function getStepNotes(type,sequence=activeSequence){
     :synthSequences[sequence];
 }
 
-function getSampleStepSelections(sequence=activeSequence){
-  return sampleStepSelections[sequence];
-}
-
-function getSampleById(sampleId){
-  return sampleLibrary.find(
-    sample=>sample.id===sampleId
-  )||null;
-}
-
-function refreshSamplePadSelects(){
-  document
-    .querySelectorAll(".step-sample-select")
-    .forEach(select=>{
-      const step=
-        parseInt(
-          select.dataset.step,
-          10
-        );
-
-      const assigned=
-        getSampleStepSelections()[step];
-
-      select.innerHTML="";
-
-      const none=
-        document.createElement("option");
-
-      none.value="";
-      none.textContent=
-        sampleLibrary.length
-          ?"Choose sample"
-          :"Load sample";
-
-      select.appendChild(none);
-
-      sampleLibrary.forEach((sample,index)=>{
-        const option=
-          document.createElement("option");
-
-        option.value=String(sample.id);
-        option.textContent=
-          (index+1)+". "+sample.name;
-
-        select.appendChild(option);
-      });
-
-      select.value=
-        assigned==null
-          ?""
-          :String(assigned);
-
-      if(
-        assigned!=null &&
-        !getSampleById(assigned)
-      ){
-        getSampleStepSelections()[step]=null;
-        select.value="";
-      }
-    });
-}
-
 function refreshSequenceStatus(){
   const status=$("sequenceStatus");
   if(status){
@@ -115,7 +53,6 @@ function refreshSequenceView(){
     stepEl=>stepEl.classList.remove("playing")
   );
 
-  refreshSamplePadSelects();
   refreshSequenceStatus();
 }
 
@@ -127,9 +64,7 @@ function copyCurrentPattern(){
     synth2Notes:getStepNotes("synth2").slice(),
     synthNotes:getStepNotes("synth").slice(),
     midiSynth:clipFor("synth").map(ev=>({...ev})),
-    midiSynth2:clipFor("synth2").map(ev=>({...ev})),
-    sampleSelections:
-      getSampleStepSelections().slice()
+    midiSynth2:clipFor("synth2").map(ev=>({...ev}))
   };
 
   $("pastePatternBtn").disabled=false;
@@ -170,11 +105,6 @@ function pastePatternToCurrent(){
   synthSequences[activeSequence]=copiedPattern.synthNotes.slice();
   midiClips.synth[activeSequence]=(copiedPattern.midiSynth||[]).map(ev=>({...ev,id:newMidiId()}));
   midiClips.synth2[activeSequence]=(copiedPattern.midiSynth2||[]).map(ev=>({...ev,id:newMidiId()}));
-
-  sampleStepSelections[activeSequence]=
-    copiedPattern.sampleSelections
-      ?copiedPattern.sampleSelections.slice()
-      :Array(STEPS_PER_SEQUENCE).fill(null);
 
   refreshSequenceView();
 
@@ -269,66 +199,6 @@ function makeNoteSelect(track,step){
   return select;
 }
 
-function makeSampleSelect(step){
-  const select=
-    document.createElement("select");
-
-  select.className=
-    "step-note-select step-sample-select";
-
-  select.dataset.step=step;
-  select.dataset.type="sample";
-
-  select.addEventListener(
-    "pointerdown",
-    event=>event.stopPropagation()
-  );
-
-  select.addEventListener(
-    "click",
-    event=>event.stopPropagation()
-  );
-
-  select.addEventListener(
-    "change",
-    event=>{
-      event.stopPropagation();
-
-      const raw=
-        event.target.value;
-
-      const sampleId=
-        raw===""
-          ?null
-          :parseInt(raw,10);
-
-      getSampleStepSelections()[step]=
-        Number.isFinite(sampleId)
-          ?sampleId
-          :null;
-
-      const selected=
-        getSampleById(
-          getSampleStepSelections()[step]
-        );
-
-      if(
-        selected &&
-        audio &&
-        audio.state!=="suspended"
-      ){
-        triggerSequencerSample(
-          audio.currentTime,
-          .55,
-          step
-        );
-      }
-    }
-  );
-
-  return select;
-}
-
 tracks.forEach((track,ti)=>{
   const row=document.createElement("div");
   row.className="track";
@@ -393,10 +263,7 @@ tracks.forEach((track,ti)=>{
       track.type==="synth"||
       track.type==="synth2";
 
-    const sampleTrack=
-      track.type==="sample";
-
-    if(noteTrack||sampleTrack){
+    if(noteTrack){
       const pad=document.createElement("div");
       pad.className=
         "step note-pad"+
@@ -422,10 +289,7 @@ tracks.forEach((track,ti)=>{
         );
       });
 
-      const select=
-        sampleTrack
-          ?makeSampleSelect(si)
-          :makeNoteSelect(track,si);
+      const select=makeNoteSelect(track,si);
 
       pad.append(toggle,select);
       row.appendChild(pad);
@@ -452,7 +316,6 @@ tracks.forEach((track,ti)=>{
 });
 
 syncTrackButtons();
-refreshSamplePadSelects();
 
 $("randomBtn").addEventListener("click",()=>{
   tracks.forEach((t,ti)=>{
@@ -571,7 +434,3 @@ $("midiQuantize").addEventListener("change",()=>{snapshotMidiClip();clipFor().fo
 
 document.addEventListener("keydown",e=>{if((e.key==="Delete"||e.key==="Backspace")&&midiSelectedNoteId&&midiEditorMode==="piano"&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)){const c=clipFor(),i=c.findIndex(x=>x.id===midiSelectedNoteId);if(i>=0){snapshotMidiClip();c.splice(i,1);midiSelectedNoteId=null;syncStepTrackFromMidi(midiEditorTarget);renderPianoRoll();e.preventDefault();}}});
 
-const sampleLibrary=[];
-const activeSamplePlayers=new Set();
-const activeSequencerSampleSources=new Set();
-let selectedSampleIndex=-1;

@@ -161,8 +161,7 @@
       ["Open Hat","openhat",.22],
       ["Perc","perc",.30],
       ["Synth 2","synth2",.34],
-      ["Synth 1","synth",.38],
-      ["Sample","sample",.70]
+      ["Synth 1","synth",.38]
     ];
 
     fallbackTracks.forEach(function(item){

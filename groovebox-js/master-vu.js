@@ -1,6 +1,7 @@
 (function(){
   let frame=0;
   let data=null;
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
   function meterLoop(){
     frame=requestAnimationFrame(meterLoop);
     const left=document.getElementById('masterVuLeft');
@@ -13,15 +14,21 @@
     for(let i=0;i<data.length;i++){
       const x=(data[i]-128)/128;
       sum+=x*x;
-      const a=Math.abs(x);if(a>peak)peak=a;
+      peak=Math.max(peak,Math.abs(x));
     }
     const rms=Math.sqrt(sum/data.length);
     const db=rms>0?20*Math.log10(rms):-60;
-    const pct=Math.max(0,Math.min(100,(db+54)/54*100));
-    const peakPct=Math.max(pct,Math.max(0,Math.min(100,(20*Math.log10(Math.max(peak,.0001))+54)/54*100)));
-    left.style.height=pct.toFixed(1)+'%';
-    right.style.height=Math.max(0,Math.min(100,pct*.94+peakPct*.06)).toFixed(1)+'%';
-    out.textContent=db<=-54?'−∞ dB':db.toFixed(1)+' dB';
+    const pct=clamp((db+48)/48,0,1);
+    const peakDb=20*Math.log10(Math.max(peak,.0001));
+    const peakPct=clamp((peakDb+48)/48,0,1);
+    const leftPct=clamp(pct*.82+peakPct*.18,0,1);
+    const rightPct=clamp(pct*.78+peakPct*.15,0,1);
+    const toAngle=v=>-48+(v*96);
+    left.style.height='44px';
+    right.style.height='44px';
+    left.style.transform=`translateX(-50%) rotate(${toAngle(leftPct).toFixed(2)}deg)`;
+    right.style.transform=`translateX(-50%) rotate(${toAngle(rightPct).toFixed(2)}deg)`;
+    out.textContent=db<=-48?'−∞ dB':db.toFixed(1)+' dB';
   }
   meterLoop();
   window.addEventListener('pagehide',()=>cancelAnimationFrame(frame),{once:true});

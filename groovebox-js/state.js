@@ -10,8 +10,7 @@ const tracks=[
   {name:"Open Hat",type:"openhat",level:.22,mixerChannel:3,patterns:[[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Perc",type:"perc",level:.30,mixerChannel:4,patterns:[[0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
   {name:"Synth 2",type:"synth2",level:.34,mixerChannel:5,patterns:[[1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
-  {name:"Synth 1",type:"synth",level:.38,mixerChannel:6,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]},
-  {name:"Sample",type:"sample",level:.70,mixerChannel:7,patterns:[[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]}
+  {name:"Synth 1",type:"synth",level:.38,mixerChannel:6,patterns:[[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0),Array(STEPS_PER_SEQUENCE).fill(0)]}
 ];
 
 let synth2Sequences=[

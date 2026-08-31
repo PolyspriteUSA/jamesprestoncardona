@@ -58,13 +58,6 @@ let activeSequence=0;
 let copiedPattern=null;
 
 
-let sampleIdCounter=1;
-
-let sampleStepSelections=
-  Array.from(
-    {length:SEQUENCE_COUNT},
-    ()=>Array(STEPS_PER_SEQUENCE).fill(null)
-  );
 
 const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 function noteName(midi){return noteNames[midi%12]+(Math.floor(midi/12)-1)}

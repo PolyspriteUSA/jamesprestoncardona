@@ -3915,3 +3915,400 @@ body{
     min-width:864px !important;
   }
 }
+
+/* ===== MIXER KNOB STACK — HARDWARE CHANNEL STRIP ===== */
+.groovebox-mixer-section .mixer-console-strip{
+  display:grid !important;
+  grid-template-rows:54px 300px 190px 36px !important;
+  justify-items:center !important;
+  align-items:start !important;
+  gap:0 !important;
+}
+.groovebox-mixer-section .mixer-knob-stack{
+  width:100%;
+  height:300px;
+  display:grid;
+  grid-template-rows:repeat(4,75px);
+  align-items:start;
+  justify-items:center;
+  padding-top:2px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.groovebox-mixer-section .mixer-knob-stack .mixer-knob-control{
+  width:100% !important;
+  height:75px !important;
+  min-height:75px !important;
+  display:grid !important;
+  grid-template-rows:13px 42px 12px !important;
+  place-items:center !important;
+  gap:2px !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.groovebox-mixer-section .mixer-knob-control > span:first-child{
+  display:block !important;
+  color:#b8b3c7 !important;
+  font-size:9px !important;
+  font-weight:650;
+  letter-spacing:.12em !important;
+  line-height:13px;
+}
+.groovebox-mixer-section .mixer-knob-wrap{
+  display:block !important;
+  position:relative !important;
+  width:42px !important;
+  height:42px !important;
+}
+.groovebox-mixer-section .mixer-knob-face{
+  display:block !important;
+  position:absolute !important;
+  inset:2px !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  background:
+    radial-gradient(circle at 38% 30%,rgba(255,255,255,.18),transparent 24%),
+    linear-gradient(145deg,#24242e,#0b0b10 72%) !important;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.72),0 3px 8px rgba(0,0,0,.45) !important;
+}
+.groovebox-mixer-section .mixer-knob-face::after{
+  height:13px !important;
+  top:3px !important;
+  background:linear-gradient(#fff,var(--magenta)) !important;
+}
+.groovebox-mixer-section .mixer-knob-control output{
+  display:block !important;
+  min-height:12px !important;
+  color:#d8d2ed !important;
+  font-size:8px !important;
+  line-height:12px !important;
+}
+.groovebox-mixer-section .mixer-fader-control{
+  grid-row:3 !important;
+  height:190px !important;
+  min-height:190px !important;
+  display:grid !important;
+  grid-template-rows:16px 156px 14px !important;
+  place-items:center !important;
+  gap:2px !important;
+  margin:0 !important;
+  padding-top:2px !important;
+}
+.groovebox-mixer-section .mixer-channel-fader{
+  align-self:center !important;
+  width:24px !important;
+  height:150px !important;
+  min-height:150px !important;
+  margin:0 auto !important;
+}
+.groovebox-mixer-section .mixer-channel-buttons{
+  grid-row:4 !important;
+  height:36px !important;
+  min-height:36px !important;
+  align-self:center !important;
+  margin:0 !important;
+}
+
+/* ===== UNIFIED HARDWARE CONSOLE ROW ===== */
+.groovebox-mixer-section .mixing-console-body{
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding-bottom:4px;
+}
+.groovebox-mixer-section .embedded-mixer-row{
+  display:grid !important;
+  grid-template-columns:960px 300px 470px !important;
+  width:max-content !important;
+  min-width:100% !important;
+  align-items:stretch !important;
+  gap:0 !important;
+  overflow:visible !important;
+  border-radius:16px !important;
+}
+.groovebox-mixer-section .console-column{
+  min-width:0 !important;
+  padding:12px !important;
+  display:block !important;
+}
+.groovebox-mixer-section .console-column + .console-column{
+  border-left:1px solid rgba(255,255,255,.10) !important;
+  border-top:0 !important;
+}
+.groovebox-mixer-section .console-instruments{width:960px !important;}
+.groovebox-mixer-section .console-audio{width:300px !important;}
+.groovebox-mixer-section .console-master{width:470px !important;}
+.groovebox-mixer-section .console-column > .mixer-section > .embedded-mixer-head,
+.groovebox-mixer-section .console-column > .audio-fader-section > .embedded-mixer-head,
+.groovebox-mixer-section .console-column > .master-fx-section > .embedded-mixer-head{
+  height:48px;
+  min-height:48px;
+  margin:0;
+  padding:0 4px 10px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+}
+
+/* Keep the 8 main channel strips in a single hardware row. */
+.groovebox-mixer-section #mixer.assignable-mixer{
+  width:936px !important;
+  min-width:936px !important;
+  grid-template-columns:repeat(8,117px) !important;
+  grid-auto-columns:117px !important;
+  overflow:visible !important;
+}
+.groovebox-mixer-section .mixer-console-strip{
+  width:117px !important;
+  min-width:117px !important;
+}
+
+/* Audio tracks use the same vertical fader baseline as the channel mixer. */
+.groovebox-mixer-section #audioChannelMixer.audio-channel-mixer{
+  display:grid !important;
+  grid-template-columns:repeat(4,69px) !important;
+  gap:0 !important;
+  width:276px !important;
+  min-width:276px !important;
+  overflow:visible !important;
+}
+.groovebox-mixer-section .audio-channel-strip{
+  display:grid !important;
+  grid-template-rows:54px 300px 190px 36px !important;
+  justify-items:center !important;
+  align-items:start !important;
+  gap:0 !important;
+  width:69px !important;
+  min-width:69px !important;
+  min-height:580px !important;
+  padding:12px 5px 10px !important;
+  border-radius:0 !important;
+  border-top:1px solid rgba(255,255,255,.08) !important;
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+  border-left:1px solid rgba(255,255,255,.08) !important;
+  border-right:0 !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008)) !important;
+}
+.groovebox-mixer-section .audio-channel-strip:last-child{border-right:1px solid rgba(255,255,255,.08) !important;}
+.groovebox-mixer-section .audio-channel-name{
+  grid-row:1 !important;
+  height:54px !important;
+  min-height:54px !important;
+  font-size:9px !important;
+}
+.groovebox-mixer-section .audio-channel-strip input[type=range]{
+  grid-row:3 !important;
+  align-self:start !important;
+  width:24px !important;
+  height:150px !important;
+  min-width:24px !important;
+  min-height:150px !important;
+  margin:18px auto 0 !important;
+}
+.groovebox-mixer-section .audio-channel-level{
+  grid-row:3 !important;
+  align-self:end !important;
+  margin-bottom:5px !important;
+  font-size:8px !important;
+}
+.groovebox-mixer-section .audio-channel-controls{
+  grid-row:4 !important;
+  align-self:center !important;
+  gap:2px !important;
+}
+.groovebox-mixer-section .audio-channel-controls button{
+  width:19px !important;
+  height:22px !important;
+}
+
+/* Master FX + Master volume continue the same console row. */
+.groovebox-mixer-section .master-console-layout{
+  display:grid !important;
+  grid-template-columns:repeat(3,82px) 176px !important;
+  grid-template-rows:300px 190px 36px !important;
+  gap:0 4px !important;
+  width:434px !important;
+  min-width:434px !important;
+  padding:0 !important;
+  align-items:start !important;
+}
+.groovebox-mixer-section .master-fx-faders{
+  display:contents !important;
+}
+.groovebox-mixer-section .master-fx-faders .fx-strip{
+  grid-row:2 !important;
+  min-height:190px !important;
+  height:190px !important;
+  display:grid !important;
+  grid-template-rows:16px 156px 14px !important;
+  place-items:center !important;
+  gap:2px !important;
+  padding:2px 4px 0 !important;
+  margin:0 !important;
+  align-self:start !important;
+}
+.groovebox-mixer-section .master-fx-faders .fx-strip:nth-child(1){grid-column:1 !important;}
+.groovebox-mixer-section .master-fx-faders .fx-strip:nth-child(2){grid-column:2 !important;}
+.groovebox-mixer-section .master-fx-faders .fx-strip:nth-child(3){grid-column:3 !important;}
+.groovebox-mixer-section .master-fx-faders .vertical-fader,
+.groovebox-mixer-section .master-strip .vertical-fader{
+  width:24px !important;
+  height:150px !important;
+  min-height:150px !important;
+  margin:0 auto !important;
+}
+
+/* Vintage twin VU meters directly above the Master fader. */
+.groovebox-mixer-section .master-meter-block{
+  grid-column:4 !important;
+  grid-row:1 !important;
+  align-self:end !important;
+  width:168px !important;
+  margin:0 auto 10px !important;
+  padding:10px 8px 9px !important;
+  border:1px solid #5b5140 !important;
+  border-radius:8px !important;
+  background:linear-gradient(180deg,#2a2722,#151411) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),inset 0 -8px 18px rgba(0,0,0,.4) !important;
+}
+.groovebox-mixer-section .master-meter-title{
+  color:#c9b98f !important;
+  margin-bottom:7px !important;
+  font-size:8px !important;
+}
+.groovebox-mixer-section .master-meter-title output{color:#e7d39d !important;}
+.groovebox-mixer-section .master-vu-pair{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:6px !important;
+  height:74px !important;
+}
+.groovebox-mixer-section .master-vu-channel{
+  display:grid !important;
+  grid-template-rows:12px 1fr !important;
+  justify-items:center !important;
+  align-items:center !important;
+  gap:2px !important;
+  height:74px !important;
+  color:#c6b583 !important;
+  font-size:8px !important;
+}
+.groovebox-mixer-section .master-vu-track{
+  position:relative !important;
+  width:72px !important;
+  height:56px !important;
+  overflow:hidden !important;
+  border:2px solid #5f5542 !important;
+  border-radius:36px 36px 8px 8px !important;
+  background:
+    radial-gradient(circle at 50% 112%,transparent 0 31px,rgba(72,61,42,.22) 32px 33px,transparent 34px),
+    repeating-conic-gradient(from 222deg at 50% 104%,#4a4030 0deg 1.2deg,transparent 1.2deg 8deg),
+    linear-gradient(180deg,#ead9ad,#c8ad75) !important;
+  box-shadow:inset 0 0 16px rgba(89,61,25,.20),0 2px 5px rgba(0,0,0,.45) !important;
+}
+.groovebox-mixer-section .master-vu-track::before{
+  content:"-20   -10    -5     0    +3" !important;
+  position:absolute !important;
+  left:5px !important;
+  right:5px !important;
+  top:8px !important;
+  z-index:2 !important;
+  display:block !important;
+  background:none !important;
+  color:#4d412e !important;
+  font-family:Georgia,serif !important;
+  font-size:6px !important;
+  letter-spacing:-.2px !important;
+  white-space:pre !important;
+}
+.groovebox-mixer-section .master-vu-fill{
+  position:absolute !important;
+  left:50% !important;
+  bottom:2px !important;
+  right:auto !important;
+  top:auto !important;
+  width:2px !important;
+  height:44px !important;
+  transform:translateX(-50%) rotate(-48deg);
+  transform-origin:50% 100% !important;
+  background:#8e3028 !important;
+  border-radius:2px !important;
+  box-shadow:0 0 1px rgba(0,0,0,.75) !important;
+  transition:transform 65ms cubic-bezier(.25,.65,.25,1) !important;
+  z-index:4 !important;
+}
+.groovebox-mixer-section .master-vu-track::after{
+  content:"";
+  position:absolute;
+  left:50%;bottom:-5px;
+  width:11px;height:11px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:#28231b;
+  box-shadow:0 0 0 2px #7c6a49;
+  z-index:5;
+}
+.groovebox-mixer-section .master-fader-section{
+  grid-column:4 !important;
+  grid-row:2 / span 2 !important;
+  width:100% !important;
+  height:226px !important;
+  padding:2px 0 0 !important;
+  display:flex !important;
+  justify-content:flex-start !important;
+  align-items:center !important;
+}
+.groovebox-mixer-section .master-fader-section .fx-strip{
+  width:100% !important;
+  min-height:190px !important;
+  height:190px !important;
+  display:grid !important;
+  grid-template-rows:16px 156px 14px !important;
+  place-items:center !important;
+  gap:2px !important;
+  padding:0 !important;
+}
+
+/* Secondary mixer utilities sit beneath the uninterrupted console surface. */
+.groovebox-mixer-section .mixing-console-utilities{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+.groovebox-mixer-section .mixing-console-utilities > *{
+  min-width:0;
+  margin:0 !important;
+}
+.groovebox-mixer-section .mixing-console-utilities .tape-recorder{
+  grid-column:1 / -1;
+}
+@media(max-width:1100px){
+  .groovebox-mixer-section .mixing-console-utilities{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:720px){
+  .groovebox-mixer-section .mixing-console-utilities{grid-template-columns:1fr;}
+}
+
+
+/* ===== RESERVED DEDICATED SAMPLER SECTION ===== */
+.sampler-reserved-section{
+  margin-top:18px;
+  overflow:hidden;
+}
+.sampler-reserved-section .card-head{
+  padding:18px 20px;
+}
+.sampler-reserved-body{
+  margin:0 20px 20px;
+  min-height:96px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:7px;
+  padding:20px;
+  border:1px dashed rgba(255,255,255,.14);
+  border-radius:14px;
+  background:rgba(255,255,255,.018);
+  color:var(--muted);
+}
+.sampler-reserved-body strong{color:var(--text);font-size:13px;letter-spacing:.04em;}
+.sampler-reserved-body span{font-size:12px;line-height:1.55;max-width:760px;}
+\n\n/* ==================================================\n   MIXER — CLEAN CHANNEL STRIPS / NO RECORDER\n================================================== */\n.groovebox-mixer-section .embedded-mixer-row{\n  display:flex !important;\n  align-items:stretch !important;\n  gap:0 !important;\n}\n.groovebox-mixer-section .console-instruments{\n  flex:1 1 auto !important;\n  width:auto !important;\n  min-width:900px !important;\n}\n.groovebox-mixer-section .console-master{\n  flex:0 0 470px !important;\n  width:470px !important;\n}\n.groovebox-mixer-section #mixer.assignable-mixer{\n  display:grid !important;\n  grid-template-columns:repeat(8,minmax(105px,1fr)) !important;\n  gap:0 !important;\n  align-items:stretch !important;\n}\n.groovebox-mixer-section .mixer-console-strip{\n  display:grid !important;\n  grid-template-rows:34px auto 180px 34px !important;\n  align-items:start !important;\n  justify-items:center !important;\n  min-width:105px !important;\n  padding:10px 8px 12px !important;\n  border-right:1px solid rgba(255,255,255,.08) !important;\n}\n.groovebox-mixer-section .mixer-channel-head{\n  width:100% !important;\n  display:flex !important;\n  align-items:center !important;\n  justify-content:center !important;\n  min-height:34px !important;\n}\n.groovebox-mixer-section .mixer-channel-head strong{\n  font-size:14px !important;\n  letter-spacing:.08em !important;\n  text-align:center !important;\n}\n.groovebox-mixer-section .mixer-assignment-label{display:none !important;}\n.groovebox-mixer-section .mixer-knob-stack{\n  display:grid !important;\n  grid-template-columns:1fr !important;\n  grid-auto-rows:68px !important;\n  gap:5px !important;\n  width:100% !important;\n  justify-items:center !important;\n  align-content:start !important;\n  margin:0 0 8px !important;\n}\n.groovebox-mixer-section .mixer-knob-stack .mixer-knob-control{\n  display:grid !important;\n  grid-template-rows:14px 38px 12px !important;\n  justify-items:center !important;\n  align-items:center !important;\n  width:100% !important;\n  margin:0 !important;\n}\n.groovebox-mixer-section .mixer-knob-control > span:first-child{\n  font-size:9px !important;\n  line-height:1 !important;\n  letter-spacing:.08em !important;\n}\n.groovebox-mixer-section .mixer-knob-wrap,\n.groovebox-mixer-section .mixer-knob-input{width:38px !important;height:38px !important;}\n.groovebox-mixer-section .mixer-fader-control{\n  display:grid !important;\n  grid-template-rows:16px 138px 18px !important;\n  justify-items:center !important;\n  align-items:center !important;\n  width:100% !important;\n  height:180px !important;\n  margin:0 !important;\n}\n.groovebox-mixer-section .mixer-channel-fader{\n  writing-mode:vertical-lr !important;\n  direction:rtl !important;\n  width:24px !important;\n  height:138px !important;\n  margin:0 !important;\n}\n.groovebox-mixer-section .mixer-channel-buttons{\n  align-self:end !important;\n  width:100% !important;\n  display:grid !important;\n  grid-template-columns:1fr 1fr !important;\n  gap:5px !important;\n}\n
