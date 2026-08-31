@@ -5624,3 +5624,287 @@ body.mixer-settings-open{overflow:hidden !important;}
   align-self:end !important;
   z-index:1 !important;
 }
+
+/* ==================================================
+   FINAL MIXER GEOMETRY — CENTERED FADERS + CLEAN VU
+   This block intentionally owns the final mixer presentation.
+================================================== */
+.groovebox-mixer-section .mixer-fader-slot,
+.groovebox-mixer-section .master-console-fader .mixer-fader-slot{
+  position:relative !important;
+  width:64px !important;
+  height:190px !important;
+  margin:0 auto !important;
+  display:block !important;
+  overflow:visible !important;
+}
+
+.groovebox-mixer-section .mixer-fader-slot::before,
+.groovebox-mixer-section .master-console-fader .mixer-fader-slot::before{
+  content:"" !important;
+  position:absolute !important;
+  left:50% !important;
+  top:10px !important;
+  bottom:10px !important;
+  width:7px !important;
+  transform:translateX(-50%) !important;
+  border-radius:6px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:linear-gradient(180deg,
+    rgba(154,98,255,.95) 0%,
+    rgba(98,52,176,.55) 22%,
+    #09090d 48%,
+    rgba(159,37,137,.55) 76%,
+    rgba(255,56,209,.95) 100%) !important;
+  box-shadow:
+    inset 0 0 5px rgba(0,0,0,.95),
+    0 0 10px rgba(154,98,255,.06),
+    0 0 10px rgba(255,56,209,.05) !important;
+}
+
+.groovebox-mixer-section .mixer-fader-scale,
+.groovebox-mixer-section .master-console-fader .mixer-fader-scale{
+  position:absolute !important;
+  inset:7px 0 !important;
+  pointer-events:none !important;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 16px,
+      rgba(255,255,255,.16) 16px 17px,
+      transparent 17px 32px
+    ) !important;
+  mask:linear-gradient(90deg,#000 0 18px,transparent 18px 46px,#000 46px 64px) !important;
+  -webkit-mask:linear-gradient(90deg,#000 0 18px,transparent 18px 46px,#000 46px 64px) !important;
+  opacity:.55 !important;
+}
+
+/* Use a rotated horizontal range so the physical thumb is mathematically centered. */
+.groovebox-mixer-section .mixer-channel-fader,
+.groovebox-mixer-section .master-aligned-fader{
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  writing-mode:horizontal-tb !important;
+  direction:ltr !important;
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  width:170px !important;
+  height:40px !important;
+  min-width:170px !important;
+  min-height:40px !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:translate(-50%,-50%) rotate(-90deg) !important;
+  transform-origin:center center !important;
+  background:transparent !important;
+  border:0 !important;
+  outline:0 !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-webkit-slider-runnable-track,
+.groovebox-mixer-section .master-aligned-fader::-webkit-slider-runnable-track{
+  height:7px !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-moz-range-track,
+.groovebox-mixer-section .master-aligned-fader::-moz-range-track{
+  height:7px !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-webkit-slider-thumb,
+.groovebox-mixer-section .master-aligned-fader::-webkit-slider-thumb{
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  width:17px !important;
+  height:38px !important;
+  margin-top:-15.5px !important;
+  border-radius:3px !important;
+  border:1px solid rgba(255,255,255,.42) !important;
+  background:
+    linear-gradient(90deg,
+      #17171e 0%,
+      #373541 41%,
+      #0a0a0e 47% 53%,
+      #373541 59%,
+      #17171e 100%) !important;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.12),
+    0 2px 5px rgba(0,0,0,.72),
+    0 0 0 1px rgba(154,98,255,.10) !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-moz-range-thumb,
+.groovebox-mixer-section .master-aligned-fader::-moz-range-thumb{
+  width:17px !important;
+  height:38px !important;
+  border-radius:3px !important;
+  border:1px solid rgba(255,255,255,.42) !important;
+  background:
+    linear-gradient(90deg,
+      #17171e 0%,
+      #373541 41%,
+      #0a0a0e 47% 53%,
+      #373541 59%,
+      #17171e 100%) !important;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.12),
+    0 2px 5px rgba(0,0,0,.72),
+    0 0 0 1px rgba(154,98,255,.10) !important;
+}
+
+/* Master area: filter -> VU -> faders. No shared grid rows. */
+.groovebox-mixer-section .master-console-layout{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  grid-template-rows:auto 124px 224px !important;
+  height:auto !important;
+  min-height:0 !important;
+  gap:8px !important;
+  overflow:visible !important;
+}
+
+.groovebox-mixer-section .master-console-layout > .instrument-master-filter{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  position:relative !important;
+  z-index:1 !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:0 !important;
+}
+
+/* Sophisticated old-school meter: backlit face, clean/no printed grid lines. */
+.groovebox-mixer-section .master-meter-block{
+  grid-column:1 !important;
+  grid-row:2 !important;
+  position:relative !important;
+  z-index:1 !important;
+  width:100% !important;
+  height:124px !important;
+  min-height:124px !important;
+  margin:0 !important;
+  padding:8px 10px 10px !important;
+  box-sizing:border-box !important;
+  border:1px solid rgba(255,255,255,.11) !important;
+  border-radius:10px !important;
+  background:linear-gradient(180deg,#111117,#08080c) !important;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.045),
+    inset 0 -12px 24px rgba(0,0,0,.34) !important;
+  overflow:hidden !important;
+}
+
+.groovebox-mixer-section .master-meter-title{
+  height:16px !important;
+  margin:0 2px 5px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  color:rgba(245,245,247,.70) !important;
+  font-size:8px !important;
+  letter-spacing:.12em !important;
+}
+
+.groovebox-mixer-section .master-meter-title output{
+  color:#f5f5f7 !important;
+}
+
+.groovebox-mixer-section .master-vu-pair{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:8px !important;
+  width:100% !important;
+  height:84px !important;
+  min-height:84px !important;
+}
+
+.groovebox-mixer-section .master-vu-channel{
+  display:grid !important;
+  grid-template-rows:10px 72px !important;
+  gap:2px !important;
+  height:84px !important;
+  min-height:84px !important;
+  justify-items:center !important;
+  color:rgba(245,245,247,.55) !important;
+  font-size:7px !important;
+}
+
+.groovebox-mixer-section .master-vu-track{
+  position:relative !important;
+  width:100% !important;
+  max-width:178px !important;
+  height:72px !important;
+  min-height:72px !important;
+  overflow:hidden !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:8px !important;
+  background:
+    radial-gradient(ellipse at 50% 115%,rgba(255,56,209,.14),transparent 48%),
+    radial-gradient(ellipse at 42% 15%,rgba(154,98,255,.17),transparent 62%),
+    linear-gradient(180deg,#2b2638 0%,#171522 54%,#0c0b11 100%) !important;
+  box-shadow:
+    inset 0 0 22px rgba(154,98,255,.13),
+    inset 0 -12px 22px rgba(255,56,209,.055),
+    0 0 10px rgba(154,98,255,.04) !important;
+}
+
+.groovebox-mixer-section .master-vu-track::before{
+  content:"VU" !important;
+  position:absolute !important;
+  left:50% !important;
+  top:8px !important;
+  transform:translateX(-50%) !important;
+  color:rgba(245,245,247,.42) !important;
+  font-family:Georgia,serif !important;
+  font-size:9px !important;
+  letter-spacing:.18em !important;
+  background:none !important;
+}
+
+.groovebox-mixer-section .master-vu-track::after{
+  content:"" !important;
+  position:absolute !important;
+  left:50% !important;
+  bottom:-4px !important;
+  width:12px !important;
+  height:12px !important;
+  transform:translateX(-50%) !important;
+  border-radius:50% !important;
+  background:#08080c !important;
+  border:1px solid rgba(255,255,255,.28) !important;
+  box-shadow:0 0 7px rgba(255,56,209,.16) !important;
+  z-index:4 !important;
+}
+
+.groovebox-mixer-section .master-vu-fill{
+  position:absolute !important;
+  left:50% !important;
+  bottom:2px !important;
+  top:auto !important;
+  right:auto !important;
+  width:2px !important;
+  height:58px !important;
+  transform-origin:50% 100% !important;
+  transform:translateX(-50%) rotate(var(--vu-angle,-48deg)) !important;
+  border-radius:2px !important;
+  background:linear-gradient(180deg,#f5f5f7 0%,#b784ff 48%,#ff38d1 100%) !important;
+  box-shadow:0 0 7px rgba(255,56,209,.42) !important;
+  transition:transform 70ms cubic-bezier(.22,.62,.25,1) !important;
+  z-index:3 !important;
+}
+
+.groovebox-mixer-section .master-fader-row{
+  grid-column:1 !important;
+  grid-row:3 !important;
+  position:relative !important;
+  z-index:1 !important;
+  height:224px !important;
+  min-height:224px !important;
+  margin:0 !important;
+  align-self:start !important;
+}
