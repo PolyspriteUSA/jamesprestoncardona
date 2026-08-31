@@ -322,32 +322,80 @@ function setMidiTarget(type){
   if($("midiTarget"))$("midiTarget").value=midiEditorTarget;
   updateMidiStatus("Piano Roll"); renderPianoRoll();
 }
+function getPianoRollRange(){
+  const clipNotes=clipFor().map(ev=>Number(ev.note)).filter(Number.isFinite);
+  const stepNotes=(getStepNotes(midiEditorTarget,activeSequence)||[]).map(Number).filter(Number.isFinite);
+  const used=[...clipNotes,...stepNotes];
+
+  if(!used.length){
+    return {min:48,max:72};
+  }
+
+  let min=Math.min(...used)-3;
+  let max=Math.max(...used)+3;
+
+  // Keep a useful minimum vertical span while centering on the notes actually in use.
+  const minimumSpan=24;
+  if(max-min<minimumSpan){
+    const center=(min+max)/2;
+    min=Math.floor(center-minimumSpan/2);
+    max=Math.ceil(center+minimumSpan/2);
+  }
+
+  // Snap outward to C boundaries so the roll reads naturally.
+  min=Math.floor(min/12)*12;
+  max=Math.ceil((max+1)/12)*12-1;
+
+  return {
+    min:Math.max(MIDI_ROLL_MIN,min),
+    max:Math.min(MIDI_ROLL_MAX,max)
+  };
+}
+
 function renderPianoRoll(){
   const grid=$("pianoRollGrid"),keys=$("pianoRollKeys"),ruler=$("pianoRollRuler"),vel=$("velocityLane");
   if(!grid||!keys||!ruler||!vel)return;
   keys.innerHTML=""; ruler.innerHTML=""; vel.innerHTML="";
   grid.querySelectorAll(".midi-note").forEach(n=>n.remove());
   for(let bar=0;bar<4;bar++){const s=document.createElement("span");s.textContent=String(bar+1);s.style.left=(bar*25)+"%";ruler.appendChild(s);}
-  const rows=MIDI_ROLL_MAX-MIDI_ROLL_MIN+1;
-  for(let note=MIDI_ROLL_MAX;note>=MIDI_ROLL_MIN;note--){
+
+  const range=getPianoRollRange();
+  const rollMin=range.min;
+  const rollMax=range.max;
+  const rows=rollMax-rollMin+1;
+  grid.style.backgroundSize="25% 100%,6.25% 100%,100% "+(100/rows)+"%";
+
+  for(let note=rollMax;note>=rollMin;note--){
     const k=document.createElement("div");k.className="piano-roll-key"+([1,3,6,8,10].includes(note%12)?" black":"");
-    k.style.top=((MIDI_ROLL_MAX-note)/rows*100)+"%";k.style.height=(100/rows)+"%";if(note%12===0||note%12===5)k.textContent=noteName(note);keys.appendChild(k);
+    k.style.top=((rollMax-note)/rows*100)+"%";
+    k.style.height=(100/rows)+"%";
+    if(note%12===0||note%12===5)k.textContent=noteName(note);
+    keys.appendChild(k);
   }
+
   const events=clipFor(); grid.classList.toggle("has-notes",events.length>0);
   events.forEach(ev=>{
-    const note=Math.max(MIDI_ROLL_MIN,Math.min(MIDI_ROLL_MAX,ev.note));
+    // The piano roll displays the exact MIDI note used by the sequence/pad data.
+    if(ev.note<rollMin||ev.note>rollMax)return;
     const n=document.createElement("div");n.className="midi-note"+(ev.id===midiSelectedNoteId?" selected":"");n.dataset.id=ev.id;
     n.style.left=(ev.start/STEPS_PER_SEQUENCE*100)+"%";n.style.width=(Math.max(.18,ev.duration)/STEPS_PER_SEQUENCE*100)+"%";
-    n.style.top=((MIDI_ROLL_MAX-note)/rows*100)+"%";n.title=noteName(ev.note)+" · "+ev.duration.toFixed(2)+" steps";
+    n.style.top=((rollMax-ev.note)/rows*100)+"%";n.title=noteName(ev.note)+" · "+ev.duration.toFixed(2)+" steps";
     const handle=document.createElement("span");handle.className="midi-note-resize";n.appendChild(handle);grid.appendChild(n);
     const vb=document.createElement("div");vb.className="velocity-bar";vb.style.left=(ev.start/STEPS_PER_SEQUENCE*100)+"%";vb.style.height=((ev.velocity||.8)*100)+"%";vel.appendChild(vb);
   });
 }
 function gridPoint(event){const r=$("pianoRollGrid").getBoundingClientRect();return{x:Math.max(0,Math.min(1,(event.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(event.clientY-r.top)/r.height))};}
 $("pianoRollGrid").addEventListener("dblclick",e=>{
-  if(e.target.closest(".midi-note"))return; snapshotMidiClip(); const p=gridPoint(e); const rows=MIDI_ROLL_MAX-MIDI_ROLL_MIN+1;
-  const start=quantizeMidiPosition(p.x*STEPS_PER_SEQUENCE); const note=Math.max(MIDI_ROLL_MIN,Math.min(MIDI_ROLL_MAX,MIDI_ROLL_MAX-Math.floor(p.y*rows)));
-  clipFor().push({id:newMidiId(),note,start,duration:1,velocity:.82});syncStepTrackFromMidi(midiEditorTarget);renderPianoRoll();
+  if(e.target.closest(".midi-note"))return;
+  snapshotMidiClip();
+  const p=gridPoint(e);
+  const range=getPianoRollRange();
+  const rows=range.max-range.min+1;
+  const start=quantizeMidiPosition(p.x*STEPS_PER_SEQUENCE);
+  const note=Math.max(range.min,Math.min(range.max,range.max-Math.floor(p.y*rows)));
+  clipFor().push({id:newMidiId(),note,start,duration:1,velocity:.82});
+  syncStepTrackFromMidi(midiEditorTarget);
+  renderPianoRoll();
 });
 let midiDrag=null;
 $("pianoRollGrid").addEventListener("pointerdown",e=>{
@@ -357,7 +405,13 @@ $("pianoRollGrid").addEventListener("pointerdown",e=>{
 $("pianoRollGrid").addEventListener("pointermove",e=>{
   if(!midiDrag)return;const p=gridPoint(e),dx=(p.x-midiDrag.startX)*STEPS_PER_SEQUENCE;
   if(midiDrag.resize){midiDrag.ev.duration=Math.max(.25,Math.min(STEPS_PER_SEQUENCE-midiDrag.ev.start,midiDrag.origDuration+dx));}
-  else{const rows=MIDI_ROLL_MAX-MIDI_ROLL_MIN+1,dy=Math.round((p.y-midiDrag.startY)*rows);midiDrag.ev.start=quantizeMidiPosition(Math.max(0,Math.min(15.99,midiDrag.origStart+dx)));midiDrag.ev.note=Math.max(12,Math.min(120,midiDrag.origNote-dy));}
+  else{
+    const range=getPianoRollRange();
+    const rows=range.max-range.min+1;
+    const dy=Math.round((p.y-midiDrag.startY)*rows);
+    midiDrag.ev.start=quantizeMidiPosition(Math.max(0,Math.min(15.99,midiDrag.origStart+dx)));
+    midiDrag.ev.note=Math.max(MIDI_ROLL_MIN,Math.min(MIDI_ROLL_MAX,midiDrag.origNote-dy));
+  }
   renderPianoRoll();
 });
 function finishMidiDrag(){if(!midiDrag)return;syncStepTrackFromMidi(midiEditorTarget);midiDrag=null;renderPianoRoll();}

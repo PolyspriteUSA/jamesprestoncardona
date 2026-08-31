@@ -1,6 +1,6 @@
 /* ===== MIDI CLIP SCORE DATA ===== */
-const MIDI_ROLL_MIN=48;
-const MIDI_ROLL_MAX=72;
+const MIDI_ROLL_MIN=24;
+const MIDI_ROLL_MAX=96;
 let midiEditorTarget="synth";
 let midiEditorMode="step";
 let midiRecording=false;
