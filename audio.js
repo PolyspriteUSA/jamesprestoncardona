@@ -86,7 +86,13 @@
 
     const promise = audio.play();
     if (promise && typeof promise.catch === "function") {
-      promise.catch(function () {});
+      promise.catch(function (error) {
+        // NotAllowedError is normal when a browser requires a user gesture.
+        // Other failures are surfaced so a missing/bad audio URL is visible.
+        if (!error || error.name !== "NotAllowedError") {
+          console.warn("JPC background audio could not play.", error);
+        }
+      });
     }
   }
 
@@ -112,6 +118,15 @@
       button.addEventListener("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
+
+        // If autoplay was blocked, "Music On" can be enabled while the
+        // audio is still paused. In that case, the first click should
+        // START playback instead of immediately toggling the music off.
+        if (state.enabled && audio.paused && canPlay()) {
+          play();
+          return;
+        }
+
         setEnabled(!state.enabled);
       });
     });
@@ -158,13 +173,28 @@
     if (canPlay()) play();
   });
 
-  function recoverPlayback() {
-    if (canPlay() && audio.paused) {
-      play();
+  function recoverPlayback(event) {
+    if (!canPlay() || !audio.paused) return;
+
+    // Let the Music button click handler own Music-button gestures.
+    // Otherwise pointerdown can start the track and the following click
+    // immediately toggles it back off.
+    if (
+      event &&
+      event.target &&
+      event.target.closest &&
+      event.target.closest("[data-jpc-music-toggle], #music-toggle")
+    ) {
+      return;
     }
+
+    play();
   }
 
-  document.addEventListener("pointerdown", recoverPlayback, { passive: true });
+  document.addEventListener("pointerdown", recoverPlayback, {
+    passive: true,
+    capture: true
+  });
   document.addEventListener("keydown", recoverPlayback);
 
   window.addEventListener("pagehide", writeState);
