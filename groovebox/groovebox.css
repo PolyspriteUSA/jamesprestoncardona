@@ -5279,39 +5279,7 @@ body.mixer-settings-open{overflow:hidden !important;}
   .groovebox-mixer-section .mixer-settings-group-body .audio-settings-grid,
   .groovebox-mixer-section .mixer-settings-group-body .midi-grid{grid-template-columns:1fr;}
 }
-
-
-/* ==================================================
-   SYNTH WORKSPACE — COMPACT SINGLE WRAPPER
-================================================== */
-#synth-section.synth-workspace-card{
-  min-height:0 !important;
-  height:auto !important;
-}
-#synth-section .synth-workspace-content{
-  min-height:0 !important;
-}
-#synth-section .synth-box.collapsible-body{
-  width:calc(100% - 24px) !important;
-  min-width:1180px;
-  margin:12px !important;
-  padding:12px !important;
-}
-#synth-section .synth-workspace-head{
-  padding-top:12px !important;
-  padding-bottom:12px !important;
-}
-#synth-section .synth-head{
-  margin-bottom:8px !important;
-}
-#synth-section .arp-panel{
-  margin-top:8px !important;
-  margin-bottom:8px !important;
-}
-@media(max-width:1204px){
-  #synth-section .synth-workspace-content{overflow-x:auto !important;}
-}
-
+\n\n/* ==================================================\n   SYNTH WORKSPACE — COMPACT SINGLE WRAPPER\n================================================== */\n#synth-section.synth-workspace-card{\n  min-height:0 !important;\n  height:auto !important;\n}\n#synth-section .synth-workspace-content{\n  min-height:0 !important;\n}\n#synth-section .synth-box.collapsible-body{\n  width:calc(100% - 24px) !important;\n  min-width:1180px;\n  margin:12px !important;\n  padding:12px !important;\n}\n#synth-section .synth-workspace-head{\n  padding-top:12px !important;\n  padding-bottom:12px !important;\n}\n#synth-section .synth-head{\n  margin-bottom:8px !important;\n}\n#synth-section .arp-panel{\n  margin-top:8px !important;\n  margin-bottom:8px !important;\n}\n@media(max-width:1204px){\n  #synth-section .synth-workspace-content{overflow-x:auto !important;}\n}\n
 
 /* ==================================================
    MIXER — PRECISE FADER CENTERING
@@ -5801,164 +5769,188 @@ body.mixer-settings-open{overflow:hidden !important;}
 }
 
 /* ==================================================
-   GROOVEBOX LAYOUT CLEANUP — UNIFIED SECTION RHYTHM
-   One spacing system for Synth, Sequencer, Recorder and Mixer.
+   RECOVERY LAYOUT PASS — SAFE / CSS ONLY
+   Keeps the last working HTML structure intact.
 ================================================== */
 :root{
-  --gb-section-pad:16px;
-  --gb-section-gap:16px;
-  --gb-inner-radius:16px;
+  --gb-pad:12px;
+  --gb-gutter:16px;
 }
 
-/* Shared page rhythm. */
-.app{
-  width:calc(100% - 24px) !important;
-  margin:0 auto !important;
-  padding:18px 0 28px !important;
-}
-.grid{
-  display:grid !important;
-  grid-template-columns:1fr !important;
-  gap:var(--gb-section-gap) !important;
-  margin-top:var(--gb-section-gap) !important;
-  align-items:start !important;
-}
-#synth-section,
-#sequencer-section{
-  grid-column:1 / -1 !important;
-  width:100% !important;
-  margin:0 !important;
+/* Keep the major section headers on one spacing system. */
+#synth-section .synth-workspace-head,
+#sequencer-section > .card-head,
+#sequencer-section .recorder-head,
+#mixer-section-source > .mixing-console-head{
+  box-sizing:border-box !important;
+  padding:var(--gb-pad) var(--gb-gutter) !important;
 }
 
-/* Every primary section header uses the same padding and baseline. */
-#synth-section > .synth-workspace-content > .card-head,
-#sequencer-section > .card-head{
-  min-height:58px !important;
-  padding:var(--gb-section-pad) !important;
-  margin:0 !important;
-}
-#synth-section .collapse-head-actions,
-#sequencer-section > .card-head .collapse-head-actions,
-#sequencer-section .recorder-head .collapse-head-actions,
-#sequencer-section .mixing-console-head .collapse-head-actions{
-  margin-left:auto !important;
-}
-
-/* Primary section bodies all start on the same inset. */
-#synth-section .synth-workspace-content > .synth-panel{
-  padding:var(--gb-section-pad) !important;
+/* Consistent body insets without changing the DOM or grid structure. */
+#synth-section .synth-box.collapsible-body{
+  box-sizing:border-box !important;
+  margin:var(--gb-pad) !important;
+  padding:var(--gb-pad) !important;
 }
 #sequencer-section > .sequencer-collapse-body{
-  padding:var(--gb-section-pad) !important;
+  box-sizing:border-box !important;
+  padding:var(--gb-pad) var(--gb-gutter) var(--gb-gutter) !important;
 }
 #sequencer-section > .audio-recorder{
-  margin:var(--gb-section-pad) var(--gb-section-pad) 0 !important;
-  padding:var(--gb-section-pad) !important;
+  box-sizing:border-box !important;
+  margin:var(--gb-pad) var(--gb-gutter) 0 !important;
+  padding:var(--gb-pad) !important;
 }
-#sequencer-section > .embedded-mixer{
+#mixer-section-source{
+  box-sizing:border-box !important;
+  padding:0 var(--gb-gutter) var(--gb-gutter) !important;
+}
+#mixer-section-source > .mixing-console-head{
   margin:0 !important;
-  padding:var(--gb-section-pad) !important;
+}
+#mixer-section-source > .mixing-console-body{
+  box-sizing:border-box !important;
+  padding:0 !important;
+}
+#mixer-section-source .console-column{
+  box-sizing:border-box !important;
+  padding:var(--gb-pad) !important;
+}
+#mixer-section-source .mixing-console-utilities{
+  margin-top:var(--gb-pad) !important;
+  gap:var(--gb-pad) !important;
+}
+#mixer-section-source .records-section{
+  margin:var(--gb-pad) 0 0 !important;
+  padding:var(--gb-pad) !important;
 }
 
-/* Nested sequencer modules line up with one another instead of adding mixed side margins. */
+/* Normalize nested sequencer cards without changing widths or flow. */
 #sequencer-section .sequence-switcher,
-#sequencer-section .midi-compose,
-#sequencer-section .seq-wrap{
+#sequencer-section .midi-compose{
   margin-left:0 !important;
   margin-right:0 !important;
 }
 #sequencer-section .sequence-switcher{
-  margin-top:0 !important;
-  margin-bottom:var(--gb-section-pad) !important;
-  padding:var(--gb-section-pad) !important;
-}
-#sequencer-section .midi-compose{
-  margin-top:0 !important;
-  margin-bottom:var(--gb-section-pad) !important;
+  padding:var(--gb-pad) !important;
 }
 #sequencer-section .seq-wrap{
-  margin-top:0 !important;
-  padding:var(--gb-section-pad) !important;
-}
-
-/* Recorder and mixer titles use the same top/bottom rhythm as the other modules. */
-#sequencer-section .recorder-head,
-#sequencer-section .mixing-console-head{
-  min-height:44px !important;
-  margin:0 0 12px !important;
-  padding:0 !important;
-  align-items:center !important;
-}
-#sequencer-section .embedded-mixer-row{
-  width:100% !important;
-  margin:0 !important;
-}
-#sequencer-section .console-column{
-  padding:var(--gb-section-pad) !important;
-}
-#sequencer-section .console-column > .mixer-section > .embedded-mixer-head,
-#sequencer-section .console-column > .audio-fader-section > .embedded-mixer-head,
-#sequencer-section .console-column > .master-fx-section > .embedded-mixer-head{
-  margin:0 !important;
-  padding:0 0 12px !important;
-}
-
-/* Keep the main controls inside their cards and eliminate accidental double scrollbars. */
-#synth-section .synth-workspace-content,
-#sequencer-section,
-#sequencer-section .sequencer-collapse-body,
-#sequencer-section .audio-recorder,
-#sequencer-section .embedded-mixer{
-  min-width:0 !important;
-}
-#sequencer-section .mixing-console-body{
-  width:100% !important;
-  min-width:0 !important;
-  padding:0 !important;
-  overflow:visible !important;
-}
-#sequencer-section .embedded-mixer-row{
-  overflow-x:auto !important;
-  overflow-y:hidden !important;
-  scrollbar-gutter:stable both-edges;
-}
-
-/* Collapsed cards stay clean and header-only. */
-#synth-section.is-collapsed .synth-workspace-head,
-#sequencer-section.is-collapsed > .card-head{
-  border-bottom:0 !important;
-}
-#sequencer-section .audio-recorder.is-collapsed,
-#sequencer-section .embedded-mixer.is-collapsed{
-  padding-bottom:var(--gb-section-pad) !important;
-}
-
-/* Mixer fader rows: preserve the corrected centered geometry and keep all fader labels aligned. */
-#sequencer-section.groovebox-mixer-section .mixer-fader-control,
-#sequencer-section.groovebox-mixer-section .master-console-fader{
   box-sizing:border-box !important;
 }
-#sequencer-section.groovebox-mixer-section .mixer-fader-control > span:first-child,
-#sequencer-section.groovebox-mixer-section .master-console-fader > span:first-child,
-#sequencer-section.groovebox-mixer-section .master-console-fader > label{
-  min-height:14px !important;
-  line-height:14px !important;
-  text-align:center !important;
+
+/* ==================================================
+   CHANNEL FADERS — DIRECT, ISOLATED GEOMETRY
+   The range is horizontal and rotated as one centered object.
+   190px input - 18px thumb = 172px center travel, matching
+   the decorative rail (9px inset at each end of a 190px slot).
+================================================== */
+#mixer-section-source .mixer-fader-control{
+  justify-items:center !important;
+  align-items:center !important;
 }
-#sequencer-section.groovebox-mixer-section .mixer-fader-control output,
-#sequencer-section.groovebox-mixer-section .master-console-fader output{
-  min-height:14px !important;
-  line-height:14px !important;
-  text-align:center !important;
+#mixer-section-source .mixer-fader-slot{
+  position:relative !important;
+  width:62px !important;
+  min-width:62px !important;
+  height:190px !important;
+  min-height:190px !important;
+  margin:0 auto !important;
+  display:block !important;
+  overflow:visible !important;
+}
+#mixer-section-source .mixer-fader-slot::before{
+  content:"" !important;
+  position:absolute !important;
+  left:50% !important;
+  top:9px !important;
+  bottom:9px !important;
+  width:6px !important;
+  transform:translateX(-50%) !important;
+  border-radius:6px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:linear-gradient(
+    to bottom,
+    var(--violet) 0%,
+    rgba(154,98,255,.72) 24%,
+    #17131f 50%,
+    rgba(255,56,209,.76) 76%,
+    var(--magenta) 100%
+  ) !important;
+  box-shadow:
+    0 0 12px rgba(154,98,255,.12),
+    0 0 14px rgba(255,56,209,.10),
+    inset 0 0 3px rgba(0,0,0,.68) !important;
+}
+#mixer-section-source .mixer-fader-scale{
+  position:absolute !important;
+  left:50% !important;
+  top:9px !important;
+  bottom:9px !important;
+  width:62px !important;
+  transform:translateX(-50%) !important;
+  pointer-events:none !important;
+}
+#mixer-section-source .mixer-channel-fader{
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  writing-mode:horizontal-tb !important;
+  direction:ltr !important;
+  position:absolute !important;
+  z-index:4 !important;
+  left:50% !important;
+  top:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  inset:auto !important;
+  width:190px !important;
+  min-width:190px !important;
+  max-width:190px !important;
+  height:42px !important;
+  min-height:42px !important;
+  max-height:42px !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:translate(-50%,-50%) rotate(-90deg) !important;
+  transform-origin:center center !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  outline:0 !important;
+  cursor:ns-resize !important;
+}
+#mixer-section-source .mixer-channel-fader::-webkit-slider-runnable-track{
+  height:6px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+#mixer-section-source .mixer-channel-fader::-webkit-slider-thumb{
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  width:18px !important;
+  height:38px !important;
+  margin-top:-16px !important;
+  border-radius:3px !important;
+  border:1px solid rgba(255,255,255,.42) !important;
+  background:linear-gradient(90deg,#17171e 0%,#373541 41%,#0a0a0e 47% 53%,#373541 59%,#17171e 100%) !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.12),0 2px 5px rgba(0,0,0,.72),0 0 0 1px rgba(154,98,255,.10) !important;
+}
+#mixer-section-source .mixer-channel-fader::-moz-range-track{
+  height:6px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+#mixer-section-source .mixer-channel-fader::-moz-range-thumb{
+  width:18px !important;
+  height:38px !important;
+  border-radius:3px !important;
+  border:1px solid rgba(255,255,255,.42) !important;
+  background:linear-gradient(90deg,#17171e,#373541 41%,#0a0a0e 47% 53%,#373541 59%,#17171e) !important;
+  box-shadow:0 2px 5px rgba(0,0,0,.72),0 0 0 1px rgba(154,98,255,.10) !important;
 }
 
-/* Consistent compact padding on smaller screens, still shared by every section. */
 @media(max-width:760px){
-  :root{--gb-section-pad:12px;--gb-section-gap:12px;}
-  .app{width:calc(100% - 16px) !important;padding-top:8px !important;}
-  #synth-section > .synth-workspace-content > .card-head,
-  #sequencer-section > .card-head{min-height:54px !important;}
-  #sequencer-section > .audio-recorder{margin-top:var(--gb-section-pad) !important;}
-  #sequencer-section .embedded-mixer-row{scrollbar-gutter:auto;}
+  :root{--gb-pad:10px;--gb-gutter:12px;}
 }
 
