@@ -4700,3 +4700,19 @@ body{
     padding:12px !important;
   }
 }
+
+/* ======================================================================
+   MIXER SCROLLBAR REMOVAL
+   Prevent the channel mixer from creating a native vertical scrollbar.
+   ====================================================================== */
+.groovebox-mixer-section #mixer.assignable-mixer{
+  overflow-x:hidden !important;
+  overflow-y:hidden !important;
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
+}
+.groovebox-mixer-section #mixer.assignable-mixer::-webkit-scrollbar{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+}
