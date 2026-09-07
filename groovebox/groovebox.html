@@ -6,7 +6,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Neon Groovebox</title>
 <meta content="A browser-based synthesizer and drum machine using Three.js and the Web Audio API." name="description"/>
-<link href="./groovebox.css" rel="stylesheet"/></head>
+<link href="./groovebox.css" rel="stylesheet"/>
+</head>
 <body>
 <div aria-hidden="true" class="midi-learn-menu" id="midiLearnMenu" role="menu">
 <div class="midi-learn-meta" id="midiLearnMeta">MIDI control</div>
@@ -22,12 +23,12 @@
 </div>
 <div class="app">
 <nav aria-label="Main website navigation" class="site-nav">
-<a class="site-nav-brand" href="./index.html">James Preston Cardona</a>
+<a class="site-nav-brand" href="../index.html">James Preston Cardona</a>
 <div class="site-nav-links">
-<a href="./index.html#work">Work</a>
-<a href="./index.html#about">About</a>
-<a href="./resume.html">Resume</a>
-<a href="./index.html#contact">Contact</a>
+<a href="../index.html#work">Work</a>
+<a href="../index.html#about">About</a>
+<a href="../resume.html">Resume</a>
+<a href="../index.html#contact">Contact</a>
 </div>
 </nav>
 <header class="topbar">
@@ -71,8 +72,8 @@
 <h2>1 · Synthesizers</h2>
 <span>Synth 1 + Synth 2</span>
 <div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="synth" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div>
-<div class="synth-panel collapsible-body" data-collapse-id="synth">
-<div class="synth-box">
+
+<div class="synth-box collapsible-body" data-collapse-id="synth">
 <div class="synth-head">
 <strong>Dual Oscillator Synthesizer</strong>
 <span>two oscillators • filters • frequency modulation • ADSR • delay</span>
@@ -317,7 +318,7 @@
 </div>
 <div class="synth-keyboard" id="synthKeyboard"><button class="synth-key" data-midi="60" style="--white-slot:0" type="button">C4</button><button class="synth-key black" data-midi="61" style="--black-slot:1" type="button"></button><button class="synth-key" data-midi="62" style="--white-slot:1" type="button">D4</button><button class="synth-key black" data-midi="63" style="--black-slot:2" type="button"></button><button class="synth-key" data-midi="64" style="--white-slot:2" type="button">E4</button><button class="synth-key" data-midi="65" style="--white-slot:3" type="button">F4</button><button class="synth-key black" data-midi="66" style="--black-slot:4" type="button"></button><button class="synth-key" data-midi="67" style="--white-slot:4" type="button">G4</button><button class="synth-key black" data-midi="68" style="--black-slot:5" type="button"></button><button class="synth-key" data-midi="69" style="--white-slot:5" type="button">A4</button><button class="synth-key black" data-midi="70" style="--black-slot:6" type="button"></button><button class="synth-key" data-midi="71" style="--white-slot:6" type="button">B4</button><button class="synth-key" data-midi="72" style="--white-slot:7" type="button">C5</button></div>
 </div>
-</div>
+
 </div>
 </section></main></div>
 <section class="card sequencer-card collapsible-section" data-collapse-section="sequencer" id="sequencer-section">
@@ -383,256 +384,11 @@
 </div>
 </div>
 <div class="seq-wrap" data-module-root="drum-machine-sequencer" id="sequencer"></div></div>
-<div class="audio-recorder collapsible-section" data-collapse-section="audio-recorder">
-<div class="recorder-head">
-<div>
-<strong>Audio Recorder</strong>
-<span>record the groovebox output into timeline clips</span>
-</div>
-<div class="recorder-transport">
-<button class="btn recorder-record" id="audioRecordBtn" type="button">Record</button>
-<button class="btn" id="audioStopBtn" type="button">Stop</button>
-<button class="btn" id="audioPlayBtn" type="button">Play All</button>
-<button class="btn" id="audioClearBtn" type="button">Clear</button>
-</div>
-<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="audio-recorder" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="audio-recorder-body collapsible-body" data-collapse-id="audio-recorder"><div class="audio-drop-hint">
-<span>Drag loaded samples or audio files onto any Audio track</span>
-</div>
-<div class="sample-loader">
-<div class="embedded-mixer-head sample-loader-head">
-<strong>Samples</strong>
-<span>load • preview • trigger</span>
-</div>
-<div class="sample-actions">
-<label class="btn sample-add-button">
-                  Add Samples
-                  <input accept="audio/*" hidden="" id="sampleFiles" multiple="" type="file"/>
-</label>
-<button class="btn" id="sampleStopAll" type="button">
-                  Stop Samples
-                </button>
-</div>
-<div class="sample-track-source">
-<label for="sampleTrackSource">Sequencer Sample</label>
-<select id="sampleTrackSource">
-<option value="-1">No sample loaded</option>
-</select>
-</div>
-<div class="sample-slots" data-module-root="sampler" id="sampleSlots"></div>
-</div>
-<div class="audio-timeline-wrap" id="audioTimelineDropzone">
-<div class="timeline-ruler" id="timelineRuler"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div>
-<div class="audio-timeline" id="audioTimeline"><div class="audio-track-row" data-audio-channel="0"><div class="audio-track-label">Audio 1 • armed</div></div><div class="audio-track-row" data-audio-channel="1"><div class="audio-track-label">Audio 2</div></div><div class="audio-track-row" data-audio-channel="2"><div class="audio-track-label">Audio 3</div></div><div class="audio-track-row" data-audio-channel="3"><div class="audio-track-label">Audio 4</div></div></div>
-</div><div class="recording-status" id="recordingStatus">
-          Select an audio channel and press Record
-        </div></div>
-</div>
 <div class="embedded-mixer collapsible-section" data-collapse-section="mixing-console" id="mixer-section-source">
 <div class="mixing-console-head">
 <strong>Mixing Console</strong>
-<span>instruments • recorded audio • master effects</span>
-<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console"><div class="embedded-mixer-row">
-<div class="console-column console-instruments">
-<div class="mixer-section">
-<div class="embedded-mixer-head">
-<strong>Channel Mixer</strong>
-<span>8 assignable channels • EQ • pan • level</span>
-</div>
-<div class="mixer" id="mixer"></div>
-
-
-
-</div>
-</div>
-<div class="console-column console-audio">
-<div class="audio-fader-section">
-<div class="embedded-mixer-head">
-<strong>Audio Mixer</strong>
-<span>recorded tracks</span>
-</div>
-<div class="audio-channel-mixer" id="audioChannelMixer"></div>
-
-</div>
-</div>
-<div class="console-column console-master">
-<div class="master-fx-section">
-<div class="embedded-mixer-head">
-<strong>Master FX</strong>
-<span>reverb • decay • drive • master • VU</span>
-</div>
-<div class="fx master-console-layout">
-<div class="master-fx-faders">
-<div class="fx-strip">
-<label>Reverb</label>
-<input class="vertical-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/>
-<output id="reverbOut">22%</output>
-</div>
-<div class="fx-strip">
-<label>Decay</label>
-<input class="vertical-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/>
-<output id="reverbDecayOut">2.4 s</output>
-</div>
-<div class="fx-strip">
-<label>Drive</label>
-<input class="vertical-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/>
-<output id="driveOut">8%</output>
-</div>
-</div>
-<div aria-label="Master output VU meters" class="master-meter-block">
-<div class="master-meter-title"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
-<div class="master-vu-pair">
-<div class="master-vu-channel"><span>L</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuLeft"></div></div></div>
-<div class="master-vu-channel"><span>R</span><div class="master-vu-track"><div class="master-vu-fill" id="masterVuRight"></div></div></div>
-</div>
-</div>
-<div class="master-fader-section">
-<div class="fx-strip master-strip">
-<label>Master</label>
-<input class="vertical-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/>
-<output id="masterOut">82%</output>
-</div>
-</div>
-</div>
-
-<div class="records-section">
-<div class="records-head">
-<div>
-<strong>Records</strong>
-<span>recorded takes</span>
-</div>
-<button class="btn" id="recordsClearBtn" type="button">Clear Records</button>
-</div>
-<div class="records-list" id="recordsList">
-<div class="records-empty">No recordings yet</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="mixing-console-utilities"><div class="instrument-master-filter">
-<div class="embedded-mixer-head instrument-filter-head">
-<strong>Master Filter</strong>
-<span>synth post-filter</span>
-</div>
-<div class="rotary-filter-grid">
-<label class="rotary-control">
-<span>Type</span>
-<select id="synthFilterType">
-<option value="lowpass">Low Pass</option>
-<option value="highpass">High Pass</option>
-<option value="bandpass">Band Pass</option>
-<option value="notch">Notch</option>
-</select>
-</label>
-<div class="rotary-control">
-<span>Cutoff</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
-<div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
-</div>
-<output id="synthFilterCutoffOut">4200 Hz</output>
-</div>
-<div class="rotary-control">
-<span>Resonance</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
-<div class="rotary-knob" data-knob-for="synthFilterRes"></div>
-</div>
-<output id="synthFilterResOut">4.0</output>
-</div>
-<div class="rotary-control">
-<span>Drive</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
-<div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
-</div>
-<output id="synthFilterDriveOut">0%</output>
-</div>
-</div>
-</div><div class="instrument-bass-filter">
-<div class="embedded-mixer-head instrument-filter-head">
-<strong>Bass Filter</strong>
-<span>bass tone shaping</span>
-</div>
-<div class="rotary-filter-grid">
-<label class="rotary-control">
-<span>Type</span>
-<select id="bassFilterType">
-<option value="lowpass">Low Pass</option>
-<option value="highpass">High Pass</option>
-<option value="bandpass">Band Pass</option>
-<option value="notch">Notch</option>
-</select>
-</label>
-<div class="rotary-control">
-<span>Cutoff</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="bassFilterCutoff" max="8000" min="50" type="range" value="900"/>
-<div class="rotary-knob" data-knob-for="bassFilterCutoff"></div>
-</div>
-<output id="bassFilterCutoffOut">900 Hz</output>
-</div>
-<div class="rotary-control">
-<span>Resonance</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="bassFilterRes" max="24" min=".1" step=".1" type="range" value="6"/>
-<div class="rotary-knob" data-knob-for="bassFilterRes"></div>
-</div>
-<output id="bassFilterResOut">6.0</output>
-</div>
-<div class="rotary-control">
-<span>Drive</span>
-<div class="rotary-knob-wrap">
-<input class="rotary-range" id="bassFilterDrive" max="1" min="0" step=".01" type="range" value=".08"/>
-<div class="rotary-knob" data-knob-for="bassFilterDrive"></div>
-</div>
-<output id="bassFilterDriveOut">8%</output>
-</div>
-</div>
-</div><div class="mixer-midi">
-<div class="embedded-mixer-head mixer-midi-head">
-<strong>MIDI Controller</strong>
-<span>input • target • channel</span>
-</div>
-<div class="midi-panel">
-<div class="midi-grid">
-<button class="btn" id="midiConnect" type="button">Connect MIDI</button>
-<select aria-label="MIDI target instrument" id="midiTarget">
-<option value="synth">Synth 1</option>
-<option value="synth2">Synth 2</option>
-</select>
-<select aria-label="MIDI input" id="midiInput">
-<option value="">No MIDI input</option>
-</select>
-<select aria-label="MIDI channel" id="midiChannel">
-<option value="all">All Channels</option>
-<option value="1">Channel 1</option>
-<option value="2">Channel 2</option>
-<option value="3">Channel 3</option>
-<option value="4">Channel 4</option>
-<option value="5">Channel 5</option>
-<option value="6">Channel 6</option>
-<option value="7">Channel 7</option>
-<option value="8">Channel 8</option>
-<option value="9">Channel 9</option>
-<option value="10">Channel 10</option>
-<option value="11">Channel 11</option>
-<option value="12">Channel 12</option>
-<option value="13">Channel 13</option>
-<option value="14">Channel 14</option>
-<option value="15">Channel 15</option>
-<option value="16">Channel 16</option>
-</select>
-<div class="midi-status" id="midiStatus">
-              MIDI disconnected
-            </div>
-</div>
-</div>
-</div><div class="audio-settings">
-<div class="embedded-mixer-head audio-settings-head">
-<strong>Audio Settings</strong>
-<span>engine • output • latency</span>
-</div>
-<div class="audio-settings-grid">
+<span>8 channels • EQ • pan • master effects</span>
+<details class="mixer-settings-menu"><summary>Settings</summary><div class="mixer-settings-menu-panel"><details class="mixer-settings-group"><summary>Audio Settings</summary><div class="mixer-settings-group-body"><div class="audio-settings-grid">
 <label class="audio-setting">
 <span>Latency</span>
 <select id="audioLatency">
@@ -681,49 +437,179 @@
 <div class="audio-status" id="audioInputStatus">
                   Audio input disabled
                 </div>
+</div></div></details><details class="mixer-settings-group"><summary>MIDI Settings</summary><div class="mixer-settings-group-body"><div class="mixer-midi">
+<div class="embedded-mixer-head mixer-midi-head">
+<strong>MIDI Controller</strong>
+<span>input • target • channel</span>
 </div>
-</div><div class="tape-recorder">
-<div class="embedded-mixer-head tape-recorder-head">
-<strong>Virtual Tape Recorder</strong>
-<span>record the full master session</span>
-</div>
-<div class="tape-deck" id="tapeDeck">
-<div aria-hidden="true" class="tape-window">
-<div class="tape-reel tape-reel-left">
-<span></span>
-</div>
-<div class="tape-path">
-<div class="tape-line"></div>
-<div class="tape-head"></div>
-</div>
-<div class="tape-reel tape-reel-right">
-<span></span>
-</div>
-</div>
-<div class="tape-counter">
-<span id="tapeStatus">Ready</span>
-<strong id="tapeTime">00:00</strong>
-</div>
-<div class="tape-transport">
-<button class="btn tape-record-button" id="tapeRecordBtn" type="button">
-                    Record
-                  </button>
-<button class="btn" id="tapeStopBtn" type="button">
-                    Stop
-                  </button>
-<button class="btn" disabled="" id="tapePlayBtn" type="button">
-                    Play
-                  </button>
-<button class="btn" disabled="" id="tapeDownloadBtn" type="button">
-                    Save
-                  </button>
-<button class="btn" disabled="" id="tapeClearBtn" type="button">
-                    Clear
-                  </button>
+<div class="midi-panel">
+<div class="midi-grid">
+<button class="btn" id="midiConnect" type="button">Connect MIDI</button>
+<select aria-label="MIDI target instrument" id="midiTarget">
+<option value="synth">Synth 1</option>
+<option value="synth2">Synth 2</option>
+</select>
+<select aria-label="MIDI input" id="midiInput">
+<option value="">No MIDI input</option>
+</select>
+<select aria-label="MIDI channel" id="midiChannel">
+<option value="all">All Channels</option>
+<option value="1">Channel 1</option>
+<option value="2">Channel 2</option>
+<option value="3">Channel 3</option>
+<option value="4">Channel 4</option>
+<option value="5">Channel 5</option>
+<option value="6">Channel 6</option>
+<option value="7">Channel 7</option>
+<option value="8">Channel 8</option>
+<option value="9">Channel 9</option>
+<option value="10">Channel 10</option>
+<option value="11">Channel 11</option>
+<option value="12">Channel 12</option>
+<option value="13">Channel 13</option>
+<option value="14">Channel 14</option>
+<option value="15">Channel 15</option>
+<option value="16">Channel 16</option>
+</select>
+<div class="midi-status" id="midiStatus">
+              MIDI disconnected
+            </div>
 </div>
 </div>
-</div></div></div>
+</div></div></details></div></details>
+<div class="collapse-head-actions"><button aria-expanded="true" class="btn collapse-toggle" data-collapse-target="mixing-console" type="button"><span class="collapse-icon">−</span><span class="collapse-label">Collapse</span></button></div></div><div class="mixing-console-body collapsible-body" data-collapse-id="mixing-console"><div class="embedded-mixer-row">
+<div class="console-column console-instruments">
+<div class="mixer-section">
+<div class="embedded-mixer-head">
+<strong>Channel Mixer</strong>
+<span>8 assignable channels • EQ • pan • level</span>
 </div>
+<div class="mixer" id="mixer"></div>
+</div>
+</div>
+<div class="console-column console-master jpc-master-column">
+<div class="master-fx-section jpc-master-section">
+<div class="embedded-mixer-head">
+<strong>Master FX</strong>
+<span>filter • VU • reverb • decay • drive • master</span>
+</div>
+<div class="jpc-master-stack">
+<section class="jpc-master-filter">
+<div class="embedded-mixer-head instrument-filter-head">
+<strong>Master Filter</strong>
+<span>synth post-filter</span>
+</div>
+<div class="rotary-filter-grid">
+<label class="rotary-control">
+<span>Type</span>
+<select id="synthFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</label>
+<div class="rotary-control">
+<span>Cutoff</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterCutoff" max="16000" min="80" type="range" value="4200"/>
+<div class="rotary-knob" data-knob-for="synthFilterCutoff"></div>
+</div>
+<output id="synthFilterCutoffOut">4200 Hz</output>
+</div>
+<div class="rotary-control">
+<span>Resonance</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterRes" max="24" min=".1" step=".1" type="range" value="4"/>
+<div class="rotary-knob" data-knob-for="synthFilterRes"></div>
+</div>
+<output id="synthFilterResOut">4.0</output>
+</div>
+<div class="rotary-control">
+<span>Drive</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="synthFilterDrive" max="1" min="0" step=".01" type="range" value="0"/>
+<div class="rotary-knob" data-knob-for="synthFilterDrive"></div>
+</div>
+<output id="synthFilterDriveOut">0%</output>
+</div>
+</div>
+</section>
+<section aria-label="Master output VU meters" class="jpc-master-vu">
+<div class="jpc-master-vu-head"><span>MASTER VU</span><output id="masterVuDb">-∞ dB</output></div>
+<div class="jpc-master-vu-pair">
+<div class="jpc-master-vu-channel"><span>L</span><div class="jpc-master-vu-face"><div class="jpc-master-vu-needle" id="masterVuLeft"></div></div></div>
+<div class="jpc-master-vu-channel"><span>R</span><div class="jpc-master-vu-face"><div class="jpc-master-vu-needle" id="masterVuRight"></div></div></div>
+</div>
+</section>
+<div class="jpc-master-faders">
+<label class="jpc-master-fader-strip">
+<span>REVERB</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="reverb" max=".8" min="0" step=".01" type="range" value=".22"/></div>
+<output id="reverbOut">22%</output>
+</label>
+<label class="jpc-master-fader-strip">
+<span>DECAY</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="reverbDecay" max="6" min=".3" step=".1" type="range" value="2.4"/></div>
+<output id="reverbDecayOut">2.4 s</output>
+</label>
+<label class="jpc-master-fader-strip">
+<span>DRIVE</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="drive" max=".6" min="0" step=".01" type="range" value=".08"/></div>
+<output id="driveOut">8%</output>
+</label>
+<label class="jpc-master-fader-strip">
+<span>MASTER</span>
+<div class="jpc-master-fader-slot"><input class="jpc-master-fader" id="master" max="1" min="0" step=".01" type="range" value=".82"/></div>
+<output id="masterOut">82%</output>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="mixing-console-utilities"><div class="instrument-bass-filter">
+<div class="embedded-mixer-head instrument-filter-head">
+<strong>Bass Filter</strong>
+<span>bass tone shaping</span>
+</div>
+<div class="rotary-filter-grid">
+<label class="rotary-control">
+<span>Type</span>
+<select id="bassFilterType">
+<option value="lowpass">Low Pass</option>
+<option value="highpass">High Pass</option>
+<option value="bandpass">Band Pass</option>
+<option value="notch">Notch</option>
+</select>
+</label>
+<div class="rotary-control">
+<span>Cutoff</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterCutoff" max="8000" min="50" type="range" value="900"/>
+<div class="rotary-knob" data-knob-for="bassFilterCutoff"></div>
+</div>
+<output id="bassFilterCutoffOut">900 Hz</output>
+</div>
+<div class="rotary-control">
+<span>Resonance</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterRes" max="24" min=".1" step=".1" type="range" value="6"/>
+<div class="rotary-knob" data-knob-for="bassFilterRes"></div>
+</div>
+<output id="bassFilterResOut">6.0</output>
+</div>
+<div class="rotary-control">
+<span>Drive</span>
+<div class="rotary-knob-wrap">
+<input class="rotary-range" id="bassFilterDrive" max="1" min="0" step=".01" type="range" value=".08"/>
+<div class="rotary-knob" data-knob-for="bassFilterDrive"></div>
+</div>
+<output id="bassFilterDriveOut">8%</output>
+</div>
+</div>
+</div></div>
 </section>
 <div class="footer-note">Audio begins only after pressing Play or a keyboard key.</div>
 <script type="importmap">
@@ -749,5 +635,5 @@
 \n
 
 
-<script src="./groovebox-js/state.js"></script><script src="./groovebox-js/arp.js"></script><script src="./groovebox-js/score-state.js"></script><script src="./groovebox-js/mixer-engine.js"></script><script src="./groovebox-js/audio-engine.js"></script><script src="./groovebox-js/drum-machine.js"></script><script src="./groovebox-js/synth.js"></script><script src="./groovebox-js/transport.js"></script><script src="./groovebox-js/sequencer.js"></script><script src="./groovebox-js/sampler.js"></script><script src="./groovebox-js/recorder.js"></script><script src="./groovebox-js/mixer.js"></script><script src="./groovebox-js/audio-settings.js"></script><script src="./groovebox-js/midi.js"></script><script src="./groovebox-js/controls.js"></script><script src="./groovebox-js/visualizer.js"></script><script src="./groovebox-js/legacy-compat.js"></script><script src="./groovebox-js/project-save.js"></script><script src="./groovebox-js/master-vu.js"></script><script src="./groovebox-js/app.js"></script><!-- Modular build: edit groovebox.css and js/* modules; avoid adding inline overrides. --></body>
+<script src="./js/state.js"></script><script src="./js/arp.js"></script><script src="./js/score-state.js"></script><script src="./js/mixer-engine.js"></script><script src="./js/audio-engine.js"></script><script src="./js/drum-machine.js"></script><script src="./js/synth.js"></script><script src="./js/transport.js"></script><script src="./js/sequencer.js"></script><script src="./js/mixer.js"></script><script src="./js/audio-settings.js"></script><script src="./js/midi.js"></script><script src="./js/controls.js"></script><script src="./js/visualizer.js"></script><script src="./js/legacy-compat.js"></script><script src="./js/project-save.js"></script><script src="./js/master-vu.js"></script><script src="./js/app.js"></script><!-- Modular build: edit groovebox.css and js/* modules; avoid adding inline overrides. --></body>
 </html>
