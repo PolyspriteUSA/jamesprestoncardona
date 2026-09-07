@@ -4572,3 +4572,131 @@ body{
     max-width:none !important;
   }
 }
+
+/* ======================================================================
+   FINAL VISUAL ALIGNMENT PATCH — SEQUENCER + MASTER FADERS
+   Keeps the stable DOM/JS untouched.
+   ====================================================================== */
+
+/* Sequencer uses the same 18px desktop content inset on every side. */
+.sequencer-card > .sequencer-collapse-body{
+  padding:18px !important;
+}
+
+/* Channel and Master FX faders share one exact hardware geometry. */
+.groovebox-mixer-section .mixer-fader-slot,
+.groovebox-mixer-section .jpc-master-fader-slot{
+  position:relative !important;
+  display:block !important;
+  justify-self:center !important;
+  width:44px !important;
+  height:190px !important;
+  min-width:44px !important;
+  min-height:190px !important;
+  margin:0 auto !important;
+  overflow:visible !important;
+}
+
+.groovebox-mixer-section .mixer-fader-slot::before,
+.groovebox-mixer-section .jpc-master-fader-slot::before{
+  content:"" !important;
+  position:absolute !important;
+  z-index:0 !important;
+  left:50% !important;
+  top:0 !important;
+  width:8px !important;
+  height:190px !important;
+  transform:translateX(-50%) !important;
+  border:1px solid rgba(255,255,255,.14) !important;
+  border-radius:5px !important;
+  background:linear-gradient(to bottom,#9a62ff 0%,#40216f 44%,#401530 65%,#ff38d1 100%) !important;
+  box-shadow:inset 0 0 6px rgba(0,0,0,.72),0 0 10px rgba(154,98,255,.09) !important;
+}
+
+/* Master faders get the same side calibration marks as the channel faders. */
+.groovebox-mixer-section .mixer-fader-scale,
+.groovebox-mixer-section .jpc-master-fader-slot::after{
+  content:"" !important;
+  position:absolute !important;
+  z-index:1 !important;
+  inset:0 !important;
+  pointer-events:none !important;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0 15px,
+    rgba(255,255,255,.12) 15px 16px,
+    transparent 16px 31px
+  ) !important;
+  opacity:.5 !important;
+  -webkit-mask:linear-gradient(90deg,#000 0 7px,transparent 7px 37px,#000 37px 44px) !important;
+          mask:linear-gradient(90deg,#000 0 7px,transparent 7px 37px,#000 37px 44px) !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader,
+.groovebox-mixer-section .jpc-master-fader{
+  position:absolute !important;
+  z-index:2 !important;
+  left:50% !important;
+  top:50% !important;
+  width:190px !important;
+  min-width:190px !important;
+  max-width:190px !important;
+  height:44px !important;
+  min-height:44px !important;
+  max-height:44px !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:translate(-50%,-50%) rotate(-90deg) !important;
+  transform-origin:center center !important;
+  writing-mode:horizontal-tb !important;
+  direction:ltr !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  outline:0 !important;
+  cursor:ns-resize !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-webkit-slider-runnable-track,
+.groovebox-mixer-section .jpc-master-fader::-webkit-slider-runnable-track{
+  height:1px !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-webkit-slider-thumb,
+.groovebox-mixer-section .jpc-master-fader::-webkit-slider-thumb{
+  -webkit-appearance:none !important;
+  width:34px !important;
+  height:18px !important;
+  margin-top:-8px !important;
+  border:1px solid rgba(255,255,255,.50) !important;
+  border-radius:3px !important;
+  background:linear-gradient(180deg,#34313d,#121117) !important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.06),0 2px 5px rgba(0,0,0,.65),0 0 0 1px rgba(154,98,255,.16) !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-moz-range-track,
+.groovebox-mixer-section .jpc-master-fader::-moz-range-track{
+  height:1px !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+.groovebox-mixer-section .mixer-channel-fader::-moz-range-thumb,
+.groovebox-mixer-section .jpc-master-fader::-moz-range-thumb{
+  width:34px !important;
+  height:18px !important;
+  border:1px solid rgba(255,255,255,.50) !important;
+  border-radius:3px !important;
+  background:linear-gradient(180deg,#34313d,#121117) !important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.06),0 2px 5px rgba(0,0,0,.65),0 0 0 1px rgba(154,98,255,.16) !important;
+}
+
+@media(max-width:760px){
+  .sequencer-card > .sequencer-collapse-body{
+    padding:12px !important;
+  }
+}
