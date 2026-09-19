@@ -15,6 +15,7 @@
 
   const RELEASE_URL =
     "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/TheAtlas.mp3";
+  const LOCAL_URL = "./TheAtlas.mp3";
   const STORAGE_KEY = "jpc_audio_state_v3";
   const TARGET_VOLUME = 0.34;
 
@@ -22,10 +23,11 @@
   audio.preload = "auto";
   audio.loop = true;
   audio.volume = TARGET_VOLUME;
-  audio.src = RELEASE_URL;
+  audio.src = LOCAL_URL;
   audio.setAttribute("playsinline", "");
 
   const activeVideos = new Set();
+  let fallbackTried = false;
 
   const state = {
     enabled: true,
@@ -189,7 +191,14 @@
   });
 
   audio.addEventListener("error", function () {
-    console.warn("JPC background audio failed to load.", audio.error);
+    if (fallbackTried) {
+      console.warn("JPC background audio failed to load.", audio.error);
+      return;
+    }
+
+    fallbackTried = true;
+    audio.src = RELEASE_URL;
+    audio.load();
   });
 
   function recoverPlayback(event) {
