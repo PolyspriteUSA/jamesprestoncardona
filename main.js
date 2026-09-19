@@ -666,14 +666,10 @@ import * as THREE from "three";
     const pointer = new THREE.Vector2();
     const pointerTarget = new THREE.Vector2();
 
-    window.addEventListener(
-      "pointermove",
+    document.addEventListener(
+      "mousemove",
 
       function (event) {
-        if (window.innerWidth < 768) {
-          return;
-        }
-
         pointerTarget.x =
           (
             event.clientX /
@@ -701,7 +697,7 @@ import * as THREE from "three";
     );
 
     window.addEventListener(
-      "pointerleave",
+      "blur",
       function () {
         pointerTarget.set(0, 0);
       }
