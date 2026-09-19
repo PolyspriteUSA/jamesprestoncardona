@@ -647,7 +647,10 @@ import * as THREE from "three";
     function positionLogo() {
       const responsiveScale =
         THREE.MathUtils.clamp(
-          window.innerWidth / 768,
+          Math.min(
+            window.innerWidth / 1366,
+            window.innerHeight / 768
+          ),
           0.58,
           1
         );
