@@ -23,7 +23,8 @@
   audio.preload = "auto";
   audio.loop = true;
   audio.volume = TARGET_VOLUME;
-  audio.src = RELEASE_URL;
+  audio.src = LOCAL_URL;
+  audio.setAttribute("playsinline", "");
 
   let fallbackTried = false;
   const activeVideos = new Set();
@@ -168,7 +169,7 @@
   audio.addEventListener("error", function () {
     if (fallbackTried) return;
     fallbackTried = true;
-    audio.src = LOCAL_URL;
+    audio.src = RELEASE_URL;
     audio.load();
     if (canPlay()) play();
   });
@@ -192,6 +193,10 @@
   }
 
   document.addEventListener("pointerdown", recoverPlayback, {
+    passive: true,
+    capture: true
+  });
+  document.addEventListener("touchend", recoverPlayback, {
     passive: true,
     capture: true
   });
