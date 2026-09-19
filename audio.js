@@ -15,7 +15,6 @@
 
   const RELEASE_URL =
     "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/TheAtlas.mp3";
-  const LOCAL_URL = "./TheAtlas.mp3";
   const STORAGE_KEY = "jpc_audio_state_v3";
   const TARGET_VOLUME = 0.34;
 
@@ -23,10 +22,9 @@
   audio.preload = "auto";
   audio.loop = true;
   audio.volume = TARGET_VOLUME;
-  audio.src = LOCAL_URL;
+  audio.src = RELEASE_URL;
   audio.setAttribute("playsinline", "");
 
-  let fallbackTried = false;
   const activeVideos = new Set();
 
   const state = {
@@ -116,7 +114,9 @@
   document
     .querySelectorAll("[data-jpc-music-toggle], #music-toggle")
     .forEach(function (button) {
-      button.addEventListener("click", function (event) {
+      let suppressNextClick = false;
+
+      function activateButton(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -129,6 +129,28 @@
         }
 
         setEnabled(!state.enabled);
+      }
+
+      button.addEventListener(
+        "touchend",
+        function (event) {
+          suppressNextClick = true;
+          activateButton(event);
+
+          window.setTimeout(function () {
+            suppressNextClick = false;
+          }, 450);
+        },
+        { passive: false }
+      );
+
+      button.addEventListener("click", function (event) {
+        if (suppressNextClick) {
+          event.preventDefault();
+          return;
+        }
+
+        activateButton(event);
       });
     });
 
@@ -167,11 +189,7 @@
   });
 
   audio.addEventListener("error", function () {
-    if (fallbackTried) return;
-    fallbackTried = true;
-    audio.src = RELEASE_URL;
-    audio.load();
-    if (canPlay()) play();
+    console.warn("JPC background audio failed to load.", audio.error);
   });
 
   function recoverPlayback(event) {
