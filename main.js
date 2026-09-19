@@ -509,6 +509,7 @@ import * as THREE from "three";
           largestDimension;
 
         logoBaseScale = scale;
+        logoPivot.scale.setScalar(scale);
 
       logo.traverse(function (object) {
         if (!object.isMesh) {
@@ -645,20 +646,6 @@ import * as THREE from "three";
     loadLogoCandidate(0);
 
     function positionLogo() {
-      const responsiveScale =
-        THREE.MathUtils.clamp(
-          Math.min(
-            window.innerWidth / 1366,
-            window.innerHeight / 768
-          ),
-          0.58,
-          1
-        );
-
-      logoPivot.scale.setScalar(
-        logoBaseScale * responsiveScale
-      );
-
       if (window.innerWidth < 768) {
         logoRoot.position.set(
           CONFIG.mobileX,
@@ -934,11 +921,11 @@ import * as THREE from "three";
           );
 
         if (
-          !reducedMotion.matches
+          window.innerWidth <
+          768
         ) {
           if (
-            window.innerWidth <
-            768
+            !reducedMotion.matches
           ) {
             logoRoot.rotation.x =
               baseX
@@ -978,20 +965,33 @@ import * as THREE from "three";
               0.055;
 
 
-          } else {
-            const targetY =
-              baseY
-              +
-              pointer.x *
-              0.58;
-
-            logoRoot.rotation.y =
-              THREE.MathUtils.lerp(
-                logoRoot.rotation.y,
-                targetY,
-                0.12
-              );
           }
+        } else {
+          const targetX =
+            baseX
+            -
+            pointer.y *
+            0.10;
+
+          const targetY =
+            baseY
+            +
+            pointer.x *
+            0.42;
+
+          logoRoot.rotation.x =
+            THREE.MathUtils.lerp(
+              logoRoot.rotation.x,
+              targetX,
+              0.10
+            );
+
+          logoRoot.rotation.y =
+            THREE.MathUtils.lerp(
+              logoRoot.rotation.y,
+              targetY,
+              0.10
+            );
         }
       }
 
