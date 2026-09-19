@@ -1243,6 +1243,13 @@
     @media (max-width: 760px) {
       .music-toggle {
         font-size: 0.59rem;
+        min-width: 44px;
+        min-height: 44px;
+        margin: -12px -4px;
+        padding: 12px 4px;
+        position: relative;
+        z-index: 1;
+        pointer-events: auto;
       }
     }
 
