@@ -509,7 +509,6 @@ import * as THREE from "three";
           largestDimension;
 
         logoBaseScale = scale;
-        logoPivot.scale.setScalar(scale);
 
       logo.traverse(function (object) {
         if (!object.isMesh) {
@@ -646,6 +645,17 @@ import * as THREE from "three";
     loadLogoCandidate(0);
 
     function positionLogo() {
+      const responsiveScale =
+        THREE.MathUtils.clamp(
+          window.innerWidth / 768,
+          0.58,
+          1
+        );
+
+      logoPivot.scale.setScalar(
+        logoBaseScale * responsiveScale
+      );
+
       if (window.innerWidth < 768) {
         logoRoot.position.set(
           CONFIG.mobileX,
