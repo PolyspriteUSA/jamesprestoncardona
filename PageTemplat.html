@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Digital Human portfolio work by James Preston Cardona — character development, motion capture, clothing, rigging, and real-time Unreal Engine integration.">
+  <title>Digital Human | James Preston Cardona</title>
+  <link rel="stylesheet" href="./style.css">
+
+  <style>
+    /* =========================================================
+       DIGITAL HUMAN — PAGE-SPECIFIC STYLES
+       Global styling remains in style.css
+       ========================================================= */
+
+    .dh-page {
+      background:
+        radial-gradient(circle at 82% 8%, rgba(154, 98, 255, 0.11), transparent 28%),
+        radial-gradient(circle at 72% 18%, rgba(255, 56, 209, 0.06), transparent 22%),
+        var(--bg);
+    }
+
+    .dh-hero {
+      position: relative;
+      min-height: 88svh;
+      display: flex;
+      align-items: end;
+      overflow: hidden;
+      padding: 150px 28px 84px;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(90deg, rgba(5,5,7,0.98), rgba(5,5,7,0.70) 48%, rgba(5,5,7,0.20)),
+        radial-gradient(circle at 79% 28%, rgba(154,98,255,0.16), transparent 30%),
+        radial-gradient(circle at 88% 44%, rgba(255,56,209,0.08), transparent 24%),
+        var(--bg);
+    }
+
+    .dh-hero-inner {
+      width: min(var(--max-width), 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+      gap: 64px;
+      align-items: end;
+    }
+
+    .dh-kicker {
+      margin-bottom: 16px;
+      color: var(--violet);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .dh-title {
+      max-width: 880px;
+      font-size: clamp(3.2rem, 7.2vw, 7rem);
+      line-height: 0.94;
+      letter-spacing: -0.058em;
+      font-weight: 700;
+    }
+
+    .dh-intro {
+      max-width: 720px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      line-height: 1.7;
+    }
+
+    .dh-meta {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .dh-meta-row {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 18px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.72rem;
+      line-height: 1.5;
+    }
+
+    .dh-meta-label {
+      color: var(--muted2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .dh-meta-value {
+      color: rgba(255,255,255,0.86);
+      text-align: right;
+    }
+
+    .dh-section {
+      padding: 108px 28px;
+      background: var(--bg2);
+    }
+
+    .dh-section.alt {
+      background: #07070a;
+    }
+
+    .dh-inner {
+      width: min(var(--max-width), 100%);
+      margin: 0 auto;
+    }
+
+    .dh-section-heading {
+      display: grid;
+      grid-template-columns: 0.33fr 1fr;
+      gap: 42px;
+      margin-bottom: 42px;
+    }
+
+    .dh-section-label {
+      color: var(--violet);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .dh-section-title {
+      max-width: 900px;
+      font-size: clamp(2.2rem, 4.7vw, 4.7rem);
+      line-height: 0.98;
+      letter-spacing: -0.048em;
+    }
+
+    .dh-section-copy {
+      max-width: 760px;
+      margin-top: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .dh-feature {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .dh-media {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 70% 22%, rgba(154,98,255,0.12), transparent 28%),
+        linear-gradient(145deg, rgba(130,0,180,0.10), rgba(255,0,180,0.02)),
+        #0b0b10;
+    }
+
+    .dh-media img,
+    .dh-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dh-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      color: rgba(255,255,255,0.28);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .dh-feature-copy {
+      padding: 30px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(145deg, rgba(130,0,180,0.10), rgba(255,0,180,0.02));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .dh-feature-copy h3 {
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .dh-feature-copy p {
+      margin-top: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .dh-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .dh-stat {
+      min-height: 110px;
+      padding: 18px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dh-stat strong {
+      display: block;
+      margin-bottom: 7px;
+      color: rgba(255,255,255,0.92);
+      font-size: 1.05rem;
+    }
+
+    .dh-stat span {
+      color: var(--muted2);
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dh-workflow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .dh-workflow-step {
+      min-height: 260px;
+      padding: 24px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.012);
+    }
+
+    .dh-workflow-index {
+      margin-bottom: 54px;
+      color: rgba(255,255,255,0.30);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+    }
+
+    .dh-workflow-step h3 {
+      margin-bottom: 12px;
+      font-size: 1.18rem;
+    }
+
+    .dh-workflow-step p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .dh-gallery {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .dh-card {
+      grid-column: span 4;
+      display: grid;
+      gap: 14px;
+    }
+
+    .dh-card-media {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 72% 20%, rgba(154,98,255,0.10), transparent 27%),
+        linear-gradient(145deg, rgba(130,0,180,0.08), rgba(255,0,180,0.015)),
+        #0b0b10;
+    }
+
+    .dh-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dh-card h3 {
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .dh-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .dh-tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .dh-tech-card {
+      min-height: 220px;
+      padding: 24px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dh-tech-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .dh-tech-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    .dh-tech-card .skill-list {
+      margin-top: 18px;
+    }
+
+    .dh-video {
+      aspect-ratio: 16 / 9;
+      min-height: 0;
+    }
+
+    .dh-notes {
+      display: grid;
+      grid-template-columns: 0.33fr 1fr;
+      gap: 42px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .dh-note-box {
+      padding: 24px;
+      border-left: 2px solid var(--magenta);
+      background:
+        linear-gradient(90deg, rgba(255,56,209,0.07), rgba(154,98,255,0.025) 55%, transparent);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .dh-footer-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 980px) {
+      .dh-hero-inner,
+      .dh-feature {
+        grid-template-columns: 1fr;
+      }
+
+      .dh-workflow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .dh-card {
+        grid-column: span 6;
+      }
+
+      .dh-tech-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .dh-hero {
+        min-height: auto;
+        padding: 125px 16px 60px;
+      }
+
+      .dh-hero-inner {
+        gap: 40px;
+      }
+
+      .dh-title {
+        font-size: clamp(2.7rem, 13vw, 4.8rem);
+      }
+
+      .dh-meta-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .dh-meta-value {
+        text-align: left;
+      }
+
+      .dh-section {
+        padding: 78px 16px;
+      }
+
+      .dh-section-heading,
+      .dh-notes {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .dh-feature-copy {
+        padding: 22px;
+      }
+
+      .dh-media {
+        min-height: 420px;
+      }
+
+      .dh-workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .dh-card {
+        grid-column: span 12;
+      }
+
+      .dh-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body class="dh-page">
+
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="./index.html">James Preston Cardona</a>
+
+      <div class="nav-links">
+        <a href="./index.html#work">Work</a>
+        <a href="./index.html#about">About</a>
+        <button class="music-toggle" type="button" data-jpc-music-toggle aria-pressed="true">Music On</button>
+        <button class="music-toggle contact-trigger" type="button">Contact</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="dh-hero">
+      <div class="dh-hero-inner">
+        <div>
+          <div class="dh-kicker">02 // Digital Human</div>
+
+          <h1 class="dh-title">
+            Characters built for
+            <span class="gradient-text">real-time worlds.</span>
+          </h1>
+
+          <p class="dh-intro">
+            Character development, digital-human workflows, clothing,
+            rigging, motion capture, animation, and Unreal Engine integration
+            for cinematic and interactive experiences.
+          </p>
+        </div>
+
+        <aside class="dh-meta" aria-label="Digital human project information">
+          <div class="dh-meta-row">
+            <span class="dh-meta-label">Focus</span>
+            <span class="dh-meta-value">Real-Time Characters</span>
+          </div>
+          <div class="dh-meta-row">
+            <span class="dh-meta-label">Engine</span>
+            <span class="dh-meta-value">Unreal Engine</span>
+          </div>
+          <div class="dh-meta-row">
+            <span class="dh-meta-label">Pipeline</span>
+            <span class="dh-meta-value">Character / Cloth / Rig / Mocap</span>
+          </div>
+          <div class="dh-meta-row">
+            <span class="dh-meta-label">Output</span>
+            <span class="dh-meta-value">Interactive + Cinematic</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="dh-section">
+      <div class="dh-inner">
+        <div class="dh-section-heading">
+          <div class="dh-section-label">Featured Character</div>
+
+          <div>
+            <h2 class="dh-section-title">
+              From character concept to finished real-time asset.
+            </h2>
+
+            <p class="dh-section-copy">
+              This section is designed for your strongest digital-human project.
+              Replace the placeholder image with a final character render,
+              Unreal Engine screenshot, or cinematic still.
+            </p>
+          </div>
+        </div>
+
+        <div class="dh-feature">
+          <figure class="dh-media">
+            <img src="./assets/digitalhuman/featured-character.jpg"
+                 alt="Featured real-time digital human"
+                 onerror="this.style.display='none'">
+            <div class="dh-placeholder">
+              Featured character image<br>
+              assets/digitalhuman/featured-character.jpg
+            </div>
+          </figure>
+
+          <div class="dh-feature-copy">
+            <div>
+              <div class="dh-section-label">Project Overview</div>
+              <h3>Production-ready character workflow.</h3>
+
+              <p>
+                Use this area to describe the character, the design objective,
+                how the asset was created, how clothing and materials were handled,
+                and how the final character was integrated into Unreal Engine.
+              </p>
+            </div>
+
+            <div class="dh-stats">
+              <div class="dh-stat">
+                <strong>Real-Time</strong>
+                <span>Target</span>
+              </div>
+              <div class="dh-stat">
+                <strong>Unreal Engine</strong>
+                <span>Final Runtime</span>
+              </div>
+              <div class="dh-stat">
+                <strong>Rigged</strong>
+                <span>Animation Ready</span>
+              </div>
+              <div class="dh-stat">
+                <strong>Optimized</strong>
+                <span>Game / Web / Film</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dh-section alt">
+      <div class="dh-inner">
+        <div class="dh-section-heading">
+          <div class="dh-section-label">Workflow</div>
+
+          <div>
+            <h2 class="dh-section-title">
+              A complete real-time character pipeline.
+            </h2>
+
+            <p class="dh-section-copy">
+              Keep this section focused on process. It shows that the final image
+              is supported by a production workflow rather than being a single render.
+            </p>
+          </div>
+        </div>
+
+        <div class="dh-workflow">
+          <article class="dh-workflow-step">
+            <div class="dh-workflow-index">01 // Character</div>
+            <h3>Model & Identity</h3>
+            <p>
+              Character design, proportions, facial appearance,
+              body setup, and source asset preparation.
+            </p>
+          </article>
+
+          <article class="dh-workflow-step">
+            <div class="dh-workflow-index">02 // Clothing</div>
+            <h3>Garment Development</h3>
+            <p>
+              Clothing construction, fit, retopology,
+              materials, and real-time garment preparation.
+            </p>
+          </article>
+
+          <article class="dh-workflow-step">
+            <div class="dh-workflow-index">03 // Rig</div>
+            <h3>Rigging & Skinning</h3>
+            <p>
+              Skeleton integration, skin weighting,
+              deformation cleanup, and animation testing.
+            </p>
+          </article>
+
+          <article class="dh-workflow-step">
+            <div class="dh-workflow-index">04 // Motion</div>
+            <h3>Animation & Mocap</h3>
+            <p>
+              Motion capture, retargeting, animation cleanup,
+              Sequencer integration, and final performance.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dh-section">
+      <div class="dh-inner">
+        <div class="dh-section-heading">
+          <div class="dh-section-label">Character Gallery</div>
+
+          <div>
+            <h2 class="dh-section-title">
+              A range of digital-human development.
+            </h2>
+
+            <p class="dh-section-copy">
+              Use these slots for different characters, clothing studies,
+              facial work, crowd assets, or final production stills.
+            </p>
+          </div>
+        </div>
+
+        <div class="dh-gallery">
+          <article class="dh-card">
+            <div class="dh-card-media">
+              <img src="./assets/digitalhuman/character-01.jpg"
+                   alt="Digital human character 01"
+                   onerror="this.style.display='none'">
+              <div class="dh-placeholder">Character 01</div>
+            </div>
+            <h3>Primary Character</h3>
+            <p>
+              Describe the design, role, character pipeline, or technical challenge.
+            </p>
+          </article>
+
+          <article class="dh-card">
+            <div class="dh-card-media">
+              <img src="./assets/digitalhuman/character-02.jpg"
+                   alt="Digital human character 02"
+                   onerror="this.style.display='none'">
+              <div class="dh-placeholder">Character 02</div>
+            </div>
+            <h3>Character Study</h3>
+            <p>
+              Use this card for another character, clothing variation, or final render.
+            </p>
+          </article>
+
+          <article class="dh-card">
+            <div class="dh-card-media">
+              <img src="./assets/digitalhuman/character-03.jpg"
+                   alt="Digital human character 03"
+                   onerror="this.style.display='none'">
+              <div class="dh-placeholder">Character 03</div>
+            </div>
+            <h3>Production Character</h3>
+            <p>
+              Highlight a different production goal such as crowd use, performance, or optimization.
+            </p>
+          </article>
+
+          <article class="dh-card">
+            <div class="dh-card-media">
+              <img src="./assets/digitalhuman/character-04.jpg"
+                   alt="Digital human character 04"
+                   onerror="this.style.display='none'">
+              <div class="dh-placeholder">Character 04</div>
+            </div>
+            <h3>Clothing & Materials</h3>
+            <p>
+              Show garment development, fabric treatment, material work, or Unreal shading.
+            </p>
+          </article>
+
+          <article class="dh-card">
+            <div class="dh-card-media">
+              <img src="./assets/digitalhuman/character-05.jpg"
+                   alt="Digital human character 05"
+                   onerror="this.style.display='none'">
+              <div class="dh-placeholder">Character 05</div>
+            </div>
+            <h3>Animation Test</h3>
+            <p>
+              Use a still from an animation test, motion capture session, or cinematic sequence.
+            </p>
+          </article>
+
+          <article class="dh-card">
+            <div class="dh-card-media">
+              <img src="./assets/digitalhuman/character-06.jpg"
+                   alt="Digital human character 06"
+                   onerror="this.style.display='none'">
+              <div class="dh-placeholder">Character 06</div>
+            </div>
+            <h3>Real-Time Final</h3>
+            <p>
+              End with a polished in-engine view that demonstrates final production quality.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dh-section alt">
+      <div class="dh-inner">
+        <div class="dh-section-heading">
+          <div class="dh-section-label">Technical Pipeline</div>
+
+          <div>
+            <h2 class="dh-section-title">
+              Character art supported by technical execution.
+            </h2>
+          </div>
+        </div>
+
+        <div class="dh-tech-grid">
+          <article class="dh-tech-card">
+            <h3>Character Creation</h3>
+            <p>
+              Modeling, facial work, body proportions, texture preparation,
+              asset cleanup, and optimization for real-time use.
+            </p>
+
+            <div class="skill-list">
+              <div class="skill">Blender</div>
+              <div class="skill">ZBrush</div>
+              <div class="skill">MetaHuman</div>
+            </div>
+          </article>
+
+          <article class="dh-tech-card">
+            <h3>Clothing & Materials</h3>
+            <p>
+              Garment construction, retopology, cloth preparation,
+              materials, texturing, and production-ready clothing assets.
+            </p>
+
+            <div class="skill-list">
+              <div class="skill">Marvelous Designer</div>
+              <div class="skill">Substance</div>
+              <div class="skill">Unreal Materials</div>
+            </div>
+          </article>
+
+          <article class="dh-tech-card">
+            <h3>Rigging & Performance</h3>
+            <p>
+              Skeleton transfer, skin weighting, animation retargeting,
+              motion capture, Sequencer, and final runtime integration.
+            </p>
+
+            <div class="skill-list">
+              <div class="skill">Mixamo</div>
+              <div class="skill">Motion Capture</div>
+              <div class="skill">Unreal Engine</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dh-section">
+      <div class="dh-inner">
+        <div class="dh-section-heading">
+          <div class="dh-section-label">Motion</div>
+
+          <div>
+            <h2 class="dh-section-title">
+              Animation and performance in context.
+            </h2>
+
+            <p class="dh-section-copy">
+              Add a short reel, animation test, motion-capture edit,
+              or Unreal Engine cinematic here.
+            </p>
+          </div>
+        </div>
+
+        <figure class="dh-media dh-video">
+          <video controls playsinline poster="./assets/digitalhuman/video-poster.jpg">
+            <source src="./assets/digitalhuman/digitalhuman-reel.mp4" type="video/mp4">
+          </video>
+          <div class="dh-placeholder">
+            Digital Human reel<br>
+            assets/digitalhuman/digitalhuman-reel.mp4
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="dh-section alt">
+      <div class="dh-inner">
+        <div class="dh-notes">
+          <div class="dh-section-label">Project Notes</div>
+
+          <div class="dh-note-box">
+            Replace this text with the strongest production takeaway from the work:
+            what was difficult, what you solved, what the final asset needed to achieve,
+            and how your workflow improved the final real-time result.
+          </div>
+        </div>
+
+        <div class="dh-footer-nav">
+          <a class="button" href="./index.html#work">← Back to Work</a>
+          <button class="button primary contact-trigger" type="button">Start a Conversation</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div
+    id="contact-modal"
+    class="contact-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contact-modal-title"
+    aria-hidden="true"
+  >
+    <div class="contact-backdrop" data-contact-close></div>
+
+    <div class="contact-panel">
+      <button id="contact-close" class="contact-close" type="button" aria-label="Close contact panel">×</button>
+
+      <div class="contact-panel-kicker">Let's Connect</div>
+
+      <h2 id="contact-modal-title">
+        Start a
+        <span class="gradient-text">conversation.</span>
+      </h2>
+
+      <p class="contact-panel-intro">
+        For opportunities, collaborations,
+        real-time 3D projects, or professional inquiries,
+        choose the contact method that works best for you.
+      </p>
+
+      <div class="contact-options">
+        <a class="contact-option" href="mailto:JamesPrestonCardona@gmail.com">
+          <div class="contact-option-icon">@</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">Email</div>
+            <div class="contact-option-value">JamesPrestonCardona@gmail.com</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+
+        <a
+          class="contact-option"
+          href="https://www.linkedin.com/in/jamesprestoncardona/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="contact-option-icon">in</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">LinkedIn</div>
+            <div class="contact-option-value">linkedin.com/in/jamesprestoncardona</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+
+        <a class="contact-option" href="tel:+12148839567">
+          <div class="contact-option-icon">☎</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">Telephone</div>
+            <div class="contact-option-value">(214) 883-9567</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+      </div>
+
+      <div class="contact-panel-footer">
+        <span>Dallas, Texas</span>
+        <span>JamesPrestonCardona.com</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="./audio.js" defer></script>
+
+  <script>
+    (function () {
+      const contactModal = document.getElementById("contact-modal");
+      const contactClose = document.getElementById("contact-close");
+      const contactTriggers = document.querySelectorAll(".contact-trigger");
+
+      let previousFocus = null;
+
+      function openContactPanel() {
+        previousFocus = document.activeElement;
+        contactModal.classList.add("open");
+        contactModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("contact-open");
+
+        setTimeout(function () {
+          contactClose.focus();
+        }, 50);
+      }
+
+      function closeContactPanel() {
+        contactModal.classList.remove("open");
+        contactModal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("contact-open");
+
+        if (
+          previousFocus &&
+          typeof previousFocus.focus === "function"
+        ) {
+          previousFocus.focus();
+        }
+      }
+
+      contactTriggers.forEach(function (trigger) {
+        trigger.addEventListener("click", openContactPanel);
+      });
+
+      contactClose.addEventListener("click", closeContactPanel);
+
+      document.querySelectorAll("[data-contact-close]").forEach(function (element) {
+        element.addEventListener("click", closeContactPanel);
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (
+          event.key === "Escape" &&
+          contactModal.classList.contains("open")
+        ) {
+          closeContactPanel();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
