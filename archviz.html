@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050507">
+  <meta name="description" content="A new space is taking shape. Real-time 3D, immersive experiences, and interactive worlds by James Preston Cardona.">
+  <title>Taking Shape — James Preston Cardona</title>
+  <!-- Use the site's existing stylesheet without changing it. The live URL is a fallback for a local preview. -->
+  <link rel="stylesheet" href="./style.css?v=20260919-music-touch" onerror="this.onerror=null;this.href='https://jamesprestoncardona.com/style.css?v=20260919-music-touch'">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23050507'/%3E%3Cpath d='M18 18h12v12H18zm16 0h12v12H34zM18 34h12v12H18zm16 0h12v12H34z' fill='%23ff38d1'/%3E%3C/svg%3E">
+  <style>
+    /* Page layout only; shared type, colors, gradients, and buttons come from style.css. */
+    .construction-page{color-scheme:dark}
+    .construction-page .uc-layout{display:grid;grid-template-columns:46% 54%;align-items:center;padding-top:126px;padding-bottom:142px;min-height:max(740px,100svh)}
+    .construction-page .hero-copy{position:relative;z-index:5;width:100%;padding-right:18px}
+    .construction-page .hero-copy h1 .gradient-text{display:inline-block}
+    .construction-page .hero-copy .subtitle{max-width:445px}
+    .construction-page .uc-contact{gap:20px}
+    .construction-page .uc-contact svg{width:15px;height:15px}
+    .construction-page .uc-status{display:inline-flex;align-items:center;gap:10px;font-size:12px}
+    .construction-page .uc-status::before{content:"";width:6px;height:6px;background:var(--magenta);box-shadow:0 0 12px var(--magenta)}
+    .construction-page .uc-playground{position:relative;align-self:stretch;min-width:0;min-height:490px;margin:0 -28px 0 -32px;pointer-events:auto}
+    .construction-page .uc-stage{position:absolute;inset:-38px -10% -26px;touch-action:pan-y;cursor:grab;overflow:hidden;outline-offset:-20px}
+    .construction-page .uc-stage.dragging{cursor:grabbing}
+    .construction-page .uc-stage canvas{width:100%;height:100%;pointer-events:none}
+    .construction-page .uc-scene-caption{position:absolute;z-index:1;top:4px;right:9%;display:flex;align-items:center;gap:10px;font-size:12px;line-height:1.5;letter-spacing:.12em;color:var(--muted2);pointer-events:none}
+    .construction-page .uc-plus{font-size:18px;color:var(--violet)}
+    .construction-page .uc-interaction{position:absolute;z-index:4;bottom:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:16px;pointer-events:none}
+    .construction-page .uc-instruction{display:flex;align-items:center;gap:9px;padding:6px 10px;font-size:12px;line-height:1.5;letter-spacing:.02em;text-align:center;color:var(--muted);background:rgba(5,5,7,.7)}
+    .construction-page .uc-instruction svg{width:16px;height:16px;flex-shrink:0}
+    .construction-page .uc-controls{display:flex;align-items:center;gap:11px;pointer-events:auto}
+    .construction-page .uc-scatter{gap:12px;min-width:196px}
+    .construction-page .uc-scatter svg{width:16px;height:16px;flex-shrink:0}
+    .construction-page .uc-motion{width:49px;min-width:49px;padding:0}
+    .construction-page .uc-motion svg{width:14px;height:14px;display:block}
+    .construction-page .uc-motion .play-icon{display:none}
+    .construction-page .uc-motion[aria-pressed="true"] .pause-icon{display:none}
+    .construction-page .uc-motion[aria-pressed="true"] .play-icon{display:block}
+    .construction-page .uc-footer{position:absolute;z-index:6;bottom:0;left:50%;transform:translateX(-50%);width:min(var(--max-width),calc(100% - 56px));padding:24px 0 27px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:12px;line-height:1.7;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2)}
+    .construction-page .uc-disciplines{display:flex;flex-wrap:wrap;gap:8px 16px}
+    .construction-page .uc-location{white-space:nowrap}
+    .construction-page .uc-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .construction-page .uc-no-js{position:relative;max-width:300px;margin:100px auto;color:var(--muted);font-size:16px;line-height:1.6;text-align:center}
+    @media(max-width:1000px) and (min-width:768px){.construction-page .uc-layout{grid-template-columns:44% 56%}.construction-page .uc-disciplines{max-width:75%;gap:5px 14px}}
+    @media(max-width:767px){
+      .construction-page .nav{gap:12px}
+      .construction-page .uc-layout{display:flex;flex-direction:column;align-items:stretch;padding-top:112px;padding-bottom:122px;min-height:100svh}
+      .construction-page .hero-copy{width:100%;padding:0}
+      .construction-page .hero-copy .subtitle{font-size:1rem;max-width:420px}
+      .construction-page .hero-actions{display:flex;width:auto}
+      .construction-page .hero-actions .button{width:auto;min-width:142px}
+      .construction-page .uc-playground{align-self:stretch;min-height:340px;height:clamp(340px,85vw,480px);margin:15px -15px 0}
+      .construction-page .uc-stage{inset:-30px -5% 0}
+      .construction-page .uc-scene-caption{top:7px;right:22px}
+      .construction-page .uc-interaction{bottom:2px;gap:9px}
+      .construction-page .uc-scatter{width:auto;min-width:194px}
+      .construction-page .uc-motion{width:50px;min-width:50px}
+      .construction-page .uc-footer{width:calc(100% - 30px);padding:20px 0 22px;align-items:flex-start;gap:14px}
+      .construction-page .uc-disciplines{display:flex;flex-direction:column;gap:0;font-size:12px;letter-spacing:.065em}
+      .construction-page .uc-status{font-size:12px;letter-spacing:.08em;line-height:1.5;max-width:140px;gap:8px;text-align:right}
+      .construction-page .uc-status::before{flex-shrink:0}
+    }
+    @media(max-width:390px){.construction-page .uc-layout{padding-top:102px}.construction-page .uc-footer{width:calc(100% - 24px)}.construction-page .uc-playground{margin-left:-12px;margin-right:-12px}.construction-page .uc-instruction{font-size:12px;letter-spacing:0;gap:6px}}
+    @media(prefers-reduced-motion:reduce){.construction-page *,.construction-page *::before,.construction-page *::after{transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body class="construction-page">
+  <header class="site-header">
+    <nav class="nav" aria-label="Site header">
+      <a class="brand" href="./">James Preston Cardona</a>
+      <div class="nav-links"><span class="uc-status">Under construction</span></div>
+    </nav>
+  </header>
+  <main id="hero">
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content uc-layout">
+      <section class="hero-copy" aria-labelledby="headline">
+        <p class="section-kicker">A new space is coming</p>
+        <h1 id="headline">Taking<br><span class="gradient-text">shape.</span></h1>
+        <p class="subtitle">The next version is in the works.<br>A few things are still coming together.<br>Feel free to take them apart.</p>
+        <div class="hero-actions">
+          <a class="button uc-contact" href="mailto:JamesPrestonCardona@gmail.com">Let’s talk <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 16 16 4M5 4h11v11"/></svg></a>
+        </div>
+      </section>
+      <section class="uc-playground" aria-label="Interactive sculpture">
+        <div class="uc-stage" id="stage" tabindex="0" role="group" aria-label="Interactive cube sculpture. Drag to rotate. Use arrow keys to rotate, or Space to take it apart. Press R to reset.">
+          <canvas id="sculpture" aria-hidden="true"></canvas>
+        </div>
+        <div class="uc-scene-caption" aria-hidden="true"><span class="uc-plus">+</span><span id="scene-state">FORM / 001</span></div>
+        <div class="uc-interaction">
+          <span class="uc-instruction"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M10 2v16M2 10h16M7 5l3-3 3 3M7 15l3 3 3-3M5 7l-3 3 3 3M15 7l3 3-3 3"/></svg><span id="gesture-hint">Drag to rotate · click to scatter</span></span>
+          <div class="uc-controls">
+            <button class="button primary uc-scatter" id="scatter" type="button" aria-pressed="false" aria-label="Take the sculpture apart" aria-controls="stage">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m6 0h4v-4M3 3l4 4m10-4-4 4M3 17l4-4m10 4-4-4"/></svg>
+              <span id="scatter-label">Take it apart</span>
+            </button>
+            <button class="button uc-motion" id="motion" type="button" aria-label="Pause ambient motion" aria-pressed="false" title="Pause ambient motion">
+              <svg class="pause-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3" height="12" rx=".5"/><rect x="10" y="2" width="3" height="12" rx=".5"/></svg>
+              <svg class="play-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m4 2 10 6-10 6z"/></svg>
+            </button>
+          </div>
+        </div>
+        <p class="uc-sr-only" id="announcement" role="status" aria-live="polite"></p>
+        <noscript><p class="uc-no-js">The next version is taking shape. Enable JavaScript to play with the sculpture.</p></noscript>
+      </section>
+    </div>
+    <footer class="uc-footer">
+      <div class="uc-disciplines"><span>Real-time 3D</span><span>Immersive experiences</span><span>Interactive worlds</span></div>
+      <div class="uc-location">Dallas, TX</div>
+    </footer>
+  </main>
+  <script>
+  (() => {
+    'use strict';
+    // The sculpture is self-contained. The page uses the existing website stylesheet.
+    // Change the name, email, and visible copy above to reuse the page.
+    const stage = document.getElementById('stage');
+    const canvas = document.getElementById('sculpture');
+    const scatterButton = document.getElementById('scatter');
+    const scatterLabel = document.getElementById('scatter-label');
+    const motionButton = document.getElementById('motion');
+    const announcement = document.getElementById('announcement');
+    const reducedMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarseMedia = window.matchMedia('(pointer: coarse)');
+    const TAU = Math.PI * 2;
+    const siteTheme = getComputedStyle(document.documentElement);
+    const readColor = (name, fallback) => {
+      const value = siteTheme.getPropertyValue(name).trim() || fallback;
+      const hex = value.replace('#', '');
+      return [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+    };
+    const violet = readColor('--violet', '#9a62ff');
+    const magenta = readColor('--magenta', '#ff38d1');
+    let reduced = reducedMedia.matches;
+    let paused = reduced;
+    let exploded = false;
+    let expansion = 0;
+    let velocity = 0;
+    let pitch = -.39, yaw = -.56, targetPitch = pitch, targetYaw = yaw;
+    let hoverX = 0, hoverY = 0, softHoverX = 0, softHoverY = 0;
+    let width = 1, height = 1, dpr = 1, frameId = 0, lastTime = 0, elapsed = 0;
+    let activePointer = null, pointerStart = null, pointerLast = null, moved = false, touchOrbit = false;
+    let renderer = null;
+    const blocks = [];
+    let seed = 240919;
+    const rand = () => { seed = (Math.imul(seed,1664525)+1013904223) >>> 0; return seed / 4294967296; };
+    // A deliberately incomplete cube, with a few pieces suspended just outside the form.
+    for (let x=0;x<4;x++) for(let y=0;y<4;y++) for(let z=0;z<4;z++) {
+      if(x>0&&x<3&&y>0&&y<3&&z>0&&z<3) continue;
+      const detached = (x===3&&y===3&&z===3) || (x===0&&y===3&&z===0) || (x===3&&y===0&&z===0);
+      const center = [(x-1.5)*.69,(y-1.5)*.69,(z-1.5)*.69];
+      const distance = Math.hypot(...center);
+      const spread = .45+rand()*.45;
+      const drift = center.map((v,i) => v/distance*spread+(rand()-.5)*.55);
+      const accent = (x===3&&z===3) || (y===3&&x===2&&z===0) || (x===0&&y===1&&z===0);
+      blocks.push({center,drift,turn:[(rand()-.5)*1.8,(rand()-.5)*1.8,(rand()-.5)*1.8],phase:rand()*TAU,detached,accent,color:accent?((x+y+z)%2?magenta:violet):[.43,.38,.55]});
+    }
+
+    function rotation(x,y,z) {
+      const cx=Math.cos(x),sx=Math.sin(x),cy=Math.cos(y),sy=Math.sin(y),cz=Math.cos(z),sz=Math.sin(z);
+      return [cy*cz,cy*sz,-sy,sx*sy*cz-cx*sz,sx*sy*sz+cx*cz,sx*cy,cx*sy*cz+sx*sz,cx*sy*sz-sx*cz,cx*cy];
+    }
+    function transform(m,v) {return [m[0]*v[0]+m[3]*v[1]+m[6]*v[2],m[1]*v[0]+m[4]*v[1]+m[7]*v[2],m[2]*v[0]+m[5]*v[1]+m[8]*v[2]];}
+    function getPose() {
+      const breath = reduced ? 0 : Math.sin(elapsed*.62)*.036;
+      const turn = yaw + softHoverX*.095;
+      return {rotation:rotation(pitch + softHoverY*.045, turn, -.07), breath, zoom:(width<500?12.8:13)+expansion*7.5, scale:width<500?1:1.04, yOffset:width<500?.48:.24};
+    }
+
+    function createGLRenderer() {
+      const gl = canvas.getContext('webgl',{alpha:true,antialias:true,powerPreference:'low-power',preserveDrawingBuffer:false});
+      if(!gl){stage.dataset.webglStatus='unavailable';return null;}
+      stage.dataset.webglStatus='available';
+      const vertexSource = `
+        precision highp float;
+        attribute vec3 aPosition;
+        attribute vec3 aNormal;
+        attribute vec3 aCenter;
+        attribute vec3 aDrift;
+        attribute vec3 aTurn;
+        attribute vec3 aColor;
+        attribute vec2 aExtra;
+        uniform mat3 uRotation;
+        uniform mat4 uProjection;
+        uniform float uExpansion;
+        uniform float uTime;
+        uniform float uBreath;
+        uniform float uZoom;
+        uniform float uOffset;
+        uniform float uScale;
+        uniform float uMotion;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 vLocal;
+        varying vec3 vColor;
+        mat3 rx(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);}
+        mat3 ry(float a){float c=cos(a),s=sin(a);return mat3(c,0.,-s,0.,1.,0.,s,0.,c);}
+        mat3 rz(float a){float c=cos(a),s=sin(a);return mat3(c,s,0.,-s,c,0.,0.,0.,1.);}
+        void main(){
+          float e=uExpansion;
+          float loose=aExtra.y;
+          float idle=sin(uTime*.65+aExtra.x)*.035*uMotion;
+          vec3 center=aCenter*(1.+e*.73+loose*.18)+aDrift*(e*.93+loose*.16);
+          center.y+=idle*(e+loose*.4);
+          mat3 localRotation=rx(aTurn.x*(e+loose*.075))*ry(aTurn.y*(e+loose*.075))*rz(aTurn.z*e);
+          vec3 local=localRotation*aPosition;
+          vec3 p=uRotation*(local+center)*uScale;
+          p.y+=uBreath+uOffset;
+          vNormal=normalize(uRotation*localRotation*aNormal);
+          vPosition=p;
+          vLocal=aPosition;
+          vColor=aColor;
+          p.z-=uZoom;
+          gl_Position=uProjection*vec4(p,1.);
+        }`;
+      const fragmentSource = `
+        precision mediump float;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 vLocal;
+        varying vec3 vColor;
+        uniform float uZoom;
+        void main(){
+          vec3 n=normalize(vNormal);
+          vec3 eye=normalize(vec3(0.,0.,uZoom)-vPosition);
+          vec3 key=normalize(vec3(-3.,5.,5.));
+          vec3 fill=normalize(vec3(4.,1.,-2.));
+          vec3 rim=normalize(vec3(-2.,3.,-4.));
+          float diffuse=max(dot(n,key),0.);
+          float side=max(dot(n,fill),0.);
+          float edge=max(dot(n,rim),0.);
+          float spec=pow(max(dot(n,normalize(key+eye)),0.),80.);
+          float spec2=pow(max(dot(n,normalize(fill+eye)),0.),34.);
+          float fres=pow(1.-max(dot(n,eye),0.),3.);
+          float ao=.79+.21*smoothstep(-1.8,1.8,vPosition.y);
+          vec3 light=vec3(.14,.155,.18)+vec3(1.15,1.13,1.03)*diffuse+vec3(.38,.12,.68)*side;
+          vec3 color=vColor*light*ao+spec*vec3(.9,.91,.88)+spec2*vec3(.38,.16,.7)+edge*vec3(.14,.075,.24)+fres*vec3(.12,.04,.18);
+          color=color/(color+vec3(.7));
+          color=pow(color,vec3(.8));
+          gl_FragColor=vec4(color,1.);
+        }`;
+      function compile(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+      function program(vs,fs){const p=gl.createProgram(),v=compile(gl.VERTEX_SHADER,vs),f=compile(gl.FRAGMENT_SHADER,fs);gl.attachShader(p,v);gl.attachShader(p,f);gl.linkProgram(p);gl.deleteShader(v);gl.deleteShader(f);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
+      const mainProgram=program(vertexSource,fragmentSource);
+      const attributes=['aPosition','aNormal','aCenter','aDrift','aTurn','aColor','aExtra'];
+      const attribs=attributes.map(n=>gl.getAttribLocation(mainProgram,n));
+      const uniforms={};
+      ['uRotation','uProjection','uExpansion','uTime','uBreath','uZoom','uOffset','uScale','uMotion'].forEach(n=>uniforms[n]=gl.getUniformLocation(mainProgram,n));
+
+      const faces=[[[1,0,0],[0,1,0],[0,0,1]],[[-1,0,0],[0,0,1],[0,1,0]],[[0,1,0],[0,0,1],[1,0,0]],[[0,-1,0],[1,0,0],[0,0,1]],[[0,0,1],[1,0,0],[0,1,0]],[[0,0,-1],[0,1,0],[1,0,0]]];
+      const s=.313,b=.028,c=s-b;
+      const grid=[-s,-(c+b*.7071),-c,c,c+b*.7071,s];
+      const vertices=[];
+      function rounded(normal,u,v,a,bv){
+        const raw=normal.map((n,i)=>n*s+u[i]*a+v[i]*bv);
+        const core=raw.map(p=>Math.max(-c,Math.min(c,p)));
+        const delta=raw.map((p,i)=>p-core[i]);
+        const len=Math.hypot(...delta)||1;
+        const n=delta.map(p=>p/len);
+        return {p:core.map((p,i)=>p+n[i]*b),n};
+      }
+      for(const block of blocks) for(const [normal,u,v] of faces) for(let i=0;i<grid.length-1;i++) for(let j=0;j<grid.length-1;j++){
+        const q=[rounded(normal,u,v,grid[i],grid[j]),rounded(normal,u,v,grid[i+1],grid[j]),rounded(normal,u,v,grid[i+1],grid[j+1]),rounded(normal,u,v,grid[i],grid[j+1])];
+        for(const k of [0,1,2,0,2,3]) vertices.push(...q[k].p,...q[k].n,...block.center,...block.drift,...block.turn,...block.color,block.phase,block.detached?1:0);
+      }
+      const vertexData=new Float32Array(vertices),buffer=gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,vertexData,gl.STATIC_DRAW);
+
+      // A fine ground grid anchors the floating form without additional assets.
+      const floorProgram=program(`
+        precision highp float;
+        attribute vec2 aPoint;
+        uniform mat4 uProjection;
+        uniform float uZoom;
+        varying vec3 vWorld;
+        void main(){vWorld=vec3(aPoint.x,-2.32,aPoint.y);vec3 p=vWorld;p.z-=uZoom;gl_Position=uProjection*vec4(p,1.);}`,
+        `precision mediump float;
+        varying vec3 vWorld;
+        uniform float uSpread;
+        void main(){
+          vec2 p=vWorld.xz;
+          vec2 cells=abs(fract(p/.65+.5)-.5);
+          float lines=1.-smoothstep(.009,.025,min(cells.x,cells.y));
+          float dist=length(p);
+          float fade=exp(-dist*.20)*.7;
+          float mask=1.-smoothstep(5.,14.,dist);
+          float shadow=exp(-dot(p,p)/(2.5+uSpread*3.));
+          float a=lines*fade*mask*.23;
+          vec3 color=vec3(.45,.32,.55);
+          gl_FragColor=vec4(color,a*(1.-shadow*.9));
+        }`);
+      const floorPoint=gl.getAttribLocation(floorProgram,'aPoint');
+      const floorProjection=gl.getUniformLocation(floorProgram,'uProjection');
+      const floorZoom=gl.getUniformLocation(floorProgram,'uZoom');
+      const floorSpread=gl.getUniformLocation(floorProgram,'uSpread');
+      const floorBuffer=gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER,floorBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-18,-22,18,-22,18,6,-18,-22,18,6,-18,6]),gl.STATIC_DRAW);
+      gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);
+      gl.clearColor(0,0,0,0);
+      let projection=new Float32Array(16);
+      function resize(){
+        gl.viewport(0,0,canvas.width,canvas.height);
+        const f=1/Math.tan(.55/2),aspect=width/height,near=.1,far=80;
+        projection=new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0]);
+      }
+      return {kind:'webgl',resize,draw(pose){
+        gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+        gl.useProgram(floorProgram);
+        gl.bindBuffer(gl.ARRAY_BUFFER,floorBuffer);
+        for(const a of attribs) if(a>=0)gl.disableVertexAttribArray(a);
+        gl.enableVertexAttribArray(floorPoint);gl.vertexAttribPointer(floorPoint,2,gl.FLOAT,false,0,0);
+        gl.uniformMatrix4fv(floorProjection,false,projection);gl.uniform1f(floorZoom,pose.zoom);gl.uniform1f(floorSpread,expansion);
+        gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);gl.drawArrays(gl.TRIANGLES,0,6);gl.depthMask(true);gl.disable(gl.BLEND);
+        gl.useProgram(mainProgram);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+        const sizes=[3,3,3,3,3,3,2];let offset=0;
+        for(let i=0;i<attribs.length;i++){if(attribs[i]>=0){gl.enableVertexAttribArray(attribs[i]);gl.vertexAttribPointer(attribs[i],sizes[i],gl.FLOAT,false,80,offset*4);}offset+=sizes[i];}
+        gl.uniformMatrix3fv(uniforms.uRotation,false,new Float32Array(pose.rotation));gl.uniformMatrix4fv(uniforms.uProjection,false,projection);
+        gl.uniform1f(uniforms.uExpansion,expansion);gl.uniform1f(uniforms.uTime,elapsed);gl.uniform1f(uniforms.uBreath,pose.breath);gl.uniform1f(uniforms.uZoom,pose.zoom);gl.uniform1f(uniforms.uOffset,pose.yOffset);gl.uniform1f(uniforms.uScale,pose.scale);gl.uniform1f(uniforms.uMotion,reduced?0:1);
+        gl.drawArrays(gl.TRIANGLES,0,vertexData.length/20);
+      }};
+    }
+
+    function createCanvasRenderer() {
+      // The same interaction remains available on machines with WebGL disabled.
+      let fallbackCanvas=canvas;
+      let ctx=canvas.getContext('2d');
+      if(!ctx){fallbackCanvas=document.createElement('canvas');fallbackCanvas.setAttribute('aria-hidden','true');canvas.replaceWith(fallbackCanvas);ctx=fallbackCanvas.getContext('2d');}
+      if(!ctx)return null;
+      const cubeFaces=[{n:[0,0,1],v:[[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]]},{n:[0,0,-1],v:[[1,-1,-1],[-1,-1,-1],[-1,1,-1],[1,1,-1]]},{n:[1,0,0],v:[[1,-1,1],[1,-1,-1],[1,1,-1],[1,1,1]]},{n:[-1,0,0],v:[[-1,-1,-1],[-1,-1,1],[-1,1,1],[-1,1,-1]]},{n:[0,1,0],v:[[-1,1,1],[1,1,1],[1,1,-1],[-1,1,-1]]},{n:[0,-1,0],v:[[-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1]]}];
+      return {kind:'canvas',resize(){fallbackCanvas.width=Math.round(width*dpr);fallbackCanvas.height=Math.round(height*dpr);},draw(pose){
+        ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
+        const f=height/(2*Math.tan(.55/2));
+        const project=p=>[width/2+p[0]*f/(pose.zoom-p[2]),height/2-p[1]*f/(pose.zoom-p[2])];
+        const planes=[];
+        for(const block of blocks){
+          const e=expansion,l=block.detached?1:0;
+          const localRotation=rotation(...block.turn.map(t=>t*(e+l*.06)));
+          const center=block.center.map((v,i)=>v*(1+e*.73+l*.18)+block.drift[i]*(e*.93+l*.16));
+          for(const face of cubeFaces){
+            const n=transform(pose.rotation,transform(localRotation,face.n));
+            const points=face.v.map(v=>{let p=transform(localRotation,v.map(c=>c*.308));p=transform(pose.rotation,p.map((c,i)=>c+center[i])).map(c=>c*pose.scale);p[1]+=pose.breath+pose.yOffset;return p;});
+            const mid=points[0].map((v,i)=>points.reduce((sum,p)=>sum+p[i],0)/4);
+            if(n[0]*-mid[0]+n[1]*-mid[1]+n[2]*(pose.zoom-mid[2])<=0)continue;
+            const brightness=.3+Math.max(0,(-3*n[0]+5*n[1]+5*n[2])/7.68)*.7;
+            const base=block.color.map(value=>Math.round(value*255));
+            const color=base.map(c=>Math.round(c*brightness));
+            planes.push({points:points.map(project),depth:mid[2],color});
+          }
+        }
+        planes.sort((a,b)=>a.depth-b.depth);
+        for(const face of planes){
+          ctx.beginPath();face.points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();
+          const top=Math.min(...face.points.map(p=>p[1])),bottom=Math.max(...face.points.map(p=>p[1]));
+          const gradient=ctx.createLinearGradient(0,top,0,Math.max(top+1,bottom));
+          gradient.addColorStop(0,'rgb('+face.color.map(v=>Math.min(255,Math.round(v*1.08))).join(',')+')');
+          gradient.addColorStop(1,'rgb('+face.color.map(v=>Math.round(v*.79)).join(',')+')');
+          ctx.fillStyle=gradient;ctx.fill();ctx.strokeStyle='rgba(218,195,255,.18)';ctx.lineWidth=.75;ctx.stroke();
+        }
+      }};
+    }
+
+    function resize(){
+      const rect=stage.getBoundingClientRect();width=Math.max(1,rect.width);height=Math.max(1,rect.height);dpr=Math.min(window.devicePixelRatio||1,coarseMedia.matches?1.5:2);
+      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+      if(renderer)renderer.resize();requestFrame();
+    }
+    function updateMotionButton(){
+      motionButton.setAttribute('aria-pressed',String(paused));
+      const label=paused?'Resume ambient motion':'Pause ambient motion';motionButton.setAttribute('aria-label',label);motionButton.title=label;
+    }
+    function toggle(){
+      exploded=!exploded;
+      scatterButton.setAttribute('aria-pressed',String(exploded));
+      scatterButton.setAttribute('aria-label',exploded?'Rebuild the sculpture':'Take the sculpture apart');
+      scatterLabel.textContent=exploded?'Put it together':'Take it apart';
+      document.getElementById('scene-state').textContent=exploded?'FORM / UNBOUND':'FORM / 001';
+      announcement.textContent=exploded?'Sculpture taken apart. Drag to explore the pieces.':'Sculpture put back together.';
+      if(reduced){expansion=exploded?1:0;velocity=0;}
+      requestFrame();
+    }
+    function requestFrame(){if(!frameId&&!document.hidden&&renderer)frameId=requestAnimationFrame(tick);}
+    function tick(time){
+      frameId=0;const dt=Math.min(lastTime?(time-lastTime)/1000:1/60,.033);lastTime=time;
+      if(!paused){elapsed+=dt;if(activePointer===null)targetYaw+=dt*.07;}
+      const desired=exploded?1:0;
+      if(!reduced){velocity+=(desired-expansion)*30*dt;velocity*=Math.exp(-7*dt);expansion+=velocity*dt;}
+      if(Math.abs(desired-expansion)<.0001&&Math.abs(velocity)<.0001){expansion=desired;velocity=0;}
+      const ease=reduced?1:1-Math.exp(-9*dt);
+      pitch+=(targetPitch-pitch)*ease;yaw+=(targetYaw-yaw)*ease;
+      softHoverX+=(hoverX-softHoverX)*ease;softHoverY+=(hoverY-softHoverY)*ease;
+      renderer.draw(getPose());
+      const unsettled=Math.abs(desired-expansion)+Math.abs(velocity)+Math.abs(pitch-targetPitch)+Math.abs(yaw-targetYaw)+Math.abs(softHoverX-hoverX)+Math.abs(softHoverY-hoverY)>.0003;
+      if(!paused||unsettled||activePointer!==null)requestFrame();
+    }
+    scatterButton.addEventListener('click',toggle);
+    motionButton.addEventListener('click',()=>{paused=!paused;updateMotionButton();lastTime=0;requestFrame();});
+    stage.addEventListener('pointerdown',event=>{
+      if(activePointer!==null||event.button>0)return;
+      activePointer=event.pointerId;pointerStart={x:event.clientX,y:event.clientY};pointerLast=pointerStart;moved=false;touchOrbit=false;
+      stage.setPointerCapture(event.pointerId);stage.classList.add('dragging');
+      if(event.pointerType==='mouse')stage.focus({preventScroll:true});requestFrame();
+    });
+    stage.addEventListener('pointermove',event=>{
+      if(activePointer===event.pointerId){
+        const totalX=event.clientX-pointerStart.x,totalY=event.clientY-pointerStart.y;
+        if(Math.hypot(totalX,totalY)>6)moved=true;
+        if(event.pointerType==='touch'&&!touchOrbit){if(Math.abs(totalX)>Math.abs(totalY)&&Math.abs(totalX)>6)touchOrbit=true;else return;}
+        const factor=width<500?.009:.006;
+        targetYaw+=(event.clientX-pointerLast.x)*factor;targetPitch=Math.max(-1.05,Math.min(.9,targetPitch+(event.clientY-pointerLast.y)*factor));
+        pointerLast={x:event.clientX,y:event.clientY};requestFrame();
+      }else if(event.pointerType==='mouse'){
+        const rect=stage.getBoundingClientRect();hoverX=(event.clientX-rect.left)/width*2-1;hoverY=(event.clientY-rect.top)/height*2-1;requestFrame();
+      }
+    });
+    function endPointer(event,cancelled){
+      if(activePointer!==event.pointerId)return;
+      const tapped=!moved&&!cancelled;activePointer=null;stage.classList.remove('dragging');
+      if(stage.hasPointerCapture(event.pointerId))stage.releasePointerCapture(event.pointerId);
+      if(tapped)toggle();requestFrame();
+    }
+    stage.addEventListener('pointerup',event=>endPointer(event,false));
+    stage.addEventListener('pointercancel',event=>endPointer(event,true));
+    stage.addEventListener('lostpointercapture',()=>{activePointer=null;stage.classList.remove('dragging');requestFrame();});
+    stage.addEventListener('pointerleave',()=>{hoverX=0;hoverY=0;requestFrame();});
+    stage.addEventListener('keydown',event=>{
+      if(event.code==='Space'||event.code==='Enter'){event.preventDefault();if(!event.repeat)toggle();return;}
+      if(event.code==='ArrowLeft')targetYaw-=.18;
+      else if(event.code==='ArrowRight')targetYaw+=.18;
+      else if(event.code==='ArrowUp')targetPitch=Math.max(-1.05,targetPitch-.15);
+      else if(event.code==='ArrowDown')targetPitch=Math.min(.9,targetPitch+.15);
+      else if(event.code==='KeyR'){targetYaw=-.56;targetPitch=-.39;if(exploded)toggle();}
+      else return;
+      event.preventDefault();requestFrame();
+    });
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frameId);frameId=0;lastTime=0;}else requestFrame();});
+    const onReduced=()=>{reduced=reducedMedia.matches;paused=reduced;expansion=exploded?1:0;velocity=0;updateMotionButton();requestFrame();};
+    if(reducedMedia.addEventListener)reducedMedia.addEventListener('change',onReduced);
+    else reducedMedia.addListener(onReduced);
+    if(coarseMedia.matches)document.getElementById('gesture-hint').textContent='Drag sideways to rotate · tap to scatter';
+    canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();cancelAnimationFrame(frameId);frameId=0;renderer=null;});
+    canvas.addEventListener('webglcontextrestored',()=>{try{renderer=createGLRenderer();}catch(error){renderer=createCanvasRenderer();}resize();});
+    try{renderer=createGLRenderer();}catch(error){stage.dataset.webglStatus=error.message;renderer=null;}
+    if(!renderer)renderer=createCanvasRenderer();
+    stage.dataset.renderer=renderer?renderer.kind:'none';
+    if(!renderer){scatterButton.hidden=true;motionButton.hidden=true;document.getElementById('gesture-hint').textContent='A new experience is on its way.';stage.removeAttribute('tabindex');}
+    updateMotionButton();
+    if(window.ResizeObserver)new ResizeObserver(resize).observe(stage);else window.addEventListener('resize',resize);
+    resize();
+  })();
+  
+  </script>
+</body>
+</html>
