@@ -4,14 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050507">
-  <meta name="description" content="A new space is taking shape. Real-time 3D, immersive experiences, and interactive worlds by James Preston Cardona.">
-  <title>Taking Shape — James Preston Cardona</title>
-  <!-- Use the site's existing stylesheet without changing it. The live URL is a fallback for a local preview. -->
-  <link rel="stylesheet" href="./style.css?v=20260919-music-touch" onerror="this.onerror=null;this.href='https://jamesprestoncardona.com/style.css?v=20260919-music-touch'">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23050507'/%3E%3Cpath d='M18 18h12v12H18zm16 0h12v12H34zM18 34h12v12H18zm16 0h12v12H34z' fill='%23ff38d1'/%3E%3C/svg%3E">
+  <meta name="description" content="Architectural visualization by James Preston Cardona. Unreal Engine environments, real-time lighting, and cinematic architectural experiences. Project showcase coming soon.">
+  <title>Architectural Visualization | James Preston Cardona</title>
+  <link rel="canonical" href="https://jamesprestoncardona.com/archviz.html">
+  <link rel="stylesheet" href="./style.css?v=20260919-music-touch">
+  <link rel="icon" href="./favicon.ico">
   <style>
     /* Page layout only; shared type, colors, gradients, and buttons come from style.css. */
     .construction-page{color-scheme:dark}
+    .construction-page .uc-availability{margin-top:24px;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase}
+    .construction-page .uc-availability::before{flex-shrink:0}
     .construction-page .uc-layout{display:grid;grid-template-columns:46% 54%;align-items:center;padding-top:126px;padding-bottom:142px;min-height:max(740px,100svh)}
     .construction-page .hero-copy{position:relative;z-index:5;width:100%;padding-right:18px}
     .construction-page .hero-copy h1 .gradient-text{display:inline-block}
@@ -58,7 +60,7 @@
       .construction-page .uc-motion{width:50px;min-width:50px}
       .construction-page .uc-footer{width:calc(100% - 30px);padding:20px 0 22px;align-items:flex-start;gap:14px}
       .construction-page .uc-disciplines{display:flex;flex-direction:column;gap:0;font-size:12px;letter-spacing:.065em}
-      .construction-page .uc-status{font-size:12px;letter-spacing:.08em;line-height:1.5;max-width:140px;gap:8px;text-align:right}
+      .construction-page .uc-status{font-size:12px;letter-spacing:.08em;line-height:1.5;gap:8px}
       .construction-page .uc-status::before{flex-shrink:0}
     }
     @media(max-width:390px){.construction-page .uc-layout{padding-top:102px}.construction-page .uc-footer{width:calc(100% - 24px)}.construction-page .uc-playground{margin-left:-12px;margin-right:-12px}.construction-page .uc-instruction{font-size:12px;letter-spacing:0;gap:6px}}
@@ -69,18 +71,26 @@
   <header class="site-header">
     <nav class="nav" aria-label="Site header">
       <a class="brand" href="./">James Preston Cardona</a>
-      <div class="nav-links"><span class="uc-status">Under construction</span></div>
+      <div class="nav-links">
+        <a href="./index.html#work">Work</a>
+        <a href="./index.html#about">About</a>
+        <a href="./index.html#contact" class="contact-trigger" aria-haspopup="dialog" aria-controls="contact-modal" aria-expanded="false">Contact</a>
+        <button class="music-toggle" id="music-toggle" data-jpc-music-toggle type="button" aria-pressed="false" aria-label="Toggle background music">Music On</button>
+      </div>
     </nav>
   </header>
+  <!-- Replace this temporary main section and its sculpture script when the Archviz showcase is ready. -->
   <main id="hero">
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-content uc-layout">
       <section class="hero-copy" aria-labelledby="headline">
-        <p class="section-kicker">A new space is coming</p>
+        <p class="section-kicker">01 // Architectural Visualization</p>
         <h1 id="headline">Taking<br><span class="gradient-text">shape.</span></h1>
-        <p class="subtitle">The next version is in the works.<br>A few things are still coming together.<br>Feel free to take them apart.</p>
+        <p class="subtitle">Real-time environments. Cinematic spaces.<br>A closer look at my architectural visualization work is coming soon.</p>
+        <p class="uc-status uc-availability">Project showcase in progress</p>
         <div class="hero-actions">
-          <a class="button uc-contact" href="mailto:JamesPrestonCardona@gmail.com">Let’s talk <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 16 16 4M5 4h11v11"/></svg></a>
+          <a class="button primary" href="./index.html#work">Back to Work</a>
+          <a class="button uc-contact contact-trigger" href="./index.html#contact" aria-haspopup="dialog" aria-controls="contact-modal" aria-expanded="false">Get In Touch <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 16 16 4M5 4h11v11"/></svg></a>
         </div>
       </section>
       <section class="uc-playground" aria-label="Interactive sculpture">
@@ -106,15 +116,91 @@
       </section>
     </div>
     <footer class="uc-footer">
-      <div class="uc-disciplines"><span>Real-time 3D</span><span>Immersive experiences</span><span>Interactive worlds</span></div>
+      <div class="uc-disciplines"><span>Unreal Engine</span><span>Architectural Visualization</span><span>Real-time 3D</span></div>
       <div class="uc-location">Dallas, TX</div>
     </footer>
   </main>
+
+  <div
+    id="contact-modal"
+    class="contact-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contact-modal-title"
+    aria-hidden="true"
+    inert
+  >
+    <div class="contact-backdrop" data-contact-close></div>
+
+    <div class="contact-panel">
+      <button id="contact-close" class="contact-close" type="button" aria-label="Close contact panel">×</button>
+
+      <div class="contact-panel-kicker">Let's Connect</div>
+
+      <h2 id="contact-modal-title">
+        Start a
+        <span class="gradient-text">conversation.</span>
+      </h2>
+
+      <p class="contact-panel-intro">
+        For opportunities, collaborations,
+        real-time 3D projects, or professional inquiries,
+        choose the contact method that works best for you.
+      </p>
+
+      <div class="contact-options">
+        <a class="contact-option" href="mailto:JamesPrestonCardona@gmail.com">
+          <div class="contact-option-icon">@</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">Email</div>
+            <div class="contact-option-value">JamesPrestonCardona@gmail.com</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+
+        <a
+          class="contact-option"
+          href="https://www.linkedin.com/in/jamesprestoncardona/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="contact-option-icon">in</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">LinkedIn</div>
+            <div class="contact-option-value">linkedin.com/in/jamesprestoncardona</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+
+        <a class="contact-option" href="tel:+12148839567">
+          <div class="contact-option-icon">☎</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">Telephone</div>
+            <div class="contact-option-value">(214) 883-9567</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+      </div>
+
+      <div class="contact-panel-footer">
+        <span>Dallas, Texas</span>
+        <span>JamesPrestonCardona.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Temporary interactive sculpture; independent of the shared site controls. -->
   <script>
   (() => {
     'use strict';
     // The sculpture is self-contained. The page uses the existing website stylesheet.
-    // Change the name, email, and visible copy above to reuse the page.
+    // Remove this script with the temporary sculpture when adding the project showcase.
     const stage = document.getElementById('stage');
     const canvas = document.getElementById('sculpture');
     const scatterButton = document.getElementById('scatter');
@@ -449,6 +535,47 @@
     resize();
   })();
   
+  </script>
+  <!-- Shared portfolio audio preserves the same music preference and playback position. -->
+  <script src="./audio.js?v=20260921-original-loop" defer></script>
+  <script>
+  (() => {
+    const modal = document.getElementById('contact-modal');
+    const closeButton = document.getElementById('contact-close');
+    const triggers = document.querySelectorAll('.contact-trigger');
+    const background = [document.querySelector('.site-header'), document.querySelector('main')];
+    let previousFocus = null;
+
+    function setOpen(open) {
+      if (open) previousFocus = document.activeElement;
+      modal.inert = !open;
+      modal.classList.toggle('open', open);
+      modal.setAttribute('aria-hidden', String(!open));
+      document.body.classList.toggle('contact-open', open);
+      triggers.forEach(trigger => trigger.setAttribute('aria-expanded', String(open)));
+      background.forEach(element => { element.inert = open; });
+      if (open) closeButton.focus({ preventScroll: true });
+      else if (previousFocus) previousFocus.focus({ preventScroll: true });
+    }
+
+    triggers.forEach(trigger => trigger.addEventListener('click', event => {
+      event.preventDefault();
+      setOpen(true);
+    }));
+    closeButton.addEventListener('click', () => setOpen(false));
+    modal.querySelector('[data-contact-close]').addEventListener('click', () => setOpen(false));
+    modal.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); setOpen(false); }
+      if (event.key !== 'Tab') return;
+      const focusable = modal.querySelectorAll('button, a[href]');
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    });
+  })();
   </script>
 </body>
 </html>
