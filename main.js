@@ -336,7 +336,9 @@ const contactModal = document.getElementById("contact-modal");
 
     let previousFocus = null;
 
-    function openContactPanel() {
+    function openContactPanel(event) {
+      if (event) event.preventDefault();
+
       previousFocus = document.activeElement;
       contactModal.classList.add("open");
       contactModal.setAttribute("aria-hidden", "false");
