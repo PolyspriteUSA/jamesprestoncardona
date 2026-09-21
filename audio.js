@@ -15,7 +15,6 @@
 
   const RELEASE_URL =
     "https://github.com/PolyspriteUSA/JamesPrestonCardona/releases/download/portfolio-assets-v1/TheAtlas.mp3";
-  const LOCAL_URL = "./TheAtlas.mp3";
   const STORAGE_KEY = "jpc_audio_state_v3";
   const TARGET_VOLUME = 0.34;
 
@@ -23,11 +22,15 @@
   audio.preload = "auto";
   audio.loop = true;
   audio.volume = TARGET_VOLUME;
-  audio.src = LOCAL_URL;
+  // Use the intact original. The old local copy contains damaged audio data.
+  audio.src = RELEASE_URL;
   audio.setAttribute("playsinline", "");
 
   const activeVideos = new Set();
-  let fallbackTried = false;
+  let restoreTimePending = true;
+  let playbackStarted = false;
+  let playPending = false;
+  let leavingPage = false;
 
   const state = {
     enabled: true,
@@ -47,7 +50,7 @@
 
   function writeState() {
     try {
-      if (Number.isFinite(audio.currentTime)) {
+      if (!restoreTimePending && Number.isFinite(audio.currentTime)) {
         state.currentTime = audio.currentTime;
       }
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -57,18 +60,21 @@
   function canPlay() {
     return (
       state.enabled &&
+      !leavingPage &&
       activeVideos.size === 0 &&
       !document.body.hasAttribute("data-jpc-game-page")
     );
   }
 
   function seekSavedTime() {
-    if (!(state.currentTime > 0)) return;
+    // Restore once after metadata loads, rather than seeking on every resume.
+    if (!restoreTimePending || audio.readyState === 0) return;
     try {
       audio.currentTime =
         Number.isFinite(audio.duration) && audio.duration > 0
           ? state.currentTime % audio.duration
           : state.currentTime;
+      restoreTimePending = false;
     } catch (_) {}
   }
 
@@ -82,23 +88,38 @@
   }
 
   function play() {
-    if (!canPlay()) return;
+    if (!canPlay() || playPending) return;
     seekSavedTime();
 
+    playPending = true;
     const promise = audio.play();
-    if (promise && typeof promise.catch === "function") {
-      promise.catch(function (error) {
+    if (promise && typeof promise.then === "function") {
+      promise.then(function () {
+        playPending = false;
+        playbackStarted = true;
+      }, function (error) {
+        playPending = false;
         // NotAllowedError is normal when a browser requires a user gesture.
         // Other failures are surfaced so a missing/bad audio URL is visible.
-        if (!error || error.name !== "NotAllowedError") {
+        if (!error || (error.name !== "NotAllowedError" && error.name !== "AbortError")) {
           console.warn("JPC background audio could not play.", error);
         }
       });
+    } else {
+      playPending = false;
     }
   }
 
+  function restartLoop() {
+    if (!canPlay()) return;
+    state.currentTime = 0;
+    restoreTimePending = false;
+    audio.currentTime = 0;
+    play();
+  }
+
   function pause() {
-    if (Number.isFinite(audio.currentTime)) {
+    if (!restoreTimePending && Number.isFinite(audio.currentTime)) {
       state.currentTime = audio.currentTime;
     }
     audio.pause();
@@ -175,6 +196,7 @@
     link.addEventListener(
       "click",
       function () {
+        leavingPage = true;
         writeState();
         pause();
       },
@@ -183,22 +205,20 @@
   });
 
   audio.addEventListener("loadedmetadata", seekSavedTime);
+  audio.addEventListener("playing", function () {
+    playbackStarted = true;
+  });
+  // Native looping is primary; explicitly restart if a browser reports an end.
+  audio.addEventListener("ended", restartLoop);
 
   audio.addEventListener("timeupdate", function () {
-    if (Number.isFinite(audio.currentTime)) {
+    if (!restoreTimePending && Number.isFinite(audio.currentTime)) {
       state.currentTime = audio.currentTime;
     }
   });
 
   audio.addEventListener("error", function () {
-    if (fallbackTried) {
-      console.warn("JPC background audio failed to load.", audio.error);
-      return;
-    }
-
-    fallbackTried = true;
-    audio.src = RELEASE_URL;
-    audio.load();
+    console.warn("JPC original background audio failed to load.", audio.currentSrc, audio.error);
   });
 
   function recoverPlayback(event) {
@@ -229,9 +249,26 @@
   });
   document.addEventListener("keydown", recoverPlayback);
 
-  window.addEventListener("pagehide", writeState);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden && playbackStarted && canPlay() && audio.paused) play();
+  });
+  window.addEventListener("pagehide", function () {
+    leavingPage = true;
+    pause();
+  });
+  window.addEventListener("pageshow", function () {
+    leavingPage = false;
+    if (playbackStarted && canPlay() && audio.paused) play();
+  });
   window.addEventListener("beforeunload", writeState);
   window.setInterval(writeState, 750);
+  // Recover an unexpected pause only after playback was allowed. Music Off,
+  // videos, and game navigation continue to own intentional pauses.
+  window.setInterval(function () {
+    if (!playbackStarted || !canPlay() || document.hidden || audio.error) return;
+    if (audio.ended) restartLoop();
+    else if (audio.paused) play();
+  }, 1000);
 
   readState();
   updateButtons();
