@@ -4529,6 +4529,14 @@ function setStatusMessage(
     duration;
 }
 
+// Keep distant ships inside the curved vortex as they approach the combat area.
+function positionEnemyInVortex(enemy){
+  const depth=Math.max(0,-enemy.position.z);
+  const bend=Math.pow(Math.min(depth/112,1),1.6)*THREE.MathUtils.smoothstep(depth,25,60);
+  enemy.position.x+=bend*(-5.5+Math.sin(depth*.028+vortexTime*.07)*2.6);
+  enemy.position.y+=bend*(-2.6+Math.cos(depth*.023+vortexTime*.055)*1.4);
+}
+
 function spawnEnemy(){
   const enemy=
     createEnemyShip();
@@ -4542,7 +4550,7 @@ function spawnEnemy(){
       -2.95,
       2.95
     ),
-    -46
+    -88
   );
 
   enemy.rotation.set(
@@ -4562,6 +4570,8 @@ function spawnEnemy(){
 
   enemy.userData.baseY=
     enemy.position.y;
+
+  positionEnemyInVortex(enemy);
 
   world.add(
     enemy
@@ -4835,16 +4845,16 @@ const pickupShockGeometry=
 
 const pickupStyles={
   integrity:{
-    color:0xff42d0,
-    emissive:0x4b102f
+    color:0x46ff9b,
+    emissive:0x0f4b2b
   },
   weapon:{
     color:0x7149ff,
     emissive:0x211254
   },
   nitro:{
-    color:0xa66cff,
-    emissive:0x2c195a
+    color:0xffc83d,
+    emissive:0x5a3610
   }
 };
 
@@ -4858,6 +4868,22 @@ const pickupDarkMaterial=
     specularIntensity:.78
   });
 
+const pickupBoxGeometry=new THREE.BoxGeometry(1,1,1);
+const pickupCanisterGeometry=new THREE.CylinderGeometry(.145,.145,.43,10);
+const pickupCapGeometry=new THREE.CylinderGeometry(.165,.165,.075,10);
+const pickupCrossMaterial=new THREE.MeshBasicMaterial({color:0xe2fff0,toneMapped:false});
+const pickupBoltShape=new THREE.Shape();
+[[.035,.29],[-.15,-.035],[-.035,-.035],[-.07,-.28],[.16,.09],[.035,.09]].forEach(([x,y],i)=>i?pickupBoltShape.lineTo(x,y):pickupBoltShape.moveTo(x,y));
+pickupBoltShape.closePath();
+const pickupBoltGeometry=new THREE.ExtrudeGeometry(pickupBoltShape,{depth:.045,bevelEnabled:true,bevelThickness:.008,bevelSize:.008,bevelSegments:1,steps:1});
+function addPickupPart(parent,geometry,material,position,scale){
+  const mesh=new THREE.Mesh(geometry,material);
+  mesh.position.set(...position);
+  if(scale)mesh.scale.set(...scale);
+  parent.add(mesh);
+  return mesh;
+}
+
 function createPickup(
   type
 ){
@@ -4867,8 +4893,8 @@ function createPickup(
   const group=
     new THREE.Group();
 
-  const coreMaterial=
-    new THREE.MeshStandardMaterial({
+  const coreMaterial=type==="weapon"
+    ?new THREE.MeshStandardMaterial({
       color:style.color,
       emissive:style.color,
       emissiveIntensity:1.8,
@@ -4877,7 +4903,8 @@ function createPickup(
       transparent:true,
       opacity:.96,
       toneMapped:false
-    });
+    })
+    :new THREE.MeshBasicMaterial({color:style.color,toneMapped:false});
 
   const lineMaterial=
     new THREE.MeshBasicMaterial({
@@ -4919,27 +4946,17 @@ function createPickup(
   let core;
 
   if(type==="integrity"){
-    core=
-      new THREE.Mesh(
-        new THREE.IcosahedronGeometry(
-          .18,
-          0
-        ),
-        coreMaterial
-      );
-
-    const band=
-      new THREE.Mesh(
-        new THREE.TorusGeometry(
-          .26,
-          .018,
-          6,
-          28
-        ),
-        lineMaterial.clone()
-      );
-    band.rotation.x=Math.PI*.5;
-    orbitals.add(band);
+    group.name='Health medical kit';
+    core=new THREE.Group();
+    // Broad rectangular medkit, pale medical cross and green protective corners.
+    addPickupPart(core,pickupBoxGeometry,pickupDarkMaterial,[0,0,0],[.52,.42,.22]);
+    addPickupPart(core,pickupBoxGeometry,coreMaterial,[0,.255,0],[.22,.055,.10]);
+    for(const x of [-1,1])for(const y of [-1,1]){
+      addPickupPart(core,pickupBoxGeometry,coreMaterial,[x*.238,y*.172,.12],[.09,.045,.025]);
+    }
+    addPickupPart(core,pickupBoxGeometry,pickupCrossMaterial,[0,0,.134],[.082,.28,.035]);
+    addPickupPart(core,pickupBoxGeometry,pickupCrossMaterial,[0,0,.134],[.28,.082,.035]);
+    glow.scale.set(1.05,.90,.70);
   }
 
   if(type==="weapon"){
@@ -4968,35 +4985,25 @@ function createPickup(
   }
 
   if(type==="nitro"){
-    core=
-      new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          .10,
-          .14,
-          .34,
-          8
-        ),
-        coreMaterial
-      );
-    core.rotation.x=Math.PI*.5;
-
-    const band=
-      new THREE.Mesh(
-        new THREE.TorusGeometry(
-          .24,
-          .013,
-          6,
-          28
-        ),
-        lineMaterial.clone()
-      );
-    band.rotation.x=Math.PI*.5;
-    orbitals.add(band);
+    group.name='Nitro lightning canister';
+    core=new THREE.Group();
+    // Tall fuel canister and a forward-facing amber bolt have a distinct outline.
+    addPickupPart(core,pickupCanisterGeometry,pickupDarkMaterial,[0,0,0]);
+    for(const side of [-1,1]){
+      addPickupPart(core,pickupCapGeometry,coreMaterial,[0,side*.225,0]);
+      const fin=addPickupPart(core,pickupBoxGeometry,coreMaterial,[side*.18,-.09,0],[.05,.18,.08]);
+      fin.rotation.z=-side*.28;
+    }
+    addPickupPart(core,pickupBoltGeometry,coreMaterial,[0,0,.17]);
+    addPickupPart(core,pickupBoxGeometry,pickupDarkMaterial,[0,.29,0],[.08,.06,.08]);
+    glow.scale.set(.85,1.22,.7);
   }
 
   group.add(core);
 
-  const outerRing=
+  let outerRing,secondaryRing;
+  if(type==='weapon'){
+  outerRing=
     new THREE.Mesh(
       new THREE.TorusGeometry(
         .31,
@@ -5009,7 +5016,7 @@ function createPickup(
   outerRing.rotation.x=Math.PI*.5;
   group.add(outerRing);
 
-  const secondaryRing=
+  secondaryRing=
     new THREE.Mesh(
       new THREE.TorusGeometry(
         .22,
@@ -5022,6 +5029,22 @@ function createPickup(
   secondaryRing.rotation.y=Math.PI*.5;
   secondaryRing.rotation.z=Math.PI*.18;
   group.add(secondaryRing);
+
+  }else{
+    outerRing=new THREE.Group();
+    secondaryRing=new THREE.Group();
+    if(type==='integrity'){
+      // Side latches reinforce the medical-kit silhouette.
+      for(const side of [-1,1])addPickupPart(outerRing,pickupBoxGeometry,coreMaterial,[side*.288,0,0],[.045,.15,.16]);
+    }else{
+      // Two short exhaust arrows beneath the fuel canister.
+      for(const side of [-1,1]){
+        const arrow=addPickupPart(secondaryRing,pickupBoxGeometry,coreMaterial,[side*.055,-.35,0],[.035,.12,.03]);
+        arrow.rotation.z=side*.6;
+      }
+    }
+    group.add(outerRing,secondaryRing);
+  }
 
   const light=
     new THREE.PointLight(
@@ -5382,6 +5405,7 @@ function updatePickups(
         phase
       )*.11;
 
+    if(pickup.userData.type==='weapon'){
     pickup.rotation.x+=
       dt*.20;
 
@@ -5399,6 +5423,12 @@ function updatePickups(
 
     pickup.userData.orbitals.rotation.y+=
       dt*.13;
+
+    }else{
+      // Keep the cross and lightning readable instead of spinning them edge-on.
+      pickup.quaternion.copy(camera.quaternion);
+      pickup.rotateZ(Math.sin(elapsed*.8+phase)*.065);
+    }
 
     if(
       pickup.userData.turbine
@@ -6224,6 +6254,8 @@ function updateEnemies(
           enemy.position.z*.018
         )*.22;
 
+      positionEnemyInVortex(enemy);
+
       const lookTarget=
         new THREE.Vector3(
           player.position.x*.92,
@@ -6574,7 +6606,7 @@ function updateBullets(dt){
 
     if(
       !hit&&
-      bullet.position.z<-55
+      bullet.position.z<-105
     ){
       scene.remove(
         bullet
@@ -6973,6 +7005,7 @@ animate();
 </script>
 </body>
 </html>
+
 
 
 
