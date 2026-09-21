@@ -3760,7 +3760,7 @@ let running=false;
 let score=0;
 let health=100;
 let targetsDestroyed=0;
-let speed=15;
+let speed=16;
 let elapsed=0;
 let enemyTimer=0;
 let nextEnemy=1.8;
@@ -5673,7 +5673,7 @@ function reset(){
   score=0;
   health=100;
   targetsDestroyed=0;
-  speed=15;
+  speed=16;
   elapsed=0;
   enemyTimer=0;
   nextEnemy=1.8;
@@ -5798,7 +5798,8 @@ function getPlayerScreenBounds(){
 }
 
 function updatePlayer(dt){
-const s=6.2;
+const s=9.0;
+const steeringResponse=1-Math.exp(-20*dt);
 
 if(input.left)target.x-=s*dt;
 if(input.right)target.x+=s*dt;
@@ -5837,13 +5838,13 @@ target.y=
 player.position.x=THREE.MathUtils.lerp(
   player.position.x,
   target.x,
-  .18
+  steeringResponse
 );
 
 player.position.y=THREE.MathUtils.lerp(
   player.position.y,
   target.y,
-  .18
+  steeringResponse
 );
 
 /* Hard safety clamp prevents interpolation, FOV changes, or
@@ -6774,9 +6775,9 @@ resize();hud();const clock=new THREE.Clock();function animate(){
 
     const cruiseSpeed=
       Math.min(
-        31,
-        11.5+
-        elapsed*.22
+        42,
+        16+
+        elapsed*.30
       );
 
     nitroActive=
@@ -6802,7 +6803,7 @@ resize();hud();const clock=new THREE.Clock();function animate(){
 
     const nitroBoost=
       nitroActive
-        ?16.5
+        ?22
         :0;
 
     speed=
@@ -6972,5 +6973,6 @@ animate();
 </script>
 </body>
 </html>
+
 
 
