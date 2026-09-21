@@ -706,6 +706,7 @@ import * as THREE from "three";
     function createParticleField(options) {
       const count = options.count;
       const positions = new Float32Array(count * 3);
+      const motion = new Float32Array(count * 2);
 
       for (
         let i = 0;
@@ -737,6 +738,9 @@ import * as THREE from "three";
           )
           *
           options.spreadZ;
+
+        motion[i * 2] = Math.random() * Math.PI * 2;
+        motion[i * 2 + 1] = 0.6 + Math.random() * 0.8;
       }
 
       const geometry =
@@ -747,6 +751,16 @@ import * as THREE from "three";
         new THREE.BufferAttribute(
           positions,
           3
+        ).setUsage(THREE.DynamicDrawUsage)
+      );
+
+      // Include the floating range so moving dots are not culled at the edges.
+      geometry.boundingSphere = new THREE.Sphere(
+        new THREE.Vector3(),
+        Math.hypot(
+          options.spreadX / 2 + 0.55,
+          options.spreadY / 2 + 0.42,
+          options.spreadZ / 2 + 0.35
         )
       );
 
@@ -769,9 +783,34 @@ import * as THREE from "three";
           material
         );
 
+      field.userData.drift = {
+        origins: positions.slice(),
+        motion,
+        speed: options.driftSpeed
+      };
+
       scene.add(field);
 
       return field;
+    }
+
+    function updateParticleField(field, elapsed) {
+      const position = field.geometry.attributes.position;
+      const positions = position.array;
+      const { origins, motion, speed } = field.userData.drift;
+
+      // Each dot follows its own smooth, bounded path without respawning.
+      for (let i = 0; i < position.count; i++) {
+        const p = i * 3;
+        const phase = motion[i * 2];
+        const time = elapsed * speed * motion[i * 2 + 1];
+
+        positions[p] = origins[p] + Math.sin(time * 0.31 + phase) * 0.55;
+        positions[p + 1] = origins[p + 1] + Math.sin(time * 0.24 + phase * 1.37) * 0.42;
+        positions[p + 2] = origins[p + 2] + Math.sin(time * 0.19 + phase * 1.73) * 0.35;
+      }
+
+      position.needsUpdate = true;
     }
 
     const particles =
@@ -789,6 +828,7 @@ import * as THREE from "three";
             : 0.013,
         color: 0xa66cff,
         opacity: 0.24,
+        driftSpeed: 1,
         additive: false
       });
 
@@ -807,6 +847,7 @@ import * as THREE from "three";
             : 0.038,
         color: 0xff4fd8,
         opacity: 0.18,
+        driftSpeed: 0.85,
         additive: true
       });
 
@@ -825,12 +866,14 @@ import * as THREE from "three";
             : 0.009,
         color: 0x6a47ff,
         opacity: 0.16,
+        driftSpeed: 0.55,
         additive: true
       });
 
 
 
     const clock = new THREE.Clock();
+    let particleTime = 0;
 
     const reducedMotion =
       window.matchMedia(
@@ -842,8 +885,8 @@ import * as THREE from "three";
         animate
       );
 
-      const elapsed =
-        clock.getElapsedTime();
+      const delta = clock.getDelta();
+      const elapsed = clock.elapsedTime;
 
       pointer.x =
         THREE.MathUtils.lerp(
@@ -860,28 +903,36 @@ import * as THREE from "three";
         );
 
 
+      // Keep the ambient drift gentle when reduced motion is requested.
+      // Clamp the step to avoid jumps after returning to a background tab.
+      const driftRate = reducedMotion.matches ? 0.2 : 1;
+      particleTime += Math.min(delta, 0.05) * driftRate;
+      updateParticleField(particles, particleTime);
+      updateParticleField(glowParticles, particleTime);
+      updateParticleField(deepParticles, particleTime);
+
       if (
         !reducedMotion.matches
       ) {
         particles.rotation.y =
-          elapsed *
+          particleTime *
           0.010;
 
         particles.rotation.x =
           Math.sin(
-            elapsed *
+            particleTime *
             0.12
           )
           *
           0.022;
 
         glowParticles.rotation.y =
-          -elapsed *
+          -particleTime *
           0.014;
 
         glowParticles.rotation.z =
           Math.sin(
-            elapsed *
+            particleTime *
             0.18
           )
           *
@@ -896,11 +947,11 @@ import * as THREE from "three";
           0.07;
 
         deepParticles.rotation.y =
-          elapsed *
+          particleTime *
           0.004;
 
         deepParticles.rotation.x =
-          -elapsed *
+          -particleTime *
           0.0025;
 
       }
