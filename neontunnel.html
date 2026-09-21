@@ -2249,132 +2249,6 @@ if(window.visualViewport){
 }
 
 let tunnelCurveTime=0;
-const tunnelSlices=[];
-const archSpacing=2.75;
-
-
-
-const tunnelCount=DEVICE_PROFILE.kind==="phone"?18:DEVICE_PROFILE.kind==="tablet"?24:30;
-const tunnelSegmentsPerSlice=10;
-const tunnelRadiusX=5.35;
-const tunnelRadiusY=3.92;
-const beamGeometry=new THREE.BoxGeometry(1,1,1);
-
-const structureMaterial=
-  new THREE.MeshPhysicalMaterial({
-    color:0x07080d,
-    metalness:.76,
-    roughness:.22,
-    clearcoat:.72,
-    clearcoatRoughness:.18,
-    specularIntensity:.75
-  });
-
-const structureSecondary=
-  new THREE.MeshPhysicalMaterial({
-    color:0x111321,
-    metalness:.64,
-    roughness:.28,
-    clearcoat:.48,
-    clearcoatRoughness:.22,
-    specularIntensity:.68
-  });
-
-const neonTubeGeometry=
-  new THREE.CylinderGeometry(
-    1,
-    1,
-    1,
-    10,
-    1,
-    false
-  );
-
-const neonMidGeometry=
-  new THREE.CylinderGeometry(
-    1,
-    1,
-    1,
-    8,
-    1,
-    false
-  );
-
-const neonSoftGeometry=
-  new THREE.CylinderGeometry(
-    1,
-    1,
-    1,
-    8,
-    1,
-    false
-  );
-
-function makeNeonCoreMaterial(
-  color
-){
-  return new THREE.MeshStandardMaterial({
-    color:color,
-    emissive:color,
-    emissiveIntensity:3.2,
-    metalness:.08,
-    roughness:.24,
-    transparent:true,
-    opacity:.96,
-    toneMapped:false
-  });
-}
-
-function makeNeonGlowMaterial(
-  color,
-  opacity
-){
-  return new THREE.MeshBasicMaterial({
-    color:color,
-    transparent:true,
-    opacity:opacity,
-    blending:THREE.AdditiveBlending,
-    depthWrite:false,
-    depthTest:true,
-    toneMapped:false
-  });
-}
-
-const pinkLightMaterial=
-  makeNeonCoreMaterial(
-    0xff42d0
-  );
-
-const purpleLightMaterial=
-  makeNeonCoreMaterial(
-    0x7149ff
-  );
-
-const glowPinkMaterial=
-  makeNeonGlowMaterial(
-    0xff42d0,
-    .14
-  );
-
-const glowPurpleMaterial=
-  makeNeonGlowMaterial(
-    0x7149ff,
-    .15
-  );
-
-const softGlowPinkMaterial=
-  makeNeonGlowMaterial(
-    0xff42d0,
-    .042
-  );
-
-const softGlowPurpleMaterial=
-  makeNeonGlowMaterial(
-    0x7149ff,
-    .050
-  );
-
-
 function curveEnvelope(time){
   const primary=
     .5+
@@ -2480,1146 +2354,138 @@ function curvePoint(z){
   );
 }
 
-function orientAlongCurve(object,z){
-  const current=
-    curvePoint(z);
-
-  const ahead=
-    curvePoint(z-.58);
-
-  const tangent=
-    ahead.clone()
-      .sub(current)
-      .normalize();
-
-  object.position.copy(
-    current
-  );
-
-  object.quaternion
-    .setFromUnitVectors(
-      new THREE.Vector3(
-        0,
-        0,
-        -1
-      ),
-      tangent
-    );
+// Continuous energy vortex. One surface carries the plasma, filaments and debris.
+let vortexTime=0;
+let vortexTravel=0;
+const vortexVertexShader=`
+uniform float uTime;
+varying vec2 vTunnelUv;
+varying float vTunnelDepth;
+void main(){
+  vTunnelUv=uv;
+  float depth=max(0.0,-position.z);
+  vTunnelDepth=depth;
+  float bend=pow(clamp(depth/112.0,0.0,1.0),1.6);
+  vec3 p=position;
+  p.x+=bend*(-5.5+sin(depth*.028+uTime*.07)*2.6);
+  p.y+=bend*(-2.6+cos(depth*.023+uTime*.055)*1.4);
+  gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);
+}`;
+const vortexFragmentShader=`
+uniform float uTime;
+uniform float uTravel;
+uniform vec3 uPink;
+uniform vec3 uPurple;
+varying vec2 vTunnelUv;
+varying float vTunnelDepth;
+float hash21(vec2 p){
+  p=fract(p*vec2(123.34,456.21));
+  p+=dot(p,p+45.32);
+  return fract(p.x*p.y);
 }
-
-function superellipsePoint(
-  theta,
-  exponent,
-  rx,
-  ry,
-  rotation,
-  target
-){
-  const a=
-    theta+
-    rotation;
-
-  const c=
-    Math.cos(a);
-
-  const s=
-    Math.sin(a);
-
-  const power=
-    2/
-    exponent;
-
-  target.set(
-    Math.sign(c)*
-    Math.pow(
-      Math.abs(c),
-      power
-    )*
-    rx,
-
-    Math.sign(s)*
-    Math.pow(
-      Math.abs(s),
-      power
-    )*
-    ry,
-
-    0
-  );
-
-  return target;
+float noise2(vec2 p){
+  vec2 i=floor(p),f=fract(p);
+  f=f*f*(3.0-2.0*f);
+  return mix(mix(hash21(i),hash21(i+vec2(1,0)),f.x),
+             mix(hash21(i+vec2(0,1)),hash21(i+vec2(1,1)),f.x),f.y);
 }
-
-function setBeamBetween(
-  beam,
-  a,
-  b,
-  thickness,
-  depth
-){
-  const delta=
-    b.clone()
-      .sub(a);
-
-  const length=
-    Math.max(
-      delta.length(),
-      .001
-    );
-
-  beam.position
-    .copy(a)
-    .add(b)
-    .multiplyScalar(.5);
-
-  beam.quaternion
-    .setFromUnitVectors(
-      new THREE.Vector3(
-        0,
-        1,
-        0
-      ),
-      delta.normalize()
-    );
-
-  beam.scale.set(
-    thickness,
-    length,
-    depth
-  );
+float filament(float phase,float width){
+  float distance=abs(sin(phase));
+  float aa=max(fwidth(phase),.0015);
+  return 1.0-smoothstep(width,width+aa*1.4,distance);
 }
-
-function createArchitecturalBeam(
-  material,
-  cloneMaterial=false
-){
-  return new THREE.Mesh(
-    beamGeometry,
-    cloneMaterial
-      ?material.clone()
-      :material
-  );
-}
-
-function createNeonTubeBeam(
-  material,
-  layer="core"
-){
-  const geometry=
-    layer==="core"
-      ?neonTubeGeometry
-      :(
-        layer==="mid"
-          ?neonMidGeometry
-          :neonSoftGeometry
-      );
-
-  const mesh=
-    new THREE.Mesh(
-      geometry,
-      material.clone()
-    );
-
-  mesh.renderOrder=
-    layer==="core"
-      ?6
-      :(
-        layer==="mid"
-          ?5
-          :4
-      );
-
-  return mesh;
-}
-
-function createTunnelSlice(i){
-  const group=
-    new THREE.Group();
-
-  group.userData.baseIndex=i;
-  group.userData.z=
-    -i*archSpacing;
-
-  group.userData.phase=
-    i*.46;
-
-  group.userData.structure=[];
-  group.userData.inset=[];
-  group.userData.halo=[];
-  group.userData.softHalo=[];
-  group.userData.rails=[];
-
-  group.userData.outerStructure=[];
-  group.userData.buttresses=[];
-  group.userData.crossBraces=[];
-
-  group.userData.isStation=
-    i%4===0;
-
-  const usePink=
-    (
-      Math.floor(
-        i/2
-      )%
-      2
-    )===
-    0;
-
-  const ringInsetMaterial=
-    usePink
-      ?pinkLightMaterial
-      :purpleLightMaterial;
-
-  const ringHaloMaterial=
-    usePink
-      ?glowPinkMaterial
-      :glowPurpleMaterial;
-
-  const ringSoftMaterial=
-    usePink
-      ?softGlowPinkMaterial
-      :softGlowPurpleMaterial;
-
-  group.userData.ringColor=
-    usePink
-      ?0xff42d0
-      :0x7149ff;
-
-  for(
-    let s=0;
-    s<tunnelSegmentsPerSlice;
-    s++
-  ){
-    const structural=
-      createArchitecturalBeam(
-        s%2===0
-          ?structureMaterial
-          :structureSecondary
-      );
-
-    group.add(
-      structural
-    );
-
-    group.userData.structure.push(
-      structural
-    );
-
-    /* One continuous neon color around the complete aperture. */
-    const inset=
-      createNeonTubeBeam(
-        ringInsetMaterial,
-        "core"
-      );
-
-    inset.userData.currentOpacity=
-      .94;
-
-    group.add(
-      inset
-    );
-
-    group.userData.inset.push(
-      inset
-    );
-
-    const halo=
-      createNeonTubeBeam(
-        ringHaloMaterial,
-        "mid"
-      );
-
-    halo.userData.currentOpacity=
-      .13;
-
-    group.add(
-      halo
-    );
-
-    group.userData.halo.push(
-      halo
-    );
-
-    const softHalo=
-      createNeonTubeBeam(
-        ringSoftMaterial,
-        "soft"
-      );
-
-    softHalo.userData.currentOpacity=
-      .038;
-
-    group.add(
-      softHalo
-    );
-
-    group.userData.softHalo.push(
-      softHalo
-    );
-
-    /* Longitudinal members remain dark and reflective.
-       This keeps the tunnel architectural instead of turning into a neon cage. */
-    const rail=
-      createArchitecturalBeam(
-        s%2===0
-          ?structureSecondary
-          :structureMaterial
-      );
-
-    group.add(
-      rail
-    );
-
-    group.userData.rails.push(
-      rail
-    );
-
-    if(
-      group.userData.isStation
-    ){
-      const outer=
-        createArchitecturalBeam(
-          s%2===0
-            ?structureSecondary
-            :structureMaterial
-        );
-
-      group.add(
-        outer
-      );
-
-      group.userData.outerStructure.push(
-        outer
-      );
-
-      if(
-        s%2===0
-      ){
-        const buttress=
-          createArchitecturalBeam(
-            structureSecondary
-          );
-
-        group.add(
-          buttress
-        );
-
-        group.userData.buttresses.push(
-          buttress
-        );
-
-        const brace=
-          createArchitecturalBeam(
-            structureMaterial
-          );
-
-        group.add(
-          brace
-        );
-
-        group.userData.crossBraces.push(
-          brace
-        );
+void main(){
+  float a=vTunnelUv.x*6.2831853;
+  float depth=vTunnelDepth;
+  float z=depth+uTravel;
+  vec2 polar=vec2(cos(a),sin(a));
+  float mist=noise2(polar*3.1+vec2(z*.055,uTime*.08));
+  float detail=noise2(polar*12.0+vec2(z*.31,-uTime*.13));
+  float grain=noise2(polar*63.0+vec2(z*1.7,uTime*.11));
+  float cloud=mist*.55+detail*.30+grain*.15;
+  float sweep=a+z*.62-uTime*.18;
+  float warp=sin(a*5.0-depth*.12+uTime*.20)*.22+(mist-.5)*.95;
+  float ribbon=sweep+warp;
+  float ribbonDistance=abs(sin(ribbon));
+  float halo=exp(-ribbonDistance*4.8);
+  float innerHalo=exp(-ribbonDistance*30.0);
+  float ribbonCore=filament(ribbon,.014);
+  float threads=filament(ribbon+.10+sin(a*19.0+z*2.2)*.025,.004)+filament(ribbon-.15+sin(a*27.0-z*1.6)*.018,.003);
+  float broken=.30+.70*smoothstep(.25,.75,noise2(polar*6.0+vec2(z*.16,uTime*.03)));
+  // Jagged secondary paths appear as electrical arcs, with steady moving highlights.
+  float electric=a+z*.67+sin(a*29.0+z*3.7)*.052+sin(a*67.0-z*5.17)*.019;
+  float arcMask=smoothstep(.36,.70,detail);
+  float jagged=a+z*.615+.42+(grain-.5)*.20;
+  float arcs=filament(electric,.008)*arcMask+filament(jagged,.006)*smoothstep(.35,.65,detail);
+  float arcHalo=exp(-abs(sin(electric))*24.0)*arcMask;
+  float fine=filament(a*3.0+z*2.21+mist*.38,.012);
+  fine*=smoothstep(.30,.72,detail)*.42;
+  // Tiny angular plate fragments and pinprick sparks interrupt the smooth plasma.
+  vec2 cells=vec2(vTunnelUv.x*96.0+(depth+uTravel)*.055,z*.70);
+  vec2 cell=floor(cells),within=fract(cells);
+  float debris=step(.94,hash21(cell))*step(.17,within.x)*step(within.x,.85)*step(.82,within.y);
+  float spark=pow(max(0.0,1.0-length((within-vec2(.5)) / vec2(.075,.14))),3.0);
+  spark*=step(.96,hash21(cell+13.2));
+  float blend=.5+.5*sin(a*3.0-depth*.10+mist*2.0);
+  vec3 hue=mix(uPurple,uPink,smoothstep(.12,.88,blend));
+  vec3 color=mix(vec3(.004,.001,.013),vec3(.022,.002,.038),mist);
+  float plasma=pow(cloud,3.0)*(0.25+exp(-abs(sin(ribbon+.32))*3.0)*1.5);
+  color+=hue*(halo*.80+innerHalo*.95)*broken;
+  color+=hue*plasma*.48;
+  color+=mix(hue,vec3(1.0,.64,.93),.7)*(ribbonCore*1.5+threads*.40)*broken;
+  color+=hue*(arcHalo*.45+exp(-abs(sin(jagged))*32.0)*arcMask*.28+fine+debris*.13);
+  color+=vec3(1.0,.72,1.0)*arcs*.90;
+  color+=mix(hue,vec3(.85,.8,1.0),.5)*spark*.9;
+  // Dense distant coils merge into a soft luminous throat; no fullscreen strobe.
+  color+=hue*smoothstep(45.0,112.0,depth)*.035;
+  gl_FragColor=vec4(color,1.0);
+  #include <colorspace_fragment>
+}`;
+const vortexMaterial=new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0},uTravel:{value:0},uPink:{value:new THREE.Color(0xff16bd)},uPurple:{value:new THREE.Color(0x7328ff)}},
+  vertexShader:vortexVertexShader,fragmentShader:vortexFragmentShader,
+  side:THREE.DoubleSide,depthWrite:true,toneMapped:false
+});
+function createVortexGeometry(){
+  const radial=DEVICE_PROFILE.kind==='phone'?72:112;
+  const lengthwise=DEVICE_PROFILE.kind==='phone'?96:144;
+  const positions=[],uvs=[],indices=[];
+  for(let j=0;j<=lengthwise;j++){
+    const v=j/lengthwise;
+    const z=7-v*119;
+    const taper=1-.24*Math.pow(v,1.3);
+    for(let i=0;i<=radial;i++){
+      const u=i/radial,a=u*Math.PI*2;
+      const ripple=1+.025*Math.sin(a*3+v*21)+.018*Math.sin(a*7-v*29);
+      positions.push(Math.cos(a)*6.6*taper*ripple,Math.sin(a)*5.3*taper*ripple,z);
+      uvs.push(u,v);
+      if(j<lengthwise&&i<radial){
+        const k=j*(radial+1)+i;
+        indices.push(k,k+radial+1,k+1,k+1,k+radial+1,k+radial+2);
       }
     }
   }
-
-  /* Sparse local illumination lets the dark metal catch the neon. */
-  if(
-    i%3===0
-  ){
-    const localLight=
-      new THREE.PointLight(
-        group.userData.ringColor,
-        group.userData.isStation
-          ?1.28
-          :1.02,
-        group.userData.isStation
-          ?10.5
-          :8.5,
-        2
-      );
-
-    localLight.position.set(
-      0,
-      0,
-      -.22
-    );
-
-    group.add(
-      localLight
-    );
-
-    group.userData.neonLight=
-      localLight;
-  }
-
-  orientAlongCurve(
-    group,
-    group.userData.z
-  );
-
-  world.add(
-    group
-  );
-
-  tunnelSlices.push(
-    group
-  );
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+  geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
+  geometry.setIndex(indices);
+  geometry.computeBoundingSphere();
+  return geometry;
 }
-
-try{
-  for(
-    let i=0;
-    i<tunnelCount;
-    i++
-  ){
-    createTunnelSlice(
-      i
-    );
-  }
-}catch(error){
-  console.error(
-    "Tunnel geometry initialization failed:",
-    error
-  );
-
-  statusText.textContent=
-    "Tunnel visual fallback active";
+const energyVortex=new THREE.Mesh(createVortexGeometry(),vortexMaterial);
+energyVortex.name='Spiraling plasma tunnel';
+// Vertex-shader bending extends beyond the undeformed geometry bounds.
+energyVortex.frustumCulled=false;
+scene.add(energyVortex);
+function updateEnergyVortex(dt,travelSpeed){
+  vortexTime+=dt;
+  vortexTravel+=dt*travelSpeed*.28;
+  vortexMaterial.uniforms.uTime.value=vortexTime;
+  vortexMaterial.uniforms.uTravel.value=vortexTravel;
+  const depth=110,bend=Math.pow(depth/112,1.6);
+  vortexCore.position.set(bend*(-5.5+Math.sin(depth*.028+vortexTime*.07)*2.6),bend*(-2.6+Math.cos(depth*.023+vortexTime*.055)*1.4),-depth);
+  vortexCore.scale.setScalar(11.0+Math.sin(vortexTime*.32)*.3);
 }
-
-const pointScratchA=
-  new THREE.Vector3();
-
-const pointScratchB=
-  new THREE.Vector3();
-
-
-
-
-function getAperturePoints(
-  slice,
-  time,
-  zLocal,
-  phaseOffset
-){
-  const points=[];
-
-  const worldDepth=
-    slice.userData.z+
-    zLocal;
-
-  /* Shared morph state for the whole tunnel.
-     This keeps the shape transition coherent instead of every slice
-     feeling like it is changing independently. */
-  const globalMorph=
-    .5+
-    .5*
-    Math.sin(
-      time*.020
-    );
-
-  const globalMorphEase=
-    globalMorph*
-    globalMorph*
-    (
-      3-
-      2*globalMorph
-    );
-
-  /* A very small depth lag makes the morph travel through the tunnel
-     smoothly instead of flickering slice to slice. */
-  const laggedMorph=
-    .5+
-    .5*
-    Math.sin(
-      time*.020+
-      worldDepth*.010
-    );
-
-  const laggedMorphEase=
-    laggedMorph*
-    laggedMorph*
-    (
-      3-
-      2*laggedMorph
-    );
-
-  const morphBlend=
-    THREE.MathUtils.lerp(
-      globalMorphEase,
-      laggedMorphEase,
-      .26
-    );
-
-  /* Architectural profile transitions coherently from rounded to harder-edged. */
-  const exponent=
-    THREE.MathUtils.lerp(
-      2.15,
-      5.9,
-      morphBlend
-    );
-
-  /* Shared proportional change, again with only a little depth lag. */
-  const globalAspect=
-    .5+
-    .5*
-    Math.sin(
-      time*.015+
-      1.35
-    );
-
-  const laggedAspect=
-    .5+
-    .5*
-    Math.sin(
-      time*.015+
-      1.35+
-      worldDepth*.008
-    );
-
-  const aspectBlend=
-    THREE.MathUtils.lerp(
-      globalAspect,
-      laggedAspect,
-      .22
-    );
-
-  /* Slow compression zones are continuous and restrained. */
-  const compressionWave=
-    .5+
-    .5*
-    Math.sin(
-      time*.017+
-      worldDepth*.016
-    );
-
-  const compression=
-    1-
-    compressionWave*
-    .042;
-
-  const rx=
-    tunnelRadiusX*
-    THREE.MathUtils.lerp(
-      .94,
-      1.06,
-      aspectBlend
-    )*
-    compression;
-
-  const ry=
-    tunnelRadiusY*
-    THREE.MathUtils.lerp(
-      1.055,
-      .93,
-      aspectBlend
-    )*
-    (
-      1+
-      (
-        1-compression
-      )*.24
-    );
-
-  /* Twist is also shared, with a soft helical travel. */
-  const twistWave=
-    Math.sin(
-      time*.028+
-      worldDepth*.020
-    )*
-    .155;
-
-  const rotation=
-    time*.009+
-    slice.userData.phase*.050+
-    worldDepth*.028+
-    phaseOffset+
-    twistWave;
-
-  const warpPhase=
-    time*.020+
-    worldDepth*.018+
-    slice.userData.phase*.16;
-
-  /* Keep the faceting designed and consistent instead of noisy. */
-  const aggression=
-    THREE.MathUtils.lerp(
-      .034,
-      .072,
-      morphBlend
-    );
-
-  for(
-    let p=0;
-    p<tunnelSegmentsPerSlice;
-    p++
-  ){
-    const theta=
-      p/
-      tunnelSegmentsPerSlice*
-      Math.PI*2;
-
-    const point=
-      new THREE.Vector3();
-
-    superellipsePoint(
-      theta,
-      exponent,
-      rx,
-      ry,
-      rotation,
-      point
-    );
-
-    const primaryFacet=
-      1+
-      Math.sin(
-        theta*2+
-        warpPhase
-      )*
-      aggression;
-
-    const secondaryFacet=
-      1+
-      Math.sin(
-        theta*4-
-        warpPhase*.56
-      )*
-      aggression*.24;
-
-    const pinch=
-      1-
-      Math.pow(
-        Math.abs(
-          Math.sin(
-            theta*3+
-            warpPhase*.32
-          )
-        ),
-        8
-      )*
-      aggression*.18;
-
-    point.x*=
-      primaryFacet*
-      secondaryFacet*
-      pinch;
-
-    point.y*=
-      (
-        1+
-        Math.cos(
-          theta*2-
-          warpPhase*.62
-        )*
-        aggression*.42
-      )*
-      pinch;
-
-    /* Gentle design asymmetry only. */
-    const shear=
-      Math.sin(
-        warpPhase*.42
-      )*
-      .042;
-
-    point.x+=
-      point.y*
-      shear;
-
-    point.x+=
-      Math.cos(
-        theta*3-
-        warpPhase*.18
-      )*
-      .042;
-
-    point.y+=
-      Math.sin(
-        theta+
-        warpPhase*.24
-      )*
-      .048*
-      morphBlend;
-
-    point.z=
-      zLocal;
-
-    points.push(
-      point
-    );
-  }
-
-  return points;
-}
-
-function updateTunnelSliceGeometry(
-  slice,
-  time
-){
-  const current=
-    getAperturePoints(
-      slice,
-      time,
-      0,
-      0
-    );
-
-  const next=
-    getAperturePoints(
-      slice,
-      time,
-      -archSpacing*.94,
-      .095
-    );
-
-  const structureThickness=
-    slice.userData.isStation
-      ?.205
-      :(
-        .154+
-        .008*
-        (
-          .5+
-          .5*
-          Math.sin(
-            time*.030+
-            slice.userData.phase*.34
-          )
-        )
-      );
-
-  const structureDepth=
-    slice.userData.isStation
-      ?.310
-      :.215;
-
-  slice.userData.structure.forEach(
-    (beam,index)=>{
-      const a=
-        current[index];
-
-      const b=
-        current[
-          (
-            index+1
-          )%
-          current.length
-        ];
-
-      setBeamBetween(
-        beam,
-        a,
-        b,
-        structureThickness,
-        structureDepth
-      );
-    }
-  );
-
-  /* The emissive core is deliberately stable. */
-  slice.userData.inset.forEach(
-    (beam,index)=>{
-      const a=
-        current[index]
-          .clone()
-          .multiplyScalar(.984);
-
-      const b=
-        current[
-          (
-            index+1
-          )%
-          current.length
-        ]
-          .clone()
-          .multiplyScalar(.984);
-
-      const insetThickness=
-        slice.userData.isStation
-          ?.038
-          :.032;
-
-      setBeamBetween(
-        beam,
-        a,
-        b,
-        insetThickness,
-        insetThickness
-      );
-    }
-  );
-
-  slice.userData.halo.forEach(
-    (beam,index)=>{
-      const a=
-        current[index]
-          .clone()
-          .multiplyScalar(.981);
-
-      const b=
-        current[
-          (
-            index+1
-          )%
-          current.length
-        ]
-          .clone()
-          .multiplyScalar(.981);
-
-      const haloThickness=
-        slice.userData.isStation
-          ?.084
-          :.070;
-
-      setBeamBetween(
-        beam,
-        a,
-        b,
-        haloThickness,
-        haloThickness
-      );
-    }
-  );
-
-  slice.userData.softHalo.forEach(
-    (beam,index)=>{
-      const a=
-        current[index]
-          .clone()
-          .multiplyScalar(.978);
-
-      const b=
-        current[
-          (
-            index+1
-          )%
-          current.length
-        ]
-          .clone()
-          .multiplyScalar(.978);
-
-      const softThickness=
-        slice.userData.isStation
-          ?.150
-          :.126;
-
-      setBeamBetween(
-        beam,
-        a,
-        b,
-        softThickness,
-        softThickness
-      );
-    }
-  );
-
-  /* Dark longitudinal rails are slimmer than the primary frames. */
-  slice.userData.rails.forEach(
-    (beam,index)=>{
-      const railThickness=
-        index%2===0
-          ?.075
-          :.058;
-
-      setBeamBetween(
-        beam,
-        current[index],
-        next[index],
-        railThickness,
-        .092
-      );
-    }
-  );
-
-  if(
-    slice.userData.isStation
-  ){
-    const outerCurrent=
-      current.map(
-        point=>
-          point.clone()
-            .multiplyScalar(
-              1.105
-            )
-      );
-
-    const outerNext=
-      next.map(
-        point=>
-          point.clone()
-            .multiplyScalar(
-              1.085
-            )
-      );
-
-    slice.userData.outerStructure.forEach(
-      (beam,index)=>{
-        const a=
-          outerCurrent[index]
-            .clone();
-
-        const b=
-          outerCurrent[
-            (
-              index+1
-            )%
-            outerCurrent.length
-          ]
-            .clone();
-
-        a.z=
-          -.14;
-
-        b.z=
-          -.14;
-
-        setBeamBetween(
-          beam,
-          a,
-          b,
-          .245,
-          .345
-        );
-      }
-    );
-
-    slice.userData.buttresses.forEach(
-      (beam,index)=>{
-        const pointIndex=
-          (
-            index*2
-          )%
-          current.length;
-
-        const outer=
-          outerCurrent[
-            pointIndex
-          ]
-            .clone();
-
-        const inner=
-          current[
-            pointIndex
-          ]
-            .clone()
-            .multiplyScalar(
-              .962
-            );
-
-        outer.z=
-          -.14;
-
-        inner.z=
-          -.03;
-
-        setBeamBetween(
-          beam,
-          inner,
-          outer,
-          .105,
-          .135
-        );
-      }
-    );
-
-    slice.userData.crossBraces.forEach(
-      (beam,index)=>{
-        const pointIndex=
-          (
-            index*2
-          )%
-          current.length;
-
-        const nextIndex=
-          (
-            pointIndex+1
-          )%
-          next.length;
-
-        const a=
-          outerCurrent[
-            pointIndex
-          ]
-            .clone();
-
-        const b=
-          outerNext[
-            nextIndex
-          ]
-            .clone();
-
-        a.z=
-          -.14;
-
-        b.z=
-          -archSpacing*.94;
-
-        setBeamBetween(
-          beam,
-          a,
-          b,
-          .072,
-          .105
-        );
-      }
-    );
-  }
-}
-
-/* flowing translucent light field inside the architectural tunnel */
-const lightFieldVertexShader=
-  "varying vec2 vUv;"+
-  "varying vec3 vWorldPosition;"+
-  "void main(){"+
-  "vUv=uv;"+
-  "vWorldPosition=(modelMatrix*vec4(position,1.0)).xyz;"+
-  "gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);"+
-  "}";
-
-const lightFieldFragmentShader=
-  "uniform float uTime;"+
-  "uniform vec3 uPink;"+
-  "uniform vec3 uPurple;"+
-  "varying vec2 vUv;"+
-  "varying vec3 vWorldPosition;"+
-  "float hash21(vec2 p){"+
-  "p=fract(p*vec2(123.34,456.21));"+
-  "p+=dot(p,p+45.32);"+
-  "return fract(p.x*p.y);"+
-  "}"+
-  "float noise2(vec2 p){"+
-  "vec2 i=floor(p);"+
-  "vec2 f=fract(p);"+
-  "f=f*f*(3.0-2.0*f);"+
-  "float a=hash21(i);"+
-  "float b=hash21(i+vec2(1.0,0.0));"+
-  "float c=hash21(i+vec2(0.0,1.0));"+
-  "float d=hash21(i+vec2(1.0,1.0));"+
-  "return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);"+
-  "}"+
-  "float fbm(vec2 p){"+
-  "float v=0.0;"+
-  "float a=.52;"+
-  "for(int i=0;i<4;i++){"+
-  "v+=noise2(p)*a;"+
-  "p=p*2.05+vec2(5.3,8.7);"+
-  "a*=.48;"+
-  "}"+
-  "return v;"+
-  "}"+
-  "void main(){"+
-  "vec2 uv=vUv;"+
-  "float angle=uv.x*6.2831853;"+
-  "float longitudinal=uv.y*18.0-uTime*.32;"+
-  "float n=fbm(vec2(angle*.58+uTime*.018,longitudinal*.20));"+
-  "float ribbon=sin(longitudinal+sin(angle*3.0-uTime*.06)*1.8+n*3.2);"+
-  "float ribbon2=sin(longitudinal*.58-angle*2.0+uTime*.075+n*2.1);"+
-  "float energy=smoothstep(.55,.98,.5+.5*ribbon)*.72;"+
-  "energy+=smoothstep(.66,.98,.5+.5*ribbon2)*.34;"+
-  "energy*=.65+.35*n;"+
-  "float colorMix=.5+.5*sin(angle*1.6+longitudinal*.14+n*3.0);"+
-  "vec3 color=mix(uPurple,uPink,colorMix);"+
-  "float alpha=energy*.052;"+
-  "gl_FragColor=vec4(color,alpha);"+
-  "}";
-
-const lightFieldMaterials=[];
-const lightFieldShells=
-  new THREE.Group();
-
-scene.add(
-  lightFieldShells
-);
-
-function addLightFieldShell(
-  radius,
-  length,
-  opacityScale,
-  phase
-){
-  const material=
-    new THREE.ShaderMaterial({
-      uniforms:{
-        uTime:{value:phase},
-        uPink:{
-          value:new THREE.Color(
-            0xff42d0
-          )
-        },
-        uPurple:{
-          value:new THREE.Color(
-            0x7149ff
-          )
-        }
-      },
-      vertexShader:
-        lightFieldVertexShader,
-      fragmentShader:
-        lightFieldFragmentShader,
-      transparent:true,
-      depthWrite:false,
-      blending:
-        THREE.AdditiveBlending,
-      side:THREE.BackSide,
-      toneMapped:false
-    });
-
-  material.userData.opacityScale=
-    opacityScale;
-
-  lightFieldMaterials.push(
-    material
-  );
-
-  const shell=
-    new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        radius,
-        radius,
-        length,
-        48,
-        48,
-        true
-      ),
-      material
-    );
-
-  shell.rotation.x=
-    Math.PI*.5;
-
-  shell.position.z=
-    -length*.47;
-
-  shell.userData.phase=
-    phase;
-
-  lightFieldShells.add(
-    shell
-  );
-}
-
-addLightFieldShell(
-  5.0,
-  112,
-  1,
-  0
-);
-
-addLightFieldShell(
-  4.35,
-  104,
-  .8,
-  2.1
-);
-
-addLightFieldShell(
-  3.65,
-  96,
-  .55,
-  4.2
-);
 
 function makeSoftParticleTexture(){
   const canvas=
@@ -4125,18 +2991,19 @@ const vortexCore=
   new THREE.Sprite(
     new THREE.SpriteMaterial({
       map:softParticleTexture,
-      color:0xf6f3ff,
+      color:0xffa6ed,
       transparent:true,
-      opacity:.42,
+      opacity:.85,
       blending:THREE.AdditiveBlending,
-      depthWrite:false
+      depthWrite:false,
+      toneMapped:false
     })
   );
 
 vortexCore.position.set(
   0,
   0,
-  -128
+  -110
 );
 
 vortexCore.scale.set(
@@ -7120,226 +5987,7 @@ const move=
 tunnelCurveTime+=
   dt*1.22;
 
-tunnelSlices.forEach(
-  slice=>{
-    slice.userData.z+=
-      move;
-
-    if(
-      slice.userData.z>7
-    ){
-      slice.userData.z-=
-        tunnelCount*
-        archSpacing;
-    }
-
-    orientAlongCurve(
-      slice,
-      slice.userData.z
-    );
-
-    const curveHere=
-      curvePoint(
-        slice.userData.z
-      );
-
-    const curveAhead=
-      curvePoint(
-        slice.userData.z-8
-      );
-
-    const turnBank=
-      THREE.MathUtils.clamp(
-        (
-          curveAhead.x-
-          curveHere.x
-        )*.028,
-        -.12,
-        .12
-      );
-
-    const localRoll=
-      Math.sin(
-        elapsed*.026+
-        slice.userData.phase*.42+
-        slice.userData.z*.008
-      )*
-      .060+
-      turnBank;
-
-    slice.rotateZ(
-      localRoll
-    );
-
-    updateTunnelSliceGeometry(
-      slice,
-      elapsed
-    );
-
-    const depth=
-      Math.max(
-        0,
-        -slice.userData.z
-      );
-
-    const farFade=
-      THREE.MathUtils.clamp(
-        (
-          160-
-          depth
-        )/
-        132,
-        .15,
-        1
-      );
-
-    const nearFade=
-      THREE.MathUtils.clamp(
-        (
-          depth+
-          1
-        )/
-        10,
-        .16,
-        1
-      );
-
-    const fade=
-      farFade*
-      nearFade;
-
-    /* Stable full-wrap ring neon.
-       Core intensity stays constant; only bloom and local illumination soften with depth. */
-    const glowFade=
-      .64+
-      .36*
-      fade;
-
-    const opacityResponse=
-      1-
-      Math.exp(
-        -dt*
-        4.5
-      );
-
-    slice.userData.inset.forEach(
-      beam=>{
-        const targetOpacity=
-          .94;
-
-        beam.userData.currentOpacity=
-          THREE.MathUtils.lerp(
-            beam.userData.currentOpacity,
-            targetOpacity,
-            opacityResponse
-          );
-
-        beam.material.opacity=
-          beam.userData.currentOpacity;
-      }
-    );
-
-    slice.userData.halo.forEach(
-      beam=>{
-        const targetOpacity=
-          (
-            slice.userData.isStation
-              ?.15
-              :.12
-          )*
-          glowFade;
-
-        beam.userData.currentOpacity=
-          THREE.MathUtils.lerp(
-            beam.userData.currentOpacity,
-            targetOpacity,
-            opacityResponse
-          );
-
-        beam.material.opacity=
-          beam.userData.currentOpacity;
-      }
-    );
-
-    slice.userData.softHalo.forEach(
-      beam=>{
-        const targetOpacity=
-          (
-            slice.userData.isStation
-              ?.048
-              :.034
-          )*
-          glowFade;
-
-        beam.userData.currentOpacity=
-          THREE.MathUtils.lerp(
-            beam.userData.currentOpacity,
-            targetOpacity,
-            opacityResponse
-          );
-
-        beam.material.opacity=
-          beam.userData.currentOpacity;
-      }
-    );
-
-    if(
-      slice.userData.neonLight
-    ){
-      const lightTarget=
-        (
-          slice.userData.isStation
-            ?.92
-            :.56
-        )+
-        .28*
-        glowFade;
-
-      slice.userData.neonLight.intensity=
-        THREE.MathUtils.lerp(
-          slice.userData.neonLight.intensity,
-          lightTarget,
-          opacityResponse
-        );
-    }
-  }
-);
-
-lightFieldMaterials.forEach(
-  (material,index)=>{
-    material.uniforms.uTime.value=
-      elapsed+
-      index*1.8;
-  }
-);
-
-const fieldCurve=
-  curvePoint(
-    -54
-  );
-
-lightFieldShells.position.x=
-  fieldCurve.x*.36;
-
-lightFieldShells.position.y=
-  fieldCurve.y*.30;
-
-lightFieldShells.rotation.z=
-  Math.sin(
-    elapsed*.018
-  )*.085;
-
-lightFieldShells.scale.x=
-  1+
-  Math.sin(
-    elapsed*.027
-  )*.025;
-
-lightFieldShells.scale.y=
-  1+
-  Math.cos(
-    elapsed*.023
-  )*.018;
+updateEnergyVortex(dt,speed);
 
 const pa=
   pGeo.getAttribute(
@@ -7483,24 +6131,6 @@ fogSprites.forEach(
         )
       );
   }
-);
-
-const coreCurve=
-  curvePoint(
-    -128
-  );
-
-vortexCore.position.x=
-  coreCurve.x;
-
-vortexCore.position.y=
-  coreCurve.y;
-
-vortexCore.scale.setScalar(
-  3.5+
-  Math.sin(
-    elapsed*.32
-  )*.14
 );
 
 const cameraCurve=
@@ -8276,12 +6906,7 @@ resize();hud();const clock=new THREE.Clock();function animate(){
     playerRing.rotation.z+=
       dt*.8;
 
-    tunnelSlices.forEach(
-      slice=>{
-        slice.rotation.z+=
-          dt*.002;
-      }
-    );
+    updateEnergyVortex(dt,2.5);
 
     updateBooms(
       dt
@@ -8347,4 +6972,5 @@ animate();
 </script>
 </body>
 </html>
+
 
