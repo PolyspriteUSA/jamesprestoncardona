@@ -367,7 +367,7 @@ function sfxStart(){tone(190,410,.18,.06,"triangle");tone(410,780,.20,.045,"sine
 function sfxGameOver(){tone(310,78,.72,.09,"sawtooth");tone(185,46,.86,.05,"triangle",.08);}
 
 
-const DEVICE_PROFILE=window.__DEVICE_PROFILE||window.__setupDeviceProfile();const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x07030f,0.008);const camera=new THREE.PerspectiveCamera(62,1,.05,120);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:DEVICE_PROFILE.kind!=="phone",powerPreference:"high-performance",alpha:false});renderer.setPixelRatio(DEVICE_PROFILE.dpr);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.72;container.appendChild(renderer.domElement);
+const DEVICE_PROFILE=window.__DEVICE_PROFILE||window.__setupDeviceProfile();const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x07030f,0.008);const camera=new THREE.PerspectiveCamera(62,1,.05,190);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:DEVICE_PROFILE.kind!=="phone",powerPreference:"high-performance",alpha:false});renderer.setPixelRatio(DEVICE_PROFILE.dpr);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.72;container.appendChild(renderer.domElement);
 scene.add(new THREE.AmbientLight(0x8d77bf,.10));const playerLight=new THREE.PointLight(0xff42d0,2.8,14,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,2.2,26,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
 const player=new THREE.Group();scene.add(player);
 
@@ -2248,244 +2248,173 @@ if(window.visualViewport){
   );
 }
 
+// Continuous plasma tunnel: no polygon gates or wireframe rings.
 let tunnelCurveTime=0;
-function curveEnvelope(time){
-  const primary=
-    .5+
-    .5*
-    Math.sin(
-      time*.135-.55
-    );
-
-  const secondary=
-    .5+
-    .5*
-    Math.sin(
-      time*.064+1.9
-    );
-
-  return THREE.MathUtils.clamp(
-    .30+
-    primary*.56+
-    secondary*.22,
-    0,
-    1
-  );
-}
-
+const vortexTouch=window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const vortexUniforms={uTime:{value:0},uTravel:{value:0}};
 function curvePoint(z){
-  const depth=
-    Math.max(
-      0,
-      -z
-    );
-
-  const influence=
-    THREE.MathUtils.clamp(
-      depth/58,
-      0,
-      1
-    );
-
-  const bend=
-    curveEnvelope(
-      tunnelCurveTime
-    );
-
-  const sweepingX=
-    Math.sin(
-      depth*.026+
-      tunnelCurveTime*.034
-     )*
-    3.05;
-
-  const counterX=
-    Math.sin(
-      depth*.010-
-      tunnelCurveTime*.019+
-      1.2
-     )*
-    1.28;
-
-  const sweepingY=
-    Math.cos(
-      depth*.021+
-      tunnelCurveTime*.026
-     )*
-    1.42;
-
-  const counterY=
-    Math.sin(
-      depth*.008-
-      tunnelCurveTime*.013
-     )*
-    .62;
-
-  const turnAccent=
-    .62+
-    .38*
-    Math.sin(
-      depth*.006+
-      tunnelCurveTime*.055
-    );
-
-  const x=
-    (
-      sweepingX+
-      counterX
-    )*
-    influence*
-    bend*
-    turnAccent;
-
-  const y=
-    (
-      sweepingY+
-      counterY
-    )*
-    influence*
-    bend*
-    .78;
-
-  return new THREE.Vector3(
-    x,
-    y,
-    z
-  );
+  const d=Math.max(0,-z),w=THREE.MathUtils.smoothstep(d,8,65),t=tunnelCurveTime;
+  return new THREE.Vector3(w*(-6.5*Math.sin(d*.028)+.65*Math.sin(d*.061-t*.05)),w*(-1.9*Math.sin(d*.035)+.35*Math.sin(d*.047+t*.04)),z);
 }
+function orientAlongCurve(object,z){
+  const current=curvePoint(z),tangent=curvePoint(z-.48).sub(current).normalize();
+  object.position.copy(current);
+  object.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,-1),tangent);
+}
+function placeInTunnel(object,z){
+  orientAlongCurve(object,z);
+  object.position.x+=object.userData.laneX;
+  object.position.y+=object.userData.laneY;
+}
+const vortexVertex=`
+  uniform float uTime;
+  varying vec2 vUV;
+  varying float vDepth;
+  vec3 centerAt(float d){
+    float q=max(0.0,d),w=smoothstep(8.0,65.0,q);
+    return vec3(w*(-6.5*sin(q*.028)+.65*sin(q*.061-uTime*.05)),w*(-1.9*sin(q*.035)+.35*sin(q*.047+uTime*.04)),-d);
+  }
+  void main(){
+    vUV=uv;float d=-position.z;vDepth=d;
+    float a=uv.x*6.283185307;
+    vec3 c=centerAt(d),f=normalize(centerAt(d+.4)-c);
+    vec3 r=normalize(cross(f,vec3(0.0,1.0,0.0))),up=normalize(cross(r,f));
+    float ripple=1.0+.035*sin(a*3.0+d*.055-uTime*.12)+.018*sin(a*5.0-d*.095);
+    vec3 p=c+(r*cos(a)*6.25+up*sin(a)*5.25)*ripple;
+    gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);
+  }
+`;
+const vortexFragment=`
+  uniform float uTime;
+  uniform float uTravel;
+  varying vec2 vUV;
+  varying float vDepth;
+  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  float noise(vec2 p){
+    vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
+  }
+  // Integrate thin highlights over their pixel footprint instead of letting
+  // subpixel lines flash between fully bright and invisible.
+  float softLine(float d,float sharpness){
+    float width=1.0/sharpness,pixel=max(fwidth(d),.001);
+    return exp(-d/(width+pixel))*width/(width+pixel);
+  }
+  float cloud(vec2 p){return noise(p)*.57+noise(p*2.03)*.28+noise(p*4.07)*.15;}
+  void main(){
+    float a=vUV.x*6.283185307,s=vDepth+uTravel*.78,t=uTime;
+    // Periodic angular coordinates make the seam invisible.
+    vec2 p=vec2(sin(a)*3.7+cos(a)*2.1,s*.105);
+    float mist=cloud(p+vec2(t*.04,-t*.05));
+    float detail=(1.0-smoothstep(.18,.8,fwidth(s)*2.8+fwidth(a)*19.0))*(1.0-smoothstep(35.0,105.0,vDepth));
+    float hue=.5+.5*sin(a*2.0+s*.054+mist*2.0);
+    vec3 violet=vec3(.23,.035,1.0),pink=vec3(1.0,.012,.38);
+    vec3 neon=mix(violet,pink,smoothstep(.12,.88,hue));
+    vec3 col=vec3(.007,.001,.023)+neon*pow(mist,3.0)*.60;
+    // Broad turbulent ribbons, narrow white-hot cores and colored halos.
+    float ribbon=abs(sin(a*2.0+s*.47+sin(a*4.0-s*.13)*.75+mist*3.1));
+    float core=softLine(ribbon,65.0)*detail,edge=exp(-ribbon*12.0),halo=exp(-ribbon*3.5);
+    float broken=.5+.7*smoothstep(.24,.69,noise(vec2(sin(a)*7.0+cos(a)*4.0,s*.47)));
+    col+=neon*(halo*.35+edge*2.0)*broken+mix(neon,vec3(1.0,.35,.85),.42)*core*1.4*broken;
+    // Long, fine helical trails surround the main plasma ribbons.
+    float streak=abs(sin(a*7.0+s*2.8+mist*2.6));
+    float streakGate=smoothstep(.42,.78,noise(vec2(sin(a)*11.0+cos(a)*8.0,s*.17)));
+    col+=neon*(softLine(streak,60.0)*1.25*detail+exp(-streak*14.0)*.20)*streakGate;
+    // Irregular overlapping sheets and threads build a turbulent plasma surface.
+    for(int layer=0;layer<5;layer++){
+      float k=float(layer);
+      float rough=noise(vec2(sin(a)*(19.0+k*3.0)+cos(a)*13.0,s*(.7+k*.12)));
+      float phase=a*(2.0+k)+s*(.55+k*.23)+mist*3.5+rough*.8+k*1.7;
+      float strand=abs(sin(phase));
+      float breakup=smoothstep(.27,.7,noise(vec2(sin(a)*6.0+cos(a)*9.0+k*7.0,s*.29+k)));
+      vec3 tint=mix(neon,mix(violet,pink,.5+.5*sin(a+k+s*.04)),.4);
+      col+=tint*(exp(-strand*9.0)*.52+softLine(strand,65.0)*1.1*detail)*breakup;
 
-// Continuous energy vortex. One surface carries the plasma, filaments and debris.
-let vortexTime=0;
-let vortexTravel=0;
-const vortexVertexShader=`
-uniform float uTime;
-varying vec2 vTunnelUv;
-varying float vTunnelDepth;
-void main(){
-  vTunnelUv=uv;
-  float depth=max(0.0,-position.z);
-  vTunnelDepth=depth;
-  float bend=pow(clamp(depth/112.0,0.0,1.0),1.6);
-  vec3 p=position;
-  p.x+=bend*(-5.5+sin(depth*.028+uTime*.07)*2.6);
-  p.y+=bend*(-2.6+cos(depth*.023+uTime*.055)*1.4);
-  gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);
-}`;
-const vortexFragmentShader=`
-uniform float uTime;
-uniform float uTravel;
-uniform vec3 uPink;
-uniform vec3 uPurple;
-varying vec2 vTunnelUv;
-varying float vTunnelDepth;
-float hash21(vec2 p){
-  p=fract(p*vec2(123.34,456.21));
-  p+=dot(p,p+45.32);
-  return fract(p.x*p.y);
-}
-float noise2(vec2 p){
-  vec2 i=floor(p),f=fract(p);
-  f=f*f*(3.0-2.0*f);
-  return mix(mix(hash21(i),hash21(i+vec2(1,0)),f.x),
-             mix(hash21(i+vec2(0,1)),hash21(i+vec2(1,1)),f.x),f.y);
-}
-float filament(float phase,float width){
-  float distance=abs(sin(phase));
-  float aa=max(fwidth(phase),.0015);
-  return 1.0-smoothstep(width,width+aa*1.4,distance);
-}
-void main(){
-  float a=vTunnelUv.x*6.2831853;
-  float depth=vTunnelDepth;
-  float z=depth+uTravel;
-  vec2 polar=vec2(cos(a),sin(a));
-  float mist=noise2(polar*3.1+vec2(z*.055,uTime*.08));
-  float detail=noise2(polar*12.0+vec2(z*.31,-uTime*.13));
-  float grain=noise2(polar*63.0+vec2(z*1.7,uTime*.11));
-  float cloud=mist*.55+detail*.30+grain*.15;
-  float sweep=a+z*.62-uTime*.18;
-  float warp=sin(a*5.0-depth*.12+uTime*.20)*.22+(mist-.5)*.95;
-  float ribbon=sweep+warp;
-  float ribbonDistance=abs(sin(ribbon));
-  float halo=exp(-ribbonDistance*4.8);
-  float innerHalo=exp(-ribbonDistance*30.0);
-  float ribbonCore=filament(ribbon,.014);
-  float threads=filament(ribbon+.10+sin(a*19.0+z*2.2)*.025,.004)+filament(ribbon-.15+sin(a*27.0-z*1.6)*.018,.003);
-  float broken=.30+.70*smoothstep(.25,.75,noise2(polar*6.0+vec2(z*.16,uTime*.03)));
-  // Jagged secondary paths appear as electrical arcs, with steady moving highlights.
-  float electric=a+z*.67+sin(a*29.0+z*3.7)*.052+sin(a*67.0-z*5.17)*.019;
-  float arcMask=smoothstep(.36,.70,detail);
-  float jagged=a+z*.615+.42+(grain-.5)*.20;
-  float arcs=filament(electric,.008)*arcMask+filament(jagged,.006)*smoothstep(.35,.65,detail);
-  float arcHalo=exp(-abs(sin(electric))*24.0)*arcMask;
-  float fine=filament(a*3.0+z*2.21+mist*.38,.012);
-  fine*=smoothstep(.30,.72,detail)*.42;
-  // Tiny angular plate fragments and pinprick sparks interrupt the smooth plasma.
-  vec2 cells=vec2(vTunnelUv.x*96.0+(depth+uTravel)*.055,z*.70);
-  vec2 cell=floor(cells),within=fract(cells);
-  float debris=step(.94,hash21(cell))*step(.17,within.x)*step(within.x,.85)*step(.82,within.y);
-  float spark=pow(max(0.0,1.0-length((within-vec2(.5)) / vec2(.075,.14))),3.0);
-  spark*=step(.96,hash21(cell+13.2));
-  float blend=.5+.5*sin(a*3.0-depth*.10+mist*2.0);
-  vec3 hue=mix(uPurple,uPink,smoothstep(.12,.88,blend));
-  vec3 color=mix(vec3(.004,.001,.013),vec3(.022,.002,.038),mist);
-  float plasma=pow(cloud,3.0)*(0.25+exp(-abs(sin(ribbon+.32))*3.0)*1.5);
-  color+=hue*(halo*.80+innerHalo*.95)*broken;
-  color+=hue*plasma*.48;
-  color+=mix(hue,vec3(1.0,.64,.93),.7)*(ribbonCore*1.5+threads*.40)*broken;
-  color+=hue*(arcHalo*.45+exp(-abs(sin(jagged))*32.0)*arcMask*.28+fine+debris*.13);
-  color+=vec3(1.0,.72,1.0)*arcs*.90;
-  color+=mix(hue,vec3(.85,.8,1.0),.5)*spark*.9;
-  // Dense distant coils merge into a soft luminous throat; no fullscreen strobe.
-  color+=hue*smoothstep(45.0,112.0,depth)*.035;
-  gl_FragColor=vec4(color,1.0);
-  #include <colorspace_fragment>
-}`;
-const vortexMaterial=new THREE.ShaderMaterial({
-  uniforms:{uTime:{value:0},uTravel:{value:0},uPink:{value:new THREE.Color(0xff16bd)},uPurple:{value:new THREE.Color(0x7328ff)}},
-  vertexShader:vortexVertexShader,fragmentShader:vortexFragmentShader,
-  side:THREE.DoubleSide,depthWrite:true,toneMapped:false
-});
-function createVortexGeometry(){
-  const radial=DEVICE_PROFILE.kind==='phone'?72:112;
-  const lengthwise=DEVICE_PROFILE.kind==='phone'?96:144;
-  const positions=[],uvs=[],indices=[];
-  for(let j=0;j<=lengthwise;j++){
-    const v=j/lengthwise;
-    const z=7-v*119;
-    const taper=1-.24*Math.pow(v,1.3);
-    for(let i=0;i<=radial;i++){
-      const u=i/radial,a=u*Math.PI*2;
-      const ripple=1+.025*Math.sin(a*3+v*21)+.018*Math.sin(a*7-v*29);
-      positions.push(Math.cos(a)*6.6*taper*ripple,Math.sin(a)*5.3*taper*ripple,z);
-      uvs.push(u,v);
-      if(j<lengthwise&&i<radial){
-        const k=j*(radial+1)+i;
-        indices.push(k,k+radial+1,k+1,k+1,k+radial+1,k+radial+2);
-      }
+    }
+    // Jagged lightning branches with a soft glow, no hard flashes.
+    float jag=noise(vec2(s*.66,sin(a)*4.0))*1.6+noise(vec2(s*2.1,cos(a)*8.0))*.30;
+    float bolt=abs(sin(a*5.0-s*.16+jag));
+    float gate=smoothstep(.46,.72,cloud(vec2(sin(a)*6.0+cos(a)*5.0,s*.085+t*.045)));
+    col+=(vec3(.85,.25,1.0)*softLine(bolt,95.0)*2.2*detail+neon*exp(-bolt*25.0)*1.9)*gate;
+    // Small luminous fragments and dust embedded in the flowing wall.
+    vec2 cell=vec2(vUV.x*112.0,(s+a*2.0)*1.3),f=fract(cell);
+    float tile=step(.968,hash(floor(cell)))*smoothstep(.08,.18,f.x)*(1.0-smoothstep(.70,.9,f.x))*smoothstep(.03,.09,f.y)*(1.0-smoothstep(.20,.32,f.y));
+    col+=neon*tile*.65*detail;
+
+    // Built-in highlight rolloff retains violet shadows around bright filaments.
+    col*=.90+.40*smoothstep(55.0,145.0,vDepth);
+    col=vec3(1.0)-exp(-col*1.35);
+    gl_FragColor=vec4(pow(col,vec3(.82)),1.0);
+  }
+`;
+const vortexGeometry=new THREE.BufferGeometry();
+const radialSteps=vortexTouch?64:96,depthSteps=128;
+const vortexPositions=[],vortexUVs=[],vortexIndices=[];
+for(let j=0;j<=depthSteps;j++){
+  for(let i=0;i<=radialSteps;i++){
+    const u=i/radialSteps,v=j/depthSteps;
+    vortexPositions.push(Math.cos(u*Math.PI*2),Math.sin(u*Math.PI*2),8-v*158);
+    vortexUVs.push(u,v);
+    if(j<depthSteps&&i<radialSteps){
+      const n=j*(radialSteps+1)+i,k=n+radialSteps+1;
+      vortexIndices.push(n,k,n+1,n+1,k,k+1);
     }
   }
-  const geometry=new THREE.BufferGeometry();
-  geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
-  geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
-  geometry.setIndex(indices);
-  geometry.computeBoundingSphere();
-  return geometry;
 }
-const energyVortex=new THREE.Mesh(createVortexGeometry(),vortexMaterial);
-energyVortex.name='Spiraling plasma tunnel';
-// Vertex-shader bending extends beyond the undeformed geometry bounds.
-energyVortex.frustumCulled=false;
-scene.add(energyVortex);
-function updateEnergyVortex(dt,travelSpeed){
-  vortexTime+=dt;
-  vortexTravel+=dt*travelSpeed*.28;
-  vortexMaterial.uniforms.uTime.value=vortexTime;
-  vortexMaterial.uniforms.uTravel.value=vortexTravel;
-  const depth=110,bend=Math.pow(depth/112,1.6);
-  vortexCore.position.set(bend*(-5.5+Math.sin(depth*.028+vortexTime*.07)*2.6),bend*(-2.6+Math.cos(depth*.023+vortexTime*.055)*1.4),-depth);
-  vortexCore.scale.setScalar(11.0+Math.sin(vortexTime*.32)*.3);
+vortexGeometry.setAttribute('position',new THREE.Float32BufferAttribute(vortexPositions,3));
+vortexGeometry.setAttribute('uv',new THREE.Float32BufferAttribute(vortexUVs,2));
+vortexGeometry.setIndex(vortexIndices);
+const vortexMaterial=new THREE.ShaderMaterial({uniforms:vortexUniforms,vertexShader:vortexVertex,fragmentShader:vortexFragment,side:THREE.DoubleSide,depthWrite:true,toneMapped:false});
+const vortexShell=new THREE.Mesh(vortexGeometry,vortexMaterial);
+vortexShell.frustumCulled=false;world.add(vortexShell);
+// A distant luminous opening closes the view into the vortex.
+const vortexEnd=new THREE.Group();
+for(let i=0;i<3;i++){
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(2.6+i*.6,.10+i*.025,6,64),new THREE.MeshBasicMaterial({color:i===1?0xc06aff:0xd04add,toneMapped:false}));
+  ring.position.z=-i*.35;vortexEnd.add(ring);
 }
+world.add(vortexEnd);
+function updateVortex(dt,travel){
+  tunnelCurveTime+=dt*flightSpeedScale;
+  vortexUniforms.uTime.value=tunnelCurveTime;
+  vortexUniforms.uTravel.value+=travel;
+  orientAlongCurve(vortexEnd,-149);
+}
+orientAlongCurve(vortexEnd,-149);
+
+// Low-resolution separable glow keeps the plasma soft without extra dependencies.
+const fxScene=new THREE.Scene(),fxCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const fxBase=new THREE.WebGLRenderTarget(1,1),fxGlowA=new THREE.WebGLRenderTarget(1,1,{depthBuffer:false}),fxGlowB=new THREE.WebGLRenderTarget(1,1,{depthBuffer:false});
+const fxVertex='varying vec2 vUV;void main(){vUV=uv;gl_Position=vec4(position.xy,0.0,1.0);}';
+const blurMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:false,uniforms:{source:{value:null},stepUV:{value:new THREE.Vector2()},extract:{value:1}},vertexShader:fxVertex,fragmentShader:`
+  uniform sampler2D source;uniform vec2 stepUV;uniform float extract;varying vec2 vUV;
+  vec3 sampleGlow(vec2 p){vec3 c=texture2D(source,p).rgb;return mix(c,c*smoothstep(.42,.9,max(c.r,max(c.g,c.b))),extract);}
+  void main(){vec3 c=sampleGlow(vUV)*.227027;
+    c+=(sampleGlow(vUV+stepUV*1.384615)+sampleGlow(vUV-stepUV*1.384615))*.316216;
+    c+=(sampleGlow(vUV+stepUV*3.230769)+sampleGlow(vUV-stepUV*3.230769))*.070270;
+    gl_FragColor=vec4(c,1.0);
+  }`});
+const compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:false,uniforms:{base:{value:fxBase.texture},glow:{value:fxGlowB.texture}},vertexShader:fxVertex,fragmentShader:`
+  uniform sampler2D base;uniform sampler2D glow;varying vec2 vUV;
+  void main(){vec3 c=texture2D(base,vUV).rgb,g=texture2D(glow,vUV).rgb;
+    gl_FragColor=vec4(c+(1.0-c)*g*.95,1.0);
+  }`});
+const fxQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),blurMaterial);fxScene.add(fxQuad);
+function resizeVortexFX(w,h){
+  const ratio=renderer.getPixelRatio();fxBase.setSize(Math.round(w*ratio),Math.round(h*ratio));
+  const scale=vortexTouch?.35:.5;fxGlowA.setSize(Math.max(1,Math.round(w*ratio*scale)),Math.max(1,Math.round(h*ratio*scale)));fxGlowB.setSize(fxGlowA.width,fxGlowA.height);
+}
+function renderVortexScene(){
+  renderer.setRenderTarget(fxBase);renderer.render(scene,camera);
+  fxQuad.material=blurMaterial;blurMaterial.uniforms.source.value=fxBase.texture;blurMaterial.uniforms.extract.value=1;
+  blurMaterial.uniforms.stepUV.value.set(2/fxGlowA.width,0);renderer.setRenderTarget(fxGlowA);renderer.render(fxScene,fxCamera);
+  blurMaterial.uniforms.source.value=fxGlowA.texture;blurMaterial.uniforms.extract.value=0;
+  blurMaterial.uniforms.stepUV.value.set(0,2/fxGlowA.height);renderer.setRenderTarget(fxGlowB);renderer.render(fxScene,fxCamera);
+  fxQuad.material=compositeMaterial;renderer.setRenderTarget(null);renderer.render(fxScene,fxCamera);
+}
+
+
+function updateEnergyVortex(dt,travelSpeed){updateVortex(dt,dt*travelSpeed)}
 
 function makeSoftParticleTexture(){
   const canvas=
@@ -2807,6 +2736,10 @@ const deepStars=
     false
   );
 
+secondaryStars.visible=false;
+deepStars.visible=false;
+galaxyDust.material.opacity=.06;
+
 function updateMovingStarLayer(
   layer,
   dt,
@@ -3012,16 +2945,15 @@ vortexCore.scale.set(
   1
 );
 
-scene.add(
-  vortexCore
-);
+vortexCore.visible=false;
+scene.add(vortexCore);
 
 const pCount=
   DEVICE_PROFILE.kind==="phone"
-    ?90
+    ?20
     :DEVICE_PROFILE.kind==="tablet"
-      ?210
-      :380;
+      ?45
+      :80;
 
 const pPos=
   new Float32Array(
@@ -3082,10 +3014,10 @@ const stars=
     pGeo,
     new THREE.PointsMaterial({
       map:softParticleTexture,
-      color:0xf6f3ff,
+      color:0x8554ba,
       size:.085,
       transparent:true,
-      opacity:.17,
+      opacity:.025,
       depthWrite:false,
       blending:THREE.AdditiveBlending
     })
@@ -3760,7 +3692,8 @@ let running=false;
 let score=0;
 let health=100;
 let targetsDestroyed=0;
-let speed=16;
+const flightSpeedScale=DEVICE_PROFILE.touch?.65:1;
+let speed=16*flightSpeedScale;
 let elapsed=0;
 let enemyTimer=0;
 let nextEnemy=1.8;
@@ -4531,10 +4464,9 @@ function setStatusMessage(
 
 // Keep distant ships inside the curved vortex as they approach the combat area.
 function positionEnemyInVortex(enemy){
-  const depth=Math.max(0,-enemy.position.z);
-  const bend=Math.pow(Math.min(depth/112,1),1.6)*THREE.MathUtils.smoothstep(depth,25,60);
-  enemy.position.x+=bend*(-5.5+Math.sin(depth*.028+vortexTime*.07)*2.6);
-  enemy.position.y+=bend*(-2.6+Math.cos(depth*.023+vortexTime*.055)*1.4);
+  const center=curvePoint(enemy.position.z);
+  enemy.position.x+=center.x;
+  enemy.position.y+=center.y;
 }
 
 function spawnEnemy(){
@@ -5703,7 +5635,7 @@ function reset(){
   score=0;
   health=100;
   targetsDestroyed=0;
-  speed=16;
+  speed=16*flightSpeedScale;
   elapsed=0;
   enemyTimer=0;
   nextEnemy=1.8;
@@ -6015,8 +5947,6 @@ const move=
   speed*
   dt;
 
-tunnelCurveTime+=
-  dt*1.22;
 
 updateEnergyVortex(dt,speed);
 
@@ -6734,6 +6664,7 @@ function resize(){
   camera.updateProjectionMatrix();
   renderer.setPixelRatio(profile.dpr);
   renderer.setSize(w,h,false);
+  resizeVortexFX(w,h);
 
   if(
     typeof getPlayerScreenBounds==="function"&&
@@ -6839,8 +6770,8 @@ resize();hud();const clock=new THREE.Clock();function animate(){
         :0;
 
     speed=
-      cruiseSpeed+
-      nitroBoost;
+      (cruiseSpeed+
+      nitroBoost)*flightSpeedScale;
 
     score+=
       dt*
@@ -6974,10 +6905,7 @@ resize();hud();const clock=new THREE.Clock();function animate(){
     hud();
   }
 
-  renderer.render(
-    scene,
-    camera
-  );
+  renderVortexScene();
 }
 
 animate();
@@ -7005,6 +6933,7 @@ animate();
 </script>
 </body>
 </html>
+
 
 
 
