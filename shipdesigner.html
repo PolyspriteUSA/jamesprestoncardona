@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08080c">
+  <meta name="description" content="Design your own procedural spacecraft. Shape, color, save, and fly them in Neon Tunnel.">
+  <title>Ship Designer | James Preston Cardona</title>
+  <link rel="icon" href="./favicon.ico">
+  <link rel="stylesheet" href="./shipdesigner.css">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"}}</script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="./index.html">JPC<span> / Interactive studies</span></a><a href="./neontunnel.html" data-jpc-game-link>Neon Tunnel <span aria-hidden="true">↗</span></a></header>
+  <main class="workspace">
+    <section class="preview" aria-label="Live ship preview">
+      <div class="preview-heading"><p class="eyebrow">Procedural spacecraft / 01</p><h1>Ship Designer<span>.</span></h1><p>Make a silhouette. Give it a signature.</p></div>
+      <div id="viewport" tabindex="0" role="img" aria-label="Interactive 3D spaceship. Drag to orbit, pinch or scroll to zoom. Arrow keys orbit; plus and minus zoom."></div>
+      <div class="preview-meta"><span id="previewName">Vesper</span><span id="previewRole">Enemy interceptor</span></div>
+      <div id="loading" class="loading" role="status">Preparing the hangar…</div>
+      <div id="previewError" class="preview-error" hidden><p id="errorText"></p><button type="button" onclick="location.reload()">Reload preview</button></div>
+      <div class="view-tools" aria-label="Preview camera"><button type="button" data-view="perspective" aria-pressed="true">3D</button><button type="button" data-view="front" aria-pressed="false">Front</button><button type="button" data-view="side" aria-pressed="false">Side</button><button type="button" data-view="top" aria-pressed="false">Top</button><span class="tool-divider"></span><button type="button" id="rotate" aria-pressed="false">Rotate</button><button type="button" id="fit" title="Fit ship in view">Fit</button></div>
+      <p class="orbit-hint">Drag to orbit <span>·</span> Pinch / scroll to zoom</p>
+    </section>
+    <aside class="inspector" aria-label="Ship controls">
+      <div class="inspector-intro"><p class="eyebrow">Your next spacecraft</p><div class="name-row"><input id="shipName" maxlength="48" aria-label="Ship name" value="Vesper" autocomplete="off"><button id="undo" type="button" title="Undo" aria-label="Undo" disabled>↶</button><button id="redo" type="button" title="Redo" aria-label="Redo" disabled>↷</button></div><div class="role-switch" aria-label="Ship role"><button data-role="enemy" type="button" aria-pressed="true">Enemy ship</button><button data-role="player" type="button" aria-pressed="false">Player ship</button></div></div>
+      <details class="section" open><summary>Starting shapes <span>01</span></summary><div id="presets" class="preset-grid"></div></details>
+      <div id="controls"></div>
+      <details class="section"><summary>Saved designs <span id="savedCount">0</span></summary><div class="section-content"><p class="muted">Saved on this browser. Export a JSON backup to keep or move a design.</p><label class="field-label" for="savedDesigns">Your hangar</label><select id="savedDesigns"><option value="">Choose a saved design</option></select><div class="button-row"><button id="load" type="button" disabled>Load</button><button id="delete" type="button" disabled>Delete</button></div><div class="button-row"><button id="import" type="button">Import JSON</button><button id="export" type="button">Export JSON</button></div><input id="importFile" type="file" accept=".json,application/json" hidden></div></details>
+      <details class="section"><summary>Neon Tunnel fleet <span>↗</span></summary><div class="section-content"><p class="muted" id="fleetStatus">Original ships are active.</p><button type="button" id="restore">Restore original ships</button><p class="muted">Test Flight applies this design to its selected role. Your fleet is only changed in this browser; designs are fitted to the game's existing ship size.</p></div></details>
+      <div class="action-bar"><div class="button-row"><button id="save" type="button">Save design</button><button id="testFlight" class="primary" type="button">Test flight <span aria-hidden="true">↗</span></button></div><p id="status" role="status" aria-live="polite">Adjust a control to make it yours.</p></div>
+    </aside>
+  </main>
+  <noscript><p class="no-script">Enable JavaScript to use the ship designer.</p></noscript>
+  <script type="module">
+    import('./shipdesigner.js').catch(error=>{
+      console.error('Ship Designer failed to load',error);
+      document.getElementById('loading').hidden=true;
+      if(document.getElementById('previewError').hidden){
+        document.getElementById('previewError').hidden=false;
+        document.getElementById('errorText').textContent='The 3D editor could not load. Check your connection and reload.';
+      }
+    });
+  </script>
+</body>
+</html>
