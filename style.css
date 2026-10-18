@@ -1553,7 +1553,8 @@ body.resume-open {
 }
 
 /* ArtStation gallery: scoped to the architecture page. */
-.archviz-page .archviz-projects { padding-top: 36px; }
+.archviz-page .archviz-projects { padding: 36px 0 80px; }
+.archviz-page .archviz-projects > .section-inner { width: min(var(--max-width), calc(100% - 56px)); }
 .archviz-page #projects { scroll-margin-top: 100px; }
 .archviz-page .archviz-portfolio-frame {
   display: block;
@@ -1562,7 +1563,7 @@ body.resume-open {
   height: 85svh;
   min-height: 540px;
   margin-top: 36px;
-  border: 1px solid var(--border);
+  border: 0;
   background: var(--bg2);
 }
 .archviz-page .archviz-embed-fallback {
@@ -1572,4 +1573,5 @@ body.resume-open {
 }
 @media (max-width: 767px) {
   .archviz-page .archviz-portfolio-frame { min-height: 460px; }
+  .archviz-page .archviz-projects > .section-inner { width: calc(100% - 32px); }
 }
