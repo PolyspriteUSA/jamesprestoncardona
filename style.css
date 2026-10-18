@@ -1551,3 +1551,16 @@ body.resume-open {
     gap: 5px;
   }
 }
+
+/* Architecture gallery: scoped to architecture pages. */
+.archviz-page .archviz-projects { padding-top: 36px; }
+.archviz-page #projects { scroll-margin-top: 100px; }
+.archviz-page .archviz-project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
+@media (max-width: 767px) {
+  .archviz-page .archviz-project-grid { grid-template-columns: 1fr; }
+}
