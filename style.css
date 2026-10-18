@@ -1552,15 +1552,24 @@ body.resume-open {
   }
 }
 
-/* Architecture gallery: scoped to architecture pages. */
+/* ArtStation gallery: scoped to the architecture page. */
 .archviz-page .archviz-projects { padding-top: 36px; }
 .archviz-page #projects { scroll-margin-top: 100px; }
-.archviz-page .archviz-project-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+.archviz-page .archviz-portfolio-frame {
+  display: block;
+  width: 100%;
+  height: 85vh;
+  height: 85svh;
+  min-height: 540px;
   margin-top: 36px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+}
+.archviz-page .archviz-embed-fallback {
+  margin-top: 16px;
+  color: var(--muted2);
+  font-size: .75rem;
 }
 @media (max-width: 767px) {
-  .archviz-page .archviz-project-grid { grid-template-columns: 1fr; }
+  .archviz-page .archviz-portfolio-frame { min-height: 460px; }
 }
