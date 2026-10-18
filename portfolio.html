@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Selected work and ArtStation portfolio of James Preston Cardona — real-time 3D, architectural visualization, digital humans and interactive experiences.">
+<title>Portfolio | James Preston Cardona</title>
+<link rel="stylesheet" href="./style.css?v=20260919-music-touch">
+<link rel="stylesheet" href="./portfolio.css?v=1">
+</head>
+<body class="portfolio-page">
+<header class="site-header"><nav class="nav" aria-label="Main navigation">
+<a class="brand" href="./index.html#hero">James Preston Cardona</a>
+<div class="nav-links">
+<a href="./index.html#work">Work</a>
+<a href="./portfolio.html" aria-current="page">Portfolio</a>
+<a href="./index.html#about">About</a>
+<a href="./index.html#contact">Contact</a>
+</div></nav></header>
+<main>
+<section class="portfolio-hero section">
+<div class="section-inner">
+<div class="section-kicker">Selected works / Ongoing archive</div>
+<h1>Designing what comes <span class="gradient-text">next.</span></h1>
+<p class="section-intro">A collection of real-time worlds, visualization, digital humans, and interactive systems. Built across design, technology, and storytelling.</p>
+<div class="portfolio-actions">
+<a class="button primary" href="#gallery">Explore Projects ↗</a>
+<a class="button" href="https://www.artstation.com/jamescardona" target="_blank" rel="noopener noreferrer">Visit ArtStation ↗</a>
+</div>
+</div></section>
+<section id="gallery" class="section portfolio-gallery-section">
+<div class="section-inner">
+<div class="section-kicker">Explore the work</div>
+<h2 class="section-title">Portfolio archive.</h2>
+<div class="portfolio-filters" role="group" aria-label="Filter projects">
+<button class="portfolio-filter is-active" type="button" data-filter="all" aria-pressed="true">All work</button>
+<button class="portfolio-filter" type="button" data-filter="architecture" aria-pressed="false">Architecture</button>
+<button class="portfolio-filter" type="button" data-filter="characters" aria-pressed="false">Digital humans</button>
+<button class="portfolio-filter" type="button" data-filter="interactive" aria-pressed="false">Interactive</button>
+<button class="portfolio-filter" type="button" data-filter="artstation" aria-pressed="false">ArtStation</button>
+</div>
+<div class="portfolio-grid" id="portfolio-grid">
+<a class="portfolio-card" href="./archviz.html" data-category="architecture">
+<div class="portfolio-image"><img src="./images/img1.png" alt="Architectural visualization project preview" loading="lazy"></div>
+<div class="portfolio-card-meta">01 / REAL-TIME ARCHITECTURE</div><h3>Architectural Visualization</h3>
+<p>Immersive environments, lighting, cinematics and client-facing Unreal Engine presentations.</p><span class="portfolio-arrow">Explore project ↗</span>
+</a>
+<a class="portfolio-card" href="./digitalhuman.html" data-category="characters">
+<div class="portfolio-image"><img src="./images/img2.png" alt="Digital human project preview" loading="lazy"></div>
+<div class="portfolio-card-meta">02 / CHARACTER PRODUCTION</div><h3>Digital Humans & Motion Capture</h3>
+<p>Digital human creation, character workflows, clothing, motion capture, and animation.</p><span class="portfolio-arrow">Explore project ↗</span>
+</a>
+<a class="portfolio-card" href="./neontunnel.html" data-category="interactive">
+<div class="portfolio-image"><img src="./images/img3.png" alt="Interactive experience preview" loading="lazy"></div>
+<div class="portfolio-card-meta">03 / EXPERIMENTAL REAL-TIME</div><h3>Neon Tunnel</h3>
+<p>Browser-based interactive space-tunnel shooter and procedural real-time visuals.</p><span class="portfolio-arrow">Launch experience ↗</span>
+</a>
+<a class="portfolio-card portfolio-card--artstation" href="https://www.artstation.com/jamescardona" target="_blank" rel="noopener noreferrer" data-category="artstation">
+<div class="portfolio-image portfolio-artstation-art"><span>ART<br>STATION<span class="portfolio-dot">.</span></span></div>
+<div class="portfolio-card-meta">04 / EXTERNAL ARCHIVE</div><h3>ArtStation Portfolio</h3>
+<p>New work and past projects published on ArtStation. Browse the complete collection.</p><span class="portfolio-arrow">View ArtStation ↗</span>
+</a>
+</div>
+<div class="portfolio-empty" id="portfolio-empty" hidden>No projects in this category yet.</div>
+</div></section>
+<section class="section alt portfolio-outro"><div class="section-inner"><div class="section-kicker">Always evolving</div><h2 class="section-title">More projects.<br><span class="gradient-text">More to explore.</span></h2><p class="section-intro">This archive will continue to grow with current projects, earlier work, and detailed process breakdowns.</p><a class="button primary" href="https://www.artstation.com/jamescardona" target="_blank" rel="noopener noreferrer">Follow the work on ArtStation ↗</a></div></section>
+</main>
+<footer class="portfolio-footer"><div class="section-inner"><span>© <span id="year"></span> James Preston Cardona</span><a href="./index.html">Back to homepage ↑</a></div></footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const filters = document.querySelectorAll('[data-filter]');
+const cards = document.querySelectorAll('.portfolio-card[data-category]');
+const empty = document.getElementById('portfolio-empty');
+filters.forEach(button => button.addEventListener('click', () => {
+  const category = button.dataset.filter;
+  filters.forEach(b => {const selected = b === button; b.classList.toggle('is-active',selected); b.setAttribute('aria-pressed',String(selected));});
+  let visible = 0;
+  cards.forEach(card => {const show = category === 'all' || card.dataset.category === category; card.hidden = !show; if (show) visible++;});
+  empty.hidden = visible !== 0;
+}));
+</script>
+</body></html>
