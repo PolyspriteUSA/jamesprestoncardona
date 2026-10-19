@@ -6,4 +6,4 @@ Run `node scripts/build-projects.cjs` from the repository root after updating th
 
 This is a static content snapshot, not an automatic ArtStation sync. Changes to project lists, descriptions, captions, or image URLs require updating the JSON and rebuilding. An image changed in place at the same URL follows ArtStation's cache behavior. Deleted or replaced ArtStation URLs may stop loading.
 
-The Denon and gas-pump Sketchfab models are available via explicit external links; their images and descriptions are native HTML. No ArtStation page iframe, proxy, or API is needed at runtime.
+The Denon and gas-pump Sketchfab models use responsive, lazy-loaded iframe viewers with fullscreen support. These are the only portfolio iframes; images and descriptions remain native HTML. No ArtStation page iframe, proxy, or API is needed at runtime.
