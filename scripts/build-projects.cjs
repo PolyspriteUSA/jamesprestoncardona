@@ -40,7 +40,9 @@ write('archviz.html', archviz);
 projects.forEach((project, index) => {
   const previous = projects[(index + projects.length - 1) % projects.length];
   const next = projects[(index + 1) % projects.length];
-  const modelLinks = project.media.filter(media => media.src.startsWith('https://sketchfab.com/models/')).map(media => `<a class="button" href="${escape(media.src)}" target="_blank" rel="noopener noreferrer">View interactive model on Sketchfab ↗</a>`).join('\n');
+  const modelEmbeds = project.media.filter(media => /^https:\/\/sketchfab\.com\/models\/[a-f0-9]{32}\/embed$/.test(media.src)).map(media => `<section class="section-inner" aria-label="Interactive 3D model" style="padding-block: 28px;">
+      <iframe src="${escape(media.src)}" title="${escape(project.title)} — interactive 3D model" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen style="display: block; width: 100%; aspect-ratio: 16 / 9; min-height: 300px; border: 0;"></iframe>
+    </section>`).join('\n');
   const description = project.description.split(/\n\s*\n/).filter(Boolean).map(paragraph=>`<p>${escape(paragraph)}</p>`).join('\n');
   const content = `<!doctype html>
 <html lang="en">
@@ -65,8 +67,8 @@ ${header}
     ${image(project, project.images[0], 0, true)}
     ${description ? `<section class="native-project-description section-inner" aria-label="Project overview">${description}</section>` : ''}
     ${project.images.length > 1 ? `<section class="native-supporting-images" aria-label="Project image gallery">${project.images.slice(1).map((asset, i) => image(project, asset, i + 1)).join('\n')}</section>` : ''}
-    <div class="native-project-source section-inner">
-      ${modelLinks}
+    ${modelEmbeds ? modelEmbeds + '\n    ' : ''}<div class="native-project-source section-inner">
+      
       <a href="${escape(project.url)}" target="_blank" rel="noopener noreferrer">Original project on ArtStation ↗</a>
     </div>
     <nav class="native-project-pagination section-inner" aria-label="Project navigation">
