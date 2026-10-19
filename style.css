@@ -1666,3 +1666,16 @@ body.resume-open {
   }
   :is(.archviz-page, .native-project-page) .contact-panel-footer { flex-wrap: wrap; }
 }
+
+
+/* The chooser must remain scrollable on short iPhone landscape screens. */
+.experience-panel { max-height:calc(100svh - 48px); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+.experience-close { position:sticky; top:12px; float:right; margin:12px 14px -54px 0; }
+@media (any-pointer:coarse), (max-width:760px) {
+  .experience-modal { padding:12px; }
+  .experience-panel { max-height:calc(100svh - 24px); }
+  .experience-heading { padding:30px 22px 20px; }
+  .experience-heading h2 { padding-right:36px; font-size:clamp(1.8rem,6vw,3rem); }
+  .experience-option { min-height:136px; padding:18px 22px; grid-template-columns:minmax(0,1fr) 88px; gap:12px; }
+  .experience-thumb { width:88px; height:74px; }
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Neon Tunnel | James Preston Cardona</title>
   <meta name="description" content="A browser-based morphing neon tunnel game by James Preston Cardona.">
   <style>
@@ -10,6 +10,42 @@
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}body{background:radial-gradient(circle at 78% 18%,rgba(113,73,255,.18),transparent 29%),radial-gradient(circle at 62% 28%,rgba(255,66,208,.08),transparent 23%),linear-gradient(180deg,#050507 0%,#07060d 100%)}a{color:inherit;text-decoration:none}button{font:inherit}.site-header{position:fixed;inset:0 0 auto 0;z-index:50;height:var(--header-h);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;gap:26px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(5,5,7,.68);backdrop-filter:blur(18px)}.brand{font-size:.92rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}.site-nav{display:flex;gap:24px;align-items:center;color:#c8c4d4;font-size:.9rem}.site-nav a:hover,.site-nav a:focus-visible{color:#fff}.game-page{padding-top:var(--header-h);min-height:100vh}.game-shell{position:relative;height:calc(100vh - var(--header-h));min-height:620px;overflow:hidden}.game{position:absolute;inset:0;background:#050507;touch-action:none;outline:none}.game canvas{width:100%;height:100%;display:block}.game-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(5,5,7,.34),rgba(5,5,7,.05) 22%,rgba(5,5,7,0) 52%,rgba(5,5,7,.1)),radial-gradient(circle at 50% 54%,rgba(255,66,208,.06),transparent 42%)}.hud{position:absolute;inset:0;z-index:15;pointer-events:none}.hud-top{position:absolute;top:24px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}.hud-card{min-width:210px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(10,9,16,.58);backdrop-filter:blur(14px)}.hud-label{margin:0 0 5px;color:var(--muted);font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.hud-value{margin:0;font-size:clamp(1.3rem,2vw,2rem);font-weight:800;letter-spacing:-.03em}.meter{width:190px;height:6px;margin-top:10px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}.meter-fill{width:100%;height:100%;transform-origin:left center;background:linear-gradient(90deg,var(--violet),var(--magenta))}.center-message{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 40px));padding:26px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(18,14,30,.92),rgba(7,7,11,.88));backdrop-filter:blur(20px);text-align:center;pointer-events:auto;box-shadow:0 30px 80px rgba(0,0,0,.35)}.center-message[hidden]{display:none}.kicker{margin:0 0 12px;color:var(--magenta);font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.center-message h1,.center-message h2{margin:0;font-size:clamp(2.4rem,5.6vw,5.5rem);line-height:.91;letter-spacing:-.06em;text-wrap:balance}.center-message p{max-width:470px;margin:18px auto 0;color:#bbb6c7;font-size:.98rem;line-height:1.7}.controls-line{margin-top:18px;color:#d8d3e5;font-size:.85rem}.start-button{margin-top:22px;min-height:48px;padding:0 22px;border:1px solid rgba(255,66,208,.38);border-radius:999px;background:linear-gradient(135deg,rgba(113,73,255,.34),rgba(255,66,208,.22));color:#fff;cursor:pointer}.status-strip{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(8,8,13,.62);backdrop-filter:blur(14px);color:#cfc9db;font-size:.78rem;white-space:nowrap}.status-dot{width:7px;height:7px;border-radius:999px;background:var(--magenta);box-shadow:0 0 18px rgba(255,66,208,.75)}.touch-controls{position:absolute;inset:auto 0 18px 0;z-index:17;display:none;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none}.touch-pad,.touch-fire{pointer-events:auto}.touch-pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:7px}.touch-pad button,.touch-fire button{min-width:48px;min-height:48px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,13,.7);color:#fff;backdrop-filter:blur(14px)}.touch-pad .up{grid-column:2}.touch-pad .left{grid-column:1;grid-row:2}.touch-pad .down{grid-column:2;grid-row:2}.touch-pad .right{grid-column:3;grid-row:2}.touch-fire button{width:70px;height:70px;border-radius:999px;border-color:rgba(255,66,208,.42);background:radial-gradient(circle at 40% 35%,rgba(255,125,226,.35),rgba(113,73,255,.22) 48%,rgba(10,9,16,.76));font-weight:800;letter-spacing:.08em;font-size:.68rem}
     .designer-link{display:block;margin:16px auto 0;font-size:.8rem;color:#d8b7ff;text-decoration:underline;text-underline-offset:4px}.fleet-note{font-size:.75rem!important;margin-top:12px!important}.fleet-reset{border:0;background:none;color:#c6b6d6;text-decoration:underline;cursor:pointer;font-size:.75rem;padding:10px}.fleet-reset[hidden],.fleet-note[hidden]{display:none}
     @media(max-width:760px){:root{--header-h:66px}.site-header{padding:0 16px}.brand{font-size:.74rem}.site-nav{gap:12px;font-size:.76rem}.hud-top{top:14px;left:14px;right:14px;gap:10px}.hud-card{min-width:0;padding:11px 12px}.meter{width:120px}.status-strip{display:none}.touch-controls{display:flex}.center-message{width:min(520px,calc(100% - 28px));padding:22px 18px}}
+
+/* Keep iPhone controls inside the visible screen in either orientation. */
+@media (any-pointer:coarse), (max-width:760px) {
+  html,body { height:100%; height:100dvh; overflow:hidden; overscroll-behavior:none; }
+  body { display:flex; flex-direction:column; }
+  .site-header { position:relative; inset:auto; height:auto; flex:0 0 auto; min-height:56px; flex-wrap:wrap; gap:4px 16px; padding:calc(8px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 8px max(16px,env(safe-area-inset-left)); }
+  .brand { font-size:.7rem; }
+  .site-nav { flex-wrap:wrap; gap:4px 14px; font-size:.68rem; }
+  .site-nav a { display:inline-flex; align-items:center; min-height:32px; }
+  .game-page { padding-top:0; min-height:0; flex:1; }
+  .game-shell { height:100%; min-height:0; }
+  .hud-top { top:10px; left:10px; right:10px; gap:6px; }
+  .hud-card { min-width:0; padding:8px; flex:1; }
+  .hud-label { font-size:.52rem; letter-spacing:.04em; }
+  .hud-value { font-size:1.1rem; }
+  .meter { width:100%; }
+  .center-message { z-index:20; max-height:calc(100% - 20px); overflow-y:auto; overscroll-behavior:contain; padding:18px; }
+  .center-message h1,.center-message h2 { font-size:clamp(2rem,7vw,3.4rem); }
+  .center-message p { font-size:.82rem; line-height:1.4; margin-top:12px; }
+  .controls-line { font-size:.72rem; margin-top:12px; }
+  .touch-controls { display:flex; bottom:max(12px,env(safe-area-inset-bottom)); padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right)); }
+  body:not(.is-playing) .touch-controls { display:none; }
+  .touch-controls button { touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+  .status-strip { display:none; }
+}
+@media (any-pointer:coarse) and (max-height:500px) {
+  .site-header { min-height:40px; padding-block:4px; }
+  .hud-top { right:12px; left:auto; max-width:48%; }
+  .hud-card { padding:5px 8px; }
+  .hud-label { font-size:.45rem; }
+  .hud-value { font-size:.9rem; }
+  .center-message .kicker,.center-message .controls-line { display:none; }
+  .center-message { padding:14px; }
+  .start-button { margin-top:12px; }
+  .designer-link { margin-top:10px; }
+}
   </style>
 </head>
 <body>
@@ -19,7 +55,7 @@
 <script type="module">
 import * as THREE from "three";
 const container=document.getElementById("game"),scoreValue=document.getElementById("scoreValue"),healthValue=document.getElementById("healthValue"),healthMeter=document.getElementById("healthMeter"),targetsValue=document.getElementById("targetsValue"),startPanel=document.getElementById("startPanel"),gameOverPanel=document.getElementById("gameOverPanel"),finalScore=document.getElementById("finalScore"),startButton=document.getElementById("startButton"),restartButton=document.getElementById("restartButton"),statusText=document.getElementById("statusText");
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x070311,0.022);const camera=new THREE.PerspectiveCamera(62,1,.05,190);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,window.matchMedia('(hover: none) and (pointer: coarse)').matches?1.25:1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.70;container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x070311,0.022);const camera=new THREE.PerspectiveCamera(62,1,.05,190);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:!window.matchMedia('(any-pointer: coarse)').matches,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,window.matchMedia('(any-pointer: coarse)').matches?1:1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.70;container.appendChild(renderer.domElement);
 scene.add(new THREE.AmbientLight(0x7265a8,.12));const playerLight=new THREE.PointLight(0xff42d0,2.6,14,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,4.2,26,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
 const player=new THREE.Group();scene.add(player);
 
@@ -281,7 +317,7 @@ player.position.z=2;
 
 // Continuous plasma tunnel: no polygon gates or wireframe rings.
 let tunnelCurveTime=0;
-const vortexTouch=window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const vortexTouch=window.matchMedia('(any-pointer: coarse)').matches;
 const vortexUniforms={uTime:{value:0},uTravel:{value:0}};
 function curvePoint(z){
   const d=Math.max(0,-z),w=THREE.MathUtils.smoothstep(d,8,65),t=tunnelCurveTime;
@@ -346,7 +382,7 @@ const vortexFragment=`
     float streakGate=smoothstep(.42,.78,noise(vec2(sin(a)*11.0+cos(a)*8.0,s*.17)));
     col+=neon*(exp(-streak*75.0)*2.15+exp(-streak*14.0)*.20)*streakGate;
     // Irregular overlapping sheets and threads build a turbulent plasma surface.
-    for(int layer=0;layer<5;layer++){
+    for(int layer=0;layer<${vortexTouch ? 3 : 5};layer++){
       float k=float(layer);
       float rough=noise(vec2(sin(a)*(19.0+k*3.0)+cos(a)*13.0,s*(.7+k*.12)));
       float phase=a*(2.0+k)+s*(.55+k*.23)+mist*3.5+rough*.8+k*1.7;
@@ -736,10 +772,32 @@ const bulletGeo=new THREE.CylinderGeometry(.035,.035,.62,7),bulletMat=new THREE.
 bulletGeo.rotateX(Math.PI/2);
 const enemies=[],bullets=[],explosions=[];
 // Touch devices use a gentler pace, including phones held in landscape.
-const flightSpeedScale=window.matchMedia('(hover: none) and (pointer: coarse)').matches ? .65 : 1;
+const flightSpeedScale=window.matchMedia('(any-pointer: coarse)').matches ? .65 : 1;
 let running=false,score=0,health=100,targetsDestroyed=0,speed=15*flightSpeedScale,elapsed=0,enemyTimer=0,nextEnemy=.58,fireCooldown=0;
 const input={left:false,right:false,up:false,down:false,fire:false},target=new THREE.Vector2();
-function setKey(code,v){if(code==="KeyA"||code==="ArrowLeft")input.left=v;if(code==="KeyD"||code==="ArrowRight")input.right=v;if(code==="KeyW"||code==="ArrowUp")input.up=v;if(code==="KeyS"||code==="ArrowDown")input.down=v;if(code==="Space")input.fire=v}window.addEventListener("keydown",e=>{if(["KeyW","KeyA","KeyS","KeyD","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();setKey(e.code,true)});window.addEventListener("keyup",e=>setKey(e.code,false));document.querySelectorAll("[data-input]").forEach(b=>{const n=b.dataset.input;const on=e=>{e.preventDefault();input[n]=true},off=e=>{e.preventDefault();input[n]=false};b.addEventListener("pointerdown",on);b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off)});
+function setKey(code,v){if(code==="KeyA"||code==="ArrowLeft")input.left=v;if(code==="KeyD"||code==="ArrowRight")input.right=v;if(code==="KeyW"||code==="ArrowUp")input.up=v;if(code==="KeyS"||code==="ArrowDown")input.down=v;if(code==="Space")input.fire=v}window.addEventListener("keydown",e=>{if(["KeyW","KeyA","KeyS","KeyD","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();setKey(e.code,true)});window.addEventListener("keyup",e=>setKey(e.code,false));const flightInputResets=[];
+document.querySelectorAll("[data-input]").forEach(button=>{
+  const name=button.dataset.input;
+  let activePointer=null;
+  flightInputResets.push(()=>{activePointer=null;input[name]=false;});
+  button.addEventListener("pointerdown",event=>{
+    if(activePointer!==null || !running)return;
+    event.preventDefault(); activePointer=event.pointerId;
+    button.setPointerCapture(event.pointerId); input[name]=true;
+  });
+  const release=event=>{
+    if(event.pointerId!==activePointer)return;
+    input[name]=false; activePointer=null;
+  };
+  button.addEventListener("pointerup",release);
+  button.addEventListener("pointercancel",release);
+  button.addEventListener("lostpointercapture",release);
+});
+function clearFlightInput(){Object.keys(input).forEach(key=>input[key]=false);flightInputResets.forEach(reset=>reset());}
+window.addEventListener("blur",clearFlightInput);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)clearFlightInput();});
+if(window.matchMedia('(any-pointer: coarse)').matches){document.querySelector('.controls-line').textContent='Use the arrow pad to steer • Hold FIRE to shoot';}
+
 function spawnEnemy(){
   const m=enemyTemplates[Math.floor(Math.random()*enemyTemplates.length)].clone(true);
   m.userData.laneX=THREE.MathUtils.randFloat(-3.7,3.7);
@@ -755,7 +813,7 @@ function spawnEnemy(){
 function fire(){if(fireCooldown>0)return;fireCooldown=.15;const b=new THREE.Mesh(bulletGeo,bulletMat);b.userData.laneX=player.position.x;b.userData.laneY=player.position.y;placeInTunnel(b,player.position.z-.7);scene.add(b);bullets.push(b)}
 function boom(pos,color){const g=new THREE.Group();for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.TetrahedronGeometry(.08),new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));m.position.copy(pos);m.userData.v=new THREE.Vector3(THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-1,3.2));g.add(m)}scene.add(g);explosions.push({g,life:.65})}
 function hud(){scoreValue.textContent=String(Math.floor(score)).padStart(6,"0");healthValue.textContent=Math.max(0,Math.round(health))+"%";healthMeter.style.transform="scaleX("+THREE.MathUtils.clamp(health/100,0,1)+")";targetsValue.textContent=String(targetsDestroyed).padStart(3,"0")}
-function reset(){enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>scene.remove(x.g));enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;targetsDestroyed=0;speed=15*flightSpeedScale;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){running=false;finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0")+"  •  Targets Destroyed "+String(targetsDestroyed).padStart(3,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
+function reset(){clearFlightInput();document.body.classList.add("is-playing");enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>scene.remove(x.g));enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;targetsDestroyed=0;speed=15*flightSpeedScale;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){running=false;clearFlightInput();document.body.classList.remove("is-playing");finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0")+"  •  Targets Destroyed "+String(targetsDestroyed).padStart(3,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
 function updatePlayer(dt){
 const s=6.2;
 
@@ -921,4 +979,5 @@ nebulaGroup.rotation.z-=dt*.0015;updateEnemies(dt);updateBullets(dt);updateBooms
 </script>
 </body>
 </html>
+
 

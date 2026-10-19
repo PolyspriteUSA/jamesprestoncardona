@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Neon Spiders — James Preston Cardona</title>
 <style>
 :root{
@@ -538,10 +538,54 @@ canvas{display:block}
     font-size:.50rem;
   }
 }
+
+/* iPhone twin-stick controls and safe-area layout. */
+.spider-touch-controls { display:none; }
+@media (any-pointer:coarse) {
+  #game { touch-action:none; }
+  .site-header { padding:calc(8px + env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left)); }
+  .site-nav { flex-direction:column; align-items:flex-start; gap:4px; }
+  .site-nav-brand { font-size:.62rem; white-space:normal; }
+  .site-nav-links { gap:12px; flex-wrap:wrap; }
+  .site-nav-links a { min-height:28px; display:inline-flex; align-items:center; font-size:.58rem; }
+  .topbar { top:calc(78px + env(safe-area-inset-top)); left:0; right:0; padding:8px 12px; }
+  .topbar > .brand { display:none; }
+  .hud { width:100%; justify-content:flex-end; gap:5px; }
+  .hudbox { min-width:0; padding:6px 8px; }
+  .hudbox strong { font-size:12px; }
+  .healthbar { width:65px; }
+  .help,#dashMeter,.crosshair { display:none; }
+  .overlay { height:100%; height:100dvh; overscroll-behavior:contain; }
+  #startScreen,#gameOver { padding:calc(16px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom)); z-index:60; }
+  .card { padding:20px; }
+  .robot-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+  .robot-option { min-height:0; padding:8px; }
+  .robot-preview { height:68px; }
+  .robot-option p { font-size:9px; }
+  .spider-touch-controls { position:fixed; z-index:30; inset:auto 0 max(12px,env(safe-area-inset-bottom)); padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left)); display:flex; justify-content:space-between; align-items:flex-end; pointer-events:none; }
+  body:not(.is-playing) .spider-touch-controls { display:none; }
+  .spider-stick { position:relative; width:116px; height:116px; border:1px solid rgba(166,108,255,.5); border-radius:50%; background:rgba(9,9,14,.6); touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; pointer-events:auto; }
+  .spider-stick span { position:absolute; left:0; right:0; top:12px; text-align:center; color:#d6c6ef; font-size:9px; letter-spacing:.1em; pointer-events:none; }
+  .spider-stick i { position:absolute; left:38px; top:38px; width:38px; height:38px; border-radius:50%; background:rgba(166,108,255,.7); pointer-events:none; }
+  #spiderAim i { background:rgba(255,66,208,.7); }
+  .spider-touch-right { display:flex; align-items:flex-end; gap:10px; }
+  #spiderDash { width:54px; height:54px; border:1px solid var(--line); border-radius:50%; color:#fff; background:rgba(113,73,255,.4); font:700 10px Arial; pointer-events:auto; touch-action:none; }
+}
+@media (any-pointer:coarse) and (max-height:500px) {
+  .site-nav { flex-direction:row; justify-content:space-between; }
+  .topbar { top:calc(40px + env(safe-area-inset-top)); }
+  .spider-stick { width:96px; height:96px; }
+  .spider-stick i { left:28px; top:28px; }
+  .card h1 { font-size:38px; }
+}
 </style>
 </head>
 <body>
 <div id="game"></div>
+<div class="spider-touch-controls" aria-label="Touch game controls">
+  <div id="spiderMove" class="spider-stick" aria-label="Drag to move"><span>MOVE</span><i></i></div>
+  <div class="spider-touch-right"><button id="spiderDash" type="button">DASH</button><div id="spiderAim" class="spider-stick" aria-label="Drag to aim and fire"><span>AIM / FIRE</span><i></i></div></div>
+</div>
 
 <header class="site-header">
   <nav class="site-nav" aria-label="Main website navigation">
@@ -2002,6 +2046,7 @@ window.addEventListener(
 
 scheduleRobotPreviewRefresh();
 
+const isTouchGame=window.matchMedia("(any-pointer: coarse)").matches;
 const host=$("game");
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x050507);
@@ -2012,10 +2057,10 @@ camera.position.set(0,23,18);
 camera.lookAt(0,0,0);
 
 const renderer=new THREE.WebGLRenderer({
-  antialias:true,
+  antialias:!isTouchGame,
   powerPreference:"high-performance"
 });
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setPixelRatio(Math.min(devicePixelRatio,isTouchGame?1.25:2));
 renderer.setSize(innerWidth,innerHeight);
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 host.appendChild(renderer.domElement);
@@ -3095,6 +3140,8 @@ const bullets=[];
 const particles=[];
 const pickups=[];
 const keys={};
+const touchMove={x:0,y:0};
+const touchAim={x:0,y:0};
 
 let running=false;
 let score=0;
@@ -3560,12 +3607,14 @@ function endGame(){
     wave+
     ".";
 
+  clearArenaInput();document.body.classList.remove("is-playing");
   $("gameOver").classList.remove(
     "hidden"
   );
 }
 
 function resetGame(){
+  clearArenaInput();document.body.classList.add("is-playing");
   ensureAudio();
 
   soundtrack.volume=
@@ -3668,7 +3717,7 @@ document.addEventListener(
 renderer.domElement.addEventListener(
   "pointerdown",
   event=>{
-    if(event.button===0){
+    if(event.pointerType!=="touch" && event.button===0){
       mouseDown=true;
     }
   }
@@ -3677,7 +3726,7 @@ renderer.domElement.addEventListener(
 addEventListener(
   "pointerup",
   event=>{
-    if(event.button===0){
+    if(event.pointerType!=="touch" && event.button===0){
       mouseDown=false;
     }
   }
@@ -3686,6 +3735,7 @@ addEventListener(
 addEventListener(
   "pointermove",
   event=>{
+    if(event.pointerType==="touch")return;
     mouseNdc.x=
       event.clientX/innerWidth*2-1;
 
@@ -3716,9 +3766,50 @@ addEventListener(
   }
 );
 
+
+// Capture each thumb independently so moving never changes the firing direction.
+const arenaStickResets=[];
+function bindArenaStick(id,value,fire){
+  const pad=$(id),knob=pad.querySelector('i');let pointer=null;
+  const reset=()=>{pointer=null;value.x=value.y=0;knob.style.transform='';if(fire)mouseDown=false;};
+  arenaStickResets.push(reset);
+  function update(event){
+    const rect=pad.getBoundingClientRect(),radius=rect.width*.34;
+    let x=(event.clientX-rect.left-rect.width/2)/radius;
+    let y=(event.clientY-rect.top-rect.height/2)/radius;
+    const length=Math.hypot(x,y);if(length>1){x/=length;y/=length;}
+    value.x=Math.abs(x)>.12?x:0;value.y=Math.abs(y)>.12?y:0;
+    knob.style.transform=`translate(${x*radius}px,${y*radius}px)`;
+    if(fire)mouseDown=!!(value.x||value.y);
+  }
+  pad.addEventListener('pointerdown',event=>{
+    if(!running || pointer!==null)return;
+    event.preventDefault();event.stopPropagation();pointer=event.pointerId;
+    pad.setPointerCapture(pointer);update(event);
+  });
+  pad.addEventListener('pointermove',event=>{if(event.pointerId===pointer){event.preventDefault();update(event);}});
+  for(const name of ['pointerup','pointercancel','lostpointercapture'])pad.addEventListener(name,event=>{if(event.pointerId===pointer)reset();});
+}
+function clearArenaInput(){
+  Object.keys(keys).forEach(key=>keys[key]=false);
+  touchMove.x=touchMove.y=touchAim.x=touchAim.y=0;mouseDown=false;
+  arenaStickResets.forEach(reset=>reset());
+}
+bindArenaStick('spiderMove',touchMove,false);
+bindArenaStick('spiderAim',touchAim,true);
+$('spiderDash').addEventListener('pointerdown',event=>{
+  event.preventDefault();event.stopPropagation();
+  if(running && dashCooldown<=0){dashTime=.16;dashCooldown=1.4;sfxDash();}
+});
+window.addEventListener('blur',clearArenaInput);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)clearArenaInput();});
+if(isTouchGame)document.querySelector('.help').textContent='Left stick: move • Right stick: aim and fire • DASH: evade';
+
 function updatePlayer(dt){
-  const move=
-    new THREE.Vector3();
+  const move=new THREE.Vector3(touchMove.x,0,touchMove.y);
+  if(touchAim.x || touchAim.y){
+    aimPoint.set(player.position.x+touchAim.x*10,0,player.position.z+touchAim.y*10);
+  }
 
   if(keys.KeyW||keys.ArrowUp){
     move.z-=1;
@@ -3737,7 +3828,7 @@ function updatePlayer(dt){
   }
 
   if(move.lengthSq()>0){
-    move.normalize();
+    move.clampLength(0,1);
 
     const speed=
       dashTime>0
@@ -4167,3 +4258,4 @@ updateHud();
 </script>
 </body>
 </html>
+
