@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050507">
+  <meta name="description" content="Crowley Indoor Track architectural visualization demo reel by James Preston Cardona.">
+  <title>Crowley Indoor Track | James Preston Cardona</title>
+  <link rel="canonical" href="https://jamesprestoncardona.com/archviz-crowley-indoor-track.html">
+  <link rel="stylesheet" href="./style.css?v=20261018-architecture">
+  <link rel="icon" href="./favicon.ico">
+  <style>
+    .archviz-page{
+      color-scheme:dark;
+      background:var(--bg);
+    }
+
+    .archviz-page .archviz-main{
+      position:relative;
+      z-index:1;
+      padding-top:92px;
+      min-height:100svh;
+      background:
+        radial-gradient(circle at 18% 8%,rgba(154,98,255,.10),transparent 34%),
+        radial-gradient(circle at 82% 2%,rgba(255,56,209,.07),transparent 31%),
+        var(--bg);
+    }
+
+    .archviz-page .archviz-intro{
+      padding-top:76px;
+      padding-bottom:44px;
+      background:transparent;
+    }
+
+    .archviz-page .archviz-intro .section-title{
+      max-width:980px;
+      margin-bottom:24px;
+      font-size:clamp(3rem,7vw,6.8rem);
+      line-height:.94;
+      letter-spacing:-.055em;
+    }
+
+    .archviz-page .archviz-intro .section-intro{
+      max-width:760px;
+      margin-bottom:0;
+    }
+
+    .archviz-page .archviz-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px 18px;
+      margin-top:25px;
+      color:var(--muted2);
+      font-size:.67rem;
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .archviz-page .archviz-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:30px;
+    }
+
+    .archviz-page .archviz-reel-section{
+      position:relative;
+      z-index:5;
+      padding:20px 28px 120px;
+    }
+
+    .archviz-page .archviz-reel{
+      width:min(var(--max-width),100%);
+      margin:0 auto;
+    }
+
+    .archviz-page .archviz-video-frame{
+      position:relative;
+      overflow:hidden;
+      aspect-ratio:16/9;
+      border:1px solid var(--border);
+      background:#000;
+      box-shadow:0 28px 80px rgba(0,0,0,.36);
+    }
+
+    .archviz-page .archviz-video-frame video{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      background:#000;
+    }
+
+    .archviz-page .archviz-caption{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:28px;
+      margin-top:20px;
+      color:var(--muted2);
+      font-size:.67rem;
+      line-height:1.7;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .archviz-page .archviz-caption strong{
+      color:var(--text);
+      font-weight:700;
+    }
+
+    @media(max-width:767px){
+      .archviz-page .archviz-main{padding-top:74px}
+      .archviz-page .archviz-intro{
+        padding-top:52px;
+        padding-bottom:28px;
+      }
+      .archviz-page .archviz-intro .section-title{
+        font-size:clamp(3rem,15vw,5rem);
+      }
+      .archviz-page .archviz-reel-section{
+        padding:12px 15px 84px;
+      }
+      .archviz-page .archviz-caption{
+        flex-direction:column;
+        gap:5px;
+      }
+    }
+  </style>
+</head>
+<body class="archviz-page">
+  <header class="site-header">
+    <nav class="nav" aria-label="Site header">
+      <a class="brand" href="./">James Preston Cardona</a>
+      <div class="nav-links">
+        <a href="./index.html#work">Work</a>
+        <a href="./index.html#about">About</a>
+        <a href="./index.html#contact" class="contact-trigger" aria-haspopup="dialog" aria-controls="contact-modal" aria-expanded="false">Contact</a>
+        <button class="music-toggle" id="music-toggle" data-jpc-music-toggle type="button" aria-pressed="false" aria-label="Toggle background music">Music On</button>
+      </div>
+    </nav>
+  </header>
+  <main class="archviz-main">
+    <section class="section archviz-intro" aria-labelledby="archviz-title">
+      <div class="section-inner">
+        <div class="section-kicker">Architecture // Crowley Indoor Track</div>
+
+        <h1 class="section-title" id="archviz-title">
+          Crowley
+          <span class="gradient-text">Indoor Track.</span>
+        </h1>
+
+        <p class="section-intro">
+          Architectural Visualization Demo Reel.<br>
+          James Preston Cardona // Real-Time 3D.
+        </p>
+
+        <div class="archviz-meta" aria-label="Disciplines">
+          <span>Unreal Engine</span>
+          <span>Real-Time 3D</span>
+          <span>Architectural Visualization</span>
+          <span>Cinematics</span>
+        </div>
+
+        <div class="archviz-actions">
+          <a class="button primary" href="./archviz.html#projects">All Architecture Projects</a>
+          <a class="button contact-trigger" href="./index.html#contact" aria-haspopup="dialog" aria-controls="contact-modal" aria-expanded="false">Get In Touch</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="archviz-reel-section" aria-labelledby="reel-title">
+      <div class="archviz-reel">
+        <div class="archviz-video-frame">
+          <video
+            id="archviz-reel"
+            controls
+            poster="./archviz/CrowleyMain.jpg"
+            playsinline
+            preload="metadata"
+            aria-label="Crowley Indoor Track architectural visualization demo reel"
+          >
+            <source src="./archviz/CrowleyIndoorTrack_JPC_DemoReel.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+        </div>
+
+        <div class="archviz-caption">
+          <div>
+            <strong id="reel-title">Crowley Indoor Track</strong><br>
+            Architectural Visualization Demo Reel
+          </div>
+          <div>James Preston Cardona // Real-Time 3D</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div
+    id="contact-modal"
+    class="contact-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contact-modal-title"
+    aria-hidden="true"
+    inert
+  >
+    <div class="contact-backdrop" data-contact-close></div>
+
+    <div class="contact-panel">
+      <button id="contact-close" class="contact-close" type="button" aria-label="Close contact panel">×</button>
+
+      <div class="contact-panel-kicker">Let's Connect</div>
+
+      <h2 id="contact-modal-title">
+        Start a
+        <span class="gradient-text">conversation.</span>
+      </h2>
+
+      <p class="contact-panel-intro">
+        For opportunities, collaborations,
+        real-time 3D projects, or professional inquiries,
+        choose the contact method that works best for you.
+      </p>
+
+      <div class="contact-options">
+        <a class="contact-option" href="mailto:JamesPrestonCardona@gmail.com">
+          <div class="contact-option-icon">@</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">Email</div>
+            <div class="contact-option-value">JamesPrestonCardona@gmail.com</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+
+        <a
+          class="contact-option"
+          href="https://www.linkedin.com/in/jamesprestoncardona/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="contact-option-icon">in</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">LinkedIn</div>
+            <div class="contact-option-value">linkedin.com/in/jamesprestoncardona</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+
+        <a class="contact-option" href="tel:+12148839567">
+          <div class="contact-option-icon">☎</div>
+
+          <div class="contact-option-content">
+            <div class="contact-option-label">Telephone</div>
+            <div class="contact-option-value">(214) 883-9567</div>
+          </div>
+
+          <div class="contact-option-arrow">→</div>
+        </a>
+      </div>
+
+      <div class="contact-panel-footer">
+        <span>Dallas, Texas</span>
+        <span>JamesPrestonCardona.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared portfolio audio preserves the same music preference and playback position. -->
+  <script src="./audio.js?v=20260921-original-loop" defer></script>
+  <script>
+  (() => {
+    const modal = document.getElementById('contact-modal');
+    const closeButton = document.getElementById('contact-close');
+    const triggers = document.querySelectorAll('.contact-trigger');
+    const background = [document.querySelector('.site-header'), document.querySelector('main')];
+    let previousFocus = null;
+
+    function setOpen(open) {
+      if (open) previousFocus = document.activeElement;
+      modal.inert = !open;
+      modal.classList.toggle('open', open);
+      modal.setAttribute('aria-hidden', String(!open));
+      document.body.classList.toggle('contact-open', open);
+      triggers.forEach(trigger => trigger.setAttribute('aria-expanded', String(open)));
+      background.forEach(element => { element.inert = open; });
+      if (open) closeButton.focus({ preventScroll: true });
+      else if (previousFocus) previousFocus.focus({ preventScroll: true });
+    }
+
+    triggers.forEach(trigger => trigger.addEventListener('click', event => {
+      event.preventDefault();
+      setOpen(true);
+    }));
+    closeButton.addEventListener('click', () => setOpen(false));
+    modal.querySelector('[data-contact-close]').addEventListener('click', () => setOpen(false));
+    modal.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); setOpen(false); }
+      if (event.key !== 'Tab') return;
+      const focusable = modal.querySelectorAll('button, a[href]');
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

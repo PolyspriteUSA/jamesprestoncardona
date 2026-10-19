@@ -1551,3 +1551,51 @@ body.resume-open {
     gap: 5px;
   }
 }
+
+/* Native portfolio gallery and project pages; imagery is hosted on ArtStation. */
+.archviz-page .archviz-projects { padding: 36px 0 80px; }
+.archviz-page .archviz-projects > .section-inner { width: min(var(--max-width), calc(100% - 56px)); }
+.archviz-page #projects { scroll-margin-top: 100px; }
+.native-project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 38px 20px; padding: 0 28px; }
+.native-project-card { min-width: 0; display: block; }
+.native-project-thumbnail { overflow: hidden; aspect-ratio: 3 / 2; background: var(--bg2); }
+.native-project-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 240ms ease; }
+.native-project-card-copy { padding: 20px 0 24px; border-bottom: 1px solid var(--border); }
+.native-project-card-copy .section-kicker { font-size: .61rem; margin-bottom: 10px; }
+.native-project-card h3 { font-size: clamp(1.2rem, 2vw, 1.8rem); line-height: 1.15; letter-spacing: -.025em; }
+.native-project-card .project-link-label { display: inline-block; color: var(--muted); }
+@media (hover: hover) { .native-project-card:hover img { transform: scale(1.025); } }
+.native-project-page main { padding-top: 120px; }
+.native-project-page .section-inner { width: min(var(--max-width), calc(100% - 56px)); }
+.native-project-heading { padding: 35px 0 45px; }
+.native-back-link { display: inline-block; margin-bottom: 38px; color: var(--muted); font-size: .78rem; }
+.native-project-heading .section-title { max-width: 1100px; margin-bottom: 0; font-size: clamp(2.4rem, 5.4vw, 5.6rem); overflow-wrap: anywhere; }
+.native-project-figure { min-width: 0; margin: 0; }
+.native-project-figure img { display: block; width: 100%; height: auto; background: var(--bg2); }
+.native-project-hero { width: 100%; }
+.native-project-hero img { max-height: 85svh; object-fit: contain; }
+.native-project-figure figcaption { padding: 14px 0 22px; color: var(--muted2); font-size: .76rem; line-height: 1.5; }
+.native-project-hero figcaption { width: min(var(--max-width), calc(100% - 56px)); margin: 0 auto; }
+.native-project-description { padding: 42px 0 50px; }
+.native-project-description p { max-width: 82ch; color: var(--muted); line-height: 1.8; font-size: 1rem; }
+.native-project-description p + p { margin-top: 18px; }
+.native-supporting-images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 32px 24px; padding: 28px; }
+.native-supporting-images .native-project-figure:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.native-project-source { padding: 36px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; color: var(--muted); font-size: .78rem; }
+.native-project-pagination { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 24px; padding: 36px 0 70px; border-top: 1px solid var(--border); }
+.native-project-pagination a { line-height: 1.5; font-size: .86rem; }
+.native-project-pagination a:last-child { text-align: right; }
+.native-project-pagination span { display: block; margin-bottom: 12px; color: var(--violet); font-size: .66rem; text-transform: uppercase; letter-spacing: .1em; }
+@media (max-width: 1100px) { .native-project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) {
+  .archviz-page .archviz-projects > .section-inner, .native-project-page .section-inner, .native-project-hero figcaption { width: calc(100% - 32px); }
+  .native-project-grid { grid-template-columns: 1fr; gap: 28px; padding: 0 16px; }
+  .native-project-page main { padding-top: 82px; }
+  .native-project-heading { padding: 30px 0; }
+  .native-back-link { margin-bottom: 28px; }
+  .native-supporting-images { grid-template-columns: 1fr; padding: 16px; gap: 18px; }
+  .native-project-description { padding: 28px 0; }
+  .native-project-pagination { grid-template-columns: 1fr; gap: 26px; }
+  .native-project-pagination a:last-child { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .native-project-thumbnail img { transition: none; } }
