@@ -35,7 +35,7 @@ const gallery = `    <section id="projects" class="archviz-projects" aria-labell
       </div>
       <div class="native-project-grid">\n${cards}\n      </div>
     </section>`;
-archviz = archviz.replace(/    <section id="projects"[\s\S]*?<\/section>/, gallery).replace(/style\.css\?v=[^"]+/, 'style.css?v=20261018-native-projects');
+archviz = archviz.replace(/    <section id="projects"[\s\S]*?<\/section>/, gallery).replace(/style\.css\?v=[^"]+/, 'style.css?v=20261019-mobile-layout');
 write('archviz.html', archviz);
 projects.forEach((project, index) => {
   const previous = projects[(index + projects.length - 1) % projects.length];
@@ -53,7 +53,7 @@ projects.forEach((project, index) => {
   <title>${escape(project.title)} | James Preston Cardona</title>
   <meta name="description" content="${escape(project.description || project.title + ' — project images by James Preston Cardona.')}">
   <link rel="canonical" href="https://jamesprestoncardona.com/${slug(project)}">
-  <link rel="stylesheet" href="./style.css?v=20261018-native-projects">
+  <link rel="stylesheet" href="./style.css?v=20261019-mobile-layout">
   <link rel="icon" href="./favicon.ico">
 </head>
 <body class="native-project-page">

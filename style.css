@@ -1599,3 +1599,70 @@ body.resume-open {
   .native-project-pagination a:last-child { text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .native-project-thumbnail img { transition: none; } }
+
+/* Portfolio mobile layout: keep navigation, headings and media within the viewport. */
+.native-project-grid { width: min(calc(var(--max-width) + 56px), 100%); margin-inline: auto; }
+:is(.archviz-page, .native-project-page) :is(main, section, nav, figure) { min-width: 0; }
+:is(.archviz-page, .native-project-page) :is(h1, h2, h3, p, figcaption, .native-project-pagination a) { overflow-wrap: anywhere; }
+.native-project-page :is(img, video, iframe) { max-width: 100%; }
+.native-project-card:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
+:is(.archviz-page, .native-project-page) .contact-panel {
+  max-height: calc(100svh - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 767px) {
+  :is(.archviz-page, .native-project-page) .site-header {
+    position: relative;
+    padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+  }
+  :is(.archviz-page, .native-project-page) .nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  :is(.archviz-page, .native-project-page) .brand {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+    padding-block: 8px;
+  }
+  :is(.archviz-page, .native-project-page) .nav-links {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 12px;
+  }
+  :is(.archviz-page, .native-project-page) .nav-links a:nth-child(2) { display: inline-flex; }
+  :is(.archviz-page, .native-project-page) .nav-links :is(a, button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    margin: 0;
+    padding: 8px 0;
+    touch-action: manipulation;
+  }
+  .archviz-page .archviz-main, .native-project-page main { padding-top: 0; }
+  .archviz-page .archviz-intro { padding-top: 32px; }
+  .archviz-page .archviz-intro .section-title {
+    font-size: clamp(1.8rem, 8.5vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: -.045em;
+    overflow-wrap: anywhere;
+  }
+  .native-project-heading .section-title { font-size: clamp(2rem, 9vw, 4rem); line-height: 1.08; }
+  .native-project-card h3 { font-size: 1.35rem; }
+  .native-project-hero img { max-height: none; height: auto; }
+  .native-project-page iframe { min-height: 0 !important; height: auto; aspect-ratio: 4 / 3 !important; }
+  .native-project-pagination a, .native-back-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 44px;
+    padding-block: 8px;
+    touch-action: manipulation;
+  }
+  :is(.archviz-page, .native-project-page) .contact-panel-footer { flex-wrap: wrap; }
+}
