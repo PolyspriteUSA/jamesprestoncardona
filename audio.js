@@ -30,6 +30,7 @@
   let restoreTimePending = true;
   let playbackStarted = false;
   let playPending = false;
+  let playAttempt = 0;
   let leavingPage = false;
 
   const state = {
@@ -82,23 +83,30 @@
     document
       .querySelectorAll("[data-jpc-music-toggle], #music-toggle")
       .forEach(function (button) {
-        button.textContent = state.enabled ? "Music On" : "Music Off";
-        button.setAttribute("aria-pressed", state.enabled ? "true" : "false");
+        const playing = state.enabled && !audio.paused && !audio.error;
+        button.textContent = playing ? "Music On" : (state.enabled ? "Play Music" : "Music Off");
+        button.setAttribute("aria-pressed", playing ? "true" : "false");
       });
   }
 
-  function play() {
-    if (!canPlay() || playPending) return;
+  function play(fromGesture) {
+    // A trusted tap must reach play() synchronously, even if autoplay is pending.
+    if (!canPlay() || (playPending && !fromGesture)) return;
+    const attempt = ++playAttempt;
     seekSavedTime();
 
     playPending = true;
     const promise = audio.play();
     if (promise && typeof promise.then === "function") {
       promise.then(function () {
+        if (attempt !== playAttempt) return;
         playPending = false;
         playbackStarted = true;
+        updateButtons();
       }, function (error) {
+        if (attempt !== playAttempt) return;
         playPending = false;
+        updateButtons();
         // NotAllowedError is normal when a browser requires a user gesture.
         // Other failures are surfaced so a missing/bad audio URL is visible.
         if (!error || (error.name !== "NotAllowedError" && error.name !== "AbortError")) {
@@ -126,9 +134,9 @@
     writeState();
   }
 
-  function setEnabled(enabled) {
+  function setEnabled(enabled, fromGesture) {
     state.enabled = enabled;
-    if (enabled) play();
+    if (enabled) play(fromGesture);
     else pause();
     updateButtons();
     writeState();
@@ -147,11 +155,11 @@
         // audio is still paused. In that case, the first click should
         // START playback instead of immediately toggling the music off.
         if (state.enabled && audio.paused && canPlay()) {
-          play();
+          play(true);
           return;
         }
 
-        setEnabled(!state.enabled);
+        setEnabled(!state.enabled, true);
       }
 
       button.addEventListener(
@@ -207,7 +215,9 @@
   audio.addEventListener("loadedmetadata", seekSavedTime);
   audio.addEventListener("playing", function () {
     playbackStarted = true;
+    updateButtons();
   });
+  audio.addEventListener("pause", updateButtons);
   // Native looping is primary; explicitly restart if a browser reports an end.
   audio.addEventListener("ended", restartLoop);
 
@@ -218,6 +228,7 @@
   });
 
   audio.addEventListener("error", function () {
+    updateButtons();
     console.warn("JPC original background audio failed to load.", audio.currentSrc, audio.error);
   });
 
@@ -236,7 +247,7 @@
       return;
     }
 
-    play();
+    play(true);
   }
 
   document.addEventListener("pointerdown", recoverPlayback, {
