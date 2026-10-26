@@ -1,25 +1,14 @@
 # ArtStation portfolio sync
 
-The public `jamescardona` ArtStation portfolio is checked every six hours by
-`.github/workflows/sync-artstation.yml`. GitHub schedules can run late.
+A ChatGPT automation named **Sync ArtStation portfolio** checks the public `jamescardona` portfolio every six hours and publishes changed content to `main`. GitHub Pages then deploys the site. GitHub-hosted runners receive HTTP 403 from ArtStation, so fetching runs in the ChatGPT task environment instead.
 
-To refresh immediately: open the repository's **Actions** tab, select
-**Sync ArtStation portfolio**, then **Run workflow** on `main`.
+For an immediate refresh, ask ChatGPT to sync the portfolio, or locally run:
 
-The workflow runs `python scripts/sync-artstation.py`, then
-`node scripts/build-projects.cjs`. It updates `data/artstation-projects.json`,
-`archviz.html`, and native `project-*.html` pages, commits changed content,
-and deploys GitHub Pages explicitly (bot commits do not trigger a Pages build).
-Images remain hosted on ArtStation. Supported YouTube, Vimeo, and Sketchfab
-players are embedded within native project pages.
+```
+python scripts/sync-artstation.py
+node scripts/build-projects.cjs
+```
 
-A complete, validated feed is required before replacing the last good snapshot.
-Network errors, empty feeds, incomplete projects, or unsupported embedded media
-fail the workflow without publishing partial content. Check Actions for errors.
-ArtStation's public JSON endpoints may change or block automated requests.
+The importer updates `data/artstation-projects.json` only after fetching and validating the complete portfolio. The builder updates the gallery in `archviz.html` and native `project-*.html` pages. Commit and push changed files to publish. Images stay hosted on ArtStation; supported YouTube, Vimeo, and Sketchfab players appear inside native project pages.
 
-Existing project filenames and category overrides are retained in the snapshot.
-New projects default to Architectural Visualization (Jordans to Character Assets);
-set a project's `category` in the JSON to override it. Removed projects disappear
-from the gallery; their old HTML files are retained so old links continue to work.
-No standalone Crowley video is restored at the bottom of the gallery.
+Network errors, empty feeds, incomplete projects, or unsupported embedded media preserve the last good published content. ArtStation public endpoints may change. Existing project filenames and category overrides are retained in the snapshot. New projects default to Architectural Visualization (Jordans to Character Assets); set `category` in the JSON to override. Removed projects disappear from the gallery; old HTML pages are retained for existing links. The standalone Crowley reel at the bottom of the gallery must remain removed.
