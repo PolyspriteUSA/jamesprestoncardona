@@ -1,862 +1,712 @@
 [
   {
-    "thumbnail": "https://cdnb.artstation.com/p/assets/covers/images/101/030/383/medium/james-preston-cardona-james-preston-cardona-jordanscu.webp?1784837727",
+    "id": "q00lWN",
+    "filename": "project-crowley-isd-indoor-track.html",
+    "category": "Architectural Visualization",
+    "title": "Crowley ISD Indoor Track",
+    "url": "https://jamescardona.artstation.com/projects/q00lWN",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/103/551/200/medium/james-preston-cardona-s013-aerialfullsite-4k.jpg?1793024116",
+    "description": "This World-class facility is designed to support CISD students’ development. It is home to a rare hydraulic track (just 17 others in the United States) and provides a flexible space for multiple events. The Complex will feature a 200m indoor track and 400m outdoor track, full field events, and seating for 5,000 outdoor and 3,500 indoor spectators.\n\nMy part in this project was lead character design. I decided to use the metahumans as the main character generator. It included over 400 custom characters spanning track and field, volleyball, basketball, special events, and a band performance. View more of my work at https://vlkarchitects.com/",
+    "images": [
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/551/200/large/james-preston-cardona-s013-aerialfullsite-4k.jpg?1793024116",
+        "caption": "Aerial Full Site",
+        "alt": "Aerial Full Site"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/551/218/large/james-preston-cardona-a018-mainspaceb.jpg?1793024137",
+        "caption": "Main space with volleyball courts",
+        "alt": "Main space with volleyball courts"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/551/234/large/james-preston-cardona-a020-mainspaced.jpg?1793024166",
+        "caption": "Main space with hydraulic track",
+        "alt": "Main space with hydraulic track"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/551/264/large/james-preston-cardona-a603-studententryext.jpg?1793024199",
+        "caption": "Student Entry",
+        "alt": "Student Entry"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/551/281/large/james-preston-cardona-s003-entrysw.jpg?1793024231",
+        "caption": "Southwest Entry",
+        "alt": "Southwest Entry"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/551/301/large/james-preston-cardona-s015-entrylobby.jpg?1793024271",
+        "caption": "Lobby Entry",
+        "alt": "Lobby Entry"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/551/309/large/james-preston-cardona-s006-fromentryplaza.jpg?1793024292",
+        "caption": "Entry From Plaza",
+        "alt": "Entry From Plaza"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/551/316/large/james-preston-cardona-a007-patio.jpg?1793024318",
+        "caption": "Patio",
+        "alt": "Patio"
+      }
+    ],
+    "media": [
+      {
+        "src": "https://www.youtube-nocookie.com/embed/F6lsPfbMkOE?feature=oembed&rel=0"
+      }
+    ]
+  },
+  {
+    "id": "Y8awy3",
+    "filename": "project-game-ready-jordans.html",
+    "category": "Character Assets",
     "title": "Game Ready Jordans",
     "url": "https://jamescardona.artstation.com/projects/Y8awy3",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/covers/images/101/030/383/medium/james-preston-cardona-james-preston-cardona-jordanscu.jpg?1784837727",
     "description": "This is an example of Blender baking high resolution details into a low poly object. Starting from a model with 5.5M triangles, it was baked down to 1668 triangles to the Unreal Engine Metahuman parametric wardrobe.",
     "images": [
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/101/030/354/large/james-preston-cardona-jordanscu.webp?1784837665",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/101/030/354/medium/james-preston-cardona-jordanscu.webp?1784837665",
-        "url": "https://cdna.artstation.com/p/assets/images/images/101/030/354/large/james-preston-cardona-jordanscu.webp?1784837665"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/101/031/075/large/james-preston-cardona-jordanslp.webp?1784839659",
         "caption": "",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/101/031/075/medium/james-preston-cardona-jordanslp.webp?1784839659",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/101/031/075/large/james-preston-cardona-jordanslp.webp?1784839659"
+        "alt": ""
       },
       {
-        "alt": "Jordans Low Poly Wireframe",
+        "url": "https://cdna.artstation.com/p/assets/images/images/101/028/788/large/james-preston-cardona-jordanslpwireframe.webp?1784832792",
         "caption": "Jordans Low Poly Wireframe",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/101/028/788/medium/james-preston-cardona-jordanslpwireframe.webp?1784832792",
-        "url": "https://cdna.artstation.com/p/assets/images/images/101/028/788/large/james-preston-cardona-jordanslpwireframe.webp?1784832792"
+        "alt": "Jordans Low Poly Wireframe"
       },
       {
-        "alt": "Jordans High Poly",
+        "url": "https://cdna.artstation.com/p/assets/images/images/101/028/784/large/james-preston-cardona-jordanshp.webp?1784832786",
         "caption": "Jordans High Poly",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/101/028/784/medium/james-preston-cardona-jordanshp.webp?1784832786",
-        "url": "https://cdna.artstation.com/p/assets/images/images/101/028/784/large/james-preston-cardona-jordanshp.webp?1784832786"
+        "alt": "Jordans High Poly"
       },
       {
-        "alt": "Jordans High Poly Wireframe",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/101/028/785/large/james-preston-cardona-jordanshpwireframe.webp?1784832788",
         "caption": "Jordans High Poly Wireframe",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/101/028/785/medium/james-preston-cardona-jordanshpwireframe.webp?1784832788",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/101/028/785/large/james-preston-cardona-jordanshpwireframe.webp?1784832788"
+        "alt": "Jordans High Poly Wireframe"
       }
     ],
-    "media": [],
-    "sections": [
-      "Game Ready Jordans\n\nThis is an example of Blender baking high resolution details into a low poly object. Starting from a model with 5.5M triangles, it was baked down to 1668 triangles to the Unreal Engine Metahuman parametric wardrobe.",
-      "",
-      "",
-      "",
-      "Jordans Low Poly Wireframe",
-      "Jordans High Poly",
-      "Jordans High Poly Wireframe"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/287/320/medium/james-preston-cardona-a020-exteriorside.jpg?1742831993",
+    "id": "mA1BOv",
+    "filename": "project-718-north.html",
+    "category": "Architectural Visualization",
     "title": "718 North",
     "url": "https://jamescardona.artstation.com/projects/mA1BOv",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/287/320/medium/james-preston-cardona-a020-exteriorside.jpg?1742831993",
     "description": "This is an apartment complex in Mansfield, Texas. I set lighting and vegetation in Unreal engine. Rendered path traced and touched up in photoshop. All work is property of VLK. Please visit VLK Architects for more information.",
     "images": [
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/320/large/james-preston-cardona-a020-exteriorside.jpg?1742831993",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/320/4k/james-preston-cardona-a020-exteriorside.jpg?1742831993",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/320/large/james-preston-cardona-a020-exteriorside.jpg?1742831993"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/286/large/james-preston-cardona-a010-signage.jpg?1742831968",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/286/4k/james-preston-cardona-a010-signage.jpg?1742831968",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/286/large/james-preston-cardona-a010-signage.jpg?1742831968"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/292/large/james-preston-cardona-a011-signage2.jpg?1742831975",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/292/4k/james-preston-cardona-a011-signage2.jpg?1742831975",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/292/large/james-preston-cardona-a011-signage2.jpg?1742831975"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/302/large/james-preston-cardona-a012-signage3.jpg?1742831982",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/302/4k/james-preston-cardona-a012-signage3.jpg?1742831982",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/302/large/james-preston-cardona-a012-signage3.jpg?1742831982"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/330/large/james-preston-cardona-a021-exteriorside2.jpg?1742832009",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/330/4k/james-preston-cardona-a021-exteriorside2.jpg?1742832009",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/330/large/james-preston-cardona-a021-exteriorside2.jpg?1742832009"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/338/large/james-preston-cardona-a022-exteriorside3.jpg?1742832019",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/338/4k/james-preston-cardona-a022-exteriorside3.jpg?1742832019",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/338/large/james-preston-cardona-a022-exteriorside3.jpg?1742832019"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/287/345/large/james-preston-cardona-a023-exteriorside4.jpg?1742832027",
         "caption": "",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/287/345/4k/james-preston-cardona-a023-exteriorside4.jpg?1742832027",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/287/345/large/james-preston-cardona-a023-exteriorside4.jpg?1742832027"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/287/353/large/james-preston-cardona-a030-arial.jpg?1742832045",
         "caption": "",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/287/353/4k/james-preston-cardona-a030-arial.jpg?1742832045",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/287/353/large/james-preston-cardona-a030-arial.jpg?1742832045"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/362/large/james-preston-cardona-a040-balcony.jpg?1742832056",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/287/362/4k/james-preston-cardona-a040-balcony.jpg?1742832056",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/287/362/large/james-preston-cardona-a040-balcony.jpg?1742832056"
+        "alt": ""
       },
       {
-        "alt": "",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/287/377/large/james-preston-cardona-a050-courtyard.jpg?1742832063",
         "caption": "",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/287/377/4k/james-preston-cardona-a050-courtyard.jpg?1742832063",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/287/377/large/james-preston-cardona-a050-courtyard.jpg?1742832063"
+        "alt": ""
       }
     ],
-    "media": [],
-    "sections": [
-      "718 North\n\nThis is an apartment complex in Mansfield, Texas. I set lighting and vegetation in Unreal engine. Rendered path traced and touched up in photoshop. All work is property of VLK. Please visit VLK Architects for more information.",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/068/248/medium/james-preston-cardona-s001-frontentry.jpg?1742316216",
+    "id": "bgzYJr",
+    "filename": "project-crocket-middle-school-pecos-texas.html",
+    "category": "Architectural Visualization",
     "title": "Crocket Middle School, Pecos, Texas",
     "url": "https://jamescardona.artstation.com/projects/bgzYJr",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/068/248/medium/james-preston-cardona-s001-frontentry.jpg?1742316216",
     "description": "Crocket Middle School, Pecos, Texas.",
     "images": [
       {
-        "alt": "Entry",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/068/248/large/james-preston-cardona-s001-frontentry.jpg?1742316216",
         "caption": "Entry",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/068/248/4k/james-preston-cardona-s001-frontentry.jpg?1742316216",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/068/248/large/james-preston-cardona-s001-frontentry.jpg?1742316216"
+        "alt": "Entry"
       },
       {
-        "alt": "Library",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/068/251/large/james-preston-cardona-s201-librarywide.jpg?1742316224",
         "caption": "Library",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/068/251/4k/james-preston-cardona-s201-librarywide.jpg?1742316224",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/068/251/large/james-preston-cardona-s201-librarywide.jpg?1742316224"
+        "alt": "Library"
       },
       {
-        "alt": "Library Alt",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/068/261/large/james-preston-cardona-s203-libraryentry.jpg?1742316232",
         "caption": "Library Alt",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/068/261/4k/james-preston-cardona-s203-libraryentry.jpg?1742316232",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/068/261/large/james-preston-cardona-s203-libraryentry.jpg?1742316232"
+        "alt": "Library Alt"
       },
       {
-        "alt": "Learning Stairs",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/068/267/large/james-preston-cardona-s303-learningstair.jpg?1742316241",
         "caption": "Learning Stairs",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/068/267/4k/james-preston-cardona-s303-learningstair.jpg?1742316241",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/068/267/large/james-preston-cardona-s303-learningstair.jpg?1742316241"
+        "alt": "Learning Stairs"
       },
       {
-        "alt": "Gym Entraance",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/068/274/large/james-preston-cardona-s601-athleticsentry.jpg?1742316249",
         "caption": "Gym Entraance",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/068/274/4k/james-preston-cardona-s601-athleticsentry.jpg?1742316249",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/068/274/large/james-preston-cardona-s601-athleticsentry.jpg?1742316249"
+        "alt": "Gym Entraance"
       },
       {
-        "alt": "Courtyard",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/068/282/large/james-preston-cardona-s801-exteriorpatio.jpg?1742316262",
         "caption": "Courtyard",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/068/282/4k/james-preston-cardona-s801-exteriorpatio.jpg?1742316262",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/068/282/large/james-preston-cardona-s801-exteriorpatio.jpg?1742316262"
+        "alt": "Courtyard"
       }
     ],
-    "media": [],
-    "sections": [
-      "Crocket Middle School, Pecos, Texas\n\nCrocket Middle School, Pecos, Texas.",
-      "Entry",
-      "Library",
-      "Library Alt",
-      "Learning Stairs",
-      "Gym Entraance",
-      "Courtyard"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/067/884/medium/james-preston-cardona-lhhs2-dronematchcomp.jpg?1742315751",
+    "id": "Nq8Ba1",
+    "filename": "project-liberty-hill-high-school.html",
+    "category": "Architectural Visualization",
     "title": "Liberty Hill High School",
     "url": "https://jamescardona.artstation.com/projects/Nq8Ba1",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/067/884/medium/james-preston-cardona-lhhs2-dronematchcomp.jpg?1742315751",
     "description": "This was the first time I used Unreal Engine to composite over video footage. There was quite a bit of learning to do for this project. I used 3DS MAX and Syntheyes to get the footage aligned with the model. Then I imported that to Unreal Engine for a general composite. The final render was exported and composited in After Effects.",
     "images": [
       {
-        "alt": "Composite Over Video",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/067/884/large/james-preston-cardona-lhhs2-dronematchcomp.jpg?1742315751",
         "caption": "Composite Over Video",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/067/884/medium/james-preston-cardona-lhhs2-dronematchcomp.jpg?1742315751",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/067/884/large/james-preston-cardona-lhhs2-dronematchcomp.jpg?1742315751"
+        "alt": "Composite Over Video"
       },
       {
-        "alt": "Entrance",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/468/large/james-preston-cardona-e100-frontentry.jpg?1742313695",
         "caption": "Entrance",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/468/4k/james-preston-cardona-e100-frontentry.jpg?1742313695",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/468/large/james-preston-cardona-e100-frontentry.jpg?1742313695"
+        "alt": "Entrance"
       },
       {
-        "alt": "Student Entry",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/476/large/james-preston-cardona-e105-5-studententry-long.jpg?1742313703",
         "caption": "Student Entry",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/476/4k/james-preston-cardona-e105-5-studententry-long.jpg?1742313703",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/476/large/james-preston-cardona-e105-5-studententry-long.jpg?1742313703"
+        "alt": "Student Entry"
       },
       {
-        "alt": "Student Entry",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/480/large/james-preston-cardona-e105-studententry.jpg?1742313710",
         "caption": "Student Entry",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/480/4k/james-preston-cardona-e105-studententry.jpg?1742313710",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/480/large/james-preston-cardona-e105-studententry.jpg?1742313710"
+        "alt": "Student Entry"
       },
       {
-        "alt": "Art Displays",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/485/large/james-preston-cardona-e202-artdisplays.jpg?1742313718",
         "caption": "Art Displays",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/485/4k/james-preston-cardona-e202-artdisplays.jpg?1742313718",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/485/large/james-preston-cardona-e202-artdisplays.jpg?1742313718"
+        "alt": "Art Displays"
       },
       {
-        "alt": "Performance Hall",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/495/large/james-preston-cardona-e203-performancehallstage.jpg?1742313724",
         "caption": "Performance Hall",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/495/4k/james-preston-cardona-e203-performancehallstage.jpg?1742313724",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/495/large/james-preston-cardona-e203-performancehallstage.jpg?1742313724"
+        "alt": "Performance Hall"
       },
       {
-        "alt": "Cafeteria to Field",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/498/large/james-preston-cardona-e204-cafeteriatofield.jpg?1742313732",
         "caption": "Cafeteria to Field",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/498/4k/james-preston-cardona-e204-cafeteriatofield.jpg?1742313732",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/498/large/james-preston-cardona-e204-cafeteriatofield.jpg?1742313732"
+        "alt": "Cafeteria to Field"
       },
       {
-        "alt": "Library",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/505/large/james-preston-cardona-e205-library.jpg?1742313739",
         "caption": "Library",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/505/4k/james-preston-cardona-e205-library.jpg?1742313739",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/505/large/james-preston-cardona-e205-library.jpg?1742313739"
+        "alt": "Library"
       },
       {
-        "alt": "Cafeteria",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/512/large/james-preston-cardona-e206-cafeteria.jpg?1742313749",
         "caption": "Cafeteria",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/512/4k/james-preston-cardona-e206-cafeteria.jpg?1742313749",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/512/large/james-preston-cardona-e206-cafeteria.jpg?1742313749"
+        "alt": "Cafeteria"
       },
       {
-        "alt": "Competition Gym",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/516/large/james-preston-cardona-e208-compgym.jpg?1742313756",
         "caption": "Competition Gym",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/516/4k/james-preston-cardona-e208-compgym.jpg?1742313756",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/516/large/james-preston-cardona-e208-compgym.jpg?1742313756"
+        "alt": "Competition Gym"
       },
       {
-        "alt": "Fine Arts Front",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/522/large/james-preston-cardona-e300-fineartsfront.jpg?1742313764",
         "caption": "Fine Arts Front",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/522/4k/james-preston-cardona-e300-fineartsfront.jpg?1742313764",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/522/large/james-preston-cardona-e300-fineartsfront.jpg?1742313764"
+        "alt": "Fine Arts Front"
       }
     ],
-    "media": [],
-    "sections": [
-      "Liberty Hill High School\n\nThis was the first time I used Unreal Engine to composite over video footage. There was quite a bit of learning to do for this project. I used 3DS MAX and Syntheyes to get the footage aligned with the model. Then I imported that to Unreal Engine for a general composite. The final render was exported and composited in After Effects.",
-      "Composite Over Video",
-      "Entrance",
-      "Student Entry",
-      "Student Entry",
-      "Art Displays",
-      "Performance Hall",
-      "Cafeteria to Field",
-      "Library",
-      "Cafeteria",
-      "Competition Gym",
-      "Fine Arts Front"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/066/061/medium/james-preston-cardona-c001-aerial.jpg?1742313195",
+    "id": "K3LBRW",
+    "filename": "project-gus-almquist-middle-school.html",
+    "category": "Architectural Visualization",
     "title": "Gus Almquist Middle School",
     "url": "https://jamescardona.artstation.com/projects/K3LBRW",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/066/061/medium/james-preston-cardona-c001-aerial.jpg?1742313195",
     "description": "This is Gus Almquist Middle School in Hutto, Texas. I enjoyed working on setting all the props for this render. A lot of people and lights went into this project. It was rendered in Twinmotion.",
     "images": [
       {
-        "alt": "Aerial",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/061/large/james-preston-cardona-c001-aerial.jpg?1742313195",
         "caption": "Aerial",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/061/4k/james-preston-cardona-c001-aerial.jpg?1742313195",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/061/large/james-preston-cardona-c001-aerial.jpg?1742313195"
+        "alt": "Aerial"
       },
       {
-        "alt": "Courtyard",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/075/large/james-preston-cardona-c002-ctyd-a.jpg?1742313203",
         "caption": "Courtyard",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/075/4k/james-preston-cardona-c002-ctyd-a.jpg?1742313203",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/075/large/james-preston-cardona-c002-ctyd-a.jpg?1742313203"
+        "alt": "Courtyard"
       },
       {
-        "alt": "Entrance",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/093/large/james-preston-cardona-c003-frontdoor.jpg?1742313217",
         "caption": "Entrance",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/093/4k/james-preston-cardona-c003-frontdoor.jpg?1742313217",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/093/large/james-preston-cardona-c003-frontdoor.jpg?1742313217"
+        "alt": "Entrance"
       },
       {
-        "alt": "Entrance Alt",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/120/large/james-preston-cardona-c003-frontdoor-b.jpg?1742313230",
         "caption": "Entrance Alt",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/120/4k/james-preston-cardona-c003-frontdoor-b.jpg?1742313230",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/120/large/james-preston-cardona-c003-frontdoor-b.jpg?1742313230"
+        "alt": "Entrance Alt"
       },
       {
-        "alt": "Courtyard Outlook",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/136/large/james-preston-cardona-c004-ctyd-b.jpg?1742313245",
         "caption": "Courtyard Outlook",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/136/4k/james-preston-cardona-c004-ctyd-b.jpg?1742313245",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/136/large/james-preston-cardona-c004-ctyd-b.jpg?1742313245"
+        "alt": "Courtyard Outlook"
       },
       {
-        "alt": "Entrance Close Up",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/147/large/james-preston-cardona-c005-frontdoor-day.jpg?1742313257",
         "caption": "Entrance Close Up",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/147/4k/james-preston-cardona-c005-frontdoor-day.jpg?1742313257",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/147/large/james-preston-cardona-c005-frontdoor-day.jpg?1742313257"
+        "alt": "Entrance Close Up"
       },
       {
-        "alt": "Reception\n",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/153/large/james-preston-cardona-c101-reception.jpg?1742313270",
         "caption": "Reception",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/153/4k/james-preston-cardona-c101-reception.jpg?1742313270",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/153/large/james-preston-cardona-c101-reception.jpg?1742313270"
+        "alt": "Reception"
       },
       {
-        "alt": "Library",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/163/large/james-preston-cardona-c104-cafeteria.jpg?1742313276",
         "caption": "Library",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/163/4k/james-preston-cardona-c104-cafeteria.jpg?1742313276",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/163/large/james-preston-cardona-c104-cafeteria.jpg?1742313276"
+        "alt": "Library"
       },
       {
-        "alt": "Gaming\n",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/167/large/james-preston-cardona-c105-gaming.jpg?1742313286",
         "caption": "Gaming",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/167/4k/james-preston-cardona-c105-gaming.jpg?1742313286",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/167/large/james-preston-cardona-c105-gaming.jpg?1742313286"
+        "alt": "Gaming"
       },
       {
-        "alt": "Library",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/174/large/james-preston-cardona-c106-library.jpg?1742313292",
         "caption": "Library",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/174/4k/james-preston-cardona-c106-library.jpg?1742313292",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/174/large/james-preston-cardona-c106-library.jpg?1742313292"
+        "alt": "Library"
       },
       {
-        "alt": "Art",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/182/large/james-preston-cardona-c107-art.jpg?1742313299",
         "caption": "Art",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/182/4k/james-preston-cardona-c107-art.jpg?1742313299",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/182/large/james-preston-cardona-c107-art.jpg?1742313299"
+        "alt": "Art"
       },
       {
-        "alt": "Collaboration Space",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/188/large/james-preston-cardona-c108-collabb.jpg?1742313306",
         "caption": "Collaboration Space",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/188/4k/james-preston-cardona-c108-collabb.jpg?1742313306",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/188/large/james-preston-cardona-c108-collabb.jpg?1742313306"
+        "alt": "Collaboration Space"
       },
       {
-        "alt": "Collaboration Space",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/197/large/james-preston-cardona-c109-collaba.jpg?1742313313",
         "caption": "Collaboration Space",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/066/197/4k/james-preston-cardona-c109-collaba.jpg?1742313313",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/066/197/large/james-preston-cardona-c109-collaba.jpg?1742313313"
+        "alt": "Collaboration Space"
       },
       {
-        "alt": "Art Alt",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/204/large/james-preston-cardona-c110-artb.jpg?1742313325",
         "caption": "Art Alt",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/066/204/4k/james-preston-cardona-c110-artb.jpg?1742313325",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/066/204/large/james-preston-cardona-c110-artb.jpg?1742313325"
+        "alt": "Art Alt"
       }
     ],
-    "media": [],
-    "sections": [
-      "Gus Almquist Middle School\n\nThis is Gus Almquist Middle School in Hutto, Texas. I enjoyed working on setting all the props for this render. A lot of people and lights went into this project. It was rendered in Twinmotion.",
-      "Aerial",
-      "Courtyard",
-      "Entrance",
-      "Entrance Alt",
-      "Courtyard Outlook",
-      "Entrance Close Up",
-      "Reception",
-      "Library",
-      "Gaming",
-      "Library",
-      "Art",
-      "Collaboration Space",
-      "Collaboration Space",
-      "Art Alt"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/929/medium/james-preston-cardona-b001.jpg?1742313060",
+    "id": "dy3Ryx",
+    "filename": "project-eagle-stadium-pecos-texas.html",
+    "category": "Architectural Visualization",
     "title": "Eagle Stadium Pecos, Texas",
     "url": "https://jamescardona.artstation.com/projects/dy3Ryx",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/929/medium/james-preston-cardona-b001.jpg?1742313060",
     "description": "",
     "images": [
       {
-        "alt": "Stadium Aerial",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/929/large/james-preston-cardona-b001.jpg?1742313060",
         "caption": "Stadium Aerial",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/929/4k/james-preston-cardona-b001.jpg?1742313060",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/929/large/james-preston-cardona-b001.jpg?1742313060"
+        "alt": "Stadium Aerial"
       },
       {
-        "alt": "50 yard line",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/935/large/james-preston-cardona-c001.jpg?1742313065",
         "caption": "50 yard line",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/935/4k/james-preston-cardona-c001.jpg?1742313065",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/935/large/james-preston-cardona-c001.jpg?1742313065"
+        "alt": "50 yard line"
       },
       {
-        "alt": "Walkway",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/945/large/james-preston-cardona-c002.jpg?1742313072",
         "caption": "Walkway",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/945/4k/james-preston-cardona-c002.jpg?1742313072",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/945/large/james-preston-cardona-c002.jpg?1742313072"
+        "alt": "Walkway"
       },
       {
-        "alt": "Pressbox",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/955/large/james-preston-cardona-c101.jpg?1742313080",
         "caption": "Pressbox",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/955/4k/james-preston-cardona-c101.jpg?1742313080",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/955/large/james-preston-cardona-c101.jpg?1742313080"
+        "alt": "Pressbox"
       }
     ],
-    "media": [],
-    "sections": [
-      "Eagle Stadium Pecos, Texas",
-      "Stadium Aerial",
-      "50 yard line",
-      "Walkway",
-      "Pressbox"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/695/medium/james-preston-cardona-c003-entrydusk.jpg?1742312750",
+    "id": "8BoLBm",
+    "filename": "project-pecos-cte.html",
+    "category": "Architectural Visualization",
     "title": "Pecos CTE",
     "url": "https://jamescardona.artstation.com/projects/8BoLBm",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/695/medium/james-preston-cardona-c003-entrydusk.jpg?1742312750",
     "description": "Pecos High School CTE, Pecos, Texas. I enjoyed working on the many Pecos projects. Here I set the lighting, the foliage, people, materials, and created custom assets. Rendered in Twinmotion.",
     "images": [
       {
-        "alt": "Entrance",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/695/large/james-preston-cardona-c003-entrydusk.jpg?1742312750",
         "caption": "Entrance",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/695/4k/james-preston-cardona-c003-entrydusk.jpg?1742312750",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/695/large/james-preston-cardona-c003-entrydusk.jpg?1742312750"
+        "alt": "Entrance"
       },
       {
-        "alt": "Walkway",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/710/large/james-preston-cardona-c009-studentplaza.jpg?1742312767",
         "caption": "Walkway",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/710/4k/james-preston-cardona-c009-studentplaza.jpg?1742312767",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/710/large/james-preston-cardona-c009-studentplaza.jpg?1742312767"
+        "alt": "Walkway"
       },
       {
-        "alt": "Shop Exterior",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/705/large/james-preston-cardona-c008-shopalley.jpg?1742312757",
         "caption": "Shop Exterior",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/705/4k/james-preston-cardona-c008-shopalley.jpg?1742312757",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/705/large/james-preston-cardona-c008-shopalley.jpg?1742312757"
+        "alt": "Shop Exterior"
       },
       {
-        "alt": "Cosmetology",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/721/large/james-preston-cardona-c103-cosmetology.jpg?1742312775",
         "caption": "Cosmetology",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/721/4k/james-preston-cardona-c103-cosmetology.jpg?1742312775",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/721/large/james-preston-cardona-c103-cosmetology.jpg?1742312775"
+        "alt": "Cosmetology"
       },
       {
-        "alt": "ESports / Game Design",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/728/large/james-preston-cardona-c106-gaminglab.jpg?1742312786",
         "caption": "ESports / Game Design",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/728/4k/james-preston-cardona-c106-gaminglab.jpg?1742312786",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/728/large/james-preston-cardona-c106-gaminglab.jpg?1742312786"
+        "alt": "ESports / Game Design"
       },
       {
-        "alt": "Robotics",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/733/large/james-preston-cardona-c109-robotics.jpg?1742312794",
         "caption": "Robotics",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/733/4k/james-preston-cardona-c109-robotics.jpg?1742312794",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/733/large/james-preston-cardona-c109-robotics.jpg?1742312794"
+        "alt": "Robotics"
       },
       {
-        "alt": "Collaboration Space",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/737/large/james-preston-cardona-c113-exchange-208.jpg?1742312801",
         "caption": "Collaboration Space",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/737/4k/james-preston-cardona-c113-exchange-208.jpg?1742312801",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/737/large/james-preston-cardona-c113-exchange-208.jpg?1742312801"
+        "alt": "Collaboration Space"
       },
       {
-        "alt": "Bistro",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/744/large/james-preston-cardona-c114-bistro.jpg?1742312809",
         "caption": "Bistro",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/744/4k/james-preston-cardona-c114-bistro.jpg?1742312809",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/744/large/james-preston-cardona-c114-bistro.jpg?1742312809"
+        "alt": "Bistro"
       },
       {
-        "alt": "Football Field Overlook ",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/749/large/james-preston-cardona-c116-bistrobalcony.jpg?1742312817",
         "caption": "Football Field Overlook",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/749/4k/james-preston-cardona-c116-bistrobalcony.jpg?1742312817",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/749/large/james-preston-cardona-c116-bistrobalcony.jpg?1742312817"
+        "alt": "Football Field Overlook"
       }
     ],
-    "media": [],
-    "sections": [
-      "Pecos CTE\n\nPecos High School CTE, Pecos, Texas. I enjoyed working on the many Pecos projects. Here I set the lighting, the foliage, people, materials, and created custom assets. Rendered in Twinmotion.",
-      "Entrance",
-      "Walkway",
-      "Shop Exterior",
-      "Cosmetology",
-      "ESports / Game Design",
-      "Robotics",
-      "Collaboration Space",
-      "Bistro",
-      "Football Field Overlook"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/509/medium/james-preston-cardona-c001-swcloseup.jpg?1742312525",
+    "id": "V2k4yn",
+    "filename": "project-patrick-genesis.html",
+    "category": "Architectural Visualization",
     "title": "Patrick Genesis",
     "url": "https://jamescardona.artstation.com/projects/V2k4yn",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/509/medium/james-preston-cardona-c001-swcloseup.jpg?1742312525",
     "description": "Patrick Genesis rendered in 3DS MAX and VRay.",
     "images": [
       {
-        "alt": "Front",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/509/large/james-preston-cardona-c001-swcloseup.jpg?1742312525",
         "caption": "Front",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/509/4k/james-preston-cardona-c001-swcloseup.jpg?1742312525",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/509/large/james-preston-cardona-c001-swcloseup.jpg?1742312525"
+        "alt": "Front"
       },
       {
-        "alt": "Front from street",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/512/large/james-preston-cardona-c004-sefromstreet.jpg?1742312532",
         "caption": "Front from street",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/512/4k/james-preston-cardona-c004-sefromstreet.jpg?1742312532",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/512/large/james-preston-cardona-c004-sefromstreet.jpg?1742312532"
+        "alt": "Front from street"
       }
     ],
-    "media": [],
-    "sections": [
-      "Patrick Genesis\n\nPatrick Genesis rendered in 3DS MAX and VRay.",
-      "Front",
-      "Front from street"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/299/medium/james-preston-cardona-c001-cte-front-final-newlogos.jpg?1742312227",
+    "id": "nJ8LEE",
+    "filename": "project-brazosport-high-school-cte.html",
+    "category": "Architectural Visualization",
     "title": "Brazosport High School CTE",
     "url": "https://jamescardona.artstation.com/projects/nJ8LEE",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/086/065/299/medium/james-preston-cardona-c001-cte-front-final-newlogos.jpg?1742312227",
     "description": "",
     "images": [
       {
-        "alt": "Entrance",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/299/large/james-preston-cardona-c001-cte-front-final-newlogos.jpg?1742312227",
         "caption": "Entrance",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/299/4k/james-preston-cardona-c001-cte-front-final-newlogos.jpg?1742312227",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/299/large/james-preston-cardona-c001-cte-front-final-newlogos.jpg?1742312227"
+        "alt": "Entrance"
       },
       {
-        "alt": "Grooming / Floral",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/305/large/james-preston-cardona-c002-floral-final.jpg?1742312234",
         "caption": "Grooming / Floral",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/305/4k/james-preston-cardona-c002-floral-final.jpg?1742312234",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/305/large/james-preston-cardona-c002-floral-final.jpg?1742312234"
+        "alt": "Grooming / Floral"
       },
       {
-        "alt": "Multimedia",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/311/large/james-preston-cardona-c006-artclass-final.jpg?1742312241",
         "caption": "Multimedia",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/311/4k/james-preston-cardona-c006-artclass-final.jpg?1742312241",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/311/large/james-preston-cardona-c006-artclass-final.jpg?1742312241"
+        "alt": "Multimedia"
       },
       {
-        "alt": "Collaboration Space",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/316/large/james-preston-cardona-c009-industrialcollab-final.jpg?1742312248",
         "caption": "Collaboration Space",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/316/4k/james-preston-cardona-c009-industrialcollab-final.jpg?1742312248",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/316/large/james-preston-cardona-c009-industrialcollab-final.jpg?1742312248"
+        "alt": "Collaboration Space"
       },
       {
-        "alt": "EMT ",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/324/large/james-preston-cardona-c012-healthlab-final.jpg?1742312254",
         "caption": "EMT",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/324/4k/james-preston-cardona-c012-healthlab-final.jpg?1742312254",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/324/large/james-preston-cardona-c012-healthlab-final.jpg?1742312254"
+        "alt": "EMT"
       },
       {
-        "alt": "Shop Exterior",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/333/large/james-preston-cardona-c013-shopexterior-final.jpg?1742312261",
         "caption": "Shop Exterior",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/333/4k/james-preston-cardona-c013-shopexterior-final.jpg?1742312261",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/333/large/james-preston-cardona-c013-shopexterior-final.jpg?1742312261"
+        "alt": "Shop Exterior"
       },
       {
-        "alt": "Welding Shop",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/340/large/james-preston-cardona-c014-welding-final.jpg?1742312274",
         "caption": "Welding Shop",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/340/4k/james-preston-cardona-c014-welding-final.jpg?1742312274",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/340/large/james-preston-cardona-c014-welding-final.jpg?1742312274"
+        "alt": "Welding Shop"
       },
       {
-        "alt": "Robotics",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/345/large/james-preston-cardona-c015-robotics-final.jpg?1742312281",
         "caption": "Robotics",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/065/345/4k/james-preston-cardona-c015-robotics-final.jpg?1742312281",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/065/345/large/james-preston-cardona-c015-robotics-final.jpg?1742312281"
+        "alt": "Robotics"
       },
       {
-        "alt": "Entryway",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/352/large/james-preston-cardona-c016-2story-final.jpg?1742312288",
         "caption": "Entryway",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/065/352/4k/james-preston-cardona-c016-2story-final.jpg?1742312288",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/065/352/large/james-preston-cardona-c016-2story-final.jpg?1742312288"
+        "alt": "Entryway"
       }
     ],
-    "media": [],
-    "sections": [
-      "Brazosport High School CTE",
-      "Entrance",
-      "Grooming / Floral",
-      "Multimedia",
-      "Collaboration Space",
-      "EMT",
-      "Shop Exterior",
-      "Welding Shop",
-      "Robotics",
-      "Entryway"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/064/422/medium/james-preston-cardona-c002.jpg?1742311122",
+    "id": "1NW31o",
+    "filename": "project-hanks-middle-school.html",
+    "category": "Architectural Visualization",
     "title": "Hanks Middle School",
     "url": "https://jamescardona.artstation.com/projects/1NW31o",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/086/064/422/medium/james-preston-cardona-c002.jpg?1742311122",
     "description": "Hanks Middle School, El Paso, Texas. This was my first render for VLK Architects. It was very important to me because I'm from El Paso and this was very close to where I lived. I felt like my education had finally paid off. I focused on good lighting for this project. This project was done in 3DS MAX and VRay. I also used forest pack for the vegetation and people.",
     "images": [
       {
-        "alt": "Library Exterior",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/422/large/james-preston-cardona-c002.jpg?1742311122",
         "caption": "Library Exterior",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/422/4k/james-preston-cardona-c002.jpg?1742311122",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/422/large/james-preston-cardona-c002.jpg?1742311122"
+        "alt": "Library Exterior"
       },
       {
-        "alt": "Entrance",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/415/large/james-preston-cardona-c001.jpg?1742311111",
         "caption": "Entrance",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/064/415/4k/james-preston-cardona-c001.jpg?1742311111",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/415/large/james-preston-cardona-c001.jpg?1742311111"
+        "alt": "Entrance"
       },
       {
-        "alt": "Entrance from side",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/430/large/james-preston-cardona-c003.jpg?1742311130",
         "caption": "Entrance from side",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/430/4k/james-preston-cardona-c003.jpg?1742311130",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/430/large/james-preston-cardona-c003.jpg?1742311130"
+        "alt": "Entrance from side"
       },
       {
-        "alt": "Behind the Curtain Wall",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/436/large/james-preston-cardona-c004.jpg?1742311138",
         "caption": "Behind the Curtain Wall",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/436/4k/james-preston-cardona-c004.jpg?1742311138",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/436/large/james-preston-cardona-c004.jpg?1742311138"
+        "alt": "Behind the Curtain Wall"
       },
       {
-        "alt": "Entrance Close Up",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/443/large/james-preston-cardona-c006.jpg?1742311146",
         "caption": "Entrance Close Up",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/064/443/4k/james-preston-cardona-c006.jpg?1742311146",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/443/large/james-preston-cardona-c006.jpg?1742311146"
+        "alt": "Entrance Close Up"
       },
       {
-        "alt": "Library",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/454/large/james-preston-cardona-c101-library-looking-in.jpg?1742311157",
         "caption": "Library",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/454/4k/james-preston-cardona-c101-library-looking-in.jpg?1742311157",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/454/large/james-preston-cardona-c101-library-looking-in.jpg?1742311157"
+        "alt": "Library"
       },
       {
-        "alt": "Collaboration Space",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/465/large/james-preston-cardona-c102-library-looking-out.jpg?1742311173",
         "caption": "Collaboration Space",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/064/465/4k/james-preston-cardona-c102-library-looking-out.jpg?1742311173",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/465/large/james-preston-cardona-c102-library-looking-out.jpg?1742311173"
+        "alt": "Collaboration Space"
       },
       {
-        "alt": "Graphics in Hallway",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/472/large/james-preston-cardona-c103-entry-corridor.jpg?1742311184",
         "caption": "Graphics in Hallway",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/472/4k/james-preston-cardona-c103-entry-corridor.jpg?1742311184",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/472/large/james-preston-cardona-c103-entry-corridor.jpg?1742311184"
+        "alt": "Graphics in Hallway"
       },
       {
-        "alt": "Collaboration Space",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/481/large/james-preston-cardona-c104-collab-a.jpg?1742311192",
         "caption": "Collaboration Space",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/064/481/4k/james-preston-cardona-c104-collab-a.jpg?1742311192",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/481/large/james-preston-cardona-c104-collab-a.jpg?1742311192"
+        "alt": "Collaboration Space"
       },
       {
-        "alt": "View from Above",
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/494/large/james-preston-cardona-c106-stem-looking-into-library.jpg?1742311215",
         "caption": "View from Above",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/494/4k/james-preston-cardona-c106-stem-looking-into-library.jpg?1742311215",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/494/large/james-preston-cardona-c106-stem-looking-into-library.jpg?1742311215"
+        "alt": "View from Above"
       },
       {
-        "alt": "Student Hallway",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/487/large/james-preston-cardona-c105-corridor.jpg?1742311206",
         "caption": "Student Hallway",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/086/064/487/4k/james-preston-cardona-c105-corridor.jpg?1742311206",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/086/064/487/large/james-preston-cardona-c105-corridor.jpg?1742311206"
+        "alt": "Student Hallway"
       },
       {
-        "alt": "Collaboration  Space",
-        "caption": "Collaboration Space",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/086/064/500/4k/james-preston-cardona-c107-collab-b.jpg?1742311224",
-        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/500/large/james-preston-cardona-c107-collab-b.jpg?1742311224"
+        "url": "https://cdna.artstation.com/p/assets/images/images/086/064/500/large/james-preston-cardona-c107-collab-b.jpg?1742311224",
+        "caption": "Collaboration  Space",
+        "alt": "Collaboration  Space"
       }
     ],
-    "media": [],
-    "sections": [
-      "Hanks Middle School\n\nHanks Middle School, El Paso, Texas. This was my first render for VLK Architects. It was very important to me because I'm from El Paso and this was very close to where I lived. I felt like my education had finally paid off. I focused on good lighting for this project. This project was done in 3DS MAX and VRay. I also used forest pack for the vegetation and people.",
-      "Library Exterior",
-      "Entrance",
-      "Entrance from side",
-      "Behind the Curtain Wall",
-      "Entrance Close Up",
-      "Library",
-      "Collaboration Space",
-      "Graphics in Hallway",
-      "Collaboration Space",
-      "View from Above",
-      "Student Hallway",
-      "Collaboration Space"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/072/713/552/medium/james-preston-cardona-c109-library-002.jpg?1708019148",
+    "id": "Ev5Oz0",
+    "filename": "project-worthy-fate-high-school.html",
+    "category": "Architectural Visualization",
     "title": "Worthy Fate High School",
     "url": "https://jamescardona.artstation.com/projects/Ev5Oz0",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/072/713/552/medium/james-preston-cardona-c109-library-002.jpg?1708019148",
     "description": "This is the new Worthy Fate High School design. I rendered in Twinmotion with the help of VLK Experience Designers. The model is from VLK Architects. Some assets in the scene were modeled and textured by me. The rest of the assets are from the Twinmotion library.",
     "images": [
       {
-        "alt": "Library",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/552/large/james-preston-cardona-c109-library-002.jpg?1708019148",
         "caption": "Library",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/552/4k/james-preston-cardona-c109-library-002.jpg?1708019148",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/552/large/james-preston-cardona-c109-library-002.jpg?1708019148"
+        "alt": "Library"
       },
       {
-        "alt": "High School Entrance Day",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/678/large/james-preston-cardona-c003.jpg?1708019350",
         "caption": "High School Entrance Day",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/678/4k/james-preston-cardona-c003.jpg?1708019350",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/678/large/james-preston-cardona-c003.jpg?1708019350"
+        "alt": "High School Entrance Day"
       },
       {
-        "alt": "High School Entrance Evening",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/685/large/james-preston-cardona-c004.jpg?1708019361",
         "caption": "High School Entrance Evening",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/685/4k/james-preston-cardona-c004.jpg?1708019361",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/685/large/james-preston-cardona-c004.jpg?1708019361"
+        "alt": "High School Entrance Evening"
       },
       {
-        "alt": "Courtyard",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/691/large/james-preston-cardona-c005.jpg?1708019376",
         "caption": "Courtyard",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/691/4k/james-preston-cardona-c005.jpg?1708019376",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/691/large/james-preston-cardona-c005.jpg?1708019376"
+        "alt": "Courtyard"
       },
       {
-        "alt": "Courtyard Stage",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/701/large/james-preston-cardona-c007.jpg?1708019401",
         "caption": "Courtyard Stage",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/701/4k/james-preston-cardona-c007.jpg?1708019401",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/701/large/james-preston-cardona-c007.jpg?1708019401"
+        "alt": "Courtyard Stage"
       },
       {
-        "alt": "Entrance Balcony",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/707/large/james-preston-cardona-c101.jpg?1708019410",
         "caption": "Entrance Balcony",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/707/4k/james-preston-cardona-c101.jpg?1708019410",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/707/large/james-preston-cardona-c101.jpg?1708019410"
+        "alt": "Entrance Balcony"
       },
       {
-        "alt": "Entryway",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/711/large/james-preston-cardona-c102.jpg?1708019420",
         "caption": "Entryway",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/711/4k/james-preston-cardona-c102.jpg?1708019420",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/711/large/james-preston-cardona-c102.jpg?1708019420"
+        "alt": "Entryway"
       },
       {
-        "alt": "Performance Hall Entry",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/713/large/james-preston-cardona-c103.jpg?1708019428",
         "caption": "Performance Hall Entry",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/713/4k/james-preston-cardona-c103.jpg?1708019428",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/713/large/james-preston-cardona-c103.jpg?1708019428"
+        "alt": "Performance Hall Entry"
       },
       {
-        "alt": "Performance Hall Seating",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/716/large/james-preston-cardona-c104.jpg?1708019436",
         "caption": "Performance Hall Seating",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/716/4k/james-preston-cardona-c104.jpg?1708019436",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/716/large/james-preston-cardona-c104.jpg?1708019436"
+        "alt": "Performance Hall Seating"
       },
       {
-        "alt": "Performance Hall Stage",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/721/large/james-preston-cardona-c105.jpg?1708019447",
         "caption": "Performance Hall Stage",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/072/713/721/4k/james-preston-cardona-c105.jpg?1708019447",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/072/713/721/large/james-preston-cardona-c105.jpg?1708019447"
+        "alt": "Performance Hall Stage"
       },
       {
-        "alt": "Fitness Gym",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/724/large/james-preston-cardona-c106.jpg?1708019457",
         "caption": "Fitness Gym",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/724/4k/james-preston-cardona-c106.jpg?1708019457",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/724/large/james-preston-cardona-c106.jpg?1708019457"
+        "alt": "Fitness Gym"
       },
       {
-        "alt": "Fieldhouse Balcony",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/728/large/james-preston-cardona-c107.jpg?1708019464",
         "caption": "Fieldhouse Balcony",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/728/4k/james-preston-cardona-c107.jpg?1708019464",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/728/large/james-preston-cardona-c107.jpg?1708019464"
+        "alt": "Fieldhouse Balcony"
       },
       {
-        "alt": "Competition Gym",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/734/large/james-preston-cardona-c108.jpg?1708019474",
         "caption": "Competition Gym",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/734/4k/james-preston-cardona-c108.jpg?1708019474",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/734/large/james-preston-cardona-c108.jpg?1708019474"
+        "alt": "Competition Gym"
       },
       {
-        "alt": "Library",
+        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/744/large/james-preston-cardona-c108-library-001.jpg?1708019482",
         "caption": "Library",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/072/713/744/4k/james-preston-cardona-c108-library-001.jpg?1708019482",
-        "url": "https://cdna.artstation.com/p/assets/images/images/072/713/744/large/james-preston-cardona-c108-library-001.jpg?1708019482"
+        "alt": "Library"
       }
     ],
-    "media": [],
-    "sections": [
-      "Worthy Fate High School\n\nThis is the new Worthy Fate High School design. I rendered in Twinmotion with the help of VLK Experience Designers. The model is from VLK Architects. Some assets in the scene were modeled and textured by me. The rest of the assets are from the Twinmotion library.",
-      "Library",
-      "High School Entrance Day",
-      "High School Entrance Evening",
-      "Courtyard",
-      "Courtyard Stage",
-      "Entrance Balcony",
-      "Entryway",
-      "Performance Hall Entry",
-      "Performance Hall Seating",
-      "Performance Hall Stage",
-      "Fitness Gym",
-      "Fieldhouse Balcony",
-      "Competition Gym",
-      "Library"
-    ]
+    "media": []
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/covers/images/067/956/640/medium/james-preston-cardona-james-preston-cardona-denon.jpg?1696619680",
+    "id": "1xY25e",
+    "filename": "project-denon-avr-x3400h.html",
+    "category": "3D Props",
     "title": "Denon AVR-X3400H",
     "url": "https://jamescardona.artstation.com/projects/1xY25e",
+    "thumbnail": "https://cdna.artstation.com/p/assets/covers/images/067/956/640/medium/james-preston-cardona-james-preston-cardona-denon.jpg?1696619680",
     "description": "Denon AVR-X3400H audio amplifier media player head unit.",
     "images": [
       {
-        "alt": "Denon AVR-X3400H",
+        "url": "https://cdnb.artstation.com/p/assets/images/images/067/956/493/large/james-preston-cardona-denon.jpg?1696619447",
         "caption": "Denon AVR-X3400H",
-        "medium": "https://cdnb.artstation.com/p/assets/images/images/067/956/493/medium/james-preston-cardona-denon.jpg?1696619447",
-        "url": "https://cdnb.artstation.com/p/assets/images/images/067/956/493/large/james-preston-cardona-denon.jpg?1696619447"
+        "alt": "Denon AVR-X3400H"
       }
     ],
     "media": [
       {
-        "poster": "",
-        "src": "https://sketchfab.com/models/93c8fd6ec4794bc39dff457cd2a4268b/embed",
-        "tag": "IFRAME",
-        "title": ""
+        "src": "https://sketchfab.com/models/93c8fd6ec4794bc39dff457cd2a4268b/embed"
       }
-    ],
-    "sections": [
-      "Denon AVR-X3400H\n\nDenon AVR-X3400H audio amplifier media player head unit.",
-      "Denon AVR-X3400H",
-      "",
-      "Denon AVR-X3400H"
     ]
   },
   {
-    "thumbnail": "https://cdna.artstation.com/p/assets/model3ds/images/021/466/742/medium/james-cardona-c598911275944efead6caf0ed6c15e66.jpg?1571788584",
+    "id": "dOV1yJ",
+    "filename": "project-vintage-gas-pump-from-the-desert-gas-station-level.html",
+    "category": "3D Props",
     "title": "Vintage Gas Pump from the Desert Gas Station Level",
     "url": "https://jamescardona.artstation.com/projects/dOV1yJ",
+    "thumbnail": "https://cdna.artstation.com/p/assets/model3ds/images/021/466/742/medium/james-cardona-c598911275944efead6caf0ed6c15e66.jpg?1571788584",
     "description": "Created in Maya, textured in photoshop.",
     "images": [
       {
-        "alt": "",
+        "url": "https://cdna.artstation.com/p/assets/images/images/021/467/288/large/james-cardona-gas-pump.jpg?1571790601",
         "caption": "",
-        "medium": "https://cdna.artstation.com/p/assets/images/images/021/467/288/medium/james-cardona-gas-pump.jpg?1571790601",
-        "url": "https://cdna.artstation.com/p/assets/images/images/021/467/288/large/james-cardona-gas-pump.jpg?1571790601"
+        "alt": ""
       }
     ],
     "media": [
       {
-        "poster": "",
-        "src": "https://sketchfab.com/models/07f04ecaf89642dbad604c469e4dada9/embed",
-        "tag": "IFRAME",
-        "title": ""
+        "src": "https://sketchfab.com/models/07f04ecaf89642dbad604c469e4dada9/embed"
       }
-    ],
-    "sections": [
-      "Vintage Gas Pump from the Desert Gas Station Level\n\nCreated in Maya, textured in photoshop.",
-      "Gas Pump",
-      ""
     ]
   }
 ]

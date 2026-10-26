@@ -7,8 +7,8 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\
 const write = (file, content) => fs.writeFileSync(path.join(root, file), content);
 const projects = JSON.parse(read('data/artstation-projects.json'));
 const escape = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const slug = project => 'project-' + project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.html';
-const category = index => index === 0 ? 'Character Assets' : index >= 11 ? '3D Props' : 'Architectural Visualization';
+const slug = project => project.filename || 'project-' + project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.html';
+const category = index => projects[index].category || (index === 0 ? 'Character Assets' : index >= 11 ? '3D Props' : 'Architectural Visualization');
 const image = (project, asset, index, hero = false) => `<figure class="native-project-figure${hero ? ' native-project-hero' : ''}">
   <img src="${escape(asset.url)}" alt="${escape(asset.alt || asset.caption || `${project.title} — view ${index + 1}`)}" ${hero ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
   ${asset.caption ? `<figcaption>${escape(asset.caption)}</figcaption>` : ''}
@@ -40,8 +40,8 @@ write('archviz.html', archviz);
 projects.forEach((project, index) => {
   const previous = projects[(index + projects.length - 1) % projects.length];
   const next = projects[(index + 1) % projects.length];
-  const modelEmbeds = project.media.filter(media => /^https:\/\/sketchfab\.com\/models\/[a-f0-9]{32}\/embed$/.test(media.src)).map(media => `<section class="section-inner" aria-label="Interactive 3D model" style="padding-block: 28px;">
-      <iframe src="${escape(media.src)}" title="${escape(project.title)} — interactive 3D model" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen style="display: block; width: 100%; aspect-ratio: 16 / 9; min-height: 300px; border: 0;"></iframe>
+  const modelEmbeds = project.media.filter(media => /^https:\/\/(?:sketchfab\.com\/models\/[a-f0-9]{32}\/embed|(?:www\.)?youtube(?:-nocookie)?\.com\/embed\/[\w-]+|player\.vimeo\.com\/video\/\d+)(?:[?/#]|$)/.test(media.src)).map(media => `<section class="section-inner" aria-label="Project media" style="padding-block: 28px;">
+      <iframe src="${escape(media.src)}" title="${escape(project.title)} — project media" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen style="display: block; width: 100%; aspect-ratio: 16 / 9; min-height: 300px; border: 0;"></iframe>
     </section>`).join('\n');
   const description = project.description.split(/\n\s*\n/).filter(Boolean).map(paragraph=>`<p>${escape(paragraph)}</p>`).join('\n');
   const content = `<!doctype html>

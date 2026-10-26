@@ -1,9 +1,25 @@
-# ArtStation project content
+# ArtStation portfolio sync
 
-`data/artstation-projects.json` contains the public project titles, descriptions, captions, image URLs, and model links verified on 2026-10-18. Images remain hosted on ArtStation; no project images are stored in this repository.
+The public `jamescardona` ArtStation portfolio is checked every six hours by
+`.github/workflows/sync-artstation.yml`. GitHub schedules can run late.
 
-Run `node scripts/build-projects.cjs` from the repository root after updating the data. It regenerates the gallery in `archviz.html` and all 13 `project-*.html` pages. The first image in each project is its hero; remaining images retain source order and captions. Existing descriptions and credits are preserved. Blank source descriptions stay blank.
+To refresh immediately: open the repository's **Actions** tab, select
+**Sync ArtStation portfolio**, then **Run workflow** on `main`.
 
-This is a static content snapshot, not an automatic ArtStation sync. Changes to project lists, descriptions, captions, or image URLs require updating the JSON and rebuilding. An image changed in place at the same URL follows ArtStation's cache behavior. Deleted or replaced ArtStation URLs may stop loading.
+The workflow runs `python scripts/sync-artstation.py`, then
+`node scripts/build-projects.cjs`. It updates `data/artstation-projects.json`,
+`archviz.html`, and native `project-*.html` pages, commits changed content,
+and deploys GitHub Pages explicitly (bot commits do not trigger a Pages build).
+Images remain hosted on ArtStation. Supported YouTube, Vimeo, and Sketchfab
+players are embedded within native project pages.
 
-The Denon and gas-pump Sketchfab models use responsive, lazy-loaded iframe viewers with fullscreen support. These are the only portfolio iframes; images and descriptions remain native HTML. No ArtStation page iframe, proxy, or API is needed at runtime.
+A complete, validated feed is required before replacing the last good snapshot.
+Network errors, empty feeds, incomplete projects, or unsupported embedded media
+fail the workflow without publishing partial content. Check Actions for errors.
+ArtStation's public JSON endpoints may change or block automated requests.
+
+Existing project filenames and category overrides are retained in the snapshot.
+New projects default to Architectural Visualization (Jordans to Character Assets);
+set a project's `category` in the JSON to override it. Removed projects disappear
+from the gallery; their old HTML files are retained so old links continue to work.
+No standalone Crowley video is restored at the bottom of the gallery.
