@@ -1,5 +1,56 @@
 [
   {
+    "id": "O330oy",
+    "filename": "project-ntx-peltier-ford.html",
+    "category": "Architectural Visualization",
+    "title": "NTX Peltier Ford",
+    "url": "https://jamescardona.artstation.com/projects/O330oy",
+    "thumbnail": "https://cdnb.artstation.com/p/assets/images/images/103/555/137/medium/james-preston-cardona-ntx-ford.jpg?1793031483",
+    "description": "This is Peltier Ford in Longview, Texas. On this project I was tasked with texturing the best looking vehicles we could find. Some custom ford cars for the service  areas were fun to work on, but we only got to see them for a few seconds. A lot of render testing and DLSS helped us achieve the nice look inside Unreal Engine.",
+    "images": [
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/555/137/large/james-preston-cardona-ntx-ford.jpg?1793031483",
+        "caption": "NTX Peltier Ford",
+        "alt": "NTX Peltier Ford"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/554/988/large/james-preston-cardona-front.jpg?1793031294",
+        "caption": "Front Entry",
+        "alt": "Front Entry"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/554/977/large/james-preston-cardona-delivery.jpg?1793031274",
+        "caption": "Delivery",
+        "alt": "Delivery"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/554/980/large/james-preston-cardona-finance.jpg?1793031285",
+        "caption": "Finance",
+        "alt": "Finance"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/554/997/large/james-preston-cardona-service.jpg?1793031304",
+        "caption": "Service",
+        "alt": "Service"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/555/008/large/james-preston-cardona-showroom.jpg?1793031318",
+        "caption": "Showroom",
+        "alt": "Showroom"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/555/018/large/james-preston-cardona-showroom2.jpg?1793031329",
+        "caption": "VLK XD shameless tag",
+        "alt": "VLK XD shameless tag"
+      }
+    ],
+    "media": [
+      {
+        "src": "https://www.youtube-nocookie.com/embed/Z9KxyGjtK_A?feature=oembed&rel=0"
+      }
+    ]
+  },
+  {
     "id": "zzzwa4",
     "filename": "project-pecos-competition-gymnasium.html",
     "category": "Architectural Visualization",
