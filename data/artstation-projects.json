@@ -1,5 +1,61 @@
 [
   {
+    "id": "8vv0yq",
+    "filename": "project-waller-isd-warren-ranch-high-school.html",
+    "category": "Architectural Visualization",
+    "title": "Waller ISD Warren Ranch High School",
+    "url": "https://jamescardona.artstation.com/projects/8vv0yq",
+    "thumbnail": "https://cdna.artstation.com/p/assets/images/images/103/560/324/medium/james-preston-cardona-a002-mainentry.jpg?1793043314",
+    "description": "Waller ISD, Warren Ranch High School. My part was character lead on this project. I used the Metahuman Creator, Blender, Photoshop, Substance and Marvelous Designer to create these animations in Ureal Engine.",
+    "images": [
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/560/324/large/james-preston-cardona-a002-mainentry.jpg?1793043314",
+        "caption": "Student Entry",
+        "alt": "Student Entry"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/560/330/large/james-preston-cardona-a007-frontentry-b.jpg?1793043324",
+        "caption": "Student Drop Off",
+        "alt": "Student Drop Off"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/560/334/large/james-preston-cardona-a008-academicwings.jpg?1793043334",
+        "caption": "Academic Wing",
+        "alt": "Academic Wing"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/560/338/large/james-preston-cardona-a009-agbarn.jpg?1793043343",
+        "caption": "Ag Barn",
+        "alt": "Ag Barn"
+      },
+      {
+        "url": "https://cdna.artstation.com/p/assets/images/images/103/560/344/large/james-preston-cardona-a201-library.jpg?1793043352",
+        "caption": "Library",
+        "alt": "Library"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/560/349/large/james-preston-cardona-s2-auditorium.jpg?1793043368",
+        "caption": "Auditorium",
+        "alt": "Auditorium"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/560/353/large/james-preston-cardona-s4-gymnasium.jpg?1793043376",
+        "caption": "Gymnasium",
+        "alt": "Gymnasium"
+      },
+      {
+        "url": "https://cdnb.artstation.com/p/assets/images/images/103/560/345/large/james-preston-cardona-a501-athleticsentry.jpg?1793043364",
+        "caption": "Athletics Entry",
+        "alt": "Athletics Entry"
+      }
+    ],
+    "media": [
+      {
+        "src": "https://www.youtube-nocookie.com/embed/FaBUbS1l1x4?feature=oembed&rel=0"
+      }
+    ]
+  },
+  {
     "id": "411Q3l",
     "filename": "project-north-shores-multipurpose-facility.html",
     "category": "Architectural Visualization",
