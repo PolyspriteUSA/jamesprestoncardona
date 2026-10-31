@@ -3771,25 +3771,58 @@ addEventListener(
 // Capture each thumb independently so moving never changes the firing direction.
 const arenaStickResets=[];
 function bindArenaStick(id,value,fire){
-  const pad=$(id),knob=pad.querySelector('i');let pointer=null;
-  const reset=()=>{pointer=null;value.x=value.y=0;knob.style.transform='';if(fire)mouseDown=false;};
+  const pad=$(id),knob=pad.querySelector('i');
+  let pointer=null;
+  const reset=()=>{
+    const previous=pointer;
+    pointer=null;
+    value.x=value.y=0;
+    knob.style.transform='';
+    if(fire)mouseDown=false;
+    if(previous!==null && pad.hasPointerCapture(previous)){
+      try{pad.releasePointerCapture(previous);}catch{}
+    }
+  };
   arenaStickResets.push(reset);
   function update(event){
     const rect=pad.getBoundingClientRect(),radius=rect.width*.34;
     let x=(event.clientX-rect.left-rect.width/2)/radius;
     let y=(event.clientY-rect.top-rect.height/2)/radius;
-    const length=Math.hypot(x,y);if(length>1){x/=length;y/=length;}
-    value.x=Math.abs(x)>.12?x:0;value.y=Math.abs(y)>.12?y:0;
+    const length=Math.hypot(x,y);
+    if(length>1){x/=length;y/=length;}
+    value.x=Math.abs(x)>.12?x:0;
+    value.y=Math.abs(y)>.12?y:0;
     knob.style.transform=`translate(${x*radius}px,${y*radius}px)`;
     if(fire)mouseDown=!!(value.x||value.y);
   }
   pad.addEventListener('pointerdown',event=>{
-    if(!running || pointer!==null)return;
-    event.preventDefault();event.stopPropagation();pointer=event.pointerId;
-    pad.setPointerCapture(pointer);update(event);
+    if(!running || pointer!==null || (event.pointerType==='mouse' && event.button!==0))return;
+    event.preventDefault();event.stopPropagation();
+    pointer=event.pointerId;
+    try{pad.setPointerCapture(pointer);}catch{}
+    update(event);
   });
-  pad.addEventListener('pointermove',event=>{if(event.pointerId===pointer){event.preventDefault();update(event);}});
-  for(const name of ['pointerup','pointercancel','lostpointercapture'])pad.addEventListener(name,event=>{if(event.pointerId===pointer)reset();});
+  // Window listeners also cover a release outside the pad if capture fails.
+  window.addEventListener('pointermove',event=>{
+    if(event.pointerId!==pointer)return;
+    if(event.buttons===0){reset();return;}
+    if(event.cancelable)event.preventDefault();
+    update(event);
+  },{passive:false});
+  const release=event=>{if(event.pointerId===pointer)reset();};
+  window.addEventListener('pointerup',release,true);
+  window.addEventListener('pointercancel',release,true);
+  pad.addEventListener('lostpointercapture',release);
+  // Safari can interrupt pointer delivery during native touch gestures.
+  // Reconcile each pad independently so releasing aim never stops movement.
+  function reconcileTouches(event){
+    if(pointer===null)return;
+    const stillOnPad=Array.from(event.touches).some(touch=>pad.contains(touch.target));
+    if(!stillOnPad)reset();
+  }
+  window.addEventListener('touchend',reconcileTouches,{passive:true,capture:true});
+  window.addEventListener('touchcancel',reconcileTouches,{passive:true,capture:true});
+  pad.addEventListener('contextmenu',event=>event.preventDefault());
 }
 function clearArenaInput(){
   Object.keys(keys).forEach(key=>keys[key]=false);
@@ -3803,6 +3836,9 @@ $('spiderDash').addEventListener('pointerdown',event=>{
   if(running && dashCooldown<=0){dashTime=.16;dashCooldown=1.4;sfxDash();}
 });
 window.addEventListener('blur',clearArenaInput);
+window.addEventListener('pagehide',clearArenaInput);
+window.addEventListener('resize',clearArenaInput);
+window.addEventListener('orientationchange',clearArenaInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearArenaInput();});
 if(isTouchGame)document.querySelector('.help').textContent='Left stick: move • Right stick: aim and fire • DASH: evade';
 
