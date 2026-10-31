@@ -50,7 +50,9 @@
     .flight-tools{position:absolute;top:108px;left:14px;right:14px;display:flex;gap:8px;align-items:center;pointer-events:auto;font-size:.72rem}.flight-tools span,.flight-tools button{background:#080b19dd;border:1px solid #ffffff30;border-radius:12px;color:white;padding:9px}.flight-tools button{margin-left:auto;min-height:44px}.boost-fx{position:absolute;inset:0;pointer-events:none;opacity:0;box-shadow:inset 0 0 70px #00cfff88;background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg 14deg,#47daff22 14.1deg 14.4deg,transparent 14.5deg 30deg);mask-image:radial-gradient(ellipse,transparent 25%,black 100%)}body.is-boosting .boost-fx{opacity:1}.touch-fire{display:flex;gap:12px;align-items:center}.touch-fire button[data-input="boost"]{border-color:#44dbff;color:#79eaff;width:64px;height:64px}.touch-pad{opacity:.8}.game-wash{display:none}
     @media(any-pointer:coarse){.flight-tools{top:85px}.touch-pad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:4px}.touch-pad button{min-width:44px;min-height:44px}.touch-fire{gap:8px}}
     @media(max-height:500px){.flight-tools{top:8px;left:12px;right:52%;flex-wrap:wrap;font-size:.62rem;gap:4px}.flight-tools span{padding:6px}.flight-tools button{padding:6px}}
-  </style>
+  
+.level-banner{position:absolute;top:31%;left:50%;transform:translateX(-50%);width:90%;padding:16px;text-align:center;background:linear-gradient(90deg,transparent,#050713ee,transparent);text-shadow:0 2px 8px #000;pointer-events:none;opacity:0;transition:opacity .25s}.level-banner.show{opacity:1}.level-banner strong{display:block;font-size:clamp(1.4rem,5vw,2.8rem);letter-spacing:.08em}.level-banner span{display:block;color:#e0e5ff;margin-top:8px;font-size:.85rem}
+</style>
   <link rel="stylesheet" href="./site-menu.css?v=20261030">
 </head>
 <body>
@@ -65,12 +67,12 @@
       </div>
     </nav>
   </header>
-<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="boost-fx"></div><div class="hud"><div class="flight-tools"><span id="levelValue">LEVEL 1</span><span id="boostValue">N₂ 100%</span><span id="gunValue">GUN I</span><button id="pauseButton" type="button">Pause</button></div><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Break through five increasingly hostile sectors. Collect green + repair, cyan N₂ fuel, and gold W weapon upgrades. Survive each sector to advance.</p><div class="controls-line">WASD / Arrows: steer • Space: fire • Shift: nitrous • P: pause</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button><a class="designer-link" href="./shipdesigner.html">Design your own ships ↗</a><p class="fleet-note" id="fleetNote" hidden></p><button class="fleet-reset" id="resetFleet" type="button" hidden>Use original ships</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button><a class="designer-link" href="./shipdesigner.html">Back to Ship Designer ↗</a></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Plasma vortex online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="boost" type="button">N₂</button><button data-input="fire" type="button">FIRE</button></div></div></section></main>
+<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="boost-fx"></div><div class="hud"><div class="level-banner" id="levelBanner" role="status" aria-live="polite"><strong></strong><span></span></div><div class="flight-tools"><span id="levelValue">LEVEL 1</span><span id="boostValue">N₂ 100%</span><span id="gunValue">GUN I</span><button id="pauseButton" type="button">Pause</button></div><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Break through five increasingly hostile sectors. Collect green + repair, cyan N₂ fuel, and gold W weapon upgrades. Survive each sector to advance.</p><div class="controls-line">WASD / Arrows: steer • Space: fire • Shift: nitrous • P: pause</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button><a class="designer-link" href="./shipdesigner.html">Design your own ships ↗</a><p class="fleet-note" id="fleetNote" hidden></p><button class="fleet-reset" id="resetFleet" type="button" hidden>Use original ships</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button><a class="designer-link" href="./shipdesigner.html">Back to Ship Designer ↗</a></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Plasma vortex online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="boost" type="button">N₂</button><button data-input="fire" type="button">FIRE</button></div></div></section></main>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from "three";
 const container=document.getElementById("game"),scoreValue=document.getElementById("scoreValue"),healthValue=document.getElementById("healthValue"),healthMeter=document.getElementById("healthMeter"),targetsValue=document.getElementById("targetsValue"),startPanel=document.getElementById("startPanel"),gameOverPanel=document.getElementById("gameOverPanel"),finalScore=document.getElementById("finalScore"),startButton=document.getElementById("startButton"),restartButton=document.getElementById("restartButton"),statusText=document.getElementById("statusText");
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x070311,0.022);const camera=new THREE.PerspectiveCamera(62,1,.05,190);camera.position.set(0,0,5.5);const renderer=new THREE.WebGLRenderer({antialias:!window.matchMedia('(any-pointer: coarse)').matches,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,window.matchMedia('(any-pointer: coarse)').matches?1:1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.70;container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x010104);scene.fog=new THREE.FogExp2(0x070311,0.022);const camera=new THREE.PerspectiveCamera(62,1,.05,190);camera.position.set(0,0,7);const renderer=new THREE.WebGLRenderer({antialias:!window.matchMedia('(any-pointer: coarse)').matches,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(window.devicePixelRatio,window.matchMedia('(any-pointer: coarse)').matches?1:1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.70;container.appendChild(renderer.domElement);
 scene.add(new THREE.AmbientLight(0x7265a8,.12));const playerLight=new THREE.PointLight(0xff42d0,2.6,14,2);playerLight.position.set(0,.55,1.15);scene.add(playerLight);const tunnelLight=new THREE.PointLight(0x7149ff,4.2,26,2);tunnelLight.position.set(0,1.2,-14);scene.add(tunnelLight);const world=new THREE.Group();scene.add(world);
 const player=new THREE.Group();scene.add(player);
 
@@ -333,7 +335,7 @@ player.position.z=2;
 // Continuous plasma tunnel: no polygon gates or wireframe rings.
 let tunnelCurveTime=0;
 const vortexTouch=window.matchMedia('(any-pointer: coarse)').matches;
-const vortexUniforms={uTime:{value:0},uTravel:{value:0}};
+const vortexUniforms={uTime:{value:0},uTravel:{value:0},uColorA:{value:new THREE.Color(0x7149ff)},uColorB:{value:new THREE.Color(0xff42d0)}};
 function curvePoint(z){
   const d=Math.max(0,-z),w=THREE.MathUtils.smoothstep(d,8,65),t=tunnelCurveTime;
   return new THREE.Vector3(w*(-6.5*Math.sin(d*.028)+.65*Math.sin(d*.061-t*.05)),w*(-1.9*Math.sin(d*.035)+.35*Math.sin(d*.047+t*.04)),z);
@@ -369,6 +371,8 @@ const vortexVertex=`
 const vortexFragment=`
   uniform float uTime;
   uniform float uTravel;
+  uniform vec3 uColorA;
+  uniform vec3 uColorB;
   varying vec2 vUV;
   varying float vDepth;
   float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -384,7 +388,7 @@ const vortexFragment=`
     float mist=cloud(p+vec2(t*.04,-t*.05));
     float fine=noise(vec2(sin(a)*15.0+cos(a)*12.0,s*.72));
     float hue=.5+.5*sin(a*2.0+s*.054+mist*2.0);
-    vec3 violet=vec3(.23,.035,1.0),pink=vec3(1.0,.012,.38);
+    vec3 violet=uColorA,pink=uColorB;
     vec3 neon=mix(violet,pink,smoothstep(.12,.88,hue));
     vec3 col=vec3(.007,.001,.023)+neon*pow(mist,3.0)*.60;
     // Broad turbulent ribbons, narrow white-hot cores and colored halos.
@@ -696,8 +700,8 @@ function addNebula(
 
 // Enemy fleet: shared geometry/materials keep repeated spawns inexpensive.
 // Every ship faces +Z (toward the player); engines exhaust toward -Z.
-const enemyHullMat=new THREE.MeshStandardMaterial({color:0x70251b,emissive:0x551308,emissiveIntensity:1.3,metalness:.55,roughness:.4,flatShading:true});
-const enemyArmorMat=new THREE.MeshStandardMaterial({color:0xc44b23,emissive:0x922100,emissiveIntensity:1.0,metalness:.42,roughness:.36,flatShading:true});
+const enemyHullMat=new THREE.MeshBasicMaterial({color:0xff552d,toneMapped:false});
+const enemyArmorMat=new THREE.MeshBasicMaterial({color:0xffb24b,toneMapped:false});
 const enemyBoxGeo=new THREE.BoxGeometry(1,1,1);
 const enemyEngineGeo=new THREE.CylinderGeometry(.105,.125,.25,8);
 enemyEngineGeo.rotateX(Math.PI/2);
@@ -726,15 +730,15 @@ function buildEnemyShip(kind,color){
   const ship=new THREE.Group();
   ship.name=['Razor interceptor','Manta fighter','Forkwing drone'][kind];
   const glow=new THREE.MeshBasicMaterial({color,toneMapped:false});
-  const rim=new THREE.LineBasicMaterial({color,transparent:true,opacity:.65,toneMapped:false});
+  const rim=new THREE.LineBasicMaterial({color:0xfff0c4,toneMapped:false});
   const flameMat=new THREE.MeshBasicMaterial({color,transparent:true,opacity:.65,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
   const canopyMat=new THREE.MeshStandardMaterial({color:0x14172d,emissive:color,emissiveIntensity:.8,metalness:.7,roughness:.18});
   const bodyPoints=kind===2?[[0,.5],[-.19,.23],[-.2,-.4],[.2,-.4],[.19,.23]]:[[0,.69],[-.18,.25],[-.22,-.42],[.22,-.42],[.18,.25]];
   ship.add(enemyPlate(bodyPoints,.21,enemyHullMat,rim));
   const wingProfiles=[
-    [[.12,.23],[.91,.58],[.67,-.56],[.22,-.4]],
-    [[.12,.32],[.81,.04],[.66,-.39],[.28,-.29]],
-    [[.13,.08],[.37,.55],[.57,.58],[.53,-.48],[.24,-.4]]
+    [[.12,.23],[.55,.16],[1.05,.85],[.82,-.58],[.22,-.4]],
+    [[.12,.32],[1.1,.52],[.86,-.2],[1.02,-.55],[.28,-.29]],
+    [[.13,.08],[.37,.8],[.67,1.0],[.60,-.60],[.24,-.4]]
   ];
   for(const side of [-1,1]){
     ship.add(enemyPlate(wingProfiles[kind].map(([x,z])=>[x*side,z]),.065,enemyArmorMat,rim));
@@ -754,7 +758,10 @@ function buildEnemyShip(kind,color){
     const fin=enemyPlate([[0,.13],[-.075,-.3],[.075,-.3]],.2,enemyHullMat,rim);
     fin.position.set(0,.2,-.24);ship.add(fin);
   }
-  ship.scale.setScalar(.85);
+  // A dark nose and slanted luminous eyes make the attacker readable head-on.
+  enemyPart(ship,enemyBoxGeo,new THREE.MeshBasicMaterial({color:0x160b16}),[0,.05,.56],[.40,.22,.20]);
+  for(const side of [-1,1]){const eye=enemyPart(ship,enemyBoxGeo,new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false}),[side*.13,.10,.68],[.16,.055,.04]);eye.rotation.z=side*-.35;}
+  ship.scale.setScalar(1.12);
   ship.userData.color=color;
   return ship;
 }
@@ -994,10 +1001,13 @@ function updateBullets(dt){for(let bi=bullets.length-1;bi>=0;bi--){const b=bulle
 function updateBooms(dt){for(let i=explosions.length-1;i>=0;i--){const ex=explosions[i];ex.life-=dt;const f=Math.max(ex.life/.65,0);ex.g.children.forEach(s=>{s.position.addScaledVector(s.userData.v,dt);s.rotation.x+=dt*5;s.rotation.y+=dt*4;s.material.opacity=f});if(ex.life<=0){scene.remove(ex.g);ex.g.children.forEach(m=>{m.geometry.dispose();m.material.dispose();});explosions.splice(i,1)}}}
 
 let level=1,sectorTime=0,fuel=100,gunLevel=1,boosting=false,paused=false,pickupTime=0,pickupIndex=0;
+const levelThemes=[['VIOLET BREACH',0x7149ff,0xff42d0],['ION CURRENT',0x084dff,0x26eaff],['TOXIC CORE',0x0b805e,0x87ff21],['SOLAR FURNACE',0x8e240a,0xffa517],['CRIMSON TERMINUS',0x690b26,0xff235b]];
+let bannerTime=0;
+function announceLevel(first=false){const theme=levelThemes[level-1],banner=document.getElementById('levelBanner');banner.querySelector('strong').textContent=`LEVEL ${level} · ${theme[0]}`;banner.querySelector('span').textContent=first?'Collect supplies. Survive 40 seconds.':`LEVEL ${level-1} COMPLETE · +500 SCORE · +15 REPAIR`;banner.classList.add('show');bannerTime=4;vortexUniforms.uColorA.value.setHex(theme[1]);vortexUniforms.uColorB.value.setHex(theme[2]);vortexEnd.children.forEach(ring=>ring.material.color.setHex(theme[2]));}
 const pickups=[],pickupColors=[0x45ff94,0x37dfff,0xffc247],pickupLabels=['+','N₂','W'];
 const pickupGeo=new THREE.OctahedronGeometry(.27);
 const pickupMats=pickupColors.map(color=>new THREE.MeshBasicMaterial({color,toneMapped:false}));
-function flightBounds(){const y=Math.min(3,(camera.position.z-player.position.z)*Math.tan(THREE.MathUtils.degToRad(62/2))*.76);return {x:Math.min(3.65,y*camera.aspect*.83),y};}
+function flightBounds(){const halfHeight=(camera.position.z-player.position.z)*Math.tan(THREE.MathUtils.degToRad(62/2));return {x:Math.max(.35,Math.min(3.65,halfHeight*camera.aspect-.65)),y:Math.max(.5,Math.min(3,halfHeight-.55))};}
 function togglePause(){if(!running)return;paused=!paused;clearFlightInput();document.getElementById('pauseButton').textContent=paused?'Resume':'Pause';statusText.textContent=paused?'Paused':'Run active';}
 document.getElementById('pauseButton').addEventListener('click',togglePause);
 let drag=null;
@@ -1006,16 +1016,17 @@ container.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)ret
 for(const event of ['pointerup','pointercancel','lostpointercapture'])container.addEventListener(event,()=>drag=null);
 function spawnPickup(pos){const type=pickupIndex++%3,g=new THREE.Group(),m=new THREE.Mesh(pickupGeo,pickupMats[type]);g.add(m);
  const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#'+pickupColors[type].toString(16);ctx.font='bold 62px sans-serif';ctx.textAlign='center';ctx.fillText(pickupLabels[type],64,85);const texture=new THREE.CanvasTexture(canvas),label=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,depthTest:false}));label.position.y=.58;label.scale.set(.8,.8,1);g.add(label);
- g.userData={type,laneX:pos?pos.x:THREE.MathUtils.randFloatSpread(flightBounds().x*1.4),laneY:pos?pos.y:THREE.MathUtils.randFloatSpread(flightBounds().y*1.4),texture};placeInTunnel(g,pos?pos.z:-28);scene.add(g);pickups.push(g);}
+ const bounds=flightBounds(),center=curvePoint(pos?pos.z:-28);
+ g.userData={type,laneX:THREE.MathUtils.clamp(pos?pos.x-center.x:THREE.MathUtils.randFloatSpread(bounds.x*1.4),-bounds.x*.8,bounds.x*.8),laneY:THREE.MathUtils.clamp(pos?pos.y-center.y:THREE.MathUtils.randFloatSpread(bounds.y*1.4),-bounds.y*.8,bounds.y*.8),texture};placeInTunnel(g,pos?pos.z:-28);scene.add(g);pickups.push(g);}
 function removePickup(i){const g=pickups[i];scene.remove(g);g.userData.texture.dispose();g.children[1].material.dispose();pickups.splice(i,1);}
-function resetCampaign(){while(pickups.length)removePickup(0);level=1;sectorTime=0;fuel=100;gunLevel=1;boosting=false;paused=false;pickupTime=0;pickupIndex=0;drag=null;document.body.classList.remove('is-boosting');camera.fov=62;camera.updateProjectionMatrix();document.getElementById('pauseButton').textContent='Pause';}
+function resetCampaign(){while(pickups.length)removePickup(0);level=1;sectorTime=0;fuel=100;gunLevel=1;boosting=false;paused=false;pickupTime=0;pickupIndex=0;drag=null;announceLevel(true);document.body.classList.remove('is-boosting');camera.fov=62;camera.updateProjectionMatrix();document.getElementById('pauseButton').textContent='Pause';}
 function updateCampaign(dt){
- sectorTime+=dt;pickupTime+=dt;
- if(sectorTime>=40){if(level===5){score+=2500;end();document.querySelector('#gameOverPanel h2').textContent='Tunnel Cleared';return;}level++;sectorTime=0;score+=500;health=Math.min(100,health+15);statusText.textContent='Sector '+level+' · hostiles accelerating';}
+ sectorTime+=dt;pickupTime+=dt;bannerTime=Math.max(0,bannerTime-dt);if(!bannerTime)document.getElementById("levelBanner").classList.remove("show");
+ if(sectorTime>=40){if(level===5){score+=2500;end();document.querySelector('#gameOverPanel h2').textContent='Tunnel Cleared';return;}level++;sectorTime=0;score+=500;health=Math.min(100,health+15);statusText.textContent='Sector '+level+' · hostiles accelerating';announceLevel();}
  boosting=input.boost&&fuel>0;fuel=Math.max(0,fuel-(boosting?24*dt:0));document.body.classList.toggle('is-boosting',boosting);
  camera.fov=THREE.MathUtils.lerp(camera.fov,boosting?74:62,1-Math.exp(-5*dt));camera.updateProjectionMatrix();
  if(pickupTime>5){pickupTime=0;spawnPickup();}
- for(let i=pickups.length-1;i>=0;i--){const g=pickups[i];placeInTunnel(g,g.position.z+speed*dt);g.children[0].rotation.y+=dt*2;const dx=g.position.x-player.position.x,dy=g.position.y-player.position.y,dz=g.position.z-player.position.z;
+ for(let i=pickups.length-1;i>=0;i--){const g=pickups[i],bounds=flightBounds();g.userData.laneX=THREE.MathUtils.clamp(g.userData.laneX,-bounds.x*.8,bounds.x*.8);g.userData.laneY=THREE.MathUtils.clamp(g.userData.laneY,-bounds.y*.8,bounds.y*.8);placeInTunnel(g,g.position.z+speed*dt);g.children[0].rotation.y+=dt*2;const dx=g.position.x-player.position.x,dy=g.position.y-player.position.y,dz=g.position.z-player.position.z;
  if(dx*dx+dy*dy+dz*dz<1.0){const type=g.userData.type;if(type===0)health=Math.min(100,health+35);if(type===1)fuel=Math.min(100,fuel+55);if(type===2){gunLevel=Math.min(3,gunLevel+1);score+=100;}statusText.textContent=['Hull repaired +35','Nitrous refilled +55','Weapons upgraded'][type];removePickup(i);}else if(g.position.z>7)removePickup(i);}
 }
 function resize(){const w=Math.max(container.clientWidth,1),h=Math.max(container.clientHeight,1);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);resizeVortexFX(w,h)}new ResizeObserver(resize).observe(container);resize();hud();const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);fireCooldown=Math.max(0,fireCooldown-dt);if(running&&!paused){elapsed+=dt;updateCampaign(dt);if(!running){hud();renderVortexScene();return;}speed=(14+level*2)*(boosting?1.85:1)*flightSpeedScale;score+=dt*speed*4;updatePlayer(dt);updateTunnel(dt);
