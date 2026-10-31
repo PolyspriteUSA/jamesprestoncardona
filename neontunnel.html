@@ -46,6 +46,10 @@
   .start-button { margin-top:12px; }
   .designer-link { margin-top:10px; }
 }
+  
+    .flight-tools{position:absolute;top:108px;left:14px;right:14px;display:flex;gap:8px;align-items:center;pointer-events:auto;font-size:.72rem}.flight-tools span,.flight-tools button{background:#080b19dd;border:1px solid #ffffff30;border-radius:12px;color:white;padding:9px}.flight-tools button{margin-left:auto;min-height:44px}.boost-fx{position:absolute;inset:0;pointer-events:none;opacity:0;box-shadow:inset 0 0 70px #00cfff88;background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg 14deg,#47daff22 14.1deg 14.4deg,transparent 14.5deg 30deg);mask-image:radial-gradient(ellipse,transparent 25%,black 100%)}body.is-boosting .boost-fx{opacity:1}.touch-fire{display:flex;gap:12px;align-items:center}.touch-fire button[data-input="boost"]{border-color:#44dbff;color:#79eaff;width:64px;height:64px}.touch-pad{opacity:.8}.game-wash{display:none}
+    @media(any-pointer:coarse){.flight-tools{top:85px}.touch-pad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:4px}.touch-pad button{min-width:44px;min-height:44px}.touch-fire{gap:8px}}
+    @media(max-height:500px){.flight-tools{top:8px;left:12px;right:52%;flex-wrap:wrap;font-size:.62rem;gap:4px}.flight-tools span{padding:6px}.flight-tools button{padding:6px}}
   </style>
   <link rel="stylesheet" href="./site-menu.css?v=20261030">
 </head>
@@ -61,7 +65,7 @@
       </div>
     </nav>
   </header>
-<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Fly through a flowing violet-and-magenta plasma vortex. Dodge incoming fighters and keep firing to survive.</p><div class="controls-line">WASD / Arrow Keys — steer &nbsp; • &nbsp; Space — fire</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button><a class="designer-link" href="./shipdesigner.html">Design your own ships ↗</a><p class="fleet-note" id="fleetNote" hidden></p><button class="fleet-reset" id="resetFleet" type="button" hidden>Use original ships</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button><a class="designer-link" href="./shipdesigner.html">Back to Ship Designer ↗</a></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Plasma vortex online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="fire" type="button">FIRE</button></div></div></section></main>
+<main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="boost-fx"></div><div class="hud"><div class="flight-tools"><span id="levelValue">LEVEL 1</span><span id="boostValue">N₂ 100%</span><span id="gunValue">GUN I</span><button id="pauseButton" type="button">Pause</button></div><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Break through five increasingly hostile sectors. Collect green + repair, cyan N₂ fuel, and gold W weapon upgrades. Survive each sector to advance.</p><div class="controls-line">WASD / Arrows: steer • Space: fire • Shift: nitrous • P: pause</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button><a class="designer-link" href="./shipdesigner.html">Design your own ships ↗</a><p class="fleet-note" id="fleetNote" hidden></p><button class="fleet-reset" id="resetFleet" type="button" hidden>Use original ships</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button><a class="designer-link" href="./shipdesigner.html">Back to Ship Designer ↗</a></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Plasma vortex online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="boost" type="button">N₂</button><button data-input="fire" type="button">FIRE</button></div></div></section></main>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from "three";
@@ -387,7 +391,7 @@ const vortexFragment=`
     float ribbon=abs(sin(a*2.0+s*.47+sin(a*4.0-s*.13)*.75+mist*3.1));
     float core=exp(-ribbon*85.0),edge=exp(-ribbon*12.0),halo=exp(-ribbon*3.5);
     float broken=.5+.7*smoothstep(.24,.69,noise(vec2(sin(a)*7.0+cos(a)*4.0,s*.47)));
-    col+=neon*(halo*.35+edge*2.0)*broken+mix(neon,vec3(1.0,.8,1.0),.78)*core*2.1*broken;
+    col+=neon*(halo*.35+edge*2.0)*broken+mix(neon,vec3(.8,.22,1.0),.3)*core*2.1*broken;
     // Long, fine helical trails surround the main plasma ribbons.
     float streak=abs(sin(a*7.0+s*2.8+mist*2.6));
     float streakGate=smoothstep(.42,.78,noise(vec2(sin(a)*11.0+cos(a)*8.0,s*.17)));
@@ -407,7 +411,7 @@ const vortexFragment=`
     float jag=noise(vec2(s*.66,sin(a)*4.0))*1.6+noise(vec2(s*2.1,cos(a)*8.0))*.30;
     float bolt=abs(sin(a*5.0-s*.16+jag));
     float gate=smoothstep(.46,.72,cloud(vec2(sin(a)*6.0+cos(a)*5.0,s*.085+t*.045)));
-    col+=(vec3(.95,.55,1.0)*exp(-bolt*200.0)*5.0+neon*exp(-bolt*25.0)*1.9)*gate;
+    col+=(neon*exp(-bolt*200.0)*2.6+neon*exp(-bolt*25.0)*1.9)*gate;
     // Small luminous fragments and dust embedded in the flowing wall.
     vec2 cell=vec2(vUV.x*112.0,(s+a*2.0)*1.3),f=fract(cell);
     float tile=step(.968,hash(floor(cell)))*smoothstep(.08,.18,f.x)*(1.0-smoothstep(.70,.9,f.x))*smoothstep(.03,.09,f.y)*(1.0-smoothstep(.20,.32,f.y));
@@ -417,7 +421,8 @@ const vortexFragment=`
     // Built-in highlight rolloff retains violet shadows around bright filaments.
     col*=.90+.40*smoothstep(55.0,145.0,vDepth);
     col=vec3(1.0)-exp(-col*1.35);
-    gl_FragColor=vec4(pow(col,vec3(.82)),1.0);
+    gl_FragColor=vec4(col,1.0);
+    #include <colorspace_fragment>
   }
 `;
 const vortexGeometry=new THREE.BufferGeometry();
@@ -478,6 +483,7 @@ function resizeVortexFX(w,h){
   const scale=vortexTouch?.35:.5;fxGlowA.setSize(Math.max(1,Math.round(w*ratio*scale)),Math.max(1,Math.round(h*ratio*scale)));fxGlowB.setSize(fxGlowA.width,fxGlowA.height);
 }
 function renderVortexScene(){
+  if(vortexTouch){renderer.setRenderTarget(null);renderer.render(scene,camera);return;}
   renderer.setRenderTarget(fxBase);renderer.render(scene,camera);
   fxQuad.material=blurMaterial;blurMaterial.uniforms.source.value=fxBase.texture;blurMaterial.uniforms.extract.value=1;
   blurMaterial.uniforms.stepUV.value.set(2/fxGlowA.width,0);renderer.setRenderTarget(fxGlowA);renderer.render(fxScene,fxCamera);
@@ -690,8 +696,8 @@ function addNebula(
 
 // Enemy fleet: shared geometry/materials keep repeated spawns inexpensive.
 // Every ship faces +Z (toward the player); engines exhaust toward -Z.
-const enemyHullMat=new THREE.MeshStandardMaterial({color:0x333044,emissive:0x242037,emissiveIntensity:.65,metalness:.55,roughness:.4,flatShading:true});
-const enemyArmorMat=new THREE.MeshStandardMaterial({color:0x68617f,emissive:0x302743,emissiveIntensity:.6,metalness:.42,roughness:.36,flatShading:true});
+const enemyHullMat=new THREE.MeshStandardMaterial({color:0x70251b,emissive:0x551308,emissiveIntensity:1.3,metalness:.55,roughness:.4,flatShading:true});
+const enemyArmorMat=new THREE.MeshStandardMaterial({color:0xc44b23,emissive:0x922100,emissiveIntensity:1.0,metalness:.42,roughness:.36,flatShading:true});
 const enemyBoxGeo=new THREE.BoxGeometry(1,1,1);
 const enemyEngineGeo=new THREE.CylinderGeometry(.105,.125,.25,8);
 enemyEngineGeo.rotateX(Math.PI/2);
@@ -726,7 +732,7 @@ function buildEnemyShip(kind,color){
   const bodyPoints=kind===2?[[0,.5],[-.19,.23],[-.2,-.4],[.2,-.4],[.19,.23]]:[[0,.69],[-.18,.25],[-.22,-.42],[.22,-.42],[.18,.25]];
   ship.add(enemyPlate(bodyPoints,.21,enemyHullMat,rim));
   const wingProfiles=[
-    [[.12,.23],[.73,-.38],[.69,-.56],[.22,-.4]],
+    [[.12,.23],[.91,.58],[.67,-.56],[.22,-.4]],
     [[.12,.32],[.81,.04],[.66,-.39],[.28,-.29]],
     [[.13,.08],[.37,.55],[.57,.58],[.53,-.48],[.24,-.4]]
   ];
@@ -752,7 +758,7 @@ function buildEnemyShip(kind,color){
   ship.userData.color=color;
   return ship;
 }
-const enemyTemplates=[buildEnemyShip(0,0xff42d0),buildEnemyShip(1,0x9970ff),buildEnemyShip(2,0x52dfff)];
+const enemyTemplates=[buildEnemyShip(0,0xff4828),buildEnemyShip(1,0xff861c),buildEnemyShip(2,0xff2525)];
 // Optional browser-local fleet from Ship Designer. Default ships stay available
 // when storage or the editor module cannot be loaded.
 const fleetNote=document.getElementById('fleetNote'),resetFleet=document.getElementById('resetFleet');
@@ -785,8 +791,8 @@ const enemies=[],bullets=[],explosions=[];
 // Touch devices use a gentler pace, including phones held in landscape.
 const flightSpeedScale=window.matchMedia('(any-pointer: coarse)').matches ? .65 : 1;
 let running=false,score=0,health=100,targetsDestroyed=0,speed=15*flightSpeedScale,elapsed=0,enemyTimer=0,nextEnemy=.58,fireCooldown=0;
-const input={left:false,right:false,up:false,down:false,fire:false},target=new THREE.Vector2();
-function setKey(code,v){if(code==="KeyA"||code==="ArrowLeft")input.left=v;if(code==="KeyD"||code==="ArrowRight")input.right=v;if(code==="KeyW"||code==="ArrowUp")input.up=v;if(code==="KeyS"||code==="ArrowDown")input.down=v;if(code==="Space")input.fire=v}window.addEventListener("keydown",e=>{if(["KeyW","KeyA","KeyS","KeyD","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();setKey(e.code,true)});window.addEventListener("keyup",e=>setKey(e.code,false));const flightInputResets=[];
+const input={boost:false,left:false,right:false,up:false,down:false,fire:false},target=new THREE.Vector2();
+function setKey(code,v){if(code==="ShiftLeft"||code==="ShiftRight")input.boost=v;if(code==="KeyP"&&v)togglePause();if(code==="KeyA"||code==="ArrowLeft")input.left=v;if(code==="KeyD"||code==="ArrowRight")input.right=v;if(code==="KeyW"||code==="ArrowUp")input.up=v;if(code==="KeyS"||code==="ArrowDown")input.down=v;if(code==="Space")input.fire=v}window.addEventListener("keydown",e=>{if(["KeyW","KeyA","KeyS","KeyD","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();setKey(e.code,true)});window.addEventListener("keyup",e=>setKey(e.code,false));const flightInputResets=[];
 document.querySelectorAll("[data-input]").forEach(button=>{
   const name=button.dataset.input;
   let activePointer=null;
@@ -805,26 +811,27 @@ document.querySelectorAll("[data-input]").forEach(button=>{
   button.addEventListener("lostpointercapture",release);
 });
 function clearFlightInput(){Object.keys(input).forEach(key=>input[key]=false);flightInputResets.forEach(reset=>reset());}
-window.addEventListener("blur",clearFlightInput);
-document.addEventListener("visibilitychange",()=>{if(document.hidden)clearFlightInput();});
-if(window.matchMedia('(any-pointer: coarse)').matches){document.querySelector('.controls-line').textContent='Use the arrow pad to steer • Hold FIRE to shoot';}
+window.addEventListener("blur",()=>{clearFlightInput();if(running&&!paused)togglePause();});
+document.addEventListener("visibilitychange",()=>{if(document.hidden){clearFlightInput();if(running&&!paused)togglePause();}});
+if(window.matchMedia('(any-pointer: coarse)').matches){document.querySelector('.controls-line').textContent='Drag the flight area or use arrows to steer • Auto-fire on • Hold N₂ to boost';}
 
 function spawnEnemy(){
   const m=enemyTemplates[Math.floor(Math.random()*enemyTemplates.length)].clone(true);
-  m.userData.laneX=THREE.MathUtils.randFloat(-3.7,3.7);
-  m.userData.laneY=THREE.MathUtils.randFloat(-3.1,3.1);
+  m.userData.laneX=THREE.MathUtils.randFloat(-flightBounds().x,flightBounds().x);
+  m.userData.laneY=THREE.MathUtils.randFloat(-flightBounds().y,flightBounds().y);
   placeInTunnel(m,-46);
   m.userData.phase=Math.random()*Math.PI*2;
   m.userData.age=0;
+  m.userData.hp=level>=4?2:1;
   m.userData.bank=THREE.MathUtils.randFloat(-.16,.16);
   m.userData.exhausts=[];
   m.traverse(part=>{if(part.name==='enemy-exhaust')m.userData.exhausts.push(part)});
   world.add(m);enemies.push(m);
 }
-function fire(){if(fireCooldown>0)return;fireCooldown=.15;const b=new THREE.Mesh(bulletGeo,bulletMat);b.userData.laneX=player.position.x;b.userData.laneY=player.position.y;placeInTunnel(b,player.position.z-.7);scene.add(b);bullets.push(b)}
+function fire(){if(fireCooldown>0)return;fireCooldown=gunLevel===3?.10:.16;for(const offset of (gunLevel===1?[0]:gunLevel===2?[-.18,.18]:[-.32,0,.32])){const b=new THREE.Mesh(bulletGeo,bulletMat);b.userData.laneX=player.position.x+offset;b.userData.laneY=player.position.y;placeInTunnel(b,player.position.z-.7);scene.add(b);bullets.push(b)}}
 function boom(pos,color){const g=new THREE.Group();for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.TetrahedronGeometry(.08),new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));m.position.copy(pos);m.userData.v=new THREE.Vector3(THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-2.5,2.5),THREE.MathUtils.randFloat(-1,3.2));g.add(m)}scene.add(g);explosions.push({g,life:.65})}
-function hud(){scoreValue.textContent=String(Math.floor(score)).padStart(6,"0");healthValue.textContent=Math.max(0,Math.round(health))+"%";healthMeter.style.transform="scaleX("+THREE.MathUtils.clamp(health/100,0,1)+")";targetsValue.textContent=String(targetsDestroyed).padStart(3,"0")}
-function reset(){clearFlightInput();document.body.classList.add("is-playing");enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>scene.remove(x.g));enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;targetsDestroyed=0;speed=15*flightSpeedScale;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){running=false;clearFlightInput();document.body.classList.remove("is-playing");finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0")+"  •  Targets Destroyed "+String(targetsDestroyed).padStart(3,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
+function hud(){document.getElementById("levelValue").textContent=`L${level}/5 · ${Math.ceil(Math.max(0,40-sectorTime))}s`;document.getElementById("boostValue").textContent=`N₂ ${Math.round(fuel)}%`;document.getElementById("gunValue").textContent=`GUN ${gunLevel}`;scoreValue.textContent=String(Math.floor(score)).padStart(6,"0");healthValue.textContent=Math.max(0,Math.round(health))+"%";healthMeter.style.transform="scaleX("+THREE.MathUtils.clamp(health/100,0,1)+")";targetsValue.textContent=String(targetsDestroyed).padStart(3,"0")}
+function reset(){resetCampaign();clearFlightInput();document.body.classList.add("is-playing");enemies.forEach(x=>world.remove(x));bullets.forEach(x=>scene.remove(x));explosions.forEach(x=>{scene.remove(x.g);x.g.children.forEach(m=>{m.geometry.dispose();m.material.dispose();});});enemies.length=bullets.length=explosions.length=0;player.position.set(0,0,2);target.set(0,0);score=0;health=100;targetsDestroyed=0;speed=15*flightSpeedScale;elapsed=0;enemyTimer=0;nextEnemy=.58;fireCooldown=0;running=true;startPanel.hidden=true;gameOverPanel.hidden=true;statusText.textContent="Run active";hud();container.focus({preventScroll:true})}function end(){boosting=false;document.body.classList.remove("is-boosting");document.querySelector("#gameOverPanel h2").textContent="System Offline";running=false;clearFlightInput();document.body.classList.remove("is-playing");finalScore.textContent="Score "+String(Math.floor(score)).padStart(6,"0")+"  •  Targets Destroyed "+String(targetsDestroyed).padStart(3,"0");gameOverPanel.hidden=false;statusText.textContent="Run complete"}startButton.addEventListener("click",reset);restartButton.addEventListener("click",reset);
 function updatePlayer(dt){
 const s=6.2;
 
@@ -833,19 +840,20 @@ if(input.right)target.x+=s*dt;
 if(input.up)target.y+=s*dt;
 if(input.down)target.y-=s*dt;
 
-target.x=THREE.MathUtils.clamp(target.x,-3.65,3.65);
-target.y=THREE.MathUtils.clamp(target.y,-3,3);
+const bounds=flightBounds();
+target.x=THREE.MathUtils.clamp(target.x,-bounds.x,bounds.x);
+target.y=THREE.MathUtils.clamp(target.y,-bounds.y,bounds.y);
 
 player.position.x=THREE.MathUtils.lerp(
   player.position.x,
   target.x,
-  .18
+  1-Math.exp(-12*dt)
 );
 
 player.position.y=THREE.MathUtils.lerp(
   player.position.y,
   target.y,
-  .18
+  1-Math.exp(-12*dt)
 );
 
 player.rotation.z=THREE.MathUtils.lerp(
@@ -877,11 +885,11 @@ const thrustCorePulse=
   1.05+
   Math.sin(elapsed*13.4+.45)*.20;
 
-leftTrail.scale.set(1,1,thrustPulse);
-rightTrail.scale.set(1,1,thrustPulse);
+leftTrail.scale.set(1,thrustPulse*(boosting?3.4:1),1);
+rightTrail.scale.copy(leftTrail.scale);
 
-leftTrailCore.scale.set(1,1,thrustCorePulse);
-rightTrailCore.scale.set(1,1,thrustCorePulse);
+leftTrailCore.scale.set(1,thrustCorePulse*(boosting?3.4:1),1);
+rightTrailCore.scale.copy(leftTrailCore.scale);
 
 leftTrail.material.opacity=
   .22+
@@ -901,7 +909,7 @@ playerLight.position.x=player.position.x;
 playerLight.position.y=player.position.y+.40;
 playerLight.position.z=player.position.z-.95;
 
-if(input.fire)fire();
+if(input.fire||vortexTouch)fire();
 }
 
 
@@ -975,20 +983,47 @@ camera.lookAt(
   -24
 );
 }
-function updateEnemies(dt){enemyTimer+=dt;if(enemyTimer>=nextEnemy){enemyTimer=0;nextEnemy=Math.max(.2,.62-elapsed*.0045);spawnEnemy()}for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];placeInTunnel(e,e.position.z+speed*dt);// Bank relative to the curved flight path.
+function updateEnemies(dt){enemyTimer+=dt;if(enemyTimer>=nextEnemy){enemyTimer=0;nextEnemy=Math.max(.30,1.15-level*.13);spawnEnemy()}for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];placeInTunnel(e,e.position.z+speed*dt);// Bank relative to the curved flight path.
 const d=e.userData;d.age+=dt;
 e.rotateX(-.12+Math.sin(d.age*1.5+d.phase)*.055);
 e.rotateY(Math.sin(d.age*1.1+d.phase)*.1);
 e.rotateZ(d.bank+Math.sin(d.age*1.8+d.phase)*.16);
 for(const plume of d.exhausts)plume.scale.z=.9+Math.sin(d.age*24+d.phase)*.12;
-const dx=e.position.x-player.position.x,dy=e.position.y-player.position.y,dz=e.position.z-player.position.z;if(dx*dx+dy*dy+dz*dz<.52){health-=22;boom(e.position,e.userData.color);world.remove(e);enemies.splice(i,1);if(health<=0){health=0;hud();end();return}}else if(e.position.z>7){world.remove(e);enemies.splice(i,1)}}}
-function updateBullets(dt){for(let bi=bullets.length-1;bi>=0;bi--){const b=bullets[bi];placeInTunnel(b,b.position.z-34*dt);let hit=false;for(let ei=enemies.length-1;ei>=0;ei--){const e=enemies[ei],dx=b.position.x-e.position.x,dy=b.position.y-e.position.y,dz=b.position.z-e.position.z;if(dx*dx+dy*dy+dz*dz<.42){boom(e.position,e.userData.color);world.remove(e);enemies.splice(ei,1);scene.remove(b);bullets.splice(bi,1);score+=125;targetsDestroyed+=1;hit=true;break}}if(!hit&&b.position.z<-55){scene.remove(b);bullets.splice(bi,1)}}}
-function updateBooms(dt){for(let i=explosions.length-1;i>=0;i--){const ex=explosions[i];ex.life-=dt;const f=Math.max(ex.life/.65,0);ex.g.children.forEach(s=>{s.position.addScaledVector(s.userData.v,dt);s.rotation.x+=dt*5;s.rotation.y+=dt*4;s.material.opacity=f});if(ex.life<=0){scene.remove(ex.g);explosions.splice(i,1)}}}
-function resize(){const w=Math.max(container.clientWidth,1),h=Math.max(container.clientHeight,1);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);resizeVortexFX(w,h)}new ResizeObserver(resize).observe(container);resize();hud();const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);fireCooldown=Math.max(0,fireCooldown-dt);if(running){elapsed+=dt;speed=Math.min(26,15+elapsed*.18)*flightSpeedScale;score+=dt*speed*4;updatePlayer(dt);updateTunnel(dt);
+const dx=e.position.x-player.position.x,dy=e.position.y-player.position.y,dz=e.position.z-player.position.z;if(dx*dx+dy*dy+dz*dz<.52){health-=boosting?7:22;boom(e.position,e.userData.color);world.remove(e);enemies.splice(i,1);if(health<=0){health=0;hud();end();return}}else if(e.position.z>7){world.remove(e);enemies.splice(i,1)}}}
+function updateBullets(dt){for(let bi=bullets.length-1;bi>=0;bi--){const b=bullets[bi],previousZ=b.position.z;placeInTunnel(b,b.position.z-34*dt);let hit=false;for(let ei=enemies.length-1;ei>=0;ei--){const e=enemies[ei],dx=b.position.x-e.position.x,dy=b.position.y-e.position.y,dz=b.position.z-e.position.z;const nearestZ=THREE.MathUtils.clamp(e.position.z,b.position.z,previousZ),sweptZ=nearestZ-e.position.z;if(dx*dx+dy*dy+sweptZ*sweptZ<.42){if(--e.userData.hp>0){scene.remove(b);bullets.splice(bi,1);hit=true;score+=20;break;}boom(e.position,e.userData.color);world.remove(e);enemies.splice(ei,1);scene.remove(b);bullets.splice(bi,1);score+=125;targetsDestroyed+=1;if(Math.random()<.24)spawnPickup(e.position);hit=true;break}}if(!hit&&b.position.z<-55){scene.remove(b);bullets.splice(bi,1)}}}
+function updateBooms(dt){for(let i=explosions.length-1;i>=0;i--){const ex=explosions[i];ex.life-=dt;const f=Math.max(ex.life/.65,0);ex.g.children.forEach(s=>{s.position.addScaledVector(s.userData.v,dt);s.rotation.x+=dt*5;s.rotation.y+=dt*4;s.material.opacity=f});if(ex.life<=0){scene.remove(ex.g);ex.g.children.forEach(m=>{m.geometry.dispose();m.material.dispose();});explosions.splice(i,1)}}}
+
+let level=1,sectorTime=0,fuel=100,gunLevel=1,boosting=false,paused=false,pickupTime=0,pickupIndex=0;
+const pickups=[],pickupColors=[0x45ff94,0x37dfff,0xffc247],pickupLabels=['+','N₂','W'];
+const pickupGeo=new THREE.OctahedronGeometry(.27);
+const pickupMats=pickupColors.map(color=>new THREE.MeshBasicMaterial({color,toneMapped:false}));
+function flightBounds(){const y=Math.min(3,(camera.position.z-player.position.z)*Math.tan(THREE.MathUtils.degToRad(62/2))*.76);return {x:Math.min(3.65,y*camera.aspect*.83),y};}
+function togglePause(){if(!running)return;paused=!paused;clearFlightInput();document.getElementById('pauseButton').textContent=paused?'Resume':'Pause';statusText.textContent=paused?'Paused':'Run active';}
+document.getElementById('pauseButton').addEventListener('click',togglePause);
+let drag=null;
+container.addEventListener('pointerdown',e=>{if(!running||paused)return;e.preventDefault();container.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,y:e.clientY,tx:target.x,ty:target.y};});
+container.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const b=flightBounds();target.set(drag.tx+(e.clientX-drag.x)/container.clientWidth*b.x*2.5,drag.ty-(e.clientY-drag.y)/container.clientHeight*b.y*2.5);});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])container.addEventListener(event,()=>drag=null);
+function spawnPickup(pos){const type=pickupIndex++%3,g=new THREE.Group(),m=new THREE.Mesh(pickupGeo,pickupMats[type]);g.add(m);
+ const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#'+pickupColors[type].toString(16);ctx.font='bold 62px sans-serif';ctx.textAlign='center';ctx.fillText(pickupLabels[type],64,85);const texture=new THREE.CanvasTexture(canvas),label=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,depthTest:false}));label.position.y=.58;label.scale.set(.8,.8,1);g.add(label);
+ g.userData={type,laneX:pos?pos.x:THREE.MathUtils.randFloatSpread(flightBounds().x*1.4),laneY:pos?pos.y:THREE.MathUtils.randFloatSpread(flightBounds().y*1.4),texture};placeInTunnel(g,pos?pos.z:-28);scene.add(g);pickups.push(g);}
+function removePickup(i){const g=pickups[i];scene.remove(g);g.userData.texture.dispose();g.children[1].material.dispose();pickups.splice(i,1);}
+function resetCampaign(){while(pickups.length)removePickup(0);level=1;sectorTime=0;fuel=100;gunLevel=1;boosting=false;paused=false;pickupTime=0;pickupIndex=0;drag=null;document.body.classList.remove('is-boosting');camera.fov=62;camera.updateProjectionMatrix();document.getElementById('pauseButton').textContent='Pause';}
+function updateCampaign(dt){
+ sectorTime+=dt;pickupTime+=dt;
+ if(sectorTime>=40){if(level===5){score+=2500;end();document.querySelector('#gameOverPanel h2').textContent='Tunnel Cleared';return;}level++;sectorTime=0;score+=500;health=Math.min(100,health+15);statusText.textContent='Sector '+level+' · hostiles accelerating';}
+ boosting=input.boost&&fuel>0;fuel=Math.max(0,fuel-(boosting?24*dt:0));document.body.classList.toggle('is-boosting',boosting);
+ camera.fov=THREE.MathUtils.lerp(camera.fov,boosting?74:62,1-Math.exp(-5*dt));camera.updateProjectionMatrix();
+ if(pickupTime>5){pickupTime=0;spawnPickup();}
+ for(let i=pickups.length-1;i>=0;i--){const g=pickups[i];placeInTunnel(g,g.position.z+speed*dt);g.children[0].rotation.y+=dt*2;const dx=g.position.x-player.position.x,dy=g.position.y-player.position.y,dz=g.position.z-player.position.z;
+ if(dx*dx+dy*dy+dz*dz<1.0){const type=g.userData.type;if(type===0)health=Math.min(100,health+35);if(type===1)fuel=Math.min(100,fuel+55);if(type===2){gunLevel=Math.min(3,gunLevel+1);score+=100;}statusText.textContent=['Hull repaired +35','Nitrous refilled +55','Weapons upgraded'][type];removePickup(i);}else if(g.position.z>7)removePickup(i);}
+}
+function resize(){const w=Math.max(container.clientWidth,1),h=Math.max(container.clientHeight,1);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);resizeVortexFX(w,h)}new ResizeObserver(resize).observe(container);resize();hud();const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);fireCooldown=Math.max(0,fireCooldown-dt);if(running&&!paused){elapsed+=dt;updateCampaign(dt);if(!running){hud();renderVortexScene();return;}speed=(14+level*2)*(boosting?1.85:1)*flightSpeedScale;score+=dt*speed*4;updatePlayer(dt);updateTunnel(dt);
 farStars.rotation.z+=dt*.0025;
-nebulaGroup.rotation.z-=dt*.0015;updateEnemies(dt);updateBullets(dt);updateBooms(dt);hud();camera.position.x=THREE.MathUtils.lerp(camera.position.x,player.position.x*.1,.04);camera.position.y=THREE.MathUtils.lerp(camera.position.y,player.position.y*.08,.04);tunnelLight.position.x=Math.sin(elapsed*.7)*1.4;tunnelLight.position.y=Math.cos(elapsed*.55)*1.1}else{playerRing.rotation.z+=dt*.8;updateVortex(dt,dt*2*flightSpeedScale);updateBooms(dt)}renderVortexScene()}animate();
+nebulaGroup.rotation.z-=dt*.0015;updateEnemies(dt);updateBullets(dt);updateBooms(dt);hud();camera.position.x=THREE.MathUtils.lerp(camera.position.x,player.position.x*.1,.04);camera.position.y=THREE.MathUtils.lerp(camera.position.y,player.position.y*.08,.04);tunnelLight.position.x=Math.sin(elapsed*.7)*1.4;tunnelLight.position.y=Math.cos(elapsed*.55)*1.1}else if(!paused){playerRing.rotation.z+=dt*.8;updateVortex(dt,dt*2*flightSpeedScale);updateBooms(dt)}renderVortexScene()}animate();
 </script>
 </body>
 </html>
+
 
 
