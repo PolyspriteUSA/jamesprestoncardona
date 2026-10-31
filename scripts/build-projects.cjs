@@ -21,7 +21,7 @@ for (const project of projects) {
   }
 }
 let archviz = read('archviz.html');
-const header = archviz.match(/  <header class="site-header">[\s\S]*?<\/header>/)[0];
+const header = archviz.match(/  <header class="site-header"[^>]*>[\s\S]*?<\/header>/)[0];
 const sharedEnd = archviz.slice(archviz.indexOf('  <div\n    id="contact-modal"'));
 const cards = projects.map((project, index) => `<a class="native-project-card" href="./${slug(project)}">
   <div class="native-project-thumbnail"><img src="${escape(project.thumbnail || project.images[0].url)}" alt="${escape(project.title)}" loading="lazy" decoding="async"></div>
@@ -55,6 +55,7 @@ projects.forEach((project, index) => {
   <link rel="canonical" href="https://jamesprestoncardona.com/${slug(project)}">
   <link rel="stylesheet" href="./style.css?v=20261019-mobile-layout">
   <link rel="icon" href="./favicon.ico">
+  <link rel="stylesheet" href="./site-menu.css?v=20261030">
 </head>
 <body class="native-project-page">
 ${header}

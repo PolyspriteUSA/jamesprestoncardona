@@ -47,9 +47,20 @@
   .designer-link { margin-top:10px; }
 }
   </style>
+  <link rel="stylesheet" href="./site-menu.css?v=20261030">
 </head>
 <body>
-<header class="site-header"><a class="brand" href="./index.html">James Preston Cardona</a><nav class="site-nav" aria-label="Primary navigation"><a href="./index.html#work">Work</a><a href="./digitalhuman.html">Digital Human</a><a href="./resume.html">Resume</a><a href="./index.html#contact">Contact</a></nav></header>
+<header class="site-header" id="jpc-site-menu">
+    <nav class="nav" aria-label="Main website navigation">
+      <a class="brand" href="./index.html#hero">James Preston Cardona</a>
+
+      <div class="nav-links">
+        <a href="./index.html#work">Work</a>
+        <a href="./index.html#about">About</a>
+        <a href="./index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
 <main class="game-page"><section class="game-shell"><div id="game" class="game" tabindex="0" aria-label="Neon Tunnel. Use W A S D or arrow keys to steer and Space to fire."></div><div class="game-wash"></div><div class="hud"><div class="hud-top"><div class="hud-card"><p class="hud-label">Score</p><p class="hud-value" id="scoreValue">000000</p></div><div class="hud-card"><p class="hud-label">Integrity</p><p class="hud-value" id="healthValue">100%</p><div class="meter"><div class="meter-fill" id="healthMeter"></div></div></div><div class="hud-card"><p class="hud-label">Targets Destroyed</p><p class="hud-value" id="targetsValue">000</p></div></div><div class="center-message" id="startPanel"><p class="kicker">Interactive Work Study</p><h1>Neon Tunnel</h1><p>Fly through a flowing violet-and-magenta plasma vortex. Dodge incoming fighters and keep firing to survive.</p><div class="controls-line">WASD / Arrow Keys — steer &nbsp; • &nbsp; Space — fire</div><button class="start-button" id="startButton" type="button">Enter the Tunnel</button><a class="designer-link" href="./shipdesigner.html">Design your own ships ↗</a><p class="fleet-note" id="fleetNote" hidden></p><button class="fleet-reset" id="resetFleet" type="button" hidden>Use original ships</button></div><div class="center-message" id="gameOverPanel" hidden><p class="kicker">Run Complete</p><h2>System Offline</h2><p id="finalScore">Score 000000</p><button class="start-button" id="restartButton" type="button">Restart Run</button><a class="designer-link" href="./shipdesigner.html">Back to Ship Designer ↗</a></div><div class="status-strip"><span class="status-dot"></span><span id="statusText">Plasma vortex online</span></div></div><div class="touch-controls"><div class="touch-pad"><button class="up" data-input="up" type="button">↑</button><button class="left" data-input="left" type="button">←</button><button class="down" data-input="down" type="button">↓</button><button class="right" data-input="right" type="button">→</button></div><div class="touch-fire"><button data-input="fire" type="button">FIRE</button></div></div></section></main>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"}}</script>
 <script type="module">

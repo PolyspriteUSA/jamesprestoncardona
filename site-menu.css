@@ -1,0 +1,43 @@
+/* Shared navigation matches index.html; scoped to avoid changing page content. */
+#jpc-site-menu, #jpc-site-menu nav, #jpc-site-menu div, #jpc-site-menu a {
+  all: initial;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+#jpc-site-menu {
+  display: block; position: relative; inset: auto; z-index: 50; flex: 0 0 auto;
+  width: 100%; height: auto; min-height: 0; margin: 0;
+  padding: calc(18px + env(safe-area-inset-top)) 24px 18px;
+  pointer-events: auto;
+}
+#jpc-site-menu[data-overlay] { position: absolute; top: 0; left: 0; right: 0; }
+#jpc-site-menu .nav {
+  width: min(1240px, 100%); margin: 0 auto; display: flex;
+  align-items: center; justify-content: space-between; flex-direction: row;
+  flex-wrap: nowrap; gap: 20px;
+}
+#jpc-site-menu .brand {
+  display: inline; font-size: .74rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; white-space: nowrap; color: rgba(255,255,255,.90);
+}
+#jpc-site-menu .nav-links {
+  display: flex; align-items: center; gap: 20px; flex-wrap: nowrap;
+  font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.50);
+}
+#jpc-site-menu .nav-links a {
+  display: inline; font: inherit; letter-spacing: inherit; text-transform: inherit;
+  color: inherit; transition: color 180ms ease;
+}
+#jpc-site-menu a { cursor: pointer; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+#jpc-site-menu a:focus-visible { outline: 2px solid #9a62ff; outline-offset: 4px; }
+@media (hover:hover) { #jpc-site-menu .nav-links a:hover { color: white; } }
+@media (max-width:767px) {
+  #jpc-site-menu { padding: calc(15px + env(safe-area-inset-top)) 15px 15px; }
+  #jpc-site-menu .brand { font-size: .62rem; letter-spacing: .10em; }
+  #jpc-site-menu .nav-links { gap: 12px; font-size: .59rem; }
+  #jpc-site-menu .nav-links a:nth-child(2) { display: none; }
+}
+/* The game already reserves its remaining viewport for the canvas. */
+body:has(#jpc-site-menu) > .game-page { padding-top: 0; }

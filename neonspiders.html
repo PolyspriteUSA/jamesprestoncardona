@@ -579,6 +579,7 @@ canvas{display:block}
   .card h1 { font-size:38px; }
 }
 </style>
+  <link rel="stylesheet" href="./site-menu.css?v=20261030">
 </head>
 <body>
 <div id="game"></div>
@@ -587,17 +588,17 @@ canvas{display:block}
   <div class="spider-touch-right"><button id="spiderDash" type="button">DASH</button><div id="spiderAim" class="spider-stick" aria-label="Drag to aim and fire"><span>AIM / FIRE</span><i></i></div></div>
 </div>
 
-<header class="site-header">
-  <nav class="site-nav" aria-label="Main website navigation">
-    <a class="site-nav-brand" href="./index.html">James Preston Cardona</a>
-    <div class="site-nav-links">
-      <a href="./index.html#work">Work</a>
-      <a href="./index.html#about">About</a>
-      <a href="./resume.html">Resume</a>
-      <a href="./index.html#contact">Contact</a>
-    </div>
-  </nav>
-</header>
+<header class="site-header" id="jpc-site-menu" data-overlay>
+    <nav class="nav" aria-label="Main website navigation">
+      <a class="brand" href="./index.html#hero">James Preston Cardona</a>
+
+      <div class="nav-links">
+        <a href="./index.html#work">Work</a>
+        <a href="./index.html#about">About</a>
+        <a href="./index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
 
 <div class="topbar">
   <div class="brand">
