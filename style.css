@@ -1679,18 +1679,3 @@ body.resume-open {
   .experience-option { min-height:136px; padding:18px 22px; grid-template-columns:minmax(0,1fr) 88px; gap:12px; }
   .experience-thumb { width:88px; height:74px; }
 }
-
-/* Shared music volume control. */
-
-    .jpc-volume-control { display:inline-flex; align-items:center; gap:7px; color:rgba(255,255,255,.65); font:inherit; text-transform:uppercase; white-space:nowrap; }
-    .jpc-volume-slider { width:88px; min-width:0; height:44px; margin:-12px 0; padding:0; cursor:pointer; accent-color:#9a62ff; touch-action:pan-y; }
-    .jpc-volume-slider:focus-visible { outline:2px solid #ff38d1; outline-offset:3px; }
-    @media(max-width:767px) {
-      .jpc-volume-control { gap:4px; }
-      .jpc-volume-slider { width:64px; }
-    }
-    @media(max-width:390px) {
-      .site-header .nav:has(.jpc-volume-control) { flex-wrap:wrap; gap:8px; }
-      .site-header .nav:has(.jpc-volume-control) .nav-links { flex-wrap:wrap; }
-    }
-  

@@ -1,5 +1,7 @@
 # JPC WEBSITE — PROJECT RULES / SOURCE OF TRUTH
 
+> Current audio decision (2026-10-30): Background music and its volume slider have been removed at the user's request. Do not restore audio.js, music controls, or shared soundtrack playback during updates or ArtStation syncs. Embedded video/YouTube audio and independent game/Groovebox audio remain available. This supersedes the older background-music instructions below.
+
 Project: JamesPrestonCardona.com
 Purpose: Portfolio site for real-time 3D, Unreal Engine, architectural visualization, digital humans, interactive experiences, and related work.
 
